@@ -1,0 +1,267 @@
+{
+  "edges": [
+    {
+      "properties": {
+        "signal": "oscillation"
+      },
+      "source": "VCO",
+      "target": "PLL",
+      "type": "signal_flow"
+    },
+    {
+      "properties": {
+        "signal": "control_voltage"
+      },
+      "source": "PLL",
+      "target": "VCO.vctrl",
+      "type": "feedback"
+    },
+    {
+      "properties": {},
+      "source": "VCO.vctrl",
+      "target": "VCO.oscillation_frequency",
+      "type": "behavioral_dependency"
+    },
+    {
+      "properties": {},
+      "source": "VCO.temperature",
+      "target": "VCO.oscillation_frequency",
+      "type": "behavioral_dependency"
+    },
+    {
+      "properties": {},
+      "source": "VCO.vctrl",
+      "target": "VCO.phase_noise_1mhz",
+      "type": "behavioral_dependency"
+    },
+    {
+      "properties": {},
+      "source": "VCO.temperature",
+      "target": "VCO.phase_noise_1mhz",
+      "type": "behavioral_dependency"
+    },
+    {
+      "properties": {},
+      "source": "VCO.phase_noise_1mhz",
+      "target": "PLL.integrated_jitter",
+      "type": "noise_transfer"
+    },
+    {
+      "properties": {},
+      "source": "VCO.kvco",
+      "target": "PLL.lock_time",
+      "type": "system_influence"
+    },
+    {
+      "properties": {},
+      "source": "VCO.kvco",
+      "target": "PLL.integrated_jitter",
+      "type": "system_influence"
+    },
+    {
+      "properties": {},
+      "source": "VCO.oscillation_frequency",
+      "target": "PLL.output_frequency",
+      "type": "system_influence"
+    },
+    {
+      "properties": {},
+      "source": "VCO.power",
+      "target": "PLL.power",
+      "type": "system_influence"
+    },
+    {
+      "properties": {
+        "direction": "upper_bound",
+        "value": 8e-14
+      },
+      "source": "SystemSpec.integrated_jitter",
+      "target": "PLL.integrated_jitter",
+      "type": "constrains"
+    },
+    {
+      "properties": {
+        "direction": "upper_bound",
+        "value": 4e-05
+      },
+      "source": "SystemSpec.lock_time",
+      "target": "PLL.lock_time",
+      "type": "constrains"
+    },
+    {
+      "properties": {
+        "direction": "tolerance",
+        "value": 100000.0
+      },
+      "source": "SystemSpec.output_frequency",
+      "target": "PLL.output_frequency",
+      "type": "constrains"
+    },
+    {
+      "properties": {
+        "direction": "upper_bound",
+        "value": 0.008
+      },
+      "source": "SystemSpec.power",
+      "target": "PLL.power",
+      "type": "constrains"
+    },
+    {
+      "properties": {
+        "evidence_id": "sensitivity:pn_1mhz_dbc_hz:integrated_jitter",
+        "method": "central_finite_difference",
+        "value": 9.683058812533833e-15
+      },
+      "source": "VCO.phase_noise_1mhz",
+      "target": "PLL.integrated_jitter",
+      "type": "sensitivity_evidence"
+    },
+    {
+      "properties": {
+        "evidence_id": "sensitivity:pn_1mhz_dbc_hz:lock_time",
+        "method": "central_finite_difference",
+        "value": 0.0
+      },
+      "source": "VCO.phase_noise_1mhz",
+      "target": "PLL.lock_time",
+      "type": "sensitivity_evidence"
+    },
+    {
+      "properties": {
+        "evidence_id": "sensitivity:k1_hz_per_v:integrated_jitter",
+        "method": "central_finite_difference",
+        "value": -2.5629955021306936e-23
+      },
+      "source": "VCO.kvco",
+      "target": "PLL.integrated_jitter",
+      "type": "sensitivity_evidence"
+    },
+    {
+      "properties": {
+        "evidence_id": "sensitivity:k1_hz_per_v:lock_time",
+        "method": "central_finite_difference",
+        "value": 3.224999999999999e-15
+      },
+      "source": "VCO.kvco",
+      "target": "PLL.lock_time",
+      "type": "sensitivity_evidence"
+    },
+    {
+      "properties": {
+        "contract_id": "vco_contract_v1",
+        "status": "validated_on_v1_observations"
+      },
+      "source": "VCO.vctrl",
+      "target": "VCO.phase_noise_1mhz",
+      "type": "contract_dependency"
+    }
+  ],
+  "graph_id": "vco_mapping_01:deterministic-v1:vco_pll_graph",
+  "graph_version": "1.0",
+  "nodes": [
+    {
+      "id": "PLL",
+      "properties": {
+        "architecture": "integer_n_cppll"
+      },
+      "type": "architecture_block"
+    },
+    {
+      "id": "VCO",
+      "properties": {
+        "target_block": true
+      },
+      "type": "architecture_block"
+    },
+    {
+      "id": "VCO.vctrl",
+      "properties": {
+        "unit": "V"
+      },
+      "type": "context"
+    },
+    {
+      "id": "VCO.temperature",
+      "properties": {
+        "unit": "degC"
+      },
+      "type": "context"
+    },
+    {
+      "id": "VCO.phase_noise_1mhz",
+      "properties": {
+        "unit": "dBc/Hz"
+      },
+      "type": "behavioral_output"
+    },
+    {
+      "id": "VCO.oscillation_frequency",
+      "properties": {
+        "unit": "Hz"
+      },
+      "type": "behavioral_output"
+    },
+    {
+      "id": "VCO.kvco",
+      "properties": {
+        "unit": "Hz/V"
+      },
+      "type": "behavioral_output"
+    },
+    {
+      "id": "VCO.power",
+      "properties": {
+        "unit": "W"
+      },
+      "type": "behavioral_output"
+    },
+    {
+      "id": "PLL.integrated_jitter",
+      "properties": {
+        "unit": "s"
+      },
+      "type": "system_metric"
+    },
+    {
+      "id": "PLL.lock_time",
+      "properties": {
+        "unit": "s"
+      },
+      "type": "system_metric"
+    },
+    {
+      "id": "PLL.output_frequency",
+      "properties": {
+        "unit": "Hz"
+      },
+      "type": "system_metric"
+    },
+    {
+      "id": "PLL.power",
+      "properties": {
+        "unit": "W"
+      },
+      "type": "system_metric"
+    },
+    {
+      "id": "SystemSpec.integrated_jitter",
+      "properties": {},
+      "type": "system_requirement"
+    },
+    {
+      "id": "SystemSpec.lock_time",
+      "properties": {},
+      "type": "system_requirement"
+    },
+    {
+      "id": "SystemSpec.output_frequency",
+      "properties": {},
+      "type": "system_requirement"
+    },
+    {
+      "id": "SystemSpec.power",
+      "properties": {},
+      "type": "system_requirement"
+    }
+  ]
+}

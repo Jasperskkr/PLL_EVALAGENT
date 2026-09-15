@@ -1,0 +1,183 @@
+{
+  "base_vco": {
+    "f0_hz": 4450000000.0,
+    "k1_hz_per_v": 1600000000.0,
+    "k2_hz_per_v2": 700000000.0,
+    "nominal_power_w": 0.005,
+    "nominal_temperature_c": 25.0,
+    "pn_1mhz_dbc_hz": -116.0,
+    "pn_power_coeff_db_per_decade": -3.0,
+    "pn_temp_coeff_db_per_c": 0.018,
+    "pn_vctrl_coeff_db_per_v": 8.0,
+    "power_vctrl_coeff": 0.12,
+    "tempco_hz_per_c": 150000.0,
+    "v0_v": 0.5,
+    "vctrl_max_v": 1.1,
+    "vctrl_min_v": 0.1
+  },
+  "method": "deterministic_finite_difference_and_grid_sweep",
+  "sweeps": {
+    "k1_hz_per_v": {
+      "local_derivatives": {
+        "center_value": 1600000000.0,
+        "integrated_jitter_s": -2.5629955021306936e-23,
+        "lock_time_s": 3.224999999999999e-15,
+        "output_frequency_hz": 5.977153778076172e-12,
+        "power_w": -9.243599516414735e-14
+      },
+      "parameter": "k1_hz_per_v",
+      "rows": [
+        {
+          "integrated_jitter_s": 1.1215761951117831e-13,
+          "kvco_hz_per_v": 1476482306.0233412,
+          "lock_time_s": 3.124e-05,
+          "loop_bandwidth_hz": 3896974.3160704607,
+          "output_frequency_hz": 5000000000.000001,
+          "parameter": "k1_hz_per_v",
+          "passed": false,
+          "power_w": 0.005529920988295718,
+          "value": 800000000.0
+        },
+        {
+          "integrated_jitter_s": 9.523329150833666e-14,
+          "kvco_hz_per_v": 1726267650.163241,
+          "lock_time_s": 3.486e-05,
+          "loop_bandwidth_hz": 4213737.586332217,
+          "output_frequency_hz": 5000000000.000058,
+          "parameter": "k1_hz_per_v",
+          "passed": false,
+          "power_w": 0.005465543278641389,
+          "value": 1200000000.0
+        },
+        {
+          "integrated_jitter_s": 8.336734952719942e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "parameter": "k1_hz_per_v",
+          "passed": false,
+          "power_w": 0.005422076717056685,
+          "value": 1600000000.0
+        },
+        {
+          "integrated_jitter_s": 7.472932749129111e-14,
+          "kvco_hz_per_v": 2353720459.190167,
+          "lock_time_s": 3.744e-05,
+          "loop_bandwidth_hz": 4920291.8194034025,
+          "output_frequency_hz": 5000000000.00484,
+          "parameter": "k1_hz_per_v",
+          "passed": true,
+          "power_w": 0.005391594482510071,
+          "value": 2000000000.0
+        }
+      ]
+    },
+    "pn_1mhz_dbc_hz": {
+      "local_derivatives": {
+        "center_value": -116.0,
+        "integrated_jitter_s": 9.683058812533833e-15,
+        "lock_time_s": 0.0,
+        "output_frequency_hz": 0.0,
+        "power_w": 0.0
+      },
+      "parameter": "pn_1mhz_dbc_hz",
+      "rows": [
+        {
+          "integrated_jitter_s": 5.2601241474033847e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "parameter": "pn_1mhz_dbc_hz",
+          "passed": true,
+          "power_w": 0.005422076717056685,
+          "value": -120.0
+        },
+        {
+          "integrated_jitter_s": 6.622103958358248e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "parameter": "pn_1mhz_dbc_hz",
+          "passed": true,
+          "power_w": 0.005422076717056685,
+          "value": -118.0
+        },
+        {
+          "integrated_jitter_s": 8.336734952719942e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "parameter": "pn_1mhz_dbc_hz",
+          "passed": false,
+          "power_w": 0.005422076717056685,
+          "value": -116.0
+        },
+        {
+          "integrated_jitter_s": 1.0495327483371781e-13,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "parameter": "pn_1mhz_dbc_hz",
+          "passed": false,
+          "power_w": 0.005422076717056685,
+          "value": -114.0
+        }
+      ]
+    },
+    "vctrl_max_v": {
+      "local_derivatives": {},
+      "parameter": "vctrl_max_v",
+      "rows": [
+        {
+          "integrated_jitter_s": 8.290030771780354e-14,
+          "kvco_hz_per_v": 2020000000.0,
+          "lock_time_s": null,
+          "loop_bandwidth_hz": 4558155.163000063,
+          "output_frequency_hz": 4993000000.0,
+          "parameter": "vctrl_max_v",
+          "passed": false,
+          "power_w": 0.005600000000000001,
+          "value": 0.8
+        },
+        {
+          "integrated_jitter_s": 8.312667323186862e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "parameter": "vctrl_max_v",
+          "passed": false,
+          "power_w": 0.005527595896320856,
+          "value": 0.9
+        },
+        {
+          "integrated_jitter_s": 8.325972319293918e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "parameter": "vctrl_max_v",
+          "passed": false,
+          "power_w": 0.0054689741300629835,
+          "value": 1.0
+        },
+        {
+          "integrated_jitter_s": 8.336734952719942e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "parameter": "vctrl_max_v",
+          "passed": false,
+          "power_w": 0.005422076717056685,
+          "value": 1.1
+        }
+      ]
+    }
+  }
+}

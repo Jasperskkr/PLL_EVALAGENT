@@ -1,0 +1,19 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+tmp/
+
+# Deterministic summary artifacts are tracked; large raw traces are regenerated.
+results/**/initial_system_raw.json
+results/**/system_raw_*.json
+
+# Local editor and OS files
+.vscode/
+.idea/
+*.user
+*.suo
+Thumbs.db
+Desktop.ini

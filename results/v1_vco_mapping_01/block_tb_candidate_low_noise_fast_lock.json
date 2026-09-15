@@ -1,0 +1,124 @@
+{
+  "checks": {
+    "phase_noise_1mhz": false,
+    "power": true,
+    "target_frequency_covered": true
+  },
+  "context": {
+    "source": "SystemTB operating envelope",
+    "temperature_points_c": [
+      25.0
+    ],
+    "vctrl_max_v": 1.0757697139726308,
+    "vctrl_min_v": 0.30684728
+  },
+  "observations": [
+    {
+      "fosc_hz": 4321593405.270379,
+      "kvco_hz_per_v": 529586192.0,
+      "phase_noise_1mhz_dbc_hz": -123.57716666473375,
+      "power_w": 0.005124108368,
+      "temperature_c": 25.0,
+      "vctrl_v": 0.30684728
+    },
+    {
+      "fosc_hz": 4366453167.611737,
+      "kvco_hz_per_v": 637235332.7561684,
+      "phase_noise_1mhz_dbc_hz": -122.97370684563379,
+      "power_w": 0.0051702437140383585,
+      "temperature_c": 25.0,
+      "vctrl_v": 0.3837395233972631
+    },
+    {
+      "fosc_hz": 4419590313.885626,
+      "kvco_hz_per_v": 744884473.5123366,
+      "phase_noise_1mhz_dbc_hz": -122.37014328124336,
+      "power_w": 0.0052163790600767155,
+      "temperature_c": 25.0,
+      "vctrl_v": 0.46063176679452617
+    },
+    {
+      "fosc_hz": 4481004844.092042,
+      "kvco_hz_per_v": 852533614.2685049,
+      "phase_noise_1mhz_dbc_hz": -121.76647779863262,
+      "power_w": 0.005262514406115073,
+      "temperature_c": 25.0,
+      "vctrl_v": 0.5375240101917892
+    },
+    {
+      "fosc_hz": 4550696758.230989,
+      "kvco_hz_per_v": 960182755.0246732,
+      "phase_noise_1mhz_dbc_hz": -121.1627121770277,
+      "power_w": 0.005308649752153432,
+      "temperature_c": 25.0,
+      "vctrl_v": 0.6144162535890523
+    },
+    {
+      "fosc_hz": 4628666056.302466,
+      "kvco_hz_per_v": 1067831895.7808416,
+      "phase_noise_1mhz_dbc_hz": -120.55884814946653,
+      "power_w": 0.005354785098191789,
+      "temperature_c": 25.0,
+      "vctrl_v": 0.6913084969863155
+    },
+    {
+      "fosc_hz": 4714912738.306473,
+      "kvco_hz_per_v": 1175481036.5370097,
+      "phase_noise_1mhz_dbc_hz": -119.95488740438401,
+      "power_w": 0.0054009204442301475,
+      "temperature_c": 25.0,
+      "vctrl_v": 0.7682007403835784
+    },
+    {
+      "fosc_hz": 4809436804.243009,
+      "kvco_hz_per_v": 1283130177.2931783,
+      "phase_noise_1mhz_dbc_hz": -119.35083158712952,
+      "power_w": 0.005447055790268504,
+      "temperature_c": 25.0,
+      "vctrl_v": 0.8450929837808416
+    },
+    {
+      "fosc_hz": 4912238254.112074,
+      "kvco_hz_per_v": 1390779318.0493464,
+      "phase_noise_1mhz_dbc_hz": -118.74668230142046,
+      "power_w": 0.005493191136306863,
+      "temperature_c": 25.0,
+      "vctrl_v": 0.9219852271781046
+    },
+    {
+      "fosc_hz": 5023317087.913669,
+      "kvco_hz_per_v": 1498428458.8055148,
+      "phase_noise_1mhz_dbc_hz": -118.14244111073522,
+      "power_w": 0.005539326482345221,
+      "temperature_c": 25.0,
+      "vctrl_v": 0.9988774705753678
+    },
+    {
+      "fosc_hz": 5142673305.647792,
+      "kvco_hz_per_v": 1606077599.5616832,
+      "phase_noise_1mhz_dbc_hz": -117.53810953964799,
+      "power_w": 0.005585461828383579,
+      "temperature_c": 25.0,
+      "vctrl_v": 1.0757697139726308
+    }
+  ],
+  "passed": false,
+  "requirement": {
+    "kvco_max_hz_per_v": null,
+    "kvco_min_hz_per_v": null,
+    "margin_db": 1.5,
+    "phase_noise_1mhz_max_dbc_hz": -117.85812103748322,
+    "power_max_w": 0.008,
+    "tuning_range_min_hz": null
+  },
+  "worst_case": {
+    "fosc_max_hz": 5142673305.647792,
+    "fosc_min_hz": 4321593405.270379,
+    "kvco_max_hz_per_v": 1606077599.5616832,
+    "kvco_min_hz_per_v": 529586192.0,
+    "phase_noise_1mhz_dbc_hz": -117.53810953964799,
+    "phase_noise_margin_db": -0.32001149783522465,
+    "power_max_w": 0.005585461828383579,
+    "tuning_range_hz": 821079900.3774128
+  }
+}

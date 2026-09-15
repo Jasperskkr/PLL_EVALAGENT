@@ -1,0 +1,78 @@
+{
+  "case_id": "vco_mapping_01",
+  "description": "Deterministic VCO behavior-to-PLL metric and PN spec allocation demo",
+  "system_spec": {
+    "pll": {
+      "f_ref_hz": 50000000.0,
+      "divider_n": 100
+    },
+    "target_frequency_hz": 5000000000.0,
+    "limits": {
+      "output_frequency_tolerance_hz": 100000.0,
+      "integrated_jitter_max_s": 8.0e-14,
+      "lock_time_max_s": 4.0e-5,
+      "power_max_w": 8.0e-3
+    },
+    "operating_context": {
+      "vdd_v": 1.8,
+      "temperature_points_c": [25.0],
+      "vctrl_initial_v": 0.3,
+      "vctrl_min_v": 0.1,
+      "vctrl_max_v": 1.1
+    },
+    "jitter": {
+      "f_low_hz": 10.0,
+      "f_high_hz": 20000000.0,
+      "points": 240
+    }
+  },
+  "base_vco": {},
+  "initial_vco_requirement": {
+    "phase_noise_1mhz_max_dbc_hz": -116.0,
+    "power_max_w": 8.0e-3,
+    "margin_db": 0.0
+  },
+  "allocation": {
+    "metric": "phase_noise_1mhz_dbc_hz",
+    "loose_bound_dbc_hz": -110.0,
+    "tight_bound_dbc_hz": -125.0,
+    "iterations": 24,
+    "recommended_margin_db": 1.5
+  },
+  "prove": {
+    "vctrl_points_v": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1],
+    "temperature_points_c": [25.0],
+    "offset_points_hz": [100000.0, 1000000.0, 10000000.0],
+    "sweeps": {
+      "pn_1mhz_dbc_hz": [-120.0, -118.0, -116.0, -114.0],
+      "k1_hz_per_v": [800000000.0, 1200000000.0, 1600000000.0, 2000000000.0],
+      "vctrl_max_v": [0.8, 0.9, 1.0, 1.1]
+    }
+  },
+  "candidates": [
+    {
+      "candidate_id": "candidate_baseline",
+      "overrides": {},
+      "engineering_cost": 1.0,
+      "description": "Current prototype VCO; intentionally misses the jitter target"
+    },
+    {
+      "candidate_id": "candidate_low_noise",
+      "overrides": {
+        "pn_1mhz_dbc_hz": -122.0
+      },
+      "engineering_cost": 1.2,
+      "description": "Lower-noise VCO candidate"
+    },
+    {
+      "candidate_id": "candidate_low_noise_fast_lock",
+      "overrides": {
+        "pn_1mhz_dbc_hz": -122.0,
+        "k1_hz_per_v": 800000000.0
+      },
+      "engineering_cost": 1.3,
+      "description": "Lower-noise, lower-Kvco candidate showing the lock/jitter trade-off"
+    }
+  ],
+  "initial_candidate_id": "candidate_baseline"
+}

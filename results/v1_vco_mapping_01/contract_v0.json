@@ -1,0 +1,95 @@
+{
+  "contract_id": "vco_contract_v0",
+  "fields": [
+    {
+      "datatype": "float",
+      "depends_on": [],
+      "evaluation_method": "DC/TRAN",
+      "name": "Vctrl",
+      "range": [
+        0.1,
+        1.1
+      ],
+      "role": "system_context",
+      "unit": "V"
+    },
+    {
+      "datatype": "float",
+      "depends_on": [],
+      "evaluation_method": "DC/PNOISE",
+      "name": "temperature",
+      "range": [
+        -40.0,
+        125.0
+      ],
+      "role": "system_context",
+      "unit": "degC"
+    },
+    {
+      "datatype": "function",
+      "depends_on": [
+        "Vctrl",
+        "temperature"
+      ],
+      "evaluation_method": "TRAN/PSS",
+      "name": "oscillation_frequency",
+      "range": null,
+      "role": "performance_metric",
+      "unit": "Hz"
+    },
+    {
+      "datatype": "function",
+      "depends_on": [
+        "Vctrl"
+      ],
+      "evaluation_method": "DC sweep",
+      "name": "kvco",
+      "range": null,
+      "role": "intermediate_variable",
+      "unit": "Hz/V"
+    },
+    {
+      "datatype": "float",
+      "depends_on": [],
+      "evaluation_method": "PNOISE",
+      "name": "phase_noise_1mhz",
+      "range": null,
+      "role": "performance_metric",
+      "unit": "dBc/Hz"
+    },
+    {
+      "datatype": "function",
+      "depends_on": [
+        "Vctrl",
+        "temperature"
+      ],
+      "evaluation_method": "DC",
+      "name": "power",
+      "range": null,
+      "role": "performance_metric",
+      "unit": "W"
+    }
+  ],
+  "representation": {
+    "kvco": "function(Vctrl)",
+    "oscillation_frequency": "function(Vctrl, temperature)",
+    "phase_noise_1mhz": "constant",
+    "power": "function(Vctrl, temperature)"
+  },
+  "status": "hypothesis_unvalidated",
+  "validity": {
+    "offset_hz": [
+      100000.0,
+      10000000.0
+    ],
+    "temperature_c": [
+      -40.0,
+      125.0
+    ],
+    "vctrl_v": [
+      0.1,
+      1.1
+    ]
+  },
+  "version": 0
+}
