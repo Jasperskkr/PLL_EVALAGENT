@@ -1,9 +1,9 @@
 # PLL System-to-Block Specification 项目总评
 
 > 文档性质：Project Understanding Review + Literature Feasibility Review  
-> 项目阶段：方法验证 / V1 设计前  
+> 文档状态：历史 review；其中“V1 设计前/尚未编码”是生成时状态。当前实现、基线和后续计划请以 [README.md](README.md)、[PROJECT_PLAN.md](PROJECT_PLAN.md) 和 [V1.0_BASELINE.md](V1.0_BASELINE.md) 为准。
 > 生成日期：2026-09-11  
-> 当前结论：方向可行；V1 可以进入框架设计，但尚未进入编码阶段。
+> 历史结论：方向可行；V1 当时可以进入框架设计。
 
 ## 0. 审核范围与门禁
 
@@ -988,4 +988,3 @@ Testing Plan
 ~~~
 
 提交 Framework Design 后应再次等待审核，批准后才开始实现。
-

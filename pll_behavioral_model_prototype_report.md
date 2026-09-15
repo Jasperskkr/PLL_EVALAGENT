@@ -1,5 +1,7 @@
 # PLL 行为级建模原型报告
 
+> 文档状态：行为模型原型报告。当前 V1 runner 已在此模型之上增加 deterministic allocation、BlockTB、schema 和 graph evidence；完整闭环见 [README.md](README.md)。
+
 ## 1. 当前结论
 
 Python 和 MATLAB 都可以实现一个可运行的 Integer-N CPPLL 行为级模型。本次原型已经完成并通过执行验证。
@@ -18,21 +20,21 @@ Python 和 MATLAB 都可以实现一个可运行的 Integer-N CPPLL 行为级模
 
 Python 模型：
 
-[v1/model/pll_behavioral.py](F:/LJP/概伦AI/PLL_AGENT/v1/model/pll_behavioral.py)
+[v1/model/pll_behavioral.py](v1/model/pll_behavioral.py)
 
 Python 运行入口：
 
-[run_pll_demo.py](F:/LJP/概伦AI/PLL_AGENT/run_pll_demo.py)
+[run_pll_demo.py](run_pll_demo.py)
 
 MATLAB 模型：
 
-[matlab/pll_behavioral_demo.m](F:/LJP/概伦AI/PLL_AGENT/matlab/pll_behavioral_demo.m)
+[matlab/pll_behavioral_demo.m](matlab/pll_behavioral_demo.m)
 
 示例输出：
 
-[results/python_pll_demo.json](F:/LJP/概伦AI/PLL_AGENT/results/python_pll_demo.json)
+[results/python_pll_demo.json](results/python_pll_demo.json)
 
-[results/matlab_pll_demo.json](F:/LJP/概伦AI/PLL_AGENT/results/matlab_pll_demo.json)
+[results/matlab_pll_demo.json](results/matlab_pll_demo.json)
 
 ## 3. 模型结构
 

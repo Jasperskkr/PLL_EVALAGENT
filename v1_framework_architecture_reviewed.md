@@ -1,8 +1,10 @@
 # V1 Framework Architecture Review and Revised Design
 
+> 文档状态：V1 设计决策记录。本文的“尚未进入编码”是写作时的历史状态；当前 V1.0 已按其中的最小可信路径实现，具体结果见 [V1.0_BASELINE.md](V1.0_BASELINE.md)。
+
 > 文档性质：对 initial_framework_architecture.md 的客观评审与 V1 修订方案  
 > 目标：先验证可信的 SystemSpec → VCO Required Spec 映射，再逐步扩展到工程数据  
-> 当前状态：架构已修订，仍未进入编码
+> 生成时状态：架构已修订，当时仍未进入编码；当前 V1.0 已实现并冻结为 baseline。
 
 ## 1. 总体评价
 

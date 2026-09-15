@@ -1,3 +1,5 @@
+> 文档状态：原始项目 charter / 历史输入。当前实现状态和后续执行规则请以 [README.md](README.md)、[PROJECT_PLAN.md](PROJECT_PLAN.md) 和 [V1.0_BASELINE.md](V1.0_BASELINE.md) 为准。
+
 你将协助我设计和开发一个面向 PLL 的行为级 System-to-Block Specification Decomposition Agent。
 当前项目仍处于方法验证和早期 Demo 阶段。
 收到本 Prompt 后不要立即开始编码。

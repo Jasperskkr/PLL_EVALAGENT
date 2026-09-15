@@ -1,11 +1,13 @@
 # SystemSpec-to-BlockSpec Agent 初步架构设计
 
+> 文档状态：长期架构蓝图 / 历史设计稿。本文描述的完整平台并未全部实现；V1 的有效执行路径以 [v1_framework_architecture_reviewed.md](v1_framework_architecture_reviewed.md) 和当前代码为准。
+
 > 文档状态：初步 Framework Design Draft  
 > 适用阶段：V1 方法验证，可逐步扩展到 V2/V3 和真实工程数据  
 > 当前原则：先设计稳定的数据与验证接口，再实现 Agent 能力  
 > 本文不包含实现代码，提交后等待框架审核。
 
-> 修订说明：本文保留为长期架构蓝图。针对 V1 的语义边界和最小 execution path，请以 [v1_framework_architecture_reviewed.md](F:/LJP/概伦AI/PLL_AGENT/v1_framework_architecture_reviewed.md) 为准。
+> 修订说明：本文保留为长期架构蓝图。针对 V1 的语义边界和最小 execution path，请以 [v1_framework_architecture_reviewed.md](v1_framework_architecture_reviewed.md) 为准。
 
 ## 1. 设计目标
 
