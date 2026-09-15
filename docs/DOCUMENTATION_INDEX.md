@@ -49,6 +49,7 @@ project_prompt.md / project_understanding_and_literature_review.md
 | `v1_framework_architecture_reviewed.md` | V1 设计记录 | Contract/Oracle/Requirement/Instance 等语义边界 |
 | `pll_behavioral_model_prototype_report.md` | 模型报告 | Python/MATLAB 行为模型、方程和已知限制 |
 | `results/v1_vco_mapping_01/summary.md` | 运行产物 | 单次 benchmark 的 compact evidence |
+| `results/v1_spec_matrix/SPEC_MATRIX_REPORT.md` | 运行产物 | 多组 SystemSpec 正向分配、PN 边界双向检查、candidate 回代与负向控制 |
 
 ## 阅读时应特别注意
 

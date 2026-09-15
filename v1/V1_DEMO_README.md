@@ -27,7 +27,10 @@ phase_noise_1mhz
 
 ```powershell
 python run_v1_prove.py --case v1\cases\vco_mapping_01.json
+python run_v1_spec_matrix.py
 ```
+
+批量命令会对多组 jitter/temperature SystemSpec 重复运行正向分配与反向验证，并用 lock-time/power 负向 case 验证 PN-only allocator 的正确拒绝行为。汇总见 `results/v1_spec_matrix/SPEC_MATRIX_REPORT.md`。
 
 默认结果目录为：
 

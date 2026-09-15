@@ -57,12 +57,14 @@ V1.0 baseline 的测试套件为 10/10 通过；Phase 1 新增 schema、graph、
 ```powershell
 python -m unittest discover -s tests -v
 python run_v1_prove.py --case v1\cases\vco_mapping_01.json
+python run_v1_spec_matrix.py
 ```
 
 结果写入：
 
 ```text
 results/v1_vco_mapping_01/
+results/v1_spec_matrix/
 ```
 
 最重要的输出包括：
@@ -80,6 +82,8 @@ vco_pll_graph_v2.json              # Phase 1 四层 typed graph artifact
 vco_block_meta_v1.json             # VCO 的四类 BlockMetaSchema 实例
 trajectory.jsonl                   # 可回放执行轨迹
 ```
+
+`run_v1_spec_matrix.py` 另外执行 6 组完整正向 case 和 2 组负向控制 case，生成 SystemSpec → VCO PN 分配表、PN 边界两侧 PASS/FAIL 表、candidate 回代 BlockTB/SystemTB 表和一维分配拒绝表。
 
 `initial_system_raw.json` 和 `system_raw_*.json` 等逐周期 raw trace 很大，按 `.gitignore` 忽略；它们由 runner 重新生成，摘要和关键证据仍被跟踪。
 

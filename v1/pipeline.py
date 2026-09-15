@@ -447,6 +447,22 @@ def search_required_pn_boundary(
     if loose["system_evaluation"]["passed"]:
         raise ValueError("loose PN search bound already passes; no boundary bracket")
     if not tight["system_evaluation"]["passed"]:
+        failed_checks = sorted(
+            {
+                str(name)
+                for context in tight["system_evaluation"].get("per_context", [])
+                for name, passed in context.get("checks", {}).items()
+                if not passed
+            }
+        )
+        non_pn_failures = [
+            name for name in failed_checks if name != "integrated_jitter"
+        ]
+        if non_pn_failures:
+            raise ValueError(
+                "PN-only allocation infeasible; non-PN SystemSpec checks still "
+                f"fail at the tight bound: {', '.join(non_pn_failures)}"
+            )
         raise ValueError("tight PN search bound still fails; increase search range")
 
     history: List[Dict[str, Any]] = [

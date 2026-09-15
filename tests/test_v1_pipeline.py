@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import unittest
+from dataclasses import replace
 from pathlib import Path
 import tempfile
 
@@ -15,6 +16,7 @@ from v1.pipeline import (
 )
 from v1.contract import build_contract_evidence
 from run_v1_prove import run
+from run_v1_spec_matrix import run_matrix
 from v1.agent_actions import validate_agent_action
 from v1.allocation.evaluator import evaluate_spec_vector
 from v1.allocation.spec_vector import SpecVector
@@ -277,6 +279,59 @@ class V1PipelineTests(unittest.TestCase):
                     "modify_system_spec": True,
                 }
             )
+
+    def test_systemspec_to_pn_matrix_is_monotonic_and_reversible(self) -> None:
+        boundaries = []
+        for jitter_fs in (140.0, 100.0, 80.0, 60.0, 50.0):
+            spec = replace(
+                SYSTEM_SPEC, integrated_jitter_max_s=jitter_fs * 1.0e-15
+            )
+            boundary = search_required_pn_boundary(
+                spec, BASE_VCO, -110.0, -130.0, iterations=18
+            )["required_boundary"]
+            boundaries.append(boundary)
+            tighter = evaluate_system(
+                spec,
+                build_vco_instance(BASE_VCO, {"pn_1mhz_dbc_hz": boundary - 0.05}),
+                keep_raw=False,
+            )
+            looser = evaluate_system(
+                spec,
+                build_vco_instance(BASE_VCO, {"pn_1mhz_dbc_hz": boundary + 0.05}),
+                keep_raw=False,
+            )
+            self.assertTrue(tighter["passed"])
+            self.assertFalse(looser["passed"])
+        self.assertTrue(
+            all(
+                boundaries[index] > boundaries[index + 1]
+                for index in range(len(boundaries) - 1)
+            )
+        )
+
+    def test_non_pn_failures_reject_one_dimensional_allocation(self) -> None:
+        for spec in (
+            replace(SYSTEM_SPEC, lock_time_max_s=30.0e-6),
+            replace(SYSTEM_SPEC, power_max_w=5.0e-3),
+        ):
+            tight = evaluate_system(
+                spec,
+                build_vco_instance(BASE_VCO, {"pn_1mhz_dbc_hz": -130.0}),
+                keep_raw=False,
+            )
+            self.assertFalse(tight["passed"])
+            with self.assertRaisesRegex(ValueError, "PN-only allocation infeasible"):
+                search_required_pn_boundary(
+                    spec, BASE_VCO, -110.0, -130.0, iterations=8
+                )
+
+    def test_full_spec_matrix_report_is_reproducible(self) -> None:
+        matrix_path = ROOT / "v1" / "cases" / "vco_mapping_matrix.json"
+        with tempfile.TemporaryDirectory() as directory:
+            result = run_matrix(matrix_path, Path(directory) / "matrix")
+            self.assertEqual(len(result["forward_allocation"]), 6)
+            self.assertEqual(len(result["rejected_one_dimensional_cases"]), 2)
+            self.assertTrue(all(result["assertions"].values()))
 
 
 if __name__ == "__main__":

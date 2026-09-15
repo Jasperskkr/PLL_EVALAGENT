@@ -483,7 +483,12 @@ def run(case_path: str | Path, output_dir: str | Path) -> Dict[str, Any]:
         }
     )
 
-    plots = _write_optional_plots(output_path, characterization, sensitivity)
+    report_cfg = case.get("report", {})
+    plots = (
+        _write_optional_plots(output_path, characterization, sensitivity)
+        if report_cfg.get("generate_plots", True)
+        else {"available": False, "reason": "disabled_by_case"}
+    )
     simulation_count = len(system_spec.temperature_points_c) * (
         1
         + sum(len(values) for values in prove_cfg.get("sweeps", {}).values())
