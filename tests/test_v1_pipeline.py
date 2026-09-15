@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import json
 import unittest
 from dataclasses import replace
 from pathlib import Path
@@ -23,6 +24,8 @@ from v1.allocation.spec_vector import SpecVector
 from v1.graph.compiler import build_v1_graph_artifact
 from v1.graph.compiler import build_v1_graph_v2_artifact
 from v1.graph.validators import validate_graph_v2_artifact
+from v1.graph.model import EDGE_TYPES, NODE_TYPES
+from v1.graph.audit import audit_allocation_graph, build_agent_goal_context
 from v1.graph.proposals import validate_graph_proposal
 from v1.graph.queries import evidence_neighborhood, requirement_allocation_paths
 from v1.schema.envelopes import make_envelope
@@ -332,6 +335,93 @@ class V1PipelineTests(unittest.TestCase):
             self.assertEqual(len(result["forward_allocation"]), 6)
             self.assertEqual(len(result["rejected_one_dimensional_cases"]), 2)
             self.assertTrue(all(result["assertions"].values()))
+            rejected = result["rejected_one_dimensional_cases"]
+            self.assertTrue(all(row["graph_audit_passed"] for row in rejected))
+            self.assertIn("VCO.k1_design", rejected[0]["agent_candidate_variables"])
+            self.assertIn("VCO.nominal_power_design", rejected[1]["agent_candidate_variables"])
+
+    def test_json_schema_vocabulary_matches_runtime_vocabulary(self) -> None:
+        schema = json.loads(
+            (ROOT / "v1" / "graph" / "graph_schema_v2.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(
+            set(schema["$defs"]["node"]["properties"]["type"]["enum"]),
+            set(NODE_TYPES),
+        )
+        self.assertEqual(
+            set(schema["$defs"]["edge"]["properties"]["type"]["enum"]),
+            set(EDGE_TYPES),
+        )
+
+    def test_graph_semantic_closure_audit_and_agent_context(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            result = run(CASE_PATH, Path(directory) / "run")
+            output = Path(result["output_dir"])
+            graph = json.loads((output / "vco_pll_graph_v2.json").read_text(encoding="utf-8"))
+            audit = json.loads((output / "graph_audit.json").read_text(encoding="utf-8"))
+            self.assertTrue(audit["passed"])
+            self.assertTrue(all(audit["checks"].values()))
+            goal = json.loads((output / "agent_goal_context.json").read_text(encoding="utf-8"))
+            self.assertIn("integrated_jitter", goal["failed_checks"])
+            self.assertTrue(any(item["variable"] == "VCO.phase_noise_1mhz_design" for item in goal["candidate_variables"]))
+            broken = copy.deepcopy(graph)
+            for edge in broken["edges"]:
+                if edge["type"] == "evaluates" and edge["target"] == "BlockTB.candidate_low_noise":
+                    edge["status"] = "validated"
+                    edge["properties"]["passed"] = False
+                    break
+            with self.assertRaises(ValueError):
+                validate_graph_v2_artifact(broken)
+
+            block_results = json.loads((output / "block_feasibility.json").read_text(encoding="utf-8"))
+            selected = next(item for item in block_results if item.get("selected"))
+            expected = {
+                "selected_candidate": selected["candidate_id"],
+                "required_pn": json.loads((output / "required_vco_spec_boundary.json").read_text(encoding="utf-8"))["required_boundary"],
+                "recommended_pn": json.loads((output / "recommended_vco_spec.json").read_text(encoding="utf-8"))["phase_noise_1mhz_max_dbc_hz"],
+                "block_tb": selected["block_tb"],
+                "candidate_system": selected["system_evaluation"],
+                "final_system": json.loads((output / "final_system_evaluation.json").read_text(encoding="utf-8")),
+                "final_context_coverage": json.loads((output / "final_context_coverage.json").read_text(encoding="utf-8")),
+            }
+
+            def assert_audit_rejects(mutated: dict) -> None:
+                self.assertFalse(audit_allocation_graph(mutated, expected=expected)["passed"])
+
+            wrong_final_instance = copy.deepcopy(graph)
+            final_edge = next(edge for edge in wrong_final_instance["edges"] if edge["target"] == "Evidence.SystemTB.final" and edge["type"] == "evaluates")
+            final_edge["source"] = "Instance.candidate_baseline"
+            assert_audit_rejects(wrong_final_instance)
+
+            wrong_worst_case = copy.deepcopy(graph)
+            block_node = next(node for node in wrong_worst_case["nodes"] if node["id"] == f"BlockTB.{selected['candidate_id']}")
+            block_node["properties"]["worst_case"]["phase_noise_1mhz_dbc_hz"] += 1.0
+            assert_audit_rejects(wrong_worst_case)
+
+            uncovered_context = copy.deepcopy(graph)
+            cover_edge = next(edge for edge in uncovered_context["edges"] if edge["source"] == "Context.VCO.contract" and edge["target"] == "Context.SystemTB.final")
+            cover_edge["properties"]["passed"] = False
+            cover_edge["status"] = "rejected"
+            assert_audit_rejects(uncovered_context)
+
+            missing_evidence = copy.deepcopy(graph)
+            missing_evidence["nodes"] = [node for node in missing_evidence["nodes"] if node["id"] != "Evidence.sensitivity"]
+            assert_audit_rejects(missing_evidence)
+
+            false_result_validated = copy.deepcopy(graph)
+            failing_edge = next(edge for edge in false_result_validated["edges"] if edge["type"] == "evaluates" and edge.get("properties", {}).get("passed") is False)
+            failing_edge["status"] = "validated"
+            assert_audit_rejects(false_result_validated)
+
+            failed_in_capability = copy.deepcopy(graph)
+            failed_in_capability["edges"].append({
+                "source": "Candidate.candidate_baseline",
+                "target": "VCO.capability_region",
+                "type": "candidate_of",
+                "status": "validated",
+                "properties": {"candidate_id": "candidate_baseline"},
+            })
+            assert_audit_rejects(failed_in_capability)
 
 
 if __name__ == "__main__":

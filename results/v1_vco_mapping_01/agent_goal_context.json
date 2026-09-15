@@ -1,0 +1,60 @@
+{
+  "candidate_variables": [
+    {
+      "edge_type": "sensitivity_evidence",
+      "evidence_available": true,
+      "evidence_id": "Evidence.sensitivity",
+      "failed_check": "integrated_jitter",
+      "observed_metric_span": 5.235203335968396e-14,
+      "recommended_verification": "boundary_search",
+      "sensitivity_magnitude": 9.683058812533833e-15,
+      "sensitivity_value": 9.683058812533833e-15,
+      "system_metric": "PLL.integrated_jitter",
+      "variable": "VCO.phase_noise_1mhz_design"
+    },
+    {
+      "edge_type": "sensitivity_evidence",
+      "evidence_available": true,
+      "evidence_id": "Evidence.sensitivity",
+      "failed_check": "integrated_jitter",
+      "observed_metric_span": 3.74282920198872e-14,
+      "recommended_verification": "parameter_sweep",
+      "sensitivity_magnitude": 2.5629955021306936e-23,
+      "sensitivity_value": -2.5629955021306936e-23,
+      "system_metric": "PLL.integrated_jitter",
+      "variable": "VCO.k1_design"
+    }
+  ],
+  "failed_checks": [
+    "integrated_jitter"
+  ],
+  "inactive_variables": [
+    {
+      "edge_type": "sensitivity_evidence",
+      "evidence_available": true,
+      "evidence_id": "Evidence.sensitivity",
+      "failed_check": "integrated_jitter",
+      "observed_metric_span": 0.0,
+      "recommended_verification": "parameter_sweep",
+      "sensitivity_magnitude": 0.0,
+      "sensitivity_value": 0.0,
+      "system_metric": "PLL.integrated_jitter",
+      "variable": "VCO.nominal_power_design"
+    }
+  ],
+  "policy": "Agent proposes; deterministic tools validate",
+  "structural_hypotheses": [
+    {
+      "edge_type": "shortcut",
+      "evidence_available": false,
+      "evidence_id": null,
+      "failed_check": "integrated_jitter",
+      "observed_metric_span": null,
+      "recommended_verification": "boundary_search",
+      "sensitivity_magnitude": null,
+      "sensitivity_value": null,
+      "system_metric": "PLL.integrated_jitter",
+      "variable": "VCO.phase_noise_1mhz"
+    }
+  ]
+}

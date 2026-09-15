@@ -20,6 +20,7 @@ from v1.agent_actions import ALLOWED_ACTIONS
 from v1.allocation.evaluator import evaluate_spec_vector
 from v1.allocation.spec_vector import SpecVector
 from v1.graph.compiler import build_v1_graph_artifact, build_v1_graph_v2_artifact
+from v1.graph.audit import audit_allocation_graph, build_agent_goal_context
 from v1.pipeline import (
     build_vco_instance,
     characterize_vco,
@@ -51,6 +52,30 @@ def _candidate_map(case: Mapping[str, Any]) -> Dict[str, CandidateDefinition]:
     if not candidates:
         candidates["base"] = CandidateDefinition(candidate_id="base")
     return candidates
+
+
+def _baseline_context_contract(system_spec: SystemSpec, initial_context: Mapping[str, Any], guard_v: float) -> Dict[str, Any]:
+    """Freeze a conservative VCO test envelope before evaluating candidates."""
+    if guard_v < 0:
+        raise ValueError("context guard must be nonnegative")
+    return {
+        "vctrl_min_v": max(system_spec.vctrl_min_v, float(initial_context["vctrl_min_v"]) - guard_v),
+        "vctrl_max_v": min(system_spec.vctrl_max_v, float(initial_context["vctrl_max_v"]) + guard_v),
+        "temperature_points_c": list(system_spec.temperature_points_c),
+        "vdd_v": system_spec.vdd_v,
+        "source": "initial_SystemTB_plus_declared_guard; frozen_before_candidate_validation",
+        "guard_v": guard_v,
+    }
+
+
+def _context_coverage(contract: Mapping[str, Any], actual: Mapping[str, Any]) -> Dict[str, Any]:
+    checks = {
+        "vctrl_min": float(actual["vctrl_min_v"]) >= float(contract["vctrl_min_v"]) - 1e-12,
+        "vctrl_max": float(actual["vctrl_max_v"]) <= float(contract["vctrl_max_v"]) + 1e-12,
+        "temperature": set(actual["temperature_points_c"]).issubset(set(contract["temperature_points_c"])),
+        "vdd": float(actual["vdd_v"]) == float(contract["vdd_v"]),
+    }
+    return {"passed": all(checks.values()), "checks": checks, "actual_context": dict(actual)}
 
 
 def _write_jsonl(events: Iterable[Mapping[str, Any]], path: Path) -> None:
@@ -270,6 +295,12 @@ def run(case_path: str | Path, output_dir: str | Path) -> Dict[str, Any]:
         output_path / "canonical_initial_system_evaluation.json",
     )
     write_json(initial_eval.get("raw_results", []), output_path / "initial_system_raw.json")
+    context_contract = _baseline_context_contract(
+        system_spec,
+        initial_eval["context"],
+        float(case.get("allocation", {}).get("context_guard_v", 0.01)),
+    )
+    write_json(context_contract, output_path / "vco_environment_contract.json")
     events.append(
         {
             "step": "initial_system_evaluation",
@@ -411,18 +442,22 @@ def run(case_path: str | Path, output_dir: str | Path) -> Dict[str, Any]:
     candidate_results: List[Dict[str, Any]] = []
     for candidate_id, definition in candidates.items():
         instance = build_vco_instance(base_vco, definition)
-        candidate_eval = evaluate_system(system_spec, instance, keep_raw=True)
         block_tb = validate_vco_spec(
             system_spec,
             recommended_requirement,
             instance,
-            candidate_eval["context"],
+            context_contract,
         )
+        candidate_eval = evaluate_system(system_spec, instance, keep_raw=True)
+        coverage = _context_coverage(context_contract, candidate_eval["context"])
         candidate_result = {
             "candidate_id": candidate_id,
             "engineering_cost": definition.engineering_cost,
             "description": definition.description,
+            "design_vector": dict(definition.overrides),
+            "realized_parameters": asdict(instance),
             "block_tb": block_tb,
+            "context_coverage": coverage,
             "system_evaluation": strip_raw_results(candidate_eval),
         }
         candidate_results.append(candidate_result)
@@ -434,26 +469,27 @@ def run(case_path: str | Path, output_dir: str | Path) -> Dict[str, Any]:
                 "candidate_id": candidate_id,
                 "block_tb_passed": block_tb["passed"],
                 "system_passed": candidate_eval["passed"],
+                "context_covered": coverage["passed"],
             }
         )
 
     feasible = [
         item
         for item in candidate_results
-        if item["block_tb"]["passed"] and item["system_evaluation"]["passed"]
+        if item["block_tb"]["passed"] and item["system_evaluation"]["passed"] and item["context_coverage"]["passed"]
     ]
     selected = min(feasible, key=lambda item: item["engineering_cost"]) if feasible else None
     if selected is not None:
         selected["selected"] = True
-        final_eval = next(
-            item["system_evaluation"]
-            for item in candidate_results
-            if item["candidate_id"] == selected["candidate_id"]
-        )
+        final_instance = build_vco_instance(base_vco, candidates[selected["candidate_id"]])
+        final_eval = evaluate_system(system_spec, final_instance, keep_raw=False)
+        final_coverage = _context_coverage(context_contract, final_eval["context"])
+        if not final_eval["passed"] or not final_coverage["passed"]:
+            raise ValueError("independent final SystemTB or context closure failed")
+        write_json(final_coverage, output_path / "final_context_coverage.json")
         # The compact evaluation is already written in candidate_results; write
         # the canonical final file as a separate stable artifact.
         write_json(final_eval, output_path / "final_system_evaluation.json")
-        final_instance = build_vco_instance(base_vco, candidates[selected["candidate_id"]])
         write_json(asdict(final_instance), output_path / "realized_vco_instance.json")
     else:
         final_eval = None
@@ -473,8 +509,27 @@ def run(case_path: str | Path, output_dir: str | Path) -> Dict[str, Any]:
         candidate_results=candidate_results,
         final_evaluation=final_eval,
         block_meta=block_meta,
+        context_contract=context_contract,
+        final_context_coverage=None if selected is None else final_coverage,
     )
+    selected_result = next((item for item in candidate_results if item.get("selected")), None)
+    graph_audit = audit_allocation_graph(
+        graph_v2_artifact,
+        expected={
+            "selected_candidate": None if selected_result is None else selected_result["candidate_id"],
+            "required_pn": boundary["required_boundary"],
+            "recommended_pn": recommended_requirement.phase_noise_1mhz_max_dbc_hz,
+            "block_tb": {} if selected_result is None else selected_result["block_tb"],
+            "candidate_system": {} if selected_result is None else selected_result["system_evaluation"],
+            "final_system": {} if final_eval is None else final_eval,
+            "final_context_coverage": {} if selected is None else final_coverage,
+        },
+    )
+    if not graph_audit["passed"]:
+        raise ValueError(f"Graph semantic audit failed: {graph_audit}")
     write_json(graph_v2_artifact, output_path / "vco_pll_graph_v2.json")
+    write_json(graph_audit, output_path / "graph_audit.json")
+    write_json(build_agent_goal_context(graph_v2_artifact), output_path / "agent_goal_context.json")
     events.append(
         {
             "step": "final_selection",
@@ -495,6 +550,7 @@ def run(case_path: str | Path, output_dir: str | Path) -> Dict[str, Any]:
         + 2
         + int(allocation_cfg.get("iterations", 24))
         + len(candidates)
+        + (1 if selected is not None else 0)
     )
     _write_summary(
         output_path / "summary.md",

@@ -5,6 +5,7 @@ from .compiler import build_v1_graph_artifact, build_v1_graph_v2_artifact
 from .validators import validate_graph_v2_artifact
 from .proposals import validate_graph_proposal
 from .queries import evidence_neighborhood, requirement_allocation_paths, trace_paths
+from .audit import audit_allocation_graph, build_agent_goal_context
 
 __all__ = [
     "TypedGraph",
@@ -15,4 +16,6 @@ __all__ = [
     "evidence_neighborhood",
     "requirement_allocation_paths",
     "trace_paths",
+    "audit_allocation_graph",
+    "build_agent_goal_context",
 ]

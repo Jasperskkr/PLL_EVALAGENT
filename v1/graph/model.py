@@ -34,6 +34,7 @@ NODE_TYPES = frozenset(
         "system_requirement",
         "block_requirement",
         "capability_region",
+        "design_space",
         "candidate",
         "realized_instance",
         "operator",
@@ -74,6 +75,12 @@ EDGE_TYPES = frozenset(
         "supported_by",
         "derived_from",
         "shortcut",
+        "evaluates",
+        "uses_context",
+        "covers",
+        "verifies_requirement",
+        "yields_verdict",
+        "selected_for",
     }
 )
 

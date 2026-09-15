@@ -93,6 +93,32 @@
             1.1
           ]
         }
+      },
+      {
+        "datatype": "float",
+        "depends_on": [
+          "Vctrl",
+          "temperature"
+        ],
+        "description": "Behavioral power knob available for residual-driven exploration.",
+        "evaluation_method": "deterministic SystemTB sweep",
+        "name": "nominal_power_w",
+        "role": "design_variable",
+        "unit": "W",
+        "validity": {
+          "offset_hz": [
+            100000.0,
+            10000000.0
+          ],
+          "temperature_c": [
+            -40.0,
+            125.0
+          ],
+          "vctrl_v": [
+            0.1,
+            1.1
+          ]
+        }
       }
     ],
     "system_influence_factors": [

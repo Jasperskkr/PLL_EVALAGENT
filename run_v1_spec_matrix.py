@@ -14,14 +14,21 @@ from typing import Any, Dict, Mapping, MutableMapping, Sequence
 import json
 
 from run_v1_prove import run
+from v1.contract import build_contract_evidence
+from v1.graph.audit import audit_allocation_graph, build_agent_goal_context
+from v1.graph.compiler import build_v1_graph_v2_artifact
 from v1.model.pll_behavioral import VCOParams
 from v1.pipeline import (
     abstract_pn_evaluation,
     build_vco_instance,
+    characterize_vco,
+    evaluate_system,
+    run_sensitivity_suite,
     search_required_pn_boundary,
     write_csv,
     write_json,
 )
+from v1.schema.block_schema import build_vco_block_meta_v1
 from v1.specs import SystemSpec, load_case
 
 
@@ -42,6 +49,10 @@ REQUIRED_CASE_ARTIFACTS = (
     "summary.md",
     "vco_block_meta_v1.json",
     "vco_pll_graph_v2.json",
+    "graph_audit.json",
+    "agent_goal_context.json",
+    "vco_environment_contract.json",
+    "final_context_coverage.json",
 )
 
 
@@ -301,6 +312,62 @@ def run_matrix(
             tight_evaluation = abstract_pn_evaluation(system_spec, base_vco, tight)[
                 "system_evaluation"
             ]
+            blocking_checks = _false_checks(tight_evaluation)
+            initial_evaluation = evaluate_system(system_spec, base_vco, keep_raw=False)
+            prove_cfg = case.get("prove", {})
+            characterization = characterize_vco(
+                base_vco,
+                prove_cfg.get("vctrl_points_v", [0.1, 0.3, 0.5, 0.7, 0.9, 1.1]),
+                prove_cfg.get("temperature_points_c", system_spec.temperature_points_c),
+                prove_cfg.get("offset_points_hz", [1.0e6]),
+            )
+            contract = build_contract_evidence(base_vco, characterization)["contract_v1"]
+            sensitivity = run_sensitivity_suite(
+                system_spec,
+                base_vco,
+                prove_cfg.get("sweeps", {}),
+            )
+            rejection = {
+                "blocking_checks": blocking_checks,
+                "tight_trial": {
+                    "pn_1mhz_dbc_hz": tight,
+                    "system_evaluation": tight_evaluation,
+                },
+                "allocator_error": error,
+            }
+            rejected_graph = build_v1_graph_v2_artifact(
+                contract=contract,
+                sensitivity=sensitivity,
+                system_spec=system_spec.to_dict(),
+                run_id=f"{case_id}:deterministic-v1",
+                initial_evaluation=initial_evaluation,
+                block_meta=build_vco_block_meta_v1(contract),
+                rejection=rejection,
+            )
+            rejected_audit = audit_allocation_graph(
+                rejected_graph,
+                expected={"blocking_checks": blocking_checks},
+            )
+            if not rejected_audit["passed"]:
+                raise AssertionError(f"rejected Graph audit failed for {case_id}: {rejected_audit}")
+            rejected_goal = build_agent_goal_context(rejected_graph)
+            write_json(initial_evaluation, case_dir / "initial_system_evaluation.json")
+            write_json(sensitivity, case_dir / "sensitivity.json")
+            write_json(rejected_graph, case_dir / "vco_pll_graph_v2.json")
+            write_json(rejected_audit, case_dir / "graph_audit.json")
+            write_json(rejected_goal, case_dir / "agent_goal_context.json")
+            candidate_variables = [
+                item["variable"] for item in rejected_goal["candidate_variables"]
+            ]
+            expected_variables = {
+                "lock_time": "VCO.k1_design",
+                "power": "VCO.nominal_power_design",
+            }
+            blocking_variables_found = all(
+                expected_variables[check] in candidate_variables
+                for check in blocking_checks
+                if check in expected_variables
+            )
             rejected_rows.append(
                 {
                     "case_id": case_id,
@@ -309,9 +376,12 @@ def run_matrix(
                     "power_limit_mw": None if system_spec.power_max_w is None else system_spec.power_max_w * 1e3,
                     "tight_trial_pn_dbc_hz": tight,
                     "tight_trial_jitter_fs": tight_evaluation["metrics"]["integrated_jitter_s"] * 1e15,
-                    "blocking_checks": _false_checks(tight_evaluation),
+                    "blocking_checks": blocking_checks,
                     "rejected_as_expected": rejected,
                     "allocator_error": error,
+                    "graph_audit_passed": bool(rejected_audit["passed"]),
+                    "agent_candidate_variables": candidate_variables,
+                    "blocking_variables_found": blocking_variables_found,
                 }
             )
             continue
@@ -325,6 +395,9 @@ def run_matrix(
         )["system_evaluation"]
         candidates = _read_json(case_dir / "block_feasibility.json")
         final = _read_json(case_dir / "final_system_evaluation.json")
+        graph_audit = _read_json(case_dir / "graph_audit.json")
+        agent_goal_context = _read_json(case_dir / "agent_goal_context.json")
+        final_context_coverage = _read_json(case_dir / "final_context_coverage.json")
         missing_artifacts = [
             name for name in REQUIRED_CASE_ARTIFACTS if not (case_dir / name).is_file()
         ]
@@ -362,6 +435,9 @@ def run_matrix(
                 "final_frequency_ghz": final["metrics"]["output_frequency_hz"] / 1e9,
                 "final_power_mw": final["metrics"]["power_w"] * 1e3,
                 "final_system_passed": bool(final["passed"]),
+                "graph_audit_passed": bool(graph_audit["passed"]),
+                "agent_goal_context_present": bool(agent_goal_context.get("policy")),
+                "final_context_covered": bool(final_context_coverage["passed"]),
                 "evidence_artifacts_complete": not missing_artifacts,
                 "missing_artifacts": missing_artifacts,
                 "simulator_calls": int(result["simulator_calls"]),
@@ -422,6 +498,11 @@ def run_matrix(
         "selected_candidates_pass_systemtb": all(row["final_system_passed"] for row in forward_rows),
         "all_case_evidence_artifacts_exist": all(row["evidence_artifacts_complete"] for row in forward_rows),
         "non_pn_violations_are_rejected": all(row["rejected_as_expected"] for row in rejected_rows),
+        "positive_graph_audits_pass": all(row["graph_audit_passed"] for row in forward_rows),
+        "positive_agent_goal_contexts_exist": all(row["agent_goal_context_present"] for row in forward_rows),
+        "positive_final_contexts_are_covered": all(row["final_context_covered"] for row in forward_rows),
+        "rejected_graph_audits_pass": all(row["graph_audit_passed"] for row in rejected_rows),
+        "rejected_graphs_find_blocking_variables": all(row["blocking_variables_found"] for row in rejected_rows),
     }
     if not all(assertions.values()):
         failed = [name for name, passed in assertions.items() if not passed]

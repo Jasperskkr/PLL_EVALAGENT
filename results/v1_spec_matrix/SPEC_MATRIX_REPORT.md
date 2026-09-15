@@ -41,12 +41,12 @@
 
 | Case | Candidate | PN knob | Worst PN in context | BlockTB | PLL jitter (fs) | Lock (us) | Frequency (GHz) | Power (mW) | SystemTB |
 |---|---|---|---|---|---|---|---|---|---|
-| matrix_jitter_140fs | candidate_baseline | -116.000 | -113.232 | PASS | 83.367 | 36.520 | 5.000000000 | 5.422 | PASS |
-| matrix_jitter_100fs | candidate_low_noise | -122.000 | -119.232 | PASS | 41.783 | 36.520 | 5.000000000 | 5.422 | PASS |
-| matrix_jitter_80fs | candidate_low_noise | -122.000 | -119.232 | PASS | 41.783 | 36.520 | 5.000000000 | 5.422 | PASS |
-| matrix_jitter_60fs | candidate_ultra_low_noise | -126.000 | -123.232 | PASS | 26.363 | 36.520 | 5.000000000 | 5.422 | PASS |
-| matrix_jitter_50fs | candidate_ultra_low_noise | -126.000 | -123.232 | PASS | 26.363 | 36.520 | 5.000000000 | 5.422 | PASS |
-| matrix_jitter_80fs_three_temperatures | candidate_ultra_low_noise | -126.000 | -121.515 | PASS | 31.828 | 36.600 | 5.000000000 | 5.959 | PASS |
+| matrix_jitter_140fs | candidate_baseline | -116.000 | -113.153 | PASS | 83.367 | 36.520 | 5.000000000 | 5.422 | PASS |
+| matrix_jitter_100fs | candidate_low_noise | -122.000 | -119.153 | PASS | 41.783 | 36.520 | 5.000000000 | 5.422 | PASS |
+| matrix_jitter_80fs | candidate_low_noise | -122.000 | -119.153 | PASS | 41.783 | 36.520 | 5.000000000 | 5.422 | PASS |
+| matrix_jitter_60fs | candidate_ultra_low_noise | -126.000 | -123.153 | PASS | 26.363 | 36.520 | 5.000000000 | 5.422 | PASS |
+| matrix_jitter_50fs | candidate_ultra_low_noise | -126.000 | -123.153 | PASS | 26.363 | 36.520 | 5.000000000 | 5.422 | PASS |
+| matrix_jitter_80fs_three_temperatures | candidate_ultra_low_noise | -126.000 | -121.436 | PASS | 31.828 | 36.600 | 5.000000000 | 5.959 | PASS |
 
 完整候选逐项结果见 `reverse_candidate_validation.csv`。
 
@@ -67,6 +67,11 @@
 - `selected_candidates_pass_systemtb`: **PASS**
 - `all_case_evidence_artifacts_exist`: **PASS**
 - `non_pn_violations_are_rejected`: **PASS**
+- `positive_graph_audits_pass`: **PASS**
+- `positive_agent_goal_contexts_exist`: **PASS**
+- `positive_final_contexts_are_covered`: **PASS**
+- `rejected_graph_audits_pass`: **PASS**
+- `rejected_graphs_find_blocking_variables`: **PASS**
 
 140 fs 和 100 fs case 的初始 SystemTB 虽然已 PASS，但 candidate 仍按“边界 + 1.5 dB 设计裕量”的 Block requirement 筛选；因此 100 fs case 会选择 low-noise candidate。
 

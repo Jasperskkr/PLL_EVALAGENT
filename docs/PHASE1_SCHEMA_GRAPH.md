@@ -167,18 +167,44 @@ VCORequirement.recommended
         │ constrains
         ▼
 VCO.capability_region
-        │ provides sampled candidate
+        │ provides BlockTB-feasible candidate
         ▼
 Candidate.candidate_low_noise
-        ├── validated_by → BlockTB.candidate_low_noise
-        └── validated_by → SystemTB.candidate_low_noise
+        │ realizes
+        ▼
+Instance.candidate_low_noise
+        ├── evaluates → BlockTB.candidate_low_noise
+        ├── evaluates → SystemTB.candidate_low_noise
+        └── evaluates → Evidence.SystemTB.final
+                              │ yields_verdict
+                              ▼
+                       SystemSpec.verdict
+                       ├── verifies jitter
+                       ├── verifies lock time
+                       ├── verifies frequency
+                       └── verifies power
 ```
 
-反向语义边 `Candidate → CapabilityRegion: candidate_of` 同时保留，便于查询候选属于哪个 capability region。
+所有尝试过的 candidate 先进入 `VCO.design_space`；只有 BlockTB PASS 的 candidate 才能进入 `VCO.capability_region`。反向语义边 `Candidate → CapabilityRegion: candidate_of` 同时保留，便于查询候选属于哪个 capability region。
 
-`VCORequirement`、`VCO capability`、`Candidate` 和 `Evaluation` 是不同对象，不能因为数值相近而合并。
+`VCORequirement`、`VCO capability`、`Candidate`、`Realized Instance` 和 `Evaluation` 是不同对象，不能因为数值相近而合并。Candidate 是待尝试的设计向量，Realized Instance 是把该向量代入指定模型后得到的完整参数实例。
 
-### 3.2 Architecture Graph 与 Evaluation Graph
+### 3.2 Context closure
+
+VCO BlockTB 的环境不能由候选运行结果反推。Runner 在评估任何 candidate 之前，根据初始 SystemTB 的实际工作区间和声明的 guard 冻结 `Context.VCO.contract`：
+
+```text
+Initial SystemTB context + declared guard
+                    │ freeze before candidate evaluation
+                    ▼
+            Context.VCO.contract
+              ├── used by BlockTB
+              └── covers Candidate/Final SystemTB actual context
+```
+
+候选只有在 BlockTB PASS、SystemTB PASS 且实际 SystemTB context 被冻结合同覆盖时，才可参与最终选择。选中后还会独立重跑一次 Final SystemTB，避免把候选筛选阶段的结果直接当最终证据。
+
+### 3.3 Architecture Graph 与 Evaluation Graph
 
 PLL 的反馈关系在架构图中保留：
 
@@ -198,6 +224,22 @@ Kvco / Icp / R / C / N → PLL_Dynamics → Lock Time / UGB / PM
 - architecture layer 可以表达反馈；
 - evaluation layer 沿 operator 形成可追溯的计算路径；
 - Agent 不能在执行图中随意制造未验证的循环依赖。
+
+### 3.4 Rejected allocation graph
+
+当 tight PN 已经使 jitter 达标，但 lock time 或 power 仍失败时，PN-only allocator 不会伪造 VCO PN requirement。Graph 将 outcome 标记为 `rejected`，保留：
+
+```text
+failed SystemSpec
+  → initial SystemTB residual/checks
+  → Evidence.PN.rejection
+  → deterministic sensitivity
+  → Agent goal context
+      lock-time failure → VCO.k1_design → parameter_sweep
+      power failure     → VCO.nominal_power_design → parameter_sweep
+```
+
+这让失败结果也成为下一轮多参数探索的输入，而不是一段不可查询的报错文本。
 
 ## 4. Edge 生命周期
 
@@ -265,7 +307,23 @@ Agent proposal
 
 运行时 proposal validator：[`../v1/graph/proposals.py`](../v1/graph/proposals.py)。它只检查提议是否合法，不负责把提议直接写入 canonical graph；`validated` 状态只能由后续确定性验证流程产生。
 
-## 6. 当前实现和下一步
+当前 runner 额外生成 `agent_goal_context.json`。它从初始 SystemTB 的失败 checks 出发，查询带 deterministic sensitivity evidence 的可操作变量；已扫出零影响的变量进入 `inactive_variables`，只有结构关系、尚无数值证据的变量进入 `structural_hypotheses`。因此 Agent 可以提出下一步搜索方向，但不能把结构连线直接当作已证明的分配关系。
+
+## 6. Graph semantic audit
+
+`graph_audit.json` 在产物写出前检查：
+
+- requirement → candidate → instance → BlockTB/SystemTB → final verdict 路径闭合；
+- Candidate 与 Realized Instance 一一对应，最终实例与 selected candidate 一致；
+- DesignSpace 包含全部候选，CapabilityRegion 只包含 BlockTB PASS 候选；
+- PASS/FAIL 与 `validated/rejected` 状态一致；
+- evidence id 都能解析到真实 Evidence Node；
+- 冻结的 VCO context contract 覆盖 candidate 和 final SystemTB 的实际 context；
+- requirement、worst-case、metrics、residuals 与原始 JSON artifact 数值一致。
+
+测试会分别破坏上述关键关系，确认 audit 必须 FAIL，而不仅是检查一张正常图能否生成。
+
+## 7. 当前实现和下一步
 
 Phase 1 当前已实现：
 
@@ -275,7 +333,9 @@ Phase 1 当前已实现：
 - Graph v2 semantic validator；
 - V1 runner 的 `vco_pll_graph_v2.json` artifact；
 - V1 runner 的 `vco_block_meta_v1.json` VCO contract instance；
-- 13 个 deterministic tests，包括非法图拒绝、端口单位检查、schema 结构检查和 proposal 权限边界。
+- 正向/拒绝 case 的 `graph_audit.json` 与 `agent_goal_context.json`；
+- 冻结的 `vco_environment_contract.json` 与独立 Final SystemTB context coverage；
+- deterministic tests，包括非法图拒绝、端口单位检查、schema 结构检查、语义破坏审计和 proposal 权限边界。
 - read-only requirement/evidence 查询和非权威 Agent proposal validator。
 
 下一步不是立刻让 Agent 自由发现所有关系，而是：

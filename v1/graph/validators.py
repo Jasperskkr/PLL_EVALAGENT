@@ -12,10 +12,16 @@ EDGE_ENDPOINT_RULES = {
     "input_to": ({"port", "behavioral_output", "design_variable", "operator"}, {"operator"}),
     "produces": ({"operator"}, {"system_metric", "behavioral_output", "evaluation"}),
     "allocates": ({"system_requirement", "system_metric"}, {"block_requirement"}),
-    "candidate_of": ({"candidate"}, {"capability_region"}),
+    "candidate_of": ({"candidate"}, {"capability_region", "design_space"}),
     "realizes": ({"candidate"}, {"realized_instance"}),
     "measured_by": ({"behavioral_output", "system_metric"}, {"measurement_contract"}),
     "valid_in": ({"contract"}, {"validity_domain"}),
+    "evaluates": ({"realized_instance"}, {"evaluation"}),
+    "uses_context": ({"evaluation"}, {"context"}),
+    "covers": ({"context"}, {"context"}),
+    "verifies_requirement": ({"evaluation"}, {"system_requirement", "block_requirement"}),
+    "yields_verdict": ({"evaluation"}, {"evaluation"}),
+    "selected_for": ({"candidate"}, {"candidate"}),
 }
 
 
@@ -98,7 +104,12 @@ def validate_graph_v2_artifact(artifact: Mapping[str, Any]) -> None:
         raise ValueError(f"graph v2 missing required node(s): {missing}")
 
     edge_types = {edge["type"] for edge in edges}
-    for required_type in ("allocates", "input_to", "produces", "validated_by"):
+    required_edge_types = ["input_to", "produces"]
+    if artifact.get("metadata", {}).get("allocation_outcome") == "rejected":
+        required_edge_types.append("supported_by")
+    else:
+        required_edge_types.extend(["allocates", "validated_by"])
+    for required_type in required_edge_types:
         if required_type not in edge_types:
             raise ValueError(f"graph v2 missing required edge type: {required_type}")
 
@@ -109,3 +120,25 @@ def validate_graph_v2_artifact(artifact: Mapping[str, Any]) -> None:
                 raise ValueError(f"requirement node {node_id} properties must be an object")
             if "source" not in props:
                 raise ValueError(f"requirement node {node_id} missing source")
+        if node["type"] == "evaluation":
+            passed = node.get("properties", {}).get("passed")
+            if passed is False and node.get("status") != "rejected":
+                raise ValueError(f"failed evaluation node must be rejected: {node_id}")
+            if passed is True and node.get("status") == "rejected":
+                raise ValueError(f"passing evaluation node cannot be rejected: {node_id}")
+
+    evidence_ids = {
+        node_id for node_id, node in nodes.items() if node["type"] == "evidence"
+    }
+    for edge in edges:
+        evidence_ref = edge.get("properties", {}).get("evidence_id")
+        if evidence_ref is not None and evidence_ref not in evidence_ids:
+            raise ValueError(f"edge references unknown evidence node: {evidence_ref}")
+
+    for edge in edges:
+        if edge["type"] in {"validated_by", "evaluates", "covers", "verifies_requirement"}:
+            passed = edge.get("properties", {}).get("passed")
+            if passed is False and edge.get("status") != "rejected":
+                raise ValueError("failed evaluation relationship must be rejected")
+            if passed is True and edge.get("status") == "rejected":
+                raise ValueError("passing evaluation relationship cannot be rejected")

@@ -381,6 +381,16 @@ def build_vco_block_meta_v1(
                     "Control-voltage envelope knob used in V1 evidence.",
                     validity,
                 ),
+                _field(
+                    "nominal_power_w",
+                    "design_variable",
+                    "W",
+                    "float",
+                    ["Vctrl", "temperature"],
+                    "deterministic SystemTB sweep",
+                    "Behavioral power knob available for residual-driven exploration.",
+                    validity,
+                ),
             ],
             "environment_contract": {
                 "variables": ["Vctrl", "temperature", "vdd_v"],

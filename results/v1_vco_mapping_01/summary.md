@@ -7,7 +7,7 @@
 - Recommended phase-noise requirement: `-117.858121 dBc/Hz`
 - Selected candidate: `candidate_low_noise`
 - Final system PASS: `True`
-- Deterministic simulator calls: `42`
+- Deterministic simulator calls: `46`
 - Contract holdout MAE: v0=`2.355719 dB`, v1=`0.000000 dB`
 
 ## Before / after
