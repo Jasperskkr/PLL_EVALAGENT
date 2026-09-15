@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import unittest
 from pathlib import Path
 import tempfile
@@ -18,7 +19,12 @@ from v1.agent_actions import validate_agent_action
 from v1.allocation.evaluator import evaluate_spec_vector
 from v1.allocation.spec_vector import SpecVector
 from v1.graph.compiler import build_v1_graph_artifact
+from v1.graph.compiler import build_v1_graph_v2_artifact
+from v1.graph.validators import validate_graph_v2_artifact
+from v1.graph.proposals import validate_graph_proposal
+from v1.graph.queries import evidence_neighborhood, requirement_allocation_paths
 from v1.schema.envelopes import make_envelope
+from v1.schema.block_schema import build_vco_block_meta_v1, validate_block_meta
 from v1.schema.validators import validate_envelope, validate_system_spec_payload
 from v1.specs import SystemSpec, VCORequirement, load_case
 
@@ -102,6 +108,8 @@ class V1PipelineTests(unittest.TestCase):
                 "recommended_vco_spec.json",
                 "block_feasibility.json",
                 "final_system_evaluation.json",
+                "vco_block_meta_v1.json",
+                "vco_pll_graph_v2.json",
                 "trajectory.jsonl",
                 "summary.md",
             ):
@@ -151,6 +159,106 @@ class V1PipelineTests(unittest.TestCase):
         self.assertIn("noise_transfer", edge_types)
         self.assertIn("sensitivity_evidence", edge_types)
         self.assertIn("contract_dependency", edge_types)
+
+    def test_block_meta_schema_has_four_contracts(self) -> None:
+        observations = characterize_vco(BASE_VCO, [0.1, 0.5, 0.9], [25.0], [1.0e6])
+        contract = build_contract_evidence(BASE_VCO, observations)["contract_v1"]
+        block = build_vco_block_meta_v1(contract)
+        validate_block_meta(block)
+        self.assertEqual(
+            set(block),
+            {
+                "schema_version",
+                "object_type",
+                "block_id",
+                "block_type",
+                "provenance",
+                "interface_contract",
+                "behavior_contract",
+                "capability_contract",
+                "verification_contract",
+            },
+        )
+        self.assertIn("capability_region", block["capability_contract"])
+        self.assertIn("measurement_contracts", block["verification_contract"])
+
+    def test_graph_v2_has_allocation_and_validation_path(self) -> None:
+        observations = characterize_vco(BASE_VCO, [0.1, 0.5, 0.9], [25.0], [1.0e6])
+        contract = build_contract_evidence(BASE_VCO, observations)
+        sensitivity = run_sensitivity_suite(
+            SYSTEM_SPEC,
+            BASE_VCO,
+            {"pn_1mhz_dbc_hz": [-120.0, -118.0, -116.0]},
+        )
+        boundary = search_required_pn_boundary(
+            SYSTEM_SPEC, BASE_VCO, -110.0, -125.0, iterations=4
+        )
+        graph = build_v1_graph_v2_artifact(
+            contract=contract["contract_v1"],
+            sensitivity=sensitivity,
+            system_spec=SYSTEM_SPEC.to_dict(),
+            run_id="test-v2",
+            initial_evaluation=evaluate_system(SYSTEM_SPEC, BASE_VCO, keep_raw=False),
+            boundary=boundary,
+            recommended_requirement={
+                "phase_noise_1mhz_max_dbc_hz": boundary["required_boundary"] - 1.5,
+                "margin_db": 1.5,
+            },
+            candidate_results=[
+                {
+                    "candidate_id": "candidate_test",
+                    "engineering_cost": 1.0,
+                    "description": "test candidate",
+                    "block_tb": {"passed": False, "context": {}},
+                    "system_evaluation": {"passed": False, "metrics": {}},
+                }
+            ],
+        )
+        validate_graph_v2_artifact(graph)
+        self.assertEqual(graph["graph_version"], "2.0")
+        self.assertIn("operator.Noise_Integration", {node["id"] for node in graph["nodes"]})
+        self.assertIn("allocates", {edge["type"] for edge in graph["edges"]})
+        self.assertIn("validated_by", {edge["type"] for edge in graph["edges"]})
+        self.assertIn("Schema.BlockMeta.VCO", {node["id"] for node in graph["nodes"]})
+
+        broken = dict(graph)
+        broken["nodes"] = [node for node in graph["nodes"] if node["id"] != "operator.Noise_Integration"]
+        with self.assertRaises(ValueError):
+            validate_graph_v2_artifact(broken)
+
+        paths = requirement_allocation_paths(graph, "SystemSpec.integrated_jitter")
+        self.assertTrue(paths)
+        self.assertEqual(paths[0]["nodes"][-1], "VCORequirement.required")
+        evidence = evidence_neighborhood(graph, "VCORequirement.required")
+        self.assertTrue(evidence["incoming"] or evidence["outgoing"])
+
+        bad_units = copy.deepcopy(graph)
+        for node in bad_units["nodes"]:
+            if node["id"] == "VCO.vctrl":
+                node["properties"]["unit"] = "A"
+        with self.assertRaises(ValueError):
+            validate_graph_v2_artifact(bad_units)
+
+    def test_agent_graph_proposal_is_non_authoritative(self) -> None:
+        proposal = {
+            "proposal_id": "proposal:cp-noise-edge:001",
+            "action": "add_edge",
+            "subject": {
+                "source": "VCO.phase_noise_profile",
+                "target": "operator.VCO_Noise_TF",
+                "type": "input_to",
+                "properties": {"hypothesis": "phase-noise input to loop transfer"},
+            },
+            "rationale": "Connect an exported VCO noise profile to the known transfer operator.",
+            "evidence_ids": ["contract:vco:v1"],
+            "requested_verification": ["schema_validation", "unit_check", "system_tb"],
+            "status": "proposed",
+        }
+        validate_graph_proposal(proposal)
+        invalid = dict(proposal)
+        invalid["status"] = "validated"
+        with self.assertRaises(ValueError):
+            validate_graph_proposal(invalid)
 
     def test_agent_actions_are_constrained(self) -> None:
         validate_agent_action(

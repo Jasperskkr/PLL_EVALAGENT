@@ -126,7 +126,7 @@ V1 同时证明了两件事：
 - benchmark 的 boundary、candidate、final SystemTB 结果稳定；
 - summary、trajectory、provenance 和关键 JSON/CSV 可追溯。
 
-### Phase 1：Schema 和 Graph v2（当前优先）
+### Phase 1：Schema 和 Graph v2（已完成第一版）
 
 目标：保留 V1 数值结果，把关系地图变成类型化、分层、可检查的结构。
 
@@ -139,6 +139,24 @@ V1 同时证明了两件事：
 5. 将 `VCO Noise TF`、`Noise Integration`、`PLL Dynamics` 作为 intermediate operator nodes；
 6. 区分 Architecture Graph（允许 feedback）和 Evaluation Graph（可执行、闭环封装）；
 7. 保留当前直接影响边作为带 `derived_from` 的查询 shortcut，不改变旧 V1 图语义。
+
+当前 Phase 1 已落地的第一版结构：
+
+```text
+BlockMetaSchema v1
+  ├─ InterfaceContract
+  ├─ BehaviorContract
+  ├─ CapabilityContract
+  └─ VerificationContract
+
+TypedGraph v2
+  ├─ interface layer
+  ├─ behavior layer
+  ├─ allocation layer
+  └─ verification layer
+```
+
+runner 会继续生成兼容的 `vco_pll_graph.json`，并新增经过 validator 检查的 `vco_pll_graph_v2.json`。Graph v2 的状态字段支持 `proposed → supported → tested → validated/rejected`，当前 V1 编译出来的确定性边标为 `validated`，Agent 尚不能直接写入正式 validated graph。
 
 验收：
 

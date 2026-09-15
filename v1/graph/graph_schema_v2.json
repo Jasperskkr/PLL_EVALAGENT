@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Jasperskkr/PLL_EVALAGENT/schema/graph-2.0",
+  "title": "PLL_EVALAGENT TypedGraph v2",
+  "description": "Four-layer graph vocabulary for Agent proposals and deterministic validation.",
+  "type": "object",
+  "required": ["graph_id", "graph_version", "nodes", "edges"],
+  "properties": {
+    "graph_id": {"type": "string", "minLength": 1},
+    "graph_version": {"const": "2.0"},
+    "metadata": {"type": "object"},
+    "nodes": {"type": "array", "items": {"$ref": "#/$defs/node"}},
+    "edges": {"type": "array", "items": {"$ref": "#/$defs/edge"}}
+  },
+  "$defs": {
+    "node": {
+      "type": "object",
+      "required": ["id", "type", "layer", "properties"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "type": {"type": "string"},
+        "layer": {"enum": ["interface", "behavior", "allocation", "verification"]},
+        "owner": {"type": "string"},
+        "status": {"enum": ["proposed", "supported", "tested", "partially_validated", "validated", "rejected"]},
+        "properties": {"type": "object"}
+      }
+    },
+    "edge": {
+      "type": "object",
+      "required": ["source", "target", "type", "properties"],
+      "properties": {
+        "source": {"type": "string"},
+        "target": {"type": "string"},
+        "type": {"type": "string"},
+        "status": {"enum": ["proposed", "supported", "tested", "partially_validated", "validated", "rejected"]},
+        "properties": {"type": "object"}
+      }
+    }
+  }
+}

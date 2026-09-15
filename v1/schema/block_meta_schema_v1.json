@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Jasperskkr/PLL_EVALAGENT/schema/block-meta-1.0",
+  "title": "PLL_EVALAGENT BlockMetaSchema v1",
+  "description": "Fixed Agent-facing contract shape. Domain values and feasibility are validated by deterministic BlockTB/SystemTB.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "object_type",
+    "block_id",
+    "block_type",
+    "interface_contract",
+    "behavior_contract",
+    "capability_contract",
+    "verification_contract"
+  ],
+  "properties": {
+    "schema_version": {"const": "block-meta-1.0"},
+    "object_type": {"const": "block_meta"},
+    "block_id": {"type": "string", "minLength": 1},
+    "block_type": {"type": "string", "minLength": 1},
+    "provenance": {"type": "object"},
+    "interface_contract": {
+      "type": "object",
+      "required": ["function", "ports", "interaction_variables"],
+      "properties": {
+        "function": {"type": "string", "minLength": 1},
+        "ports": {"type": "array", "items": {"$ref": "#/$defs/port"}},
+        "interaction_variables": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "behavior_contract": {
+      "type": "object",
+      "required": ["search_variables", "environment_contract", "system_influence_factors"],
+      "properties": {
+        "search_variables": {"type": "array", "items": {"$ref": "#/$defs/field"}},
+        "environment_contract": {"type": "object"},
+        "system_influence_factors": {"type": "array", "items": {"type": "object"}}
+      }
+    },
+    "capability_contract": {
+      "type": "object",
+      "required": ["exported_specs", "capability_region", "tradeoffs"],
+      "properties": {
+        "exported_specs": {"type": "array", "items": {"$ref": "#/$defs/field"}},
+        "capability_region": {"type": "object"},
+        "tradeoffs": {"type": "array", "items": {"type": "object"}}
+      }
+    },
+    "verification_contract": {
+      "type": "object",
+      "required": ["measurement_contracts", "validity_domain", "uncertainty", "evidence"],
+      "properties": {
+        "measurement_contracts": {"type": "array", "items": {"type": "object"}},
+        "validity_domain": {"type": "object"},
+        "uncertainty": {"type": "object"},
+        "evidence": {"type": "array", "items": {"type": "object"}}
+      }
+    }
+  },
+  "$defs": {
+    "port": {
+      "type": "object",
+      "required": ["name", "direction", "signal_type", "unit", "datatype"],
+      "properties": {
+        "name": {"type": "string"},
+        "direction": {"enum": ["in", "out", "inout"]},
+        "signal_type": {"type": "string"},
+        "unit": {"type": "string"},
+        "datatype": {"type": "string"}
+      }
+    },
+    "field": {
+      "type": "object",
+      "required": ["name", "role", "unit", "datatype", "depends_on", "evaluation_method", "description"],
+      "properties": {
+        "name": {"type": "string"},
+        "role": {"enum": ["system_context", "design_variable", "intermediate_variable", "performance_metric", "hard_constraint", "objective", "validity_condition", "interaction_variable"]},
+        "unit": {"type": "string"},
+        "datatype": {"type": "string"},
+        "depends_on": {"type": "array", "items": {"type": "string"}},
+        "evaluation_method": {"type": "string"},
+        "description": {"type": "string"},
+        "validity": {"type": "object"}
+      }
+    }
+  }
+}

@@ -48,7 +48,7 @@ VCO PN@1MHz  ↔  PLL integrated jitter
 | Final frequency | 5.000 GHz |
 | Final SystemTB | PASS |
 
-同时，当前测试套件为 10/10 通过，V1 runner 的核心输出可以 deterministic replay。
+V1.0 baseline 的测试套件为 10/10 通过；Phase 1 新增 schema、graph、unit 和 Agent proposal 边界测试后为 13/13 通过。V1 runner 的核心数值输出保持 deterministic replay。
 
 ## 快速运行
 
@@ -76,6 +76,8 @@ recommended_vco_spec.json         # 加 margin 后的推荐 spec
 block_feasibility.json             # BlockTB + SystemTB candidate 结果
 final_system_evaluation.json      # 最终 SystemTB 结果
 vco_pll_graph.json                 # 当前图结构和 sensitivity evidence
+vco_pll_graph_v2.json              # Phase 1 四层 typed graph artifact
+vco_block_meta_v1.json             # VCO 的四类 BlockMetaSchema 实例
 trajectory.jsonl                   # 可回放执行轨迹
 ```
 
@@ -103,7 +105,7 @@ v1/schema/
     canonical envelope 和基础 payload validators
 
 v1/graph/
-    typed graph model 和 V1 graph compiler
+    typed graph model、V1 compatibility graph 和 Phase 1 multilayer graph compiler
 
 v1/allocation/
     SpecVector 和现有 SystemTB 的 forward-compatible adapter
@@ -124,7 +126,7 @@ Agent proposes; deterministic tools validate.
 
 Schema 是固定的语法和规则，规定对象、字段、单位、上下文、证据和合法连接；Graph 是某一个具体 PLL 实例化后的关系地图。当前图已经记录 architecture、behavioral dependency、noise transfer、system influence 和 sensitivity evidence。
 
-当前图仍是“记录/追溯层”，不是完全由图遍历驱动的执行引擎。下一步会在不改变 V1 数值内核的前提下补齐：
+Graph v2 仍是“记录/追溯层”，不是完全由图遍历驱动的执行引擎；但 Phase 1 已经在不改变 V1 数值内核的前提下，把以下关键对象和执行证据显式接入同一张 typed graph：
 
 ```text
 VCORequirement → Candidate → BlockTBResult → SystemTBResult
@@ -162,13 +164,11 @@ V1 是 behavioral mapping proof，不是 transistor-level PLL signoff。当前�
 
 ## 下一步
 
-近期优先级不是重写 V1，而是：
+近期优先级不是重写 V1，而是在已完成的 Phase 1 schema/graph 上继续扩展：
 
-1. 冻结并保护当前 V1 replay baseline；
-2. 优化 typed multilayer graph 和 BlockMetaSchema；
-3. 将 allocation、candidate、BlockTB、SystemTB 结果正式接入 graph；
-4. 先实现 `PN × Kvco` 的二维 capability/feasible-region 搜索；
-5. 再引入 CP、Loop Filter、Divider 的 cross-block context；
-6. 最后让 Agent 负责 contract/connection/search proposal，并由 deterministic tools 验证。
+1. 实现 `PN × Kvco` 的二维 capability/feasible-region 搜索，保留 V1 一维结果作为 regression control；
+2. 将 sampled feasible points、constraint residual 和 Pareto candidate 纳入正式 allocation artifact；
+3. 再引入 CP、Loop Filter、Divider 的 cross-block context；
+4. 让 Agent 负责 contract/connection/search proposal，并由 deterministic tools 验证和升级 graph 状态。
 
 详细路线见 [`PROJECT_PLAN.md`](PROJECT_PLAN.md)。

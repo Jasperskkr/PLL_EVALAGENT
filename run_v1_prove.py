@@ -19,7 +19,7 @@ from v1.contract import build_contract_evidence
 from v1.agent_actions import ALLOWED_ACTIONS
 from v1.allocation.evaluator import evaluate_spec_vector
 from v1.allocation.spec_vector import SpecVector
-from v1.graph.compiler import build_v1_graph_artifact
+from v1.graph.compiler import build_v1_graph_artifact, build_v1_graph_v2_artifact
 from v1.pipeline import (
     build_vco_instance,
     characterize_vco,
@@ -32,6 +32,7 @@ from v1.pipeline import (
     write_json,
 )
 from v1.schema.envelopes import make_envelope
+from v1.schema.block_schema import build_vco_block_meta_v1, validate_block_meta
 from v1.schema.validators import validate_envelope, validate_system_spec_payload
 from v1.specs import CandidateDefinition, SystemSpec, VCORequirement, load_case
 
@@ -291,6 +292,9 @@ def run(case_path: str | Path, output_dir: str | Path) -> Dict[str, Any]:
     write_json(contract_evidence["contract_v0"], output_path / "contract_v0.json")
     write_json(contract_evidence["contract_v1"], output_path / "refined_vco_contract.json")
     write_json(contract_evidence["validation"], output_path / "contract_validation.json")
+    block_meta = build_vco_block_meta_v1(contract_evidence["contract_v1"])
+    validate_block_meta(block_meta)
+    write_json(block_meta, output_path / "vco_block_meta_v1.json")
     events.append(
         {
             "step": "contract_validation",
@@ -455,6 +459,22 @@ def run(case_path: str | Path, output_dir: str | Path) -> Dict[str, Any]:
         final_eval = None
         write_json({"passed": False, "reason": "no feasible candidate"}, output_path / "final_system_evaluation.json")
     write_json(candidate_results, output_path / "block_feasibility.json")
+    # Graph v1 remains the compatibility artifact.  Graph v2 is an additive
+    # typed multilayer map that makes allocation, candidate validation and
+    # intermediate operators explicit for future Agent proposals.
+    graph_v2_artifact = build_v1_graph_v2_artifact(
+        contract=contract_evidence["contract_v1"],
+        sensitivity=sensitivity,
+        system_spec=system_spec.to_dict(),
+        run_id=run_id,
+        initial_evaluation=strip_raw_results(initial_eval),
+        boundary=boundary,
+        recommended_requirement=recommended_requirement.to_dict(),
+        candidate_results=candidate_results,
+        final_evaluation=final_eval,
+        block_meta=block_meta,
+    )
+    write_json(graph_v2_artifact, output_path / "vco_pll_graph_v2.json")
     events.append(
         {
             "step": "final_selection",

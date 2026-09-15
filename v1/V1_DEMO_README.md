@@ -54,6 +54,7 @@ system_spec.json
 initial_vco_spec.json
 contract_v0.json
 refined_vco_contract.json
+vco_block_meta_v1.json
 contract_validation.json
 vco_characterization.csv
 sensitivity.json
@@ -75,6 +76,7 @@ plots/
 canonical_system_spec.json
 canonical_initial_system_evaluation.json
 vco_pll_graph.json
+vco_pll_graph_v2.json
 initial_vco_spec_vector.json
 recommended_vco_spec_vector.json
 recommended_spec_vector_evaluation.json
@@ -85,6 +87,7 @@ agent_action_policy.json
 
 - envelope 层为对象增加 `schema_version`、`object_type`、`object_id` 和 provenance；
 - graph 层显式记录 signal flow、feedback、behavioral dependency、noise transfer、system influence 和 sensitivity evidence；
+- Graph v2 以 interface / behavior / allocation / verification 四层显式记录中间 operator、Requirement、Capability、Candidate、BlockTB/SystemTB 和 evidence；
 - `SpecVector` 为 PN、Kvco、tuning range、power 的联合规格表示预留入口；
 - Agent action policy 约束 Agent 只能提出带 evidence 的 contract/search action，不能修改 SystemSpec 或宣布 PASS。
 
