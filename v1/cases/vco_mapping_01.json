@@ -33,7 +33,9 @@
     "margin_db": 0.0
   },
   "allocation": {
-    "metric": "phase_noise_1mhz_dbc_hz",
+    "target_system_metric": "integrated_jitter_s",
+    "search_knob": "pn_anchor_1mhz_dbc_hz",
+    "allocated_block_metric": "worst_phase_noise_1mhz_dbc_hz",
     "loose_bound_dbc_hz": -110.0,
     "tight_bound_dbc_hz": -125.0,
     "iterations": 24,
@@ -44,7 +46,7 @@
     "temperature_points_c": [25.0],
     "offset_points_hz": [100000.0, 1000000.0, 10000000.0],
     "sweeps": {
-      "pn_1mhz_dbc_hz": [-120.0, -118.0, -116.0, -114.0],
+      "pn_anchor_1mhz_dbc_hz": [-120.0, -118.0, -116.0, -114.0],
       "k1_hz_per_v": [800000000.0, 1200000000.0, 1600000000.0, 2000000000.0],
       "vctrl_max_v": [0.8, 0.9, 1.0, 1.1],
       "nominal_power_w": [0.004, 0.005, 0.006]
@@ -60,7 +62,7 @@
     {
       "candidate_id": "candidate_low_noise",
       "overrides": {
-        "pn_1mhz_dbc_hz": -122.0
+        "pn_anchor_1mhz_dbc_hz": -122.0
       },
       "engineering_cost": 1.2,
       "description": "Lower-noise VCO candidate"
@@ -68,7 +70,7 @@
     {
       "candidate_id": "candidate_low_noise_fast_lock",
       "overrides": {
-        "pn_1mhz_dbc_hz": -122.0,
+        "pn_anchor_1mhz_dbc_hz": -122.0,
         "k1_hz_per_v": 800000000.0
       },
       "engineering_cost": 1.3,

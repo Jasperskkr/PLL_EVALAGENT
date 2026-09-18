@@ -6,11 +6,11 @@
       "evidence_id": "Evidence.sensitivity",
       "failed_check": "integrated_jitter",
       "observed_metric_span": 5.235203335968396e-14,
-      "recommended_verification": "boundary_search",
+      "recommended_verification": "parameter_sweep",
       "sensitivity_magnitude": 9.683058812533833e-15,
       "sensitivity_value": 9.683058812533833e-15,
       "system_metric": "PLL.integrated_jitter",
-      "variable": "VCO.phase_noise_1mhz_design"
+      "variable": "VCO.pn_anchor_1mhz"
     },
     {
       "edge_type": "sensitivity_evidence",
@@ -22,7 +22,7 @@
       "sensitivity_magnitude": 2.5629955021306936e-23,
       "sensitivity_value": -2.5629955021306936e-23,
       "system_metric": "PLL.integrated_jitter",
-      "variable": "VCO.k1_design"
+      "variable": "VCO.k1_hz_per_v"
     }
   ],
   "failed_checks": [
@@ -39,13 +39,25 @@
       "sensitivity_magnitude": 0.0,
       "sensitivity_value": 0.0,
       "system_metric": "PLL.integrated_jitter",
-      "variable": "VCO.nominal_power_design"
+      "variable": "VCO.nominal_power_w"
     }
   ],
   "policy": "Agent proposes; deterministic tools validate",
   "structural_hypotheses": [
     {
-      "edge_type": "shortcut",
+      "edge_type": "system_influence",
+      "evidence_available": false,
+      "evidence_id": null,
+      "failed_check": "integrated_jitter",
+      "observed_metric_span": null,
+      "recommended_verification": "parameter_sweep",
+      "sensitivity_magnitude": null,
+      "sensitivity_value": null,
+      "system_metric": "PLL.integrated_jitter",
+      "variable": "VCO.kvco"
+    },
+    {
+      "edge_type": "system_influence",
       "evidence_available": false,
       "evidence_id": null,
       "failed_check": "integrated_jitter",

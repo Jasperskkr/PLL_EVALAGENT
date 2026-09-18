@@ -1,258 +1,14 @@
 {
-  "behavior_contract": {
-    "environment_contract": {
-      "context_source": "SystemTB operating envelope",
-      "ranges": {
-        "Vctrl": [
-          0.1,
-          1.1
-        ],
-        "temperature_c": [
-          -40.0,
-          125.0
-        ]
-      },
-      "variables": [
-        "Vctrl",
-        "temperature",
-        "vdd_v"
-      ]
-    },
-    "search_variables": [
-      {
-        "datatype": "float",
-        "depends_on": [
-          "Vctrl",
-          "temperature",
-          "power"
-        ],
-        "description": "1 MHz phase-noise allocation knob in V1.",
-        "evaluation_method": "deterministic PN parameter sweep",
-        "name": "phase_noise_1mhz_dbc_hz",
-        "role": "design_variable",
-        "unit": "dBc/Hz",
-        "validity": {
-          "offset_hz": [
-            100000.0,
-            10000000.0
-          ],
-          "temperature_c": [
-            -40.0,
-            125.0
-          ],
-          "vctrl_v": [
-            0.1,
-            1.1
-          ]
-        }
-      },
-      {
-        "datatype": "float",
-        "depends_on": [
-          "Vctrl"
-        ],
-        "description": "First-order tuning coefficient exposed for sensitivity evidence.",
-        "evaluation_method": "deterministic SystemTB sweep",
-        "name": "k1_hz_per_v",
-        "role": "design_variable",
-        "unit": "Hz/V",
-        "validity": {
-          "offset_hz": [
-            100000.0,
-            10000000.0
-          ],
-          "temperature_c": [
-            -40.0,
-            125.0
-          ],
-          "vctrl_v": [
-            0.1,
-            1.1
-          ]
-        }
-      },
-      {
-        "datatype": "float",
-        "depends_on": [],
-        "description": "Control-voltage envelope knob used in V1 evidence.",
-        "evaluation_method": "deterministic SystemTB sweep",
-        "name": "vctrl_max_v",
-        "role": "design_variable",
-        "unit": "V",
-        "validity": {
-          "offset_hz": [
-            100000.0,
-            10000000.0
-          ],
-          "temperature_c": [
-            -40.0,
-            125.0
-          ],
-          "vctrl_v": [
-            0.1,
-            1.1
-          ]
-        }
-      },
-      {
-        "datatype": "float",
-        "depends_on": [
-          "Vctrl",
-          "temperature"
-        ],
-        "description": "Behavioral power knob available for residual-driven exploration.",
-        "evaluation_method": "deterministic SystemTB sweep",
-        "name": "nominal_power_w",
-        "role": "design_variable",
-        "unit": "W",
-        "validity": {
-          "offset_hz": [
-            100000.0,
-            10000000.0
-          ],
-          "temperature_c": [
-            -40.0,
-            125.0
-          ],
-          "vctrl_v": [
-            0.1,
-            1.1
-          ]
-        }
-      }
+  "architecture": {
+    "connections": [
+      "PLL.control_voltage -> VCO.vctrl",
+      "VCO.oscillation -> PLL.oscillation"
     ],
-    "system_influence_factors": [
-      {
-        "evidence_id": "allocation:v1:pn_1mhz_to_integrated_jitter",
-        "mechanism": "VCO noise transfer followed by phase-noise integration",
-        "source": "phase_noise_1mhz_dbc_hz",
-        "target": "PLL.integrated_jitter"
-      },
-      {
-        "evidence_id": "sensitivity:k1_hz_per_v:lock_time",
-        "mechanism": "effective PLL dynamics / loop bandwidth",
-        "source": "k1_hz_per_v",
-        "target": "PLL.lock_time"
-      }
-    ]
-  },
-  "block_id": "VCO",
-  "block_type": "vco",
-  "capability_contract": {
-    "capability_region": {
-      "dimensions": [
-        "phase_noise_1mhz_dbc_hz"
-      ],
-      "formal_status": "v1_one_dimensional_only",
-      "future_dimensions": [
-        "k1_hz_per_v",
-        "tuning_range_hz",
-        "power_w"
-      ],
-      "representation": "sampled_feasible_points"
-    },
-    "exported_specs": [
-      {
-        "datatype": "float",
-        "depends_on": [
-          "Vctrl",
-          "temperature",
-          "power"
-        ],
-        "description": "Maximum allowed phase noise at 1 MHz over the SystemTB envelope.",
-        "evaluation_method": "context-aware VCO BlockTB",
-        "name": "phase_noise_1mhz_max_dbc_hz",
-        "role": "hard_constraint",
-        "unit": "dBc/Hz",
-        "validity": {
-          "offset_hz": [
-            100000.0,
-            10000000.0
-          ],
-          "temperature_c": [
-            -40.0,
-            125.0
-          ],
-          "vctrl_v": [
-            0.1,
-            1.1
-          ]
-        }
-      },
-      {
-        "datatype": "interval",
-        "depends_on": [
-          "Vctrl"
-        ],
-        "description": "Optional Kvco range requirement reserved for multi-parameter allocation.",
-        "evaluation_method": "context-aware VCO BlockTB",
-        "name": "kvco_range_hz_per_v",
-        "role": "hard_constraint",
-        "unit": "Hz/V",
-        "validity": {
-          "offset_hz": [
-            100000.0,
-            10000000.0
-          ],
-          "temperature_c": [
-            -40.0,
-            125.0
-          ],
-          "vctrl_v": [
-            0.1,
-            1.1
-          ]
-        }
-      },
-      {
-        "datatype": "float",
-        "depends_on": [
-          "Vctrl",
-          "temperature"
-        ],
-        "description": "Optional VCO power upper bound.",
-        "evaluation_method": "context-aware VCO BlockTB",
-        "name": "power_max_w",
-        "role": "hard_constraint",
-        "unit": "W",
-        "validity": {
-          "offset_hz": [
-            100000.0,
-            10000000.0
-          ],
-          "temperature_c": [
-            -40.0,
-            125.0
-          ],
-          "vctrl_v": [
-            0.1,
-            1.1
-          ]
-        }
-      }
+    "context_inputs": [
+      "Environment.temperature",
+      "Environment.vdd"
     ],
-    "tradeoffs": [
-      {
-        "evidence_ids": [
-          "sensitivity:pn_1mhz_dbc_hz:integrated_jitter",
-          "sensitivity:k1_hz_per_v:lock_time"
-        ],
-        "status": "sensitivity_evidence_only",
-        "variables": [
-          "phase_noise_1mhz_dbc_hz",
-          "k1_hz_per_v"
-        ]
-      }
-    ]
-  },
-  "interface_contract": {
     "function": "Generate a context-dependent oscillator frequency and phase-noise output for the PLL.",
-    "interaction_variables": [
-      "VCO.vctrl",
-      "VCO.oscillation_frequency",
-      "VCO.phase_noise_profile",
-      "VCO.Kvco"
-    ],
     "ports": [
       {
         "datatype": "float",
@@ -267,45 +23,210 @@
       },
       {
         "datatype": "float",
-        "direction": "in",
-        "name": "temperature",
-        "range": [
-          -40.0,
-          125.0
-        ],
-        "signal_type": "environment",
-        "unit": "degC"
-      },
-      {
-        "datatype": "float",
         "direction": "out",
         "name": "oscillation_frequency",
         "signal_type": "frequency",
         "unit": "Hz"
-      },
-      {
-        "datatype": "function(offset_hz)",
-        "direction": "out",
-        "name": "phase_noise_profile",
-        "signal_type": "ssb_phase_noise",
-        "unit": "dBc/Hz"
-      },
-      {
-        "datatype": "float",
-        "direction": "out",
-        "name": "Kvco",
-        "signal_type": "local_tuning_slope",
-        "unit": "Hz/V"
       }
     ]
   },
-  "object_type": "block_meta",
-  "provenance": {
-    "source_contract_id": "vco_contract_v1",
-    "status": "schema_instance; behavioral_validity_requires_tb"
+  "behavior": {
+    "context_dependencies": {
+      "architecture_context_variables": [
+        "vdd_v"
+      ],
+      "context_source": "VCOBlockContext.v1",
+      "ranges": {
+        "Vctrl": [
+          0.1,
+          1.1
+        ],
+        "temperature_c": [
+          -40.0,
+          125.0
+        ]
+      },
+      "variables": [
+        "Vctrl",
+        "temperature"
+      ]
+    },
+    "evaluation_methods": {
+      "frequency_hz": "behavioral_vco_frequency",
+      "kvco_hz_per_v": "local_derivative_of_tuning_curve",
+      "phase_noise_1mhz_dbc_hz": "behavioral_psd_evaluation",
+      "power_w": "behavioral_power_model"
+    },
+    "metrics": [
+      {
+        "datatype": "float",
+        "depends_on": [
+          "Vctrl",
+          "temperature"
+        ],
+        "description": "Oscillation frequency under the frozen context.",
+        "evaluation_method": "frequency_hz(Vctrl, temperature)",
+        "name": "frequency_hz",
+        "role": "performance_metric",
+        "unit": "Hz",
+        "validity": {
+          "declared_domain": {
+            "offset_hz": [
+              100000.0,
+              10000000.0
+            ],
+            "temperature_c": [
+              -40.0,
+              125.0
+            ],
+            "vctrl_v": [
+              0.1,
+              1.1
+            ]
+          },
+          "validated_domain": {
+            "temperature_c": [
+              25.0
+            ],
+            "validation_source": "VCOBlockContext.v1",
+            "vctrl_v": [
+              0.29845368,
+              0.8702691823227616
+            ],
+            "vdd_v": [
+              1.8
+            ]
+          }
+        }
+      },
+      {
+        "datatype": "float",
+        "depends_on": [
+          "Vctrl",
+          "temperature",
+          "power_w"
+        ],
+        "description": "Point phase-noise behavior at 1 MHz under a specific context.",
+        "evaluation_method": "phase_noise_dbc_hz(1MHz, Vctrl, temperature, power)",
+        "name": "phase_noise_1mhz_dbc_hz",
+        "role": "performance_metric",
+        "unit": "dBc/Hz",
+        "validity": {
+          "declared_domain": {
+            "offset_hz": [
+              100000.0,
+              10000000.0
+            ],
+            "temperature_c": [
+              -40.0,
+              125.0
+            ],
+            "vctrl_v": [
+              0.1,
+              1.1
+            ]
+          },
+          "validated_domain": {
+            "temperature_c": [
+              25.0
+            ],
+            "validation_source": "VCOBlockContext.v1",
+            "vctrl_v": [
+              0.29845368,
+              0.8702691823227616
+            ],
+            "vdd_v": [
+              1.8
+            ]
+          }
+        }
+      },
+      {
+        "datatype": "float",
+        "depends_on": [
+          "Vctrl"
+        ],
+        "description": "Local tuning gain df/dVctrl.",
+        "evaluation_method": "local_derivative_of_tuning_curve",
+        "name": "kvco_hz_per_v",
+        "role": "performance_metric",
+        "unit": "Hz/V",
+        "validity": {
+          "declared_domain": {
+            "offset_hz": [
+              100000.0,
+              10000000.0
+            ],
+            "temperature_c": [
+              -40.0,
+              125.0
+            ],
+            "vctrl_v": [
+              0.1,
+              1.1
+            ]
+          },
+          "validated_domain": {
+            "temperature_c": [
+              25.0
+            ],
+            "validation_source": "VCOBlockContext.v1",
+            "vctrl_v": [
+              0.29845368,
+              0.8702691823227616
+            ],
+            "vdd_v": [
+              1.8
+            ]
+          }
+        }
+      },
+      {
+        "datatype": "float",
+        "depends_on": [
+          "Vctrl",
+          "temperature"
+        ],
+        "description": "Point VCO power under a specific context.",
+        "evaluation_method": "power_w(Vctrl, temperature)",
+        "name": "power_w",
+        "role": "performance_metric",
+        "unit": "W",
+        "validity": {
+          "declared_domain": {
+            "offset_hz": [
+              100000.0,
+              10000000.0
+            ],
+            "temperature_c": [
+              -40.0,
+              125.0
+            ],
+            "vctrl_v": [
+              0.1,
+              1.1
+            ]
+          },
+          "validated_domain": {
+            "temperature_c": [
+              25.0
+            ],
+            "validation_source": "VCOBlockContext.v1",
+            "vctrl_v": [
+              0.29845368,
+              0.8702691823227616
+            ],
+            "vdd_v": [
+              1.8
+            ]
+          }
+        }
+      }
+    ]
   },
-  "schema_version": "block-meta-1.0",
-  "verification_contract": {
+  "block_id": "VCO",
+  "block_type": "vco",
+  "evidence": {
     "evidence": [
       {
         "id": "contract:vco:v1",
@@ -313,7 +234,7 @@
         "status": "validated_on_v1_observations"
       },
       {
-        "id": "allocation:v1:pn_1mhz_to_integrated_jitter",
+        "id": "allocation:v1:pn_anchor_to_measured_worst_pn_to_integrated_jitter",
         "kind": "system_to_block_allocation",
         "status": "deterministic_v1_proof"
       }
@@ -321,16 +242,17 @@
     "measurement_contracts": [
       {
         "aggregation": "worst_case_over_context",
-        "context_source": "SystemTB operating envelope",
+        "context_source": "VCOBlockContext.v1",
         "id": "measurement:vco:phase_noise_1mhz",
+        "measured_metric": "worst_phase_noise_1mhz_dbc_hz",
         "method": "behavioral_psd_evaluation",
         "metric": "phase_noise_1mhz_dbc_hz",
         "offset_hz": 1000000.0,
-        "stimulus": "steady_state_system_context"
+        "stimulus": "frozen_vco_block_context_sweep"
       },
       {
         "aggregation": "range_over_context",
-        "context_source": "SystemTB operating envelope",
+        "context_source": "VCOBlockContext.v1",
         "id": "measurement:vco:kvco",
         "method": "local_derivative_of_tuning_curve",
         "metric": "kvco_hz_per_v",
@@ -345,7 +267,7 @@
       "type": "model_fidelity_not_signoff_calibrated"
     },
     "validity_domain": {
-      "contract_validity": {
+      "declared_domain": {
         "offset_hz": [
           100000.0,
           10000000.0
@@ -360,7 +282,214 @@
         ]
       },
       "model_fidelity": "synthetic_behavioral",
-      "out_of_domain_policy": "reject_or_recharacterize"
+      "out_of_domain_policy": "reject_or_recharacterize",
+      "validated_domain": {
+        "temperature_c": [
+          25.0
+        ],
+        "validation_source": "VCOBlockContext.v1",
+        "vctrl_v": [
+          0.29845368,
+          0.8702691823227616
+        ],
+        "vdd_v": [
+          1.8
+        ]
+      }
     }
-  }
+  },
+  "influence": [
+    {
+      "evidence_refs": [
+        "allocation:v1:pn_anchor_to_measured_worst_pn_to_integrated_jitter",
+        "Evidence.sensitivity"
+      ],
+      "mechanism": "VCO noise transfer followed by phase-noise integration",
+      "source_behavior_metric": "phase_noise_1mhz_dbc_hz",
+      "target_system_metric": "integrated_jitter_s",
+      "validity_domain": {
+        "declared_domain": {
+          "offset_hz": [
+            100000.0,
+            10000000.0
+          ],
+          "temperature_c": [
+            -40.0,
+            125.0
+          ],
+          "vctrl_v": [
+            0.1,
+            1.1
+          ]
+        },
+        "validated_domain": {
+          "temperature_c": [
+            25.0
+          ],
+          "validation_source": "VCOBlockContext.v1",
+          "vctrl_v": [
+            0.29845368,
+            0.8702691823227616
+          ],
+          "vdd_v": [
+            1.8
+          ]
+        }
+      }
+    },
+    {
+      "evidence_refs": [
+        "Evidence.sensitivity"
+      ],
+      "mechanism": "loop bandwidth changes VCO noise integration",
+      "source_behavior_metric": "kvco_hz_per_v",
+      "target_system_metric": "integrated_jitter_s",
+      "validity_domain": {
+        "declared_domain": {
+          "offset_hz": [
+            100000.0,
+            10000000.0
+          ],
+          "temperature_c": [
+            -40.0,
+            125.0
+          ],
+          "vctrl_v": [
+            0.1,
+            1.1
+          ]
+        },
+        "validated_domain": {
+          "temperature_c": [
+            25.0
+          ],
+          "validation_source": "VCOBlockContext.v1",
+          "vctrl_v": [
+            0.29845368,
+            0.8702691823227616
+          ],
+          "vdd_v": [
+            1.8
+          ]
+        }
+      }
+    },
+    {
+      "evidence_refs": [
+        "sensitivity:k1_hz_per_v:lock_time"
+      ],
+      "mechanism": "effective PLL dynamics / loop bandwidth",
+      "source_behavior_metric": "kvco_hz_per_v",
+      "target_system_metric": "lock_time_s",
+      "validity_domain": {
+        "declared_domain": {
+          "offset_hz": [
+            100000.0,
+            10000000.0
+          ],
+          "temperature_c": [
+            -40.0,
+            125.0
+          ],
+          "vctrl_v": [
+            0.1,
+            1.1
+          ]
+        },
+        "validated_domain": {
+          "temperature_c": [
+            25.0
+          ],
+          "validation_source": "VCOBlockContext.v1",
+          "vctrl_v": [
+            0.29845368,
+            0.8702691823227616
+          ],
+          "vdd_v": [
+            1.8
+          ]
+        }
+      }
+    },
+    {
+      "evidence_refs": [
+        "SystemTB"
+      ],
+      "mechanism": "divider feedback",
+      "source_behavior_metric": "frequency_hz",
+      "target_system_metric": "output_frequency_hz",
+      "validity_domain": {
+        "declared_domain": {
+          "offset_hz": [
+            100000.0,
+            10000000.0
+          ],
+          "temperature_c": [
+            -40.0,
+            125.0
+          ],
+          "vctrl_v": [
+            0.1,
+            1.1
+          ]
+        },
+        "validated_domain": {
+          "temperature_c": [
+            25.0
+          ],
+          "validation_source": "VCOBlockContext.v1",
+          "vctrl_v": [
+            0.29845368,
+            0.8702691823227616
+          ],
+          "vdd_v": [
+            1.8
+          ]
+        }
+      }
+    },
+    {
+      "evidence_refs": [
+        "SystemTB"
+      ],
+      "mechanism": "block power aggregation",
+      "source_behavior_metric": "power_w",
+      "target_system_metric": "power_w",
+      "validity_domain": {
+        "declared_domain": {
+          "offset_hz": [
+            100000.0,
+            10000000.0
+          ],
+          "temperature_c": [
+            -40.0,
+            125.0
+          ],
+          "vctrl_v": [
+            0.1,
+            1.1
+          ]
+        },
+        "validated_domain": {
+          "temperature_c": [
+            25.0
+          ],
+          "validation_source": "VCOBlockContext.v1",
+          "vctrl_v": [
+            0.29845368,
+            0.8702691823227616
+          ],
+          "vdd_v": [
+            1.8
+          ]
+        }
+      }
+    }
+  ],
+  "object_type": "block_meta",
+  "provenance": {
+    "source_contract_id": "vco_contract_v1",
+    "status": "schema_instance; behavioral_validity_requires_tb"
+  },
+  "schema_version": "block-meta-1.0"
 }

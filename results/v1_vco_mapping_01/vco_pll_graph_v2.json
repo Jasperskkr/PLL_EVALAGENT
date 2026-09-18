@@ -1,360 +1,773 @@
 {
   "edges": [
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
       "properties": {
         "signal": "oscillation"
       },
+      "provenance": {
+        "edge_type": "signal_flow",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "VCO",
       "status": "validated",
       "target": "PLL",
       "type": "signal_flow"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
       "properties": {
         "signal": "control_voltage"
       },
+      "provenance": {
+        "edge_type": "feedback",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "PLL",
       "status": "validated",
       "target": "VCO.vctrl",
       "type": "feedback"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
       "properties": {
         "signal": "control_voltage"
       },
+      "provenance": {
+        "edge_type": "connects_to",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "PLL.control_voltage",
       "status": "validated",
       "target": "VCO.vctrl",
       "type": "connects_to"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
       "properties": {
         "signal": "oscillation"
       },
+      "provenance": {
+        "edge_type": "connects_to",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "VCO.oscillation",
       "status": "validated",
       "target": "PLL.oscillation",
       "type": "connects_to"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
       "properties": {
         "role": "system_context"
       },
+      "provenance": {
+        "edge_type": "requires",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Environment.temperature",
       "status": "validated",
       "target": "VCO",
       "type": "requires"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
       "properties": {
         "role": "system_context"
       },
+      "provenance": {
+        "edge_type": "requires",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Environment.vdd",
       "status": "validated",
       "target": "VCO",
       "type": "requires"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
       "properties": {
         "equation_ref": "frequency_hz(Vctrl,T)"
       },
+      "provenance": {
+        "edge_type": "behavioral_dependency",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "VCO.vctrl",
       "status": "validated",
       "target": "VCO.frequency",
       "type": "behavioral_dependency"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
       "properties": {
         "equation_ref": "frequency_hz(Vctrl,T)"
       },
+      "provenance": {
+        "edge_type": "behavioral_dependency",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Environment.temperature",
       "status": "validated",
       "target": "VCO.frequency",
       "type": "behavioral_dependency"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
+      "properties": {
+        "mechanism": "sets_nominal_center_frequency"
+      },
+      "provenance": {
+        "edge_type": "behavioral_dependency",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "VCO.f0_hz",
+      "status": "validated",
+      "target": "VCO.frequency",
+      "type": "behavioral_dependency"
+    },
+    {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
+      "properties": {
+        "mechanism": "parameterizes_linear_tuning_term"
+      },
+      "provenance": {
+        "edge_type": "behavioral_dependency",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "VCO.k1_hz_per_v",
+      "status": "validated",
+      "target": "VCO.frequency",
+      "type": "behavioral_dependency"
+    },
+    {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
       "properties": {
         "mechanism": "parameterizes_context_dependent_profile"
       },
-      "source": "VCO.phase_noise_1mhz_design",
+      "provenance": {
+        "edge_type": "behavioral_dependency",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "VCO.pn_anchor_1mhz",
       "status": "validated",
       "target": "VCO.phase_noise_1mhz",
       "type": "behavioral_dependency"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
       "properties": {
         "equation_ref": "phase_noise_dbc_hz(offset,Vctrl,T,power)"
       },
+      "provenance": {
+        "edge_type": "behavioral_dependency",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "VCO.vctrl",
       "status": "validated",
       "target": "VCO.phase_noise_1mhz",
       "type": "behavioral_dependency"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
       "properties": {
         "equation_ref": "phase_noise_dbc_hz(offset,Vctrl,T,power)"
       },
+      "provenance": {
+        "edge_type": "behavioral_dependency",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Environment.temperature",
       "status": "validated",
       "target": "VCO.phase_noise_1mhz",
       "type": "behavioral_dependency"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
       "properties": {
-        "relationship": "1MHz anchor parameterizes profile"
+        "equation_ref": "phase_noise_dbc_hz(offset,Vctrl,T,power)"
       },
-      "source": "VCO.phase_noise_1mhz",
+      "provenance": {
+        "edge_type": "behavioral_dependency",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "VCO.power",
       "status": "validated",
-      "target": "VCO.phase_noise_profile",
-      "type": "provides"
+      "target": "VCO.phase_noise_1mhz",
+      "type": "behavioral_dependency"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
       "properties": {
         "mechanism": "parameterizes_nonlinear_tuning_slope"
       },
-      "source": "VCO.k1_design",
+      "provenance": {
+        "edge_type": "behavioral_dependency",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "VCO.k1_hz_per_v",
       "status": "validated",
       "target": "VCO.kvco",
       "type": "behavioral_dependency"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
       "properties": {
         "mechanism": "parameterizes_nominal_block_power"
       },
-      "source": "VCO.nominal_power_design",
+      "provenance": {
+        "edge_type": "behavioral_dependency",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "VCO.nominal_power_w",
       "status": "validated",
       "target": "VCO.power",
       "type": "behavioral_dependency"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
       "properties": {
         "equation_ref": "kvco_hz_per_v(Vctrl)"
       },
+      "provenance": {
+        "edge_type": "behavioral_dependency",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "VCO.vctrl",
       "status": "validated",
       "target": "VCO.kvco",
       "type": "behavioral_dependency"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
       "properties": {
-        "relationship": "realized interaction value"
+        "equation_ref": "power_w(Vctrl,T)"
       },
-      "source": "VCO.kvco",
+      "provenance": {
+        "edge_type": "behavioral_dependency",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "VCO.vctrl",
       "status": "validated",
-      "target": "VCO.Kvco",
-      "type": "provides"
+      "target": "VCO.power",
+      "type": "behavioral_dependency"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
       "properties": {
-        "context_ref": "SystemTB.operating_envelope"
+        "equation_ref": "power_w(Vctrl,T)"
       },
-      "source": "VCO.phase_noise_profile",
+      "provenance": {
+        "edge_type": "behavioral_dependency",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "Environment.temperature",
+      "status": "validated",
+      "target": "VCO.power",
+      "type": "behavioral_dependency"
+    },
+    {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
+      "properties": {
+        "context_ref": "VCOBlockContext.v1"
+      },
+      "provenance": {
+        "edge_type": "input_to",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "VCO.phase_noise_1mhz",
       "status": "validated",
       "target": "operator.VCO_Noise_TF",
       "type": "input_to"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
       "properties": {
         "transfer": "high_pass_locked_loop"
       },
+      "provenance": {
+        "edge_type": "input_to",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "operator.VCO_Noise_TF",
       "status": "validated",
       "target": "operator.Noise_Integration",
       "type": "input_to"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
       "properties": {
         "equation_ref": "integrated_vco_jitter_s"
       },
+      "provenance": {
+        "edge_type": "produces",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "operator.Noise_Integration",
       "status": "validated",
       "target": "PLL.integrated_jitter",
       "type": "produces"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
       "properties": {
-        "derived_from": [
-          "operator.VCO_Noise_TF",
-          "operator.Noise_Integration"
+        "evidence_refs": [
+          "Evidence.sensitivity"
         ],
-        "query_only": true
+        "mechanism": "noise_transfer_and_integration",
+        "source_behavior_metric": "phase_noise_1mhz_dbc_hz",
+        "target_system_metric": "integrated_jitter_s",
+        "validity_domain": "VCOBlockContext.v1"
       },
+      "provenance": {
+        "edge_type": "system_influence",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "VCO.phase_noise_1mhz",
       "status": "validated",
       "target": "PLL.integrated_jitter",
-      "type": "shortcut"
+      "type": "system_influence"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
       "properties": {
-        "context_ref": "SystemTB.operating_envelope"
+        "context_ref": "VCOBlockContext.v1"
       },
-      "source": "VCO.Kvco",
+      "provenance": {
+        "edge_type": "input_to",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "VCO.kvco",
       "status": "validated",
       "target": "operator.PLL_Dynamics",
       "type": "input_to"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
       "properties": {
         "equation_ref": "lock_time_from_reference_cycles"
       },
+      "provenance": {
+        "edge_type": "produces",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "operator.PLL_Dynamics",
       "status": "validated",
       "target": "PLL.lock_time",
       "type": "produces"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
       "properties": {
-        "mechanism": "divider_feedback"
+        "evidence_refs": [
+          "Evidence.sensitivity"
+        ],
+        "mechanism": "loop_bandwidth_change",
+        "source_behavior_metric": "kvco_hz_per_v",
+        "target_system_metric": "integrated_jitter_s",
+        "validity_domain": "VCOBlockContext.v1"
       },
+      "provenance": {
+        "edge_type": "system_influence",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "VCO.kvco",
+      "status": "validated",
+      "target": "PLL.integrated_jitter",
+      "type": "system_influence"
+    },
+    {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
+      "properties": {
+        "evidence_refs": [
+          "Evidence.sensitivity"
+        ],
+        "mechanism": "closed_loop_dynamics",
+        "source_behavior_metric": "kvco_hz_per_v",
+        "target_system_metric": "lock_time_s",
+        "validity_domain": "VCOBlockContext.v1"
+      },
+      "provenance": {
+        "edge_type": "system_influence",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "VCO.kvco",
+      "status": "validated",
+      "target": "PLL.lock_time",
+      "type": "system_influence"
+    },
+    {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
+      "properties": {
+        "mechanism": "divider_feedback",
+        "source_behavior_metric": "frequency_hz",
+        "target_system_metric": "output_frequency_hz"
+      },
+      "provenance": {
+        "edge_type": "system_influence",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "VCO.frequency",
       "status": "validated",
       "target": "PLL.output_frequency",
       "type": "system_influence"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
       "properties": {
-        "mechanism": "block_power_aggregation"
+        "mechanism": "block_power_aggregation",
+        "source_behavior_metric": "power_w",
+        "target_system_metric": "power_w"
       },
+      "provenance": {
+        "edge_type": "system_influence",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "VCO.power",
       "status": "validated",
       "target": "PLL.power",
       "type": "system_influence"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "realization",
       "properties": {
         "direction": "upper_bound",
         "value": 8e-14
       },
+      "provenance": {
+        "edge_type": "constrains",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "SystemSpec.integrated_jitter",
       "status": "validated",
       "target": "PLL.integrated_jitter",
       "type": "constrains"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "realization",
       "properties": {
         "direction": "upper_bound",
         "value": 4e-05
       },
+      "provenance": {
+        "edge_type": "constrains",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "SystemSpec.lock_time",
       "status": "validated",
       "target": "PLL.lock_time",
       "type": "constrains"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "realization",
       "properties": {
         "direction": "tolerance",
         "value": 100000.0
       },
+      "provenance": {
+        "edge_type": "constrains",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "SystemSpec.output_frequency",
       "status": "validated",
       "target": "PLL.output_frequency",
       "type": "constrains"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "realization",
       "properties": {
         "direction": "upper_bound",
         "value": 0.008
       },
+      "provenance": {
+        "edge_type": "constrains",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "SystemSpec.power",
       "status": "validated",
       "target": "PLL.power",
       "type": "constrains"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "realization",
       "properties": {
-        "allocation_metric": "phase_noise_1mhz_dbc_hz",
+        "allocated_block_metric": "worst_phase_noise_1mhz_dbc_hz",
         "evidence_id": "Evidence.boundary_search",
-        "method": "bracketed_bisection"
+        "method": "bracketed_bisection_then_frozen_context_measurement",
+        "search_knob": "pn_anchor_1mhz_dbc_hz",
+        "target_system_metric": "integrated_jitter_s"
       },
+      "provenance": {
+        "edge_type": "allocates",
+        "evidence_id": "Evidence.boundary_search",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "SystemSpec.integrated_jitter",
       "status": "validated",
       "target": "VCORequirement.required",
       "type": "allocates"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "realization",
       "properties": {
         "margin_db": 1.5
       },
+      "provenance": {
+        "edge_type": "derived_from",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "VCORequirement.required",
       "status": "validated",
       "target": "VCORequirement.recommended",
       "type": "derived_from"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "realization",
       "properties": {
-        "metric": "phase_noise_1mhz_dbc_hz"
+        "metric": "worst_phase_noise_1mhz_dbc_hz"
       },
+      "provenance": {
+        "edge_type": "constrains",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "VCORequirement.recommended",
       "status": "validated",
       "target": "VCO.capability_region",
       "type": "constrains"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "realization",
       "properties": {
         "model_ref": "synthetic_behavioral_vco_v1"
       },
+      "provenance": {
+        "edge_type": "realizes",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Candidate.candidate_baseline",
       "status": "validated",
       "target": "Instance.candidate_baseline",
       "type": "realizes"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": false
       },
+      "provenance": {
+        "edge_type": "evaluates",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Instance.candidate_baseline",
       "status": "rejected",
       "target": "BlockTB.candidate_baseline",
       "type": "evaluates"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": false
       },
+      "provenance": {
+        "edge_type": "evaluates",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Instance.candidate_baseline",
       "status": "rejected",
       "target": "SystemTB.candidate_baseline",
       "type": "evaluates"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "realization",
       "properties": {
         "candidate_id": "candidate_baseline"
       },
+      "provenance": {
+        "edge_type": "candidate_of",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Candidate.candidate_baseline",
       "status": "tested",
       "target": "VCO.design_space",
       "type": "candidate_of"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "realization",
       "properties": {
         "relationship": "sampled_candidate"
       },
+      "provenance": {
+        "edge_type": "provides",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "VCO.design_space",
       "status": "tested",
       "target": "Candidate.candidate_baseline",
       "type": "provides"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": false,
         "test": "validate_vco_spec"
       },
+      "provenance": {
+        "edge_type": "validated_by",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Instance.candidate_baseline",
       "status": "rejected",
       "target": "BlockTB.candidate_baseline",
       "type": "validated_by"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": false,
         "test": "evaluate_system"
       },
+      "provenance": {
+        "edge_type": "validated_by",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Instance.candidate_baseline",
       "status": "rejected",
       "target": "SystemTB.candidate_baseline",
       "type": "validated_by"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "checks": {
           "phase_noise_1mhz": false,
@@ -363,66 +776,122 @@
         },
         "passed": false
       },
+      "provenance": {
+        "edge_type": "verifies_requirement",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "BlockTB.candidate_baseline",
       "status": "rejected",
       "target": "VCORequirement.recommended",
       "type": "verifies_requirement"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": false
       },
+      "provenance": {
+        "edge_type": "verifies_requirement",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "SystemTB.candidate_baseline",
       "status": "rejected",
       "target": "SystemSpec.integrated_jitter",
       "type": "verifies_requirement"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": true
       },
+      "provenance": {
+        "edge_type": "verifies_requirement",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "SystemTB.candidate_baseline",
       "status": "validated",
       "target": "SystemSpec.lock_time",
       "type": "verifies_requirement"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": true
       },
+      "provenance": {
+        "edge_type": "verifies_requirement",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "SystemTB.candidate_baseline",
       "status": "validated",
       "target": "SystemSpec.output_frequency",
       "type": "verifies_requirement"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": true
       },
+      "provenance": {
+        "edge_type": "verifies_requirement",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "SystemTB.candidate_baseline",
       "status": "validated",
       "target": "SystemSpec.power",
       "type": "verifies_requirement"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "source": "frozen_pre_candidate_contract"
       },
+      "provenance": {
+        "edge_type": "uses_context",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "BlockTB.candidate_baseline",
       "status": "validated",
       "target": "Context.VCO.contract",
       "type": "uses_context"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "source": "actual_simulated_context"
       },
+      "provenance": {
+        "edge_type": "uses_context",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "SystemTB.candidate_baseline",
       "status": "validated",
       "target": "Context.SystemTB.candidate_baseline",
       "type": "uses_context"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "checks": {
           "temperature": true,
@@ -432,95 +901,193 @@
         },
         "passed": true
       },
+      "provenance": {
+        "edge_type": "covers",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Context.VCO.contract",
       "status": "validated",
       "target": "Context.SystemTB.candidate_baseline",
       "type": "covers"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "realization",
+      "properties": {
+        "candidate_id": "candidate_low_noise",
+        "knob_name": "pn_anchor_1mhz_dbc_hz"
+      },
+      "provenance": {
+        "edge_type": "contains",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "Candidate.candidate_low_noise",
+      "status": "validated",
+      "target": "Knob.candidate_low_noise.pn_anchor_1mhz_dbc_hz",
+      "type": "contains"
+    },
+    {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "realization",
       "properties": {
         "model_ref": "synthetic_behavioral_vco_v1"
       },
+      "provenance": {
+        "edge_type": "realizes",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Candidate.candidate_low_noise",
       "status": "validated",
       "target": "Instance.candidate_low_noise",
       "type": "realizes"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": true
       },
+      "provenance": {
+        "edge_type": "evaluates",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Instance.candidate_low_noise",
       "status": "validated",
       "target": "BlockTB.candidate_low_noise",
       "type": "evaluates"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": true
       },
+      "provenance": {
+        "edge_type": "evaluates",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Instance.candidate_low_noise",
       "status": "validated",
       "target": "SystemTB.candidate_low_noise",
       "type": "evaluates"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "realization",
       "properties": {
         "candidate_id": "candidate_low_noise"
       },
+      "provenance": {
+        "edge_type": "candidate_of",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Candidate.candidate_low_noise",
       "status": "tested",
       "target": "VCO.design_space",
       "type": "candidate_of"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "realization",
       "properties": {
         "relationship": "sampled_candidate"
       },
+      "provenance": {
+        "edge_type": "provides",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "VCO.design_space",
       "status": "tested",
       "target": "Candidate.candidate_low_noise",
       "type": "provides"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "realization",
       "properties": {
         "candidate_id": "candidate_low_noise"
       },
+      "provenance": {
+        "edge_type": "candidate_of",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Candidate.candidate_low_noise",
       "status": "validated",
       "target": "VCO.capability_region",
       "type": "candidate_of"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "realization",
       "properties": {
         "relationship": "verified_feasible_candidate"
       },
+      "provenance": {
+        "edge_type": "provides",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "VCO.capability_region",
       "status": "validated",
       "target": "Candidate.candidate_low_noise",
       "type": "provides"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": true,
         "test": "validate_vco_spec"
       },
+      "provenance": {
+        "edge_type": "validated_by",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Instance.candidate_low_noise",
       "status": "validated",
       "target": "BlockTB.candidate_low_noise",
       "type": "validated_by"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": true,
         "test": "evaluate_system"
       },
+      "provenance": {
+        "edge_type": "validated_by",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Instance.candidate_low_noise",
       "status": "validated",
       "target": "SystemTB.candidate_low_noise",
       "type": "validated_by"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "checks": {
           "phase_noise_1mhz": true,
@@ -529,66 +1096,122 @@
         },
         "passed": true
       },
+      "provenance": {
+        "edge_type": "verifies_requirement",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "BlockTB.candidate_low_noise",
       "status": "validated",
       "target": "VCORequirement.recommended",
       "type": "verifies_requirement"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": true
       },
+      "provenance": {
+        "edge_type": "verifies_requirement",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "SystemTB.candidate_low_noise",
       "status": "validated",
       "target": "SystemSpec.integrated_jitter",
       "type": "verifies_requirement"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": true
       },
+      "provenance": {
+        "edge_type": "verifies_requirement",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "SystemTB.candidate_low_noise",
       "status": "validated",
       "target": "SystemSpec.lock_time",
       "type": "verifies_requirement"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": true
       },
+      "provenance": {
+        "edge_type": "verifies_requirement",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "SystemTB.candidate_low_noise",
       "status": "validated",
       "target": "SystemSpec.output_frequency",
       "type": "verifies_requirement"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": true
       },
+      "provenance": {
+        "edge_type": "verifies_requirement",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "SystemTB.candidate_low_noise",
       "status": "validated",
       "target": "SystemSpec.power",
       "type": "verifies_requirement"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "source": "frozen_pre_candidate_contract"
       },
+      "provenance": {
+        "edge_type": "uses_context",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "BlockTB.candidate_low_noise",
       "status": "validated",
       "target": "Context.VCO.contract",
       "type": "uses_context"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "source": "actual_simulated_context"
       },
+      "provenance": {
+        "edge_type": "uses_context",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "SystemTB.candidate_low_noise",
       "status": "validated",
       "target": "Context.SystemTB.candidate_low_noise",
       "type": "uses_context"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "checks": {
           "temperature": true,
@@ -598,95 +1221,211 @@
         },
         "passed": true
       },
+      "provenance": {
+        "edge_type": "covers",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Context.VCO.contract",
       "status": "validated",
       "target": "Context.SystemTB.candidate_low_noise",
       "type": "covers"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "realization",
       "properties": {
         "candidate_id": "candidate_low_noise"
       },
+      "provenance": {
+        "edge_type": "selected_for",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Candidate.candidate_low_noise",
       "status": "validated",
       "target": "Candidate.selected",
       "type": "selected_for"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "realization",
       "properties": {
         "candidate_id": "candidate_low_noise"
       },
+      "provenance": {
+        "edge_type": "realizes",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Candidate.selected",
       "status": "validated",
       "target": "Instance.candidate_low_noise",
       "type": "realizes"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "realization",
+      "properties": {
+        "candidate_id": "candidate_low_noise_fast_lock",
+        "knob_name": "k1_hz_per_v"
+      },
+      "provenance": {
+        "edge_type": "contains",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "Candidate.candidate_low_noise_fast_lock",
+      "status": "tested",
+      "target": "Knob.candidate_low_noise_fast_lock.k1_hz_per_v",
+      "type": "contains"
+    },
+    {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "realization",
+      "properties": {
+        "candidate_id": "candidate_low_noise_fast_lock",
+        "knob_name": "pn_anchor_1mhz_dbc_hz"
+      },
+      "provenance": {
+        "edge_type": "contains",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "Candidate.candidate_low_noise_fast_lock",
+      "status": "tested",
+      "target": "Knob.candidate_low_noise_fast_lock.pn_anchor_1mhz_dbc_hz",
+      "type": "contains"
+    },
+    {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "realization",
       "properties": {
         "model_ref": "synthetic_behavioral_vco_v1"
       },
+      "provenance": {
+        "edge_type": "realizes",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Candidate.candidate_low_noise_fast_lock",
       "status": "validated",
       "target": "Instance.candidate_low_noise_fast_lock",
       "type": "realizes"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": false
       },
+      "provenance": {
+        "edge_type": "evaluates",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Instance.candidate_low_noise_fast_lock",
       "status": "rejected",
       "target": "BlockTB.candidate_low_noise_fast_lock",
       "type": "evaluates"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": true
       },
+      "provenance": {
+        "edge_type": "evaluates",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Instance.candidate_low_noise_fast_lock",
       "status": "validated",
       "target": "SystemTB.candidate_low_noise_fast_lock",
       "type": "evaluates"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "realization",
       "properties": {
         "candidate_id": "candidate_low_noise_fast_lock"
       },
+      "provenance": {
+        "edge_type": "candidate_of",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Candidate.candidate_low_noise_fast_lock",
       "status": "tested",
       "target": "VCO.design_space",
       "type": "candidate_of"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "realization",
       "properties": {
         "relationship": "sampled_candidate"
       },
+      "provenance": {
+        "edge_type": "provides",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "VCO.design_space",
       "status": "tested",
       "target": "Candidate.candidate_low_noise_fast_lock",
       "type": "provides"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": false,
         "test": "validate_vco_spec"
       },
+      "provenance": {
+        "edge_type": "validated_by",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Instance.candidate_low_noise_fast_lock",
       "status": "rejected",
       "target": "BlockTB.candidate_low_noise_fast_lock",
       "type": "validated_by"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": true,
         "test": "evaluate_system"
       },
+      "provenance": {
+        "edge_type": "validated_by",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Instance.candidate_low_noise_fast_lock",
       "status": "validated",
       "target": "SystemTB.candidate_low_noise_fast_lock",
       "type": "validated_by"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "checks": {
           "phase_noise_1mhz": true,
@@ -695,66 +1434,122 @@
         },
         "passed": false
       },
+      "provenance": {
+        "edge_type": "verifies_requirement",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "BlockTB.candidate_low_noise_fast_lock",
       "status": "rejected",
       "target": "VCORequirement.recommended",
       "type": "verifies_requirement"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": true
       },
+      "provenance": {
+        "edge_type": "verifies_requirement",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "SystemTB.candidate_low_noise_fast_lock",
       "status": "validated",
       "target": "SystemSpec.integrated_jitter",
       "type": "verifies_requirement"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": true
       },
+      "provenance": {
+        "edge_type": "verifies_requirement",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "SystemTB.candidate_low_noise_fast_lock",
       "status": "validated",
       "target": "SystemSpec.lock_time",
       "type": "verifies_requirement"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": true
       },
+      "provenance": {
+        "edge_type": "verifies_requirement",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "SystemTB.candidate_low_noise_fast_lock",
       "status": "validated",
       "target": "SystemSpec.output_frequency",
       "type": "verifies_requirement"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": true
       },
+      "provenance": {
+        "edge_type": "verifies_requirement",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "SystemTB.candidate_low_noise_fast_lock",
       "status": "validated",
       "target": "SystemSpec.power",
       "type": "verifies_requirement"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "source": "frozen_pre_candidate_contract"
       },
+      "provenance": {
+        "edge_type": "uses_context",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "BlockTB.candidate_low_noise_fast_lock",
       "status": "validated",
       "target": "Context.VCO.contract",
       "type": "uses_context"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "source": "actual_simulated_context"
       },
+      "provenance": {
+        "edge_type": "uses_context",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "SystemTB.candidate_low_noise_fast_lock",
       "status": "validated",
       "target": "Context.SystemTB.candidate_low_noise_fast_lock",
       "type": "uses_context"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "checks": {
           "temperature": true,
@@ -764,115 +1559,211 @@
         },
         "passed": false
       },
+      "provenance": {
+        "edge_type": "covers",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Context.VCO.contract",
       "status": "rejected",
       "target": "Context.SystemTB.candidate_low_noise_fast_lock",
       "type": "covers"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": false,
         "phase": "initial_system_evaluation"
       },
+      "provenance": {
+        "edge_type": "verifies_requirement",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Evidence.SystemTB.initial",
       "status": "rejected",
       "target": "SystemSpec.integrated_jitter",
       "type": "verifies_requirement"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": true,
         "phase": "initial_system_evaluation"
       },
+      "provenance": {
+        "edge_type": "verifies_requirement",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Evidence.SystemTB.initial",
       "status": "validated",
       "target": "SystemSpec.lock_time",
       "type": "verifies_requirement"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": true,
         "phase": "initial_system_evaluation"
       },
+      "provenance": {
+        "edge_type": "verifies_requirement",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Evidence.SystemTB.initial",
       "status": "validated",
       "target": "SystemSpec.output_frequency",
       "type": "verifies_requirement"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": true,
         "phase": "initial_system_evaluation"
       },
+      "provenance": {
+        "edge_type": "verifies_requirement",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Evidence.SystemTB.initial",
       "status": "validated",
       "target": "SystemSpec.power",
       "type": "verifies_requirement"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": true
       },
+      "provenance": {
+        "edge_type": "yields_verdict",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Evidence.SystemTB.final",
       "status": "validated",
       "target": "SystemSpec.verdict",
       "type": "yields_verdict"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": true
       },
+      "provenance": {
+        "edge_type": "verifies_requirement",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "SystemSpec.verdict",
       "status": "validated",
       "target": "SystemSpec.integrated_jitter",
       "type": "verifies_requirement"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": true
       },
+      "provenance": {
+        "edge_type": "verifies_requirement",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "SystemSpec.verdict",
       "status": "validated",
       "target": "SystemSpec.lock_time",
       "type": "verifies_requirement"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": true
       },
+      "provenance": {
+        "edge_type": "verifies_requirement",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "SystemSpec.verdict",
       "status": "validated",
       "target": "SystemSpec.output_frequency",
       "type": "verifies_requirement"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "passed": true
       },
+      "provenance": {
+        "edge_type": "verifies_requirement",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "SystemSpec.verdict",
       "status": "validated",
       "target": "SystemSpec.power",
       "type": "verifies_requirement"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "artifact_ref": "final_system_evaluation.json",
         "independent_rerun": true,
         "passed": true
       },
+      "provenance": {
+        "edge_type": "evaluates",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Instance.candidate_low_noise",
       "status": "validated",
       "target": "Evidence.SystemTB.final",
       "type": "evaluates"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {},
+      "provenance": {
+        "edge_type": "uses_context",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Evidence.SystemTB.final",
       "status": "validated",
       "target": "Context.SystemTB.final",
       "type": "uses_context"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "checks": {
           "temperature": true,
@@ -882,131 +1773,230 @@
         },
         "passed": true
       },
+      "provenance": {
+        "edge_type": "covers",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Context.VCO.contract",
       "status": "validated",
       "target": "Context.SystemTB.final",
       "type": "covers"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "contract",
       "properties": {
         "context_source": "SystemTB operating envelope"
       },
+      "provenance": {
+        "edge_type": "measured_by",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "VCO.phase_noise_1mhz",
       "status": "validated",
       "target": "Measurement.VCO.phase_noise_1mhz",
       "type": "measured_by"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "schema",
       "properties": {
         "schema_version": "block-meta-1.0"
       },
+      "provenance": {
+        "edge_type": "contains",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "VCO",
       "status": "validated",
       "target": "Schema.BlockMeta.VCO",
       "type": "contains"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "contract",
       "properties": {
         "contract_id": "vco_contract_v1"
       },
+      "provenance": {
+        "edge_type": "derived_from",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Schema.BlockMeta.VCO",
       "status": "validated",
       "target": "Contract.VCO.v1",
       "type": "derived_from"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "contract_id": "vco_contract_v1"
       },
+      "provenance": {
+        "edge_type": "supported_by",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Contract.VCO.v1",
       "status": "validated",
       "target": "Measurement.VCO.phase_noise_1mhz",
       "type": "supported_by"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "contract",
       "properties": {
         "status": "validated_on_v1_observations"
       },
+      "provenance": {
+        "edge_type": "valid_in",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Contract.VCO.v1",
       "status": "validated",
       "target": "Validity.VCO.v1",
       "type": "valid_in"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "evidence_ids": [
           "k1_hz_per_v",
           "nominal_power_w",
-          "pn_1mhz_dbc_hz",
+          "pn_anchor_1mhz_dbc_hz",
           "vctrl_max_v"
         ]
       },
+      "provenance": {
+        "edge_type": "supports",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "Evidence.sensitivity",
       "status": "validated",
       "target": "operator.VCO_Noise_TF",
       "type": "supports"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "method": "bracketed_bisection"
       },
+      "provenance": {
+        "edge_type": "derived_from",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "VCORequirement.required",
       "status": "validated",
       "target": "Evidence.boundary_search",
       "type": "derived_from"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "margin_db": 1.5
       },
+      "provenance": {
+        "edge_type": "derived_from",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
       "source": "VCORequirement.recommended",
       "status": "validated",
       "target": "Evidence.boundary_search",
       "type": "derived_from"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "active_in_sweep": true,
         "evidence_id": "Evidence.sensitivity",
-        "evidence_ref": "sensitivity.json#sweeps.pn_1mhz_dbc_hz.local_derivatives.integrated_jitter_s",
+        "evidence_ref": "sensitivity.json#sweeps.pn_anchor_1mhz_dbc_hz.local_derivatives.integrated_jitter_s",
         "method": "central_finite_difference",
         "observed_metric_span": 5.235203335968396e-14,
         "value": 9.683058812533833e-15
       },
-      "source": "VCO.phase_noise_1mhz_design",
+      "provenance": {
+        "edge_type": "sensitivity_evidence",
+        "evidence_id": "Evidence.sensitivity",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "VCO.pn_anchor_1mhz",
       "status": "validated",
       "target": "PLL.integrated_jitter",
       "type": "sensitivity_evidence"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "active_in_sweep": false,
         "evidence_id": "Evidence.sensitivity",
-        "evidence_ref": "sensitivity.json#sweeps.pn_1mhz_dbc_hz.local_derivatives.lock_time_s",
+        "evidence_ref": "sensitivity.json#sweeps.pn_anchor_1mhz_dbc_hz.local_derivatives.lock_time_s",
         "method": "central_finite_difference",
         "observed_metric_span": 0.0,
         "value": 0.0
       },
-      "source": "VCO.phase_noise_1mhz_design",
+      "provenance": {
+        "edge_type": "sensitivity_evidence",
+        "evidence_id": "Evidence.sensitivity",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "VCO.pn_anchor_1mhz",
       "status": "validated",
       "target": "PLL.lock_time",
       "type": "sensitivity_evidence"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "active_in_sweep": false,
         "evidence_id": "Evidence.sensitivity",
-        "evidence_ref": "sensitivity.json#sweeps.pn_1mhz_dbc_hz.local_derivatives.power_w",
+        "evidence_ref": "sensitivity.json#sweeps.pn_anchor_1mhz_dbc_hz.local_derivatives.power_w",
         "method": "central_finite_difference",
         "observed_metric_span": 0.0,
         "value": 0.0
       },
-      "source": "VCO.phase_noise_1mhz_design",
+      "provenance": {
+        "edge_type": "sensitivity_evidence",
+        "evidence_id": "Evidence.sensitivity",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "VCO.pn_anchor_1mhz",
       "status": "validated",
       "target": "PLL.power",
       "type": "sensitivity_evidence"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "active_in_sweep": true,
         "evidence_id": "Evidence.sensitivity",
@@ -1015,12 +2005,21 @@
         "observed_metric_span": 3.74282920198872e-14,
         "value": -2.5629955021306936e-23
       },
-      "source": "VCO.k1_design",
+      "provenance": {
+        "edge_type": "sensitivity_evidence",
+        "evidence_id": "Evidence.sensitivity",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "VCO.k1_hz_per_v",
       "status": "validated",
       "target": "PLL.integrated_jitter",
       "type": "sensitivity_evidence"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "active_in_sweep": true,
         "evidence_id": "Evidence.sensitivity",
@@ -1029,12 +2028,21 @@
         "observed_metric_span": 6.200000000000002e-06,
         "value": 3.224999999999999e-15
       },
-      "source": "VCO.k1_design",
+      "provenance": {
+        "edge_type": "sensitivity_evidence",
+        "evidence_id": "Evidence.sensitivity",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "VCO.k1_hz_per_v",
       "status": "validated",
       "target": "PLL.lock_time",
       "type": "sensitivity_evidence"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "active_in_sweep": true,
         "evidence_id": "Evidence.sensitivity",
@@ -1043,12 +2051,21 @@
         "observed_metric_span": 0.00013832650578564625,
         "value": -9.243599516414735e-14
       },
-      "source": "VCO.k1_design",
+      "provenance": {
+        "edge_type": "sensitivity_evidence",
+        "evidence_id": "Evidence.sensitivity",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "VCO.k1_hz_per_v",
       "status": "validated",
       "target": "PLL.power",
       "type": "sensitivity_evidence"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "active_in_sweep": false,
         "evidence_id": "Evidence.sensitivity",
@@ -1057,12 +2074,21 @@
         "observed_metric_span": 0.0,
         "value": 0.0
       },
-      "source": "VCO.nominal_power_design",
+      "provenance": {
+        "edge_type": "sensitivity_evidence",
+        "evidence_id": "Evidence.sensitivity",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "VCO.nominal_power_w",
       "status": "validated",
       "target": "PLL.integrated_jitter",
       "type": "sensitivity_evidence"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "active_in_sweep": false,
         "evidence_id": "Evidence.sensitivity",
@@ -1071,12 +2097,21 @@
         "observed_metric_span": 0.0,
         "value": 0.0
       },
-      "source": "VCO.nominal_power_design",
+      "provenance": {
+        "edge_type": "sensitivity_evidence",
+        "evidence_id": "Evidence.sensitivity",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "VCO.nominal_power_w",
       "status": "validated",
       "target": "PLL.lock_time",
       "type": "sensitivity_evidence"
     },
     {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "active_in_sweep": true,
         "evidence_id": "Evidence.sensitivity",
@@ -1085,7 +2120,13 @@
         "observed_metric_span": 0.0021688306868226735,
         "value": 1.0844153434113366
       },
-      "source": "VCO.nominal_power_design",
+      "provenance": {
+        "edge_type": "sensitivity_evidence",
+        "evidence_id": "Evidence.sensitivity",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "VCO.nominal_power_w",
       "status": "validated",
       "target": "PLL.power",
       "type": "sensitivity_evidence"
@@ -1099,330 +2140,620 @@
     "block_meta_ref": "vco_block_meta_v1.json",
     "deterministic": true,
     "execution_model": "architecture_feedback_plus_evaluation_operators",
-    "schema": "BlockMetaSchema v1 + TypedGraph v2"
+    "plane_model": "implementation_metadata_schema_contract_realization_evidence",
+    "planes": [
+      "schema",
+      "contract",
+      "realization",
+      "evidence"
+    ],
+    "schema": "BlockMetaSchema v1 + TypedGraph v2",
+    "semantic_role_model": [
+      "architecture",
+      "behavior",
+      "influence",
+      "evidence"
+    ]
   },
   "nodes": [
     {
+      "authority": "schema_compiler",
       "id": "PLL",
-      "layer": "interface",
+      "mutability": "immutable",
+      "plane": "schema",
       "properties": {
         "architecture": "integer_n_cppll"
       },
+      "provenance": {
+        "plane": "schema",
+        "source": "v1/graph/model.py"
+      },
+      "scope": "global",
+      "semantic_role": "architecture",
       "type": "architecture_block"
     },
     {
+      "authority": "schema_compiler",
       "id": "VCO",
-      "layer": "interface",
+      "mutability": "immutable",
+      "plane": "schema",
       "properties": {
         "target_block": true
       },
+      "provenance": {
+        "plane": "schema",
+        "source": "v1/graph/model.py"
+      },
+      "scope": "global",
+      "semantic_role": "architecture",
       "type": "architecture_block"
     },
     {
+      "authority": "schema_compiler",
       "id": "PLL.reference",
-      "layer": "interface",
+      "mutability": "immutable",
       "owner": "PLL",
+      "plane": "schema",
       "properties": {
         "direction": "in",
         "unit": "Hz"
       },
+      "provenance": {
+        "plane": "schema",
+        "source": "v1/graph/model.py"
+      },
+      "scope": "global",
+      "semantic_role": "architecture",
       "type": "port"
     },
     {
+      "authority": "schema_compiler",
       "id": "PLL.control_voltage",
-      "layer": "interface",
+      "mutability": "immutable",
       "owner": "PLL",
+      "plane": "schema",
       "properties": {
         "direction": "out",
         "unit": "V"
       },
+      "provenance": {
+        "plane": "schema",
+        "source": "v1/graph/model.py"
+      },
+      "scope": "global",
+      "semantic_role": "architecture",
       "type": "port"
     },
     {
+      "authority": "schema_compiler",
       "id": "PLL.oscillation",
-      "layer": "interface",
+      "mutability": "immutable",
       "owner": "PLL",
+      "plane": "schema",
       "properties": {
         "direction": "in",
         "unit": "Hz"
       },
+      "provenance": {
+        "plane": "schema",
+        "source": "v1/graph/model.py"
+      },
+      "scope": "global",
+      "semantic_role": "architecture",
       "type": "port"
     },
     {
+      "authority": "schema_compiler",
       "id": "VCO.vctrl",
-      "layer": "interface",
+      "mutability": "immutable",
       "owner": "VCO",
+      "plane": "schema",
       "properties": {
         "direction": "in",
         "unit": "V"
       },
+      "provenance": {
+        "plane": "schema",
+        "source": "v1/graph/model.py"
+      },
+      "scope": "global",
+      "semantic_role": "architecture",
       "type": "port"
     },
     {
+      "authority": "schema_compiler",
       "id": "VCO.oscillation",
-      "layer": "interface",
+      "mutability": "immutable",
       "owner": "VCO",
+      "plane": "schema",
       "properties": {
         "direction": "out",
         "unit": "Hz"
       },
-      "type": "port"
-    },
-    {
-      "id": "VCO.phase_noise_profile",
-      "layer": "interface",
-      "owner": "VCO",
-      "properties": {
-        "direction": "out",
-        "unit": "dBc/Hz"
+      "provenance": {
+        "plane": "schema",
+        "source": "v1/graph/model.py"
       },
+      "scope": "global",
+      "semantic_role": "architecture",
       "type": "port"
     },
     {
-      "id": "VCO.Kvco",
-      "layer": "interface",
-      "owner": "VCO",
-      "properties": {
-        "direction": "out",
-        "unit": "Hz/V"
-      },
-      "type": "port"
-    },
-    {
+      "authority": "schema_compiler",
       "id": "Environment.temperature",
-      "layer": "interface",
+      "mutability": "immutable",
+      "plane": "schema",
       "properties": {
         "unit": "degC"
       },
+      "provenance": {
+        "plane": "schema",
+        "source": "v1/graph/model.py"
+      },
+      "scope": "global",
+      "semantic_role": "architecture",
       "type": "context_variable"
     },
     {
+      "authority": "schema_compiler",
       "id": "Environment.vdd",
-      "layer": "interface",
+      "mutability": "immutable",
+      "plane": "schema",
       "properties": {
         "unit": "V"
       },
+      "provenance": {
+        "plane": "schema",
+        "source": "v1/graph/model.py"
+      },
+      "scope": "global",
+      "semantic_role": "architecture",
       "type": "context_variable"
     },
     {
+      "authority": "schema_compiler",
       "id": "VCO.phase_noise_1mhz",
-      "layer": "behavior",
+      "mutability": "immutable",
       "owner": "VCO",
+      "plane": "schema",
       "properties": {
+        "metric_name": "phase_noise_1mhz_dbc_hz",
         "unit": "dBc/Hz"
       },
+      "provenance": {
+        "plane": "schema",
+        "source": "v1/graph/model.py"
+      },
+      "scope": "global",
+      "semantic_role": "behavior",
       "type": "behavioral_output"
     },
     {
+      "authority": "schema_compiler",
       "id": "VCO.frequency",
-      "layer": "behavior",
+      "mutability": "immutable",
       "owner": "VCO",
+      "plane": "schema",
       "properties": {
+        "metric_name": "frequency_hz",
         "unit": "Hz"
       },
+      "provenance": {
+        "plane": "schema",
+        "source": "v1/graph/model.py"
+      },
+      "scope": "global",
+      "semantic_role": "behavior",
       "type": "behavioral_output"
     },
     {
+      "authority": "schema_compiler",
       "id": "VCO.kvco",
-      "layer": "behavior",
+      "mutability": "immutable",
       "owner": "VCO",
+      "plane": "schema",
       "properties": {
+        "metric_name": "kvco_hz_per_v",
         "unit": "Hz/V"
       },
+      "provenance": {
+        "plane": "schema",
+        "source": "v1/graph/model.py"
+      },
+      "scope": "global",
+      "semantic_role": "behavior",
       "type": "behavioral_output"
     },
     {
+      "authority": "schema_compiler",
       "id": "VCO.power",
-      "layer": "behavior",
+      "mutability": "immutable",
       "owner": "VCO",
+      "plane": "schema",
       "properties": {
+        "metric_name": "power_w",
         "unit": "W"
       },
+      "provenance": {
+        "plane": "schema",
+        "source": "v1/graph/model.py"
+      },
+      "scope": "global",
+      "semantic_role": "behavior",
       "type": "behavioral_output"
     },
     {
-      "id": "VCO.phase_noise_1mhz_design",
-      "layer": "behavior",
+      "authority": "agent_or_allocator",
+      "id": "VCO.pn_anchor_1mhz",
+      "mutability": "immutable",
       "owner": "VCO",
+      "plane": "realization",
       "properties": {
+        "knob_name": "pn_anchor_1mhz_dbc_hz",
+        "parameter_identity": "internal_model_knob",
         "unit": "dBc/Hz"
       },
-      "type": "design_variable"
+      "provenance": {
+        "plane": "realization",
+        "source": "v1.graph.compiler.allocation"
+      },
+      "scope": "run_specific",
+      "type": "candidate_knob"
     },
     {
-      "id": "VCO.k1_design",
-      "layer": "behavior",
+      "authority": "agent_or_allocator",
+      "id": "VCO.f0_hz",
+      "mutability": "immutable",
       "owner": "VCO",
+      "plane": "realization",
       "properties": {
+        "knob_name": "f0_hz",
+        "parameter_identity": "internal_model_knob",
+        "unit": "Hz"
+      },
+      "provenance": {
+        "plane": "realization",
+        "source": "v1.graph.compiler.allocation"
+      },
+      "scope": "run_specific",
+      "type": "candidate_knob"
+    },
+    {
+      "authority": "agent_or_allocator",
+      "id": "VCO.k1_hz_per_v",
+      "mutability": "immutable",
+      "owner": "VCO",
+      "plane": "realization",
+      "properties": {
+        "knob_name": "k1_hz_per_v",
+        "parameter_identity": "internal_model_knob",
         "unit": "Hz/V"
       },
-      "type": "design_variable"
+      "provenance": {
+        "plane": "realization",
+        "source": "v1.graph.compiler.allocation"
+      },
+      "scope": "run_specific",
+      "type": "candidate_knob"
     },
     {
-      "id": "VCO.nominal_power_design",
-      "layer": "behavior",
+      "authority": "agent_or_allocator",
+      "id": "VCO.nominal_power_w",
+      "mutability": "immutable",
       "owner": "VCO",
+      "plane": "realization",
       "properties": {
+        "knob_name": "nominal_power_w",
+        "parameter_identity": "internal_model_knob",
         "unit": "W"
       },
-      "type": "design_variable"
+      "provenance": {
+        "plane": "realization",
+        "source": "v1.graph.compiler.allocation"
+      },
+      "scope": "run_specific",
+      "type": "candidate_knob"
     },
     {
+      "authority": "schema_compiler",
       "id": "operator.VCO_Noise_TF",
-      "layer": "behavior",
+      "mutability": "immutable",
+      "plane": "schema",
       "properties": {
         "model_ref": "behavioral_vco_noise_v1",
         "operator": "vco_noise_transfer"
       },
+      "provenance": {
+        "model_ref": "behavioral_vco_noise_v1",
+        "plane": "schema",
+        "source": "v1/graph/model.py"
+      },
+      "scope": "global",
+      "semantic_role": "influence",
       "type": "operator"
     },
     {
+      "authority": "schema_compiler",
       "id": "operator.Noise_Integration",
-      "layer": "behavior",
+      "mutability": "immutable",
+      "plane": "schema",
       "properties": {
         "aggregation": "quadrature_psd_integral",
         "operator": "psd_to_integrated_jitter"
       },
+      "provenance": {
+        "plane": "schema",
+        "source": "v1/graph/model.py"
+      },
+      "scope": "global",
+      "semantic_role": "influence",
       "type": "operator"
     },
     {
+      "authority": "schema_compiler",
       "id": "operator.PLL_Dynamics",
-      "layer": "behavior",
+      "mutability": "immutable",
+      "plane": "schema",
       "properties": {
         "model_ref": "averaged_cppll_v1",
         "operator": "closed_loop_dynamics"
       },
+      "provenance": {
+        "model_ref": "averaged_cppll_v1",
+        "plane": "schema",
+        "source": "v1/graph/model.py"
+      },
+      "scope": "global",
+      "semantic_role": "influence",
       "type": "operator"
     },
     {
+      "authority": "schema_compiler",
       "id": "PLL.integrated_jitter",
-      "layer": "behavior",
+      "mutability": "immutable",
       "owner": "PLL",
+      "plane": "schema",
       "properties": {
+        "metric_name": "integrated_jitter_s",
         "unit": "s"
       },
+      "provenance": {
+        "plane": "schema",
+        "source": "v1/graph/model.py"
+      },
+      "scope": "global",
+      "semantic_role": "influence",
       "type": "system_metric"
     },
     {
+      "authority": "schema_compiler",
       "id": "PLL.lock_time",
-      "layer": "behavior",
+      "mutability": "immutable",
       "owner": "PLL",
+      "plane": "schema",
       "properties": {
+        "metric_name": "lock_time_s",
         "unit": "s"
       },
+      "provenance": {
+        "plane": "schema",
+        "source": "v1/graph/model.py"
+      },
+      "scope": "global",
+      "semantic_role": "influence",
       "type": "system_metric"
     },
     {
+      "authority": "schema_compiler",
       "id": "PLL.output_frequency",
-      "layer": "behavior",
+      "mutability": "immutable",
       "owner": "PLL",
+      "plane": "schema",
       "properties": {
+        "metric_name": "output_frequency_hz",
         "unit": "Hz"
       },
+      "provenance": {
+        "plane": "schema",
+        "source": "v1/graph/model.py"
+      },
+      "scope": "global",
+      "semantic_role": "influence",
       "type": "system_metric"
     },
     {
+      "authority": "schema_compiler",
       "id": "PLL.power",
-      "layer": "behavior",
+      "mutability": "immutable",
       "owner": "PLL",
+      "plane": "schema",
       "properties": {
+        "metric_name": "power_w",
         "unit": "W"
       },
+      "provenance": {
+        "plane": "schema",
+        "source": "v1/graph/model.py"
+      },
+      "scope": "global",
+      "semantic_role": "influence",
       "type": "system_metric"
     },
     {
+      "authority": "system_spec_input",
       "id": "SystemSpec.integrated_jitter",
-      "layer": "allocation",
+      "mutability": "immutable",
+      "plane": "realization",
       "properties": {
         "limit": 8e-14,
         "metric": "PLL.integrated_jitter",
+        "parameter_identity": "requirement",
+        "requirement_id": "SystemSpec.integrated_jitter",
         "source": "SystemSpec"
       },
+      "provenance": {
+        "plane": "realization",
+        "source": "SystemSpec"
+      },
+      "scope": "run_specific",
       "type": "system_requirement"
     },
     {
+      "authority": "system_spec_input",
       "id": "SystemSpec.lock_time",
-      "layer": "allocation",
+      "mutability": "immutable",
+      "plane": "realization",
       "properties": {
         "limit": 4e-05,
         "metric": "PLL.lock_time",
+        "parameter_identity": "requirement",
+        "requirement_id": "SystemSpec.lock_time",
         "source": "SystemSpec"
       },
+      "provenance": {
+        "plane": "realization",
+        "source": "SystemSpec"
+      },
+      "scope": "run_specific",
       "type": "system_requirement"
     },
     {
+      "authority": "system_spec_input",
       "id": "SystemSpec.output_frequency",
-      "layer": "allocation",
+      "mutability": "immutable",
+      "plane": "realization",
       "properties": {
         "limit": 100000.0,
         "metric": "PLL.output_frequency",
+        "parameter_identity": "requirement",
+        "requirement_id": "SystemSpec.output_frequency",
         "source": "SystemSpec"
       },
+      "provenance": {
+        "plane": "realization",
+        "source": "SystemSpec"
+      },
+      "scope": "run_specific",
       "type": "system_requirement"
     },
     {
+      "authority": "system_spec_input",
       "id": "SystemSpec.power",
-      "layer": "allocation",
+      "mutability": "immutable",
+      "plane": "realization",
       "properties": {
         "limit": 0.008,
         "metric": "PLL.power",
+        "parameter_identity": "requirement",
+        "requirement_id": "SystemSpec.power",
         "source": "SystemSpec"
       },
+      "provenance": {
+        "plane": "realization",
+        "source": "SystemSpec"
+      },
+      "scope": "run_specific",
       "type": "system_requirement"
     },
     {
+      "authority": "deterministic_allocator",
       "id": "VCORequirement.required",
-      "layer": "allocation",
+      "mutability": "immutable",
+      "plane": "realization",
       "properties": {
         "margin_db": 0.0,
+        "measured_metric": "worst_phase_noise_1mhz_dbc_hz",
         "metric": "phase_noise_1mhz_max_dbc_hz",
-        "source": "deterministic_pn_boundary_search",
-        "value": -116.35812103748322
+        "parameter_identity": "requirement",
+        "requirement_id": "VCORequirement.required",
+        "search_knob": "pn_anchor_1mhz_dbc_hz",
+        "search_knob_boundary": -116.35812103748322,
+        "source": "boundary_measurement_under_frozen_context",
+        "value": -113.51115117853384
       },
+      "provenance": {
+        "plane": "realization",
+        "source": "boundary_measurement_under_frozen_context"
+      },
+      "scope": "run_specific",
       "type": "block_requirement"
     },
     {
+      "authority": "deterministic_allocator",
       "id": "VCORequirement.recommended",
-      "layer": "allocation",
+      "mutability": "immutable",
+      "plane": "realization",
       "properties": {
         "margin_db": 1.5,
+        "measured_metric": "worst_phase_noise_1mhz_dbc_hz",
         "metric": "phase_noise_1mhz_max_dbc_hz",
-        "source": "deterministic_boundary_plus_margin",
-        "value": -117.85812103748322
+        "parameter_identity": "requirement",
+        "requirement_id": "VCORequirement.recommended",
+        "source": "measured_boundary_plus_margin",
+        "value": -115.01115117853384
       },
+      "provenance": {
+        "plane": "realization",
+        "source": "measured_boundary_plus_margin"
+      },
+      "scope": "run_specific",
       "type": "block_requirement"
     },
     {
+      "authority": "deterministic_allocator",
       "id": "VCO.design_space",
-      "layer": "allocation",
+      "mutability": "immutable",
       "owner": "VCO",
+      "plane": "realization",
       "properties": {
         "dimensions": [
-          "phase_noise_1mhz_dbc_hz"
+          "pn_anchor_1mhz_dbc_hz",
+          "k1_hz_per_v"
         ],
         "includes_infeasible": true,
-        "representation": "sampled_candidates"
+        "representation": "candidate_knobs"
       },
+      "provenance": {
+        "plane": "realization",
+        "source": "v1.graph.compiler.allocation"
+      },
+      "scope": "run_specific",
       "type": "design_space"
     },
     {
+      "authority": "deterministic_allocator",
       "id": "VCO.capability_region",
-      "layer": "allocation",
+      "mutability": "immutable",
       "owner": "VCO",
+      "plane": "realization",
       "properties": {
         "dimensions": [
-          "phase_noise_1mhz_dbc_hz"
+          "worst_phase_noise_1mhz_dbc_hz",
+          "kvco_min_hz_per_v",
+          "kvco_max_hz_per_v",
+          "worst_power_w",
+          "frequency_min_hz",
+          "frequency_max_hz"
         ],
+        "formal_status": "sampled_partial_one_dimensional",
         "representation": "sampled_feasible_candidates",
-        "status_note": "V1 formal dimension is one-dimensional; membership requires BlockTB PASS"
+        "status_note": "V1 capability points require BlockTB PASS; this is not a complete PN-by-Kvco region"
       },
+      "provenance": {
+        "plane": "realization",
+        "source": "v1.graph.compiler.allocation"
+      },
+      "scope": "run_specific",
       "type": "capability_region"
     },
     {
+      "authority": "contract_builder",
       "id": "Context.VCO.contract",
-      "layer": "verification",
+      "mutability": "versioned",
       "owner": "VCO",
+      "plane": "contract",
       "properties": {
+        "context_id": "VCOBlockContext.v1",
         "guard_v": 0.01,
         "source": "initial_SystemTB_plus_declared_guard; frozen_before_candidate_validation",
         "temperature_points_c": [
@@ -1432,35 +2763,52 @@
         "vctrl_min_v": 0.29845368,
         "vdd_v": 1.8
       },
+      "provenance": {
+        "plane": "contract",
+        "source": "initial_SystemTB_plus_declared_guard; frozen_before_candidate_validation"
+      },
+      "scope": "reusable",
+      "semantic_role": "architecture",
       "status": "validated",
       "type": "context"
     },
     {
+      "authority": "agent_or_allocator",
       "id": "Candidate.candidate_baseline",
-      "layer": "allocation",
+      "mutability": "proposed_then_immutable",
       "owner": "VCO",
+      "plane": "realization",
       "properties": {
+        "candidate_id": "candidate_baseline",
+        "candidate_knobs": {},
         "description": "Current prototype VCO; intentionally misses the jitter target",
         "design_vector": {},
         "engineering_cost": 1.0,
+        "parameter_identity": "candidate",
         "selected": false
       },
+      "provenance": {
+        "plane": "realization",
+        "source": "v1.graph.compiler.allocation"
+      },
+      "scope": "run_specific",
       "status": "tested",
       "type": "candidate"
     },
     {
+      "authority": "realization_compiler",
       "id": "Instance.candidate_baseline",
-      "layer": "allocation",
+      "mutability": "immutable",
       "owner": "VCO",
+      "plane": "realization",
       "properties": {
-        "model_ref": "synthetic_behavioral_vco_v1",
-        "parameters": {
+        "behavioral_variables": {
           "f0_hz": 4450000000.0,
           "k1_hz_per_v": 1600000000.0,
           "k2_hz_per_v2": 700000000.0,
           "nominal_power_w": 0.005,
           "nominal_temperature_c": 25.0,
-          "pn_1mhz_dbc_hz": -116.0,
+          "pn_anchor_1mhz_dbc_hz": -116.0,
           "pn_power_coeff_db_per_decade": -3.0,
           "pn_temp_coeff_db_per_c": 0.018,
           "pn_vctrl_coeff_db_per_v": 8.0,
@@ -1469,59 +2817,107 @@
           "v0_v": 0.5,
           "vctrl_max_v": 1.1,
           "vctrl_min_v": 0.1
-        }
+        },
+        "model_ref": "synthetic_behavioral_vco_v1",
+        "parameter_identity": "realized_instance",
+        "parameters": {
+          "f0_hz": 4450000000.0,
+          "k1_hz_per_v": 1600000000.0,
+          "k2_hz_per_v2": 700000000.0,
+          "nominal_power_w": 0.005,
+          "nominal_temperature_c": 25.0,
+          "pn_anchor_1mhz_dbc_hz": -116.0,
+          "pn_power_coeff_db_per_decade": -3.0,
+          "pn_temp_coeff_db_per_c": 0.018,
+          "pn_vctrl_coeff_db_per_v": 8.0,
+          "power_vctrl_coeff": 0.12,
+          "tempco_hz_per_c": 150000.0,
+          "v0_v": 0.5,
+          "vctrl_max_v": 1.1,
+          "vctrl_min_v": 0.1
+        },
+        "source_candidate_id": "candidate_baseline"
       },
+      "provenance": {
+        "model_ref": "synthetic_behavioral_vco_v1",
+        "plane": "realization",
+        "source": "v1.graph.compiler.realized_instance"
+      },
+      "scope": "run_specific",
       "status": "tested",
       "type": "realized_instance"
     },
     {
+      "authority": "deterministic_evaluator",
       "id": "BlockTB.candidate_baseline",
-      "layer": "verification",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "artifact_ref": "block_feasibility.json#candidate_id=candidate_baseline",
+        "candidate_id": "candidate_baseline",
         "checks": {
           "phase_noise_1mhz": false,
           "power": true,
           "target_frequency_covered": true
         },
         "context": {
-          "source": "SystemTB operating envelope",
+          "context_id": "VCOBlockContext.v1",
+          "source": "initial_SystemTB_plus_declared_guard; frozen_before_candidate_validation",
           "temperature_points_c": [
             25.0
           ],
           "vctrl_max_v": 0.8702691823227616,
-          "vctrl_min_v": 0.29845368
+          "vctrl_min_v": 0.29845368,
+          "vdd_v": 1.8
         },
         "evaluation_kind": "context_aware_block_tb",
         "evidence_validated": true,
+        "measurement_method": "context_sweep_behavioral_vco",
         "passed": false,
+        "provenance": {
+          "model": "synthetic_behavioral_vco_v1",
+          "source": "v1.pipeline.measure_vco_behavior"
+        },
         "requirement": {
           "kvco_max_hz_per_v": null,
           "kvco_min_hz_per_v": null,
           "margin_db": 1.5,
-          "phase_noise_1mhz_max_dbc_hz": -117.85812103748322,
+          "phase_noise_1mhz_max_dbc_hz": -115.01115117853384,
           "power_max_w": 0.008,
           "tuning_range_min_hz": null
         },
+        "result_identity": "measured_result",
         "worst_case": {
-          "fosc_max_hz": 5138400178.880995,
-          "fosc_min_hz": 4155960531.37388,
+          "frequency_max_hz": 5138400178.880995,
+          "frequency_min_hz": 4155960531.37388,
           "kvco_max_hz_per_v": 2118376855.251866,
           "kvco_min_hz_per_v": 1317835152.0,
-          "phase_noise_1mhz_dbc_hz": -113.15303014105062,
-          "phase_noise_margin_db": -4.705090896432594,
-          "power_max_w": 0.0054621615093936576,
-          "tuning_range_hz": 982439647.5071149
+          "phase_noise_margin_db": -1.8581210374832153,
+          "power_min_w": 0.005119072208,
+          "tuning_range_hz": 982439647.5071149,
+          "worst_frequency_hz": 5138400178.880995,
+          "worst_phase_noise_1mhz_dbc_hz": -113.15303014105062,
+          "worst_power_w": 0.0054621615093936576
         }
       },
+      "provenance": {
+        "artifact_ref": "block_feasibility.json#candidate_id=candidate_baseline",
+        "plane": "evidence",
+        "source": "v1.pipeline / run_v1_prove.py deterministic evaluation"
+      },
+      "scope": "run_specific",
+      "semantic_role": "evidence",
       "status": "rejected",
       "type": "evaluation"
     },
     {
+      "authority": "deterministic_evaluator",
       "id": "SystemTB.candidate_baseline",
-      "layer": "verification",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "artifact_ref": "block_feasibility.json#candidate_id=candidate_baseline",
+        "candidate_id": "candidate_baseline",
         "checks": {
           "integrated_jitter": false,
           "lock_time": true,
@@ -1543,6 +2939,7 @@
         },
         "evaluation_kind": "realized_instance_system_tb",
         "evidence_validated": true,
+        "measurement_method": "evaluate_system",
         "metrics": {
           "final_relative_frequency_error": -2.3365020751953123e-13,
           "final_vctrl_v": 0.8034611950944747,
@@ -1569,14 +2966,24 @@
           "output_frequency_error_hz_max": 0.0011682510375976562,
           "output_frequency_residual_hz_max": -99999.99883174896,
           "power_residual_w_max": -0.002577923282943315
-        }
+        },
+        "result_identity": "measured_result"
       },
+      "provenance": {
+        "artifact_ref": "block_feasibility.json#candidate_id=candidate_baseline",
+        "plane": "evidence",
+        "source": "v1.pipeline / run_v1_prove.py deterministic evaluation"
+      },
+      "scope": "run_specific",
+      "semantic_role": "evidence",
       "status": "rejected",
       "type": "evaluation"
     },
     {
+      "authority": "deterministic_evaluator",
       "id": "Context.SystemTB.candidate_baseline",
-      "layer": "verification",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "coverage": {
           "actual_context": {
@@ -1610,37 +3017,56 @@
         "vctrl_min_v": 0.30845368,
         "vdd_v": 1.8
       },
+      "provenance": {
+        "plane": "evidence",
+        "source": "v1.pipeline / run_v1_prove.py deterministic evaluation"
+      },
+      "scope": "run_specific",
+      "semantic_role": "evidence",
       "status": "validated",
       "type": "context"
     },
     {
+      "authority": "agent_or_allocator",
       "id": "Candidate.candidate_low_noise",
-      "layer": "allocation",
+      "mutability": "proposed_then_immutable",
       "owner": "VCO",
+      "plane": "realization",
       "properties": {
+        "candidate_id": "candidate_low_noise",
+        "candidate_knobs": {
+          "pn_anchor_1mhz_dbc_hz": -122.0
+        },
         "description": "Lower-noise VCO candidate",
         "design_vector": {
-          "pn_1mhz_dbc_hz": -122.0
+          "pn_anchor_1mhz_dbc_hz": -122.0
         },
         "engineering_cost": 1.2,
+        "parameter_identity": "candidate",
         "selected": true
       },
+      "provenance": {
+        "plane": "realization",
+        "source": "v1.graph.compiler.allocation"
+      },
+      "scope": "run_specific",
       "status": "validated",
       "type": "candidate"
     },
     {
+      "authority": "realization_compiler",
       "id": "Instance.candidate_low_noise",
-      "layer": "allocation",
+      "mutability": "immutable",
       "owner": "VCO",
+      "plane": "realization",
       "properties": {
-        "model_ref": "synthetic_behavioral_vco_v1",
-        "parameters": {
+        "behavioral_variables": {
           "f0_hz": 4450000000.0,
           "k1_hz_per_v": 1600000000.0,
           "k2_hz_per_v2": 700000000.0,
           "nominal_power_w": 0.005,
           "nominal_temperature_c": 25.0,
-          "pn_1mhz_dbc_hz": -122.0,
+          "pn_anchor_1mhz_dbc_hz": -122.0,
           "pn_power_coeff_db_per_decade": -3.0,
           "pn_temp_coeff_db_per_c": 0.018,
           "pn_vctrl_coeff_db_per_v": 8.0,
@@ -1649,59 +3075,127 @@
           "v0_v": 0.5,
           "vctrl_max_v": 1.1,
           "vctrl_min_v": 0.1
-        }
+        },
+        "model_ref": "synthetic_behavioral_vco_v1",
+        "parameter_identity": "realized_instance",
+        "parameters": {
+          "f0_hz": 4450000000.0,
+          "k1_hz_per_v": 1600000000.0,
+          "k2_hz_per_v2": 700000000.0,
+          "nominal_power_w": 0.005,
+          "nominal_temperature_c": 25.0,
+          "pn_anchor_1mhz_dbc_hz": -122.0,
+          "pn_power_coeff_db_per_decade": -3.0,
+          "pn_temp_coeff_db_per_c": 0.018,
+          "pn_vctrl_coeff_db_per_v": 8.0,
+          "power_vctrl_coeff": 0.12,
+          "tempco_hz_per_c": 150000.0,
+          "v0_v": 0.5,
+          "vctrl_max_v": 1.1,
+          "vctrl_min_v": 0.1
+        },
+        "source_candidate_id": "candidate_low_noise"
       },
+      "provenance": {
+        "model_ref": "synthetic_behavioral_vco_v1",
+        "plane": "realization",
+        "source": "v1.graph.compiler.realized_instance"
+      },
+      "scope": "run_specific",
       "status": "validated",
       "type": "realized_instance"
     },
     {
+      "authority": "agent_or_allocator",
+      "id": "Knob.candidate_low_noise.pn_anchor_1mhz_dbc_hz",
+      "mutability": "immutable",
+      "owner": "VCO",
+      "plane": "realization",
+      "properties": {
+        "candidate_id": "candidate_low_noise",
+        "knob_name": "pn_anchor_1mhz_dbc_hz",
+        "parameter_identity": "candidate_knob",
+        "value": -122.0
+      },
+      "provenance": {
+        "plane": "realization",
+        "source": "v1.graph.compiler.allocation"
+      },
+      "scope": "run_specific",
+      "status": "validated",
+      "type": "candidate_knob"
+    },
+    {
+      "authority": "deterministic_evaluator",
       "id": "BlockTB.candidate_low_noise",
-      "layer": "verification",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "artifact_ref": "block_feasibility.json#candidate_id=candidate_low_noise",
+        "candidate_id": "candidate_low_noise",
         "checks": {
           "phase_noise_1mhz": true,
           "power": true,
           "target_frequency_covered": true
         },
         "context": {
-          "source": "SystemTB operating envelope",
+          "context_id": "VCOBlockContext.v1",
+          "source": "initial_SystemTB_plus_declared_guard; frozen_before_candidate_validation",
           "temperature_points_c": [
             25.0
           ],
           "vctrl_max_v": 0.8702691823227616,
-          "vctrl_min_v": 0.29845368
+          "vctrl_min_v": 0.29845368,
+          "vdd_v": 1.8
         },
         "evaluation_kind": "context_aware_block_tb",
         "evidence_validated": true,
+        "measurement_method": "context_sweep_behavioral_vco",
         "passed": true,
+        "provenance": {
+          "model": "synthetic_behavioral_vco_v1",
+          "source": "v1.pipeline.measure_vco_behavior"
+        },
         "requirement": {
           "kvco_max_hz_per_v": null,
           "kvco_min_hz_per_v": null,
           "margin_db": 1.5,
-          "phase_noise_1mhz_max_dbc_hz": -117.85812103748322,
+          "phase_noise_1mhz_max_dbc_hz": -115.01115117853384,
           "power_max_w": 0.008,
           "tuning_range_min_hz": null
         },
+        "result_identity": "measured_result",
         "worst_case": {
-          "fosc_max_hz": 5138400178.880995,
-          "fosc_min_hz": 4155960531.37388,
+          "frequency_max_hz": 5138400178.880995,
+          "frequency_min_hz": 4155960531.37388,
           "kvco_max_hz_per_v": 2118376855.251866,
           "kvco_min_hz_per_v": 1317835152.0,
-          "phase_noise_1mhz_dbc_hz": -119.15303014105062,
-          "phase_noise_margin_db": 1.2949091035674059,
-          "power_max_w": 0.0054621615093936576,
-          "tuning_range_hz": 982439647.5071149
+          "phase_noise_margin_db": 4.141878962516785,
+          "power_min_w": 0.005119072208,
+          "tuning_range_hz": 982439647.5071149,
+          "worst_frequency_hz": 5138400178.880995,
+          "worst_phase_noise_1mhz_dbc_hz": -119.15303014105062,
+          "worst_power_w": 0.0054621615093936576
         }
       },
+      "provenance": {
+        "artifact_ref": "block_feasibility.json#candidate_id=candidate_low_noise",
+        "plane": "evidence",
+        "source": "v1.pipeline / run_v1_prove.py deterministic evaluation"
+      },
+      "scope": "run_specific",
+      "semantic_role": "evidence",
       "status": "validated",
       "type": "evaluation"
     },
     {
+      "authority": "deterministic_evaluator",
       "id": "SystemTB.candidate_low_noise",
-      "layer": "verification",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "artifact_ref": "block_feasibility.json#candidate_id=candidate_low_noise",
+        "candidate_id": "candidate_low_noise",
         "checks": {
           "integrated_jitter": true,
           "lock_time": true,
@@ -1723,6 +3217,7 @@
         },
         "evaluation_kind": "realized_instance_system_tb",
         "evidence_validated": true,
+        "measurement_method": "evaluate_system",
         "metrics": {
           "final_relative_frequency_error": -2.3365020751953123e-13,
           "final_vctrl_v": 0.8034611950944747,
@@ -1749,14 +3244,24 @@
           "output_frequency_error_hz_max": 0.0011682510375976562,
           "output_frequency_residual_hz_max": -99999.99883174896,
           "power_residual_w_max": -0.002577923282943315
-        }
+        },
+        "result_identity": "measured_result"
       },
+      "provenance": {
+        "artifact_ref": "block_feasibility.json#candidate_id=candidate_low_noise",
+        "plane": "evidence",
+        "source": "v1.pipeline / run_v1_prove.py deterministic evaluation"
+      },
+      "scope": "run_specific",
+      "semantic_role": "evidence",
       "status": "validated",
       "type": "evaluation"
     },
     {
+      "authority": "deterministic_evaluator",
       "id": "Context.SystemTB.candidate_low_noise",
-      "layer": "verification",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "coverage": {
           "actual_context": {
@@ -1790,48 +3295,75 @@
         "vctrl_min_v": 0.30845368,
         "vdd_v": 1.8
       },
+      "provenance": {
+        "plane": "evidence",
+        "source": "v1.pipeline / run_v1_prove.py deterministic evaluation"
+      },
+      "scope": "run_specific",
+      "semantic_role": "evidence",
       "status": "validated",
       "type": "context"
     },
     {
+      "authority": "agent_or_allocator",
       "id": "Candidate.selected",
-      "layer": "allocation",
+      "mutability": "proposed_then_immutable",
+      "plane": "realization",
       "properties": {
         "candidate_id": "candidate_low_noise",
         "selection_basis": "feasible_min_engineering_cost"
       },
+      "provenance": {
+        "plane": "realization",
+        "source": "v1.graph.compiler.allocation"
+      },
+      "scope": "run_specific",
       "status": "validated",
       "type": "candidate"
     },
     {
+      "authority": "agent_or_allocator",
       "id": "Candidate.candidate_low_noise_fast_lock",
-      "layer": "allocation",
+      "mutability": "proposed_then_immutable",
       "owner": "VCO",
+      "plane": "realization",
       "properties": {
+        "candidate_id": "candidate_low_noise_fast_lock",
+        "candidate_knobs": {
+          "k1_hz_per_v": 800000000.0,
+          "pn_anchor_1mhz_dbc_hz": -122.0
+        },
         "description": "Lower-noise, lower-Kvco candidate showing the lock/jitter trade-off",
         "design_vector": {
           "k1_hz_per_v": 800000000.0,
-          "pn_1mhz_dbc_hz": -122.0
+          "pn_anchor_1mhz_dbc_hz": -122.0
         },
         "engineering_cost": 1.3,
+        "parameter_identity": "candidate",
         "selected": false
       },
+      "provenance": {
+        "plane": "realization",
+        "source": "v1.graph.compiler.allocation"
+      },
+      "scope": "run_specific",
       "status": "tested",
       "type": "candidate"
     },
     {
+      "authority": "realization_compiler",
       "id": "Instance.candidate_low_noise_fast_lock",
-      "layer": "allocation",
+      "mutability": "immutable",
       "owner": "VCO",
+      "plane": "realization",
       "properties": {
-        "model_ref": "synthetic_behavioral_vco_v1",
-        "parameters": {
+        "behavioral_variables": {
           "f0_hz": 4450000000.0,
           "k1_hz_per_v": 800000000.0,
           "k2_hz_per_v2": 700000000.0,
           "nominal_power_w": 0.005,
           "nominal_temperature_c": 25.0,
-          "pn_1mhz_dbc_hz": -122.0,
+          "pn_anchor_1mhz_dbc_hz": -122.0,
           "pn_power_coeff_db_per_decade": -3.0,
           "pn_temp_coeff_db_per_c": 0.018,
           "pn_vctrl_coeff_db_per_v": 8.0,
@@ -1840,59 +3372,147 @@
           "v0_v": 0.5,
           "vctrl_max_v": 1.1,
           "vctrl_min_v": 0.1
-        }
+        },
+        "model_ref": "synthetic_behavioral_vco_v1",
+        "parameter_identity": "realized_instance",
+        "parameters": {
+          "f0_hz": 4450000000.0,
+          "k1_hz_per_v": 800000000.0,
+          "k2_hz_per_v2": 700000000.0,
+          "nominal_power_w": 0.005,
+          "nominal_temperature_c": 25.0,
+          "pn_anchor_1mhz_dbc_hz": -122.0,
+          "pn_power_coeff_db_per_decade": -3.0,
+          "pn_temp_coeff_db_per_c": 0.018,
+          "pn_vctrl_coeff_db_per_v": 8.0,
+          "power_vctrl_coeff": 0.12,
+          "tempco_hz_per_c": 150000.0,
+          "v0_v": 0.5,
+          "vctrl_max_v": 1.1,
+          "vctrl_min_v": 0.1
+        },
+        "source_candidate_id": "candidate_low_noise_fast_lock"
       },
+      "provenance": {
+        "model_ref": "synthetic_behavioral_vco_v1",
+        "plane": "realization",
+        "source": "v1.graph.compiler.realized_instance"
+      },
+      "scope": "run_specific",
       "status": "tested",
       "type": "realized_instance"
     },
     {
+      "authority": "agent_or_allocator",
+      "id": "Knob.candidate_low_noise_fast_lock.k1_hz_per_v",
+      "mutability": "immutable",
+      "owner": "VCO",
+      "plane": "realization",
+      "properties": {
+        "candidate_id": "candidate_low_noise_fast_lock",
+        "knob_name": "k1_hz_per_v",
+        "parameter_identity": "candidate_knob",
+        "value": 800000000.0
+      },
+      "provenance": {
+        "plane": "realization",
+        "source": "v1.graph.compiler.allocation"
+      },
+      "scope": "run_specific",
+      "status": "tested",
+      "type": "candidate_knob"
+    },
+    {
+      "authority": "agent_or_allocator",
+      "id": "Knob.candidate_low_noise_fast_lock.pn_anchor_1mhz_dbc_hz",
+      "mutability": "immutable",
+      "owner": "VCO",
+      "plane": "realization",
+      "properties": {
+        "candidate_id": "candidate_low_noise_fast_lock",
+        "knob_name": "pn_anchor_1mhz_dbc_hz",
+        "parameter_identity": "candidate_knob",
+        "value": -122.0
+      },
+      "provenance": {
+        "plane": "realization",
+        "source": "v1.graph.compiler.allocation"
+      },
+      "scope": "run_specific",
+      "status": "tested",
+      "type": "candidate_knob"
+    },
+    {
+      "authority": "deterministic_evaluator",
       "id": "BlockTB.candidate_low_noise_fast_lock",
-      "layer": "verification",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "artifact_ref": "block_feasibility.json#candidate_id=candidate_low_noise_fast_lock",
+        "candidate_id": "candidate_low_noise_fast_lock",
         "checks": {
           "phase_noise_1mhz": true,
           "power": true,
           "target_frequency_covered": false
         },
         "context": {
-          "source": "SystemTB operating envelope",
+          "context_id": "VCOBlockContext.v1",
+          "source": "initial_SystemTB_plus_declared_guard; frozen_before_candidate_validation",
           "temperature_points_c": [
             25.0
           ],
           "vctrl_max_v": 0.8702691823227616,
-          "vctrl_min_v": 0.29845368
+          "vctrl_min_v": 0.29845368,
+          "vdd_v": 1.8
         },
         "evaluation_kind": "context_aware_block_tb",
         "evidence_validated": true,
+        "measurement_method": "context_sweep_behavioral_vco",
         "passed": false,
+        "provenance": {
+          "model": "synthetic_behavioral_vco_v1",
+          "source": "v1.pipeline.measure_vco_behavior"
+        },
         "requirement": {
           "kvco_max_hz_per_v": null,
           "kvco_min_hz_per_v": null,
           "margin_db": 1.5,
-          "phase_noise_1mhz_max_dbc_hz": -117.85812103748322,
+          "phase_noise_1mhz_max_dbc_hz": -115.01115117853384,
           "power_max_w": 0.008,
           "tuning_range_min_hz": null
         },
+        "result_identity": "measured_result",
         "worst_case": {
-          "fosc_max_hz": 4842184833.022786,
-          "fosc_min_hz": 4317197587.373879,
+          "frequency_max_hz": 4842184833.022786,
+          "frequency_min_hz": 4317197587.373879,
           "kvco_max_hz_per_v": 1318376855.251866,
           "kvco_min_hz_per_v": 517835152.0,
-          "phase_noise_1mhz_dbc_hz": -119.15303014105062,
-          "phase_noise_margin_db": 1.2949091035674059,
-          "power_max_w": 0.0054621615093936576,
-          "tuning_range_hz": 524987245.6489067
+          "phase_noise_margin_db": 4.141878962516785,
+          "power_min_w": 0.005119072208,
+          "tuning_range_hz": 524987245.6489067,
+          "worst_frequency_hz": 4842184833.022786,
+          "worst_phase_noise_1mhz_dbc_hz": -119.15303014105062,
+          "worst_power_w": 0.0054621615093936576
         }
       },
+      "provenance": {
+        "artifact_ref": "block_feasibility.json#candidate_id=candidate_low_noise_fast_lock",
+        "plane": "evidence",
+        "source": "v1.pipeline / run_v1_prove.py deterministic evaluation"
+      },
+      "scope": "run_specific",
+      "semantic_role": "evidence",
       "status": "rejected",
       "type": "evaluation"
     },
     {
+      "authority": "deterministic_evaluator",
       "id": "SystemTB.candidate_low_noise_fast_lock",
-      "layer": "verification",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "artifact_ref": "block_feasibility.json#candidate_id=candidate_low_noise_fast_lock",
+        "candidate_id": "candidate_low_noise_fast_lock",
         "checks": {
           "integrated_jitter": true,
           "lock_time": true,
@@ -1914,6 +3534,7 @@
         },
         "evaluation_kind": "realized_instance_system_tb",
         "evidence_validated": true,
+        "measurement_method": "evaluate_system",
         "metrics": {
           "final_relative_frequency_error": -1.9073486328125e-16,
           "final_vctrl_v": 0.9832016471595293,
@@ -1940,14 +3561,24 @@
           "output_frequency_error_hz_max": 9.5367431640625e-07,
           "output_frequency_residual_hz_max": -99999.99999904633,
           "power_residual_w_max": -0.0024700790117042825
-        }
+        },
+        "result_identity": "measured_result"
       },
+      "provenance": {
+        "artifact_ref": "block_feasibility.json#candidate_id=candidate_low_noise_fast_lock",
+        "plane": "evidence",
+        "source": "v1.pipeline / run_v1_prove.py deterministic evaluation"
+      },
+      "scope": "run_specific",
+      "semantic_role": "evidence",
       "status": "validated",
       "type": "evaluation"
     },
     {
+      "authority": "deterministic_evaluator",
       "id": "Context.SystemTB.candidate_low_noise_fast_lock",
-      "layer": "verification",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "coverage": {
           "actual_context": {
@@ -1981,54 +3612,85 @@
         "vctrl_min_v": 0.30684728,
         "vdd_v": 1.8
       },
+      "provenance": {
+        "plane": "evidence",
+        "source": "v1.pipeline / run_v1_prove.py deterministic evaluation"
+      },
+      "scope": "run_specific",
+      "semantic_role": "evidence",
       "status": "rejected",
       "type": "context"
     },
     {
+      "authority": "schema_compiler",
       "id": "Schema.BlockMeta.VCO",
-      "layer": "verification",
+      "mutability": "immutable",
       "owner": "VCO",
+      "plane": "schema",
       "properties": {
         "block_id": "VCO",
         "contract_sections": [
-          "interface_contract",
-          "behavior_contract",
-          "capability_contract",
-          "verification_contract"
+          "architecture",
+          "behavior",
+          "influence",
+          "evidence"
         ],
         "object_type": "block_meta",
+        "parameter_identity": "schema_rule",
         "schema_version": "block-meta-1.0"
       },
+      "provenance": {
+        "plane": "schema",
+        "source": "v1/graph/model.py"
+      },
+      "scope": "global",
       "status": "validated",
-      "type": "contract"
+      "type": "schema_definition"
     },
     {
+      "authority": "contract_builder",
       "id": "Contract.VCO.v1",
-      "layer": "verification",
+      "mutability": "versioned",
       "owner": "VCO",
+      "plane": "contract",
       "properties": {
         "contract_id": "vco_contract_v1",
         "status": "validated_on_v1_observations"
       },
+      "provenance": {
+        "plane": "contract",
+        "source": "v1.contract / v1.schema"
+      },
+      "scope": "reusable",
       "type": "contract"
     },
     {
+      "authority": "contract_builder",
       "id": "Measurement.VCO.phase_noise_1mhz",
-      "layer": "verification",
+      "mutability": "versioned",
+      "plane": "contract",
       "properties": {
-        "context_source": "SystemTB operating envelope",
+        "context_source": "VCOBlockContext.v1",
+        "measured_metric": "worst_phase_noise_1mhz_dbc_hz",
         "method": "behavioral_psd_evaluation",
         "metric": "phase_noise_1mhz_dbc_hz",
         "offset_hz": 1000000.0
       },
+      "provenance": {
+        "plane": "contract",
+        "source": "v1.contract / v1.schema"
+      },
+      "scope": "reusable",
       "type": "measurement_contract"
     },
     {
+      "authority": "contract_builder",
       "id": "Validity.VCO.v1",
-      "layer": "verification",
+      "mutability": "versioned",
       "owner": "VCO",
+      "plane": "contract",
       "properties": {
-        "domain": {
+        "declared_domain": {
           "offset_hz": [
             100000.0,
             10000000.0
@@ -2042,34 +3704,81 @@
             1.1
           ]
         },
-        "fidelity": "synthetic_behavioral"
+        "fidelity": "synthetic_behavioral",
+        "validated_domain": {
+          "temperature_c": [
+            25.0
+          ],
+          "validation_source": "VCOBlockContext.v1",
+          "vctrl_v": [
+            0.29845368,
+            0.8702691823227616
+          ],
+          "vdd_v": [
+            1.8
+          ]
+        }
       },
+      "provenance": {
+        "plane": "contract",
+        "source": "v1.contract / v1.schema"
+      },
+      "scope": "reusable",
       "type": "validity_domain"
     },
     {
+      "authority": "deterministic_evaluator",
       "id": "Evidence.sensitivity",
-      "layer": "verification",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "kind": "deterministic_sensitivity_suite",
+        "measurement_method": "deterministic_finite_difference_and_grid_sweep",
         "method": "deterministic_finite_difference_and_grid_sweep",
         "source": "v1.pipeline.run_sensitivity_suite"
       },
+      "provenance": {
+        "plane": "evidence",
+        "source": "v1.pipeline.run_sensitivity_suite"
+      },
+      "scope": "run_specific",
+      "semantic_role": "evidence",
       "type": "evidence"
     },
     {
+      "authority": "deterministic_evaluator",
       "id": "Evidence.boundary_search",
-      "layer": "verification",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "artifact_ref": "required_vco_spec_boundary.json",
+        "block_metric_at_boundary": -113.51115117853384,
         "iterations": 24,
-        "kind": "required_pn_boundary",
-        "required_boundary": -116.35812103748322
+        "kind": "pn_anchor_boundary_search",
+        "measurement_method": "bracketed_bisection_plus_frozen_context_block_measurement",
+        "search_knob": "pn_anchor_1mhz_dbc_hz",
+        "search_knob_boundary": -116.35812103748322,
+        "target_system_metric": "integrated_jitter_s",
+        "target_system_metric_at_boundary": 7.999999179505547e-14,
+        "validity_domain": {
+          "search_knob_max": -110.0,
+          "search_knob_min": -125.0
+        }
       },
+      "provenance": {
+        "artifact_ref": "required_vco_spec_boundary.json",
+        "plane": "evidence",
+        "source": "v1.pipeline / run_v1_prove.py deterministic evaluation"
+      },
+      "scope": "run_specific",
+      "semantic_role": "evidence",
       "type": "evidence"
     },
     {
+      "authority": "deterministic_evaluator",
       "id": "Evidence.SystemTB.initial",
-      "layer": "verification",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "artifact_ref": "initial_system_evaluation.json",
         "checks": {
@@ -2091,6 +3800,7 @@
           "vctrl_min_v": 0.30845368,
           "vdd_v": 1.8
         },
+        "measurement_method": "evaluate_system",
         "metrics": {
           "final_relative_frequency_error": -2.3365020751953123e-13,
           "final_vctrl_v": 0.8034611950944747,
@@ -2119,12 +3829,21 @@
           "power_residual_w_max": -0.002577923282943315
         }
       },
+      "provenance": {
+        "artifact_ref": "initial_system_evaluation.json",
+        "plane": "evidence",
+        "source": "v1.pipeline / run_v1_prove.py deterministic evaluation"
+      },
+      "scope": "run_specific",
+      "semantic_role": "evidence",
       "status": "rejected",
       "type": "evaluation"
     },
     {
+      "authority": "deterministic_evaluator",
       "id": "Evidence.SystemTB.final",
-      "layer": "verification",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "artifact_ref": "final_system_evaluation.json",
         "checks": {
@@ -2147,6 +3866,7 @@
           "vdd_v": 1.8
         },
         "evaluation_kind": "independent_final_system_tb",
+        "measurement_method": "evaluate_system",
         "metrics": {
           "final_relative_frequency_error": -2.3365020751953123e-13,
           "final_vctrl_v": 0.8034611950944747,
@@ -2175,12 +3895,21 @@
           "power_residual_w_max": -0.002577923282943315
         }
       },
+      "provenance": {
+        "artifact_ref": "final_system_evaluation.json",
+        "plane": "evidence",
+        "source": "v1.pipeline / run_v1_prove.py deterministic evaluation"
+      },
+      "scope": "run_specific",
+      "semantic_role": "evidence",
       "status": "validated",
       "type": "evaluation"
     },
     {
+      "authority": "deterministic_evaluator",
       "id": "SystemSpec.verdict",
-      "layer": "verification",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "checks": {
           "SystemSpec.integrated_jitter": true,
@@ -2188,6 +3917,7 @@
           "SystemSpec.output_frequency": true,
           "SystemSpec.power": true
         },
+        "measurement_method": "requirement_verdict_from_systemtb",
         "passed": true,
         "residuals": {
           "integrated_jitter_residual_s_max": -3.821734871562503e-14,
@@ -2198,12 +3928,20 @@
         },
         "source": "independent_final_system_tb"
       },
+      "provenance": {
+        "plane": "evidence",
+        "source": "independent_final_system_tb"
+      },
+      "scope": "run_specific",
+      "semantic_role": "evidence",
       "status": "validated",
       "type": "evaluation"
     },
     {
+      "authority": "deterministic_evaluator",
       "id": "Context.SystemTB.final",
-      "layer": "verification",
+      "mutability": "append_only",
+      "plane": "evidence",
       "properties": {
         "coverage": {
           "actual_context": {
@@ -2237,6 +3975,12 @@
         "vctrl_min_v": 0.30845368,
         "vdd_v": 1.8
       },
+      "provenance": {
+        "plane": "evidence",
+        "source": "v1.pipeline / run_v1_prove.py deterministic evaluation"
+      },
+      "scope": "run_specific",
+      "semantic_role": "evidence",
       "status": "validated",
       "type": "context"
     }

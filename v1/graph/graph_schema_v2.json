@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/Jasperskkr/PLL_EVALAGENT/schema/graph-2.0",
   "title": "PLL_EVALAGENT TypedGraph v2",
-  "description": "Four-layer graph vocabulary for Agent proposals and deterministic validation.",
+  "description": "Four-role graph vocabulary for deterministic validation. Public Block Graph semantics are carried by semantic_role; plane is implementation metadata for provenance/authority, not a Block Graph layer.",
   "type": "object",
   "required": ["graph_id", "graph_version", "nodes", "edges"],
   "properties": {
@@ -15,15 +15,17 @@
   "$defs": {
     "node": {
       "type": "object",
-      "required": ["id", "type", "layer", "properties"],
+      "required": ["id", "type", "properties", "plane", "authority", "scope", "mutability", "provenance"],
       "properties": {
         "id": {"type": "string", "minLength": 1},
         "type": {
           "enum": [
             "architecture_block",
+            "behavioral_variable",
             "behavioral_output",
             "block_requirement",
             "candidate",
+            "candidate_knob",
             "capability_region",
             "context",
             "context_variable",
@@ -32,10 +34,12 @@
             "design_variable",
             "evaluation",
             "evidence",
+            "measured_result",
             "measurement_contract",
             "operator",
             "port",
             "realized_instance",
+            "schema_definition",
             "signal",
             "system_metric",
             "system_requirement",
@@ -43,7 +47,15 @@
             "validity_domain"
           ]
         },
-        "layer": {"enum": ["interface", "behavior", "allocation", "verification"]},
+        "semantic_role": {"enum": ["architecture", "behavior", "influence", "evidence"]},
+        "plane": {
+          "description": "Implementation metadata for provenance/authority grouping; not a public Block Graph semantic layer.",
+          "enum": ["schema", "contract", "realization", "evidence"]
+        },
+        "authority": {"enum": ["schema_compiler", "contract_builder", "agent_or_allocator", "deterministic_allocator", "system_spec_input", "realization_compiler", "deterministic_simulator", "deterministic_evaluator", "deterministic_graph_compiler"]},
+        "scope": {"enum": ["global", "reusable", "run_specific"]},
+        "mutability": {"enum": ["immutable", "versioned", "proposed_then_immutable", "append_only"]},
+        "provenance": {"type": "object", "minProperties": 1},
         "owner": {"type": "string"},
         "status": {"enum": ["proposed", "supported", "tested", "partially_validated", "validated", "rejected"]},
         "properties": {"type": "object"}
@@ -51,7 +63,7 @@
     },
     "edge": {
       "type": "object",
-      "required": ["source", "target", "type", "properties"],
+      "required": ["source", "target", "type", "properties", "plane", "authority", "scope", "mutability", "provenance"],
       "properties": {
         "source": {"type": "string"},
         "target": {"type": "string"},
@@ -89,6 +101,14 @@
             "yields_verdict"
           ]
         },
+        "plane": {
+          "description": "Implementation metadata for provenance/authority grouping; not a public Block Graph semantic layer.",
+          "enum": ["schema", "contract", "realization", "evidence"]
+        },
+        "authority": {"enum": ["schema_compiler", "contract_builder", "agent_or_allocator", "deterministic_allocator", "system_spec_input", "realization_compiler", "deterministic_simulator", "deterministic_evaluator", "deterministic_graph_compiler"]},
+        "scope": {"enum": ["global", "reusable", "run_specific"]},
+        "mutability": {"enum": ["immutable", "versioned", "proposed_then_immutable", "append_only"]},
+        "provenance": {"type": "object", "minProperties": 1},
         "status": {"enum": ["proposed", "supported", "tested", "partially_validated", "validated", "rejected"]},
         "properties": {"type": "object"}
       }

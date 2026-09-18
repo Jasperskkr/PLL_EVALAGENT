@@ -5,6 +5,8 @@ from __future__ import annotations
 from collections import deque
 from typing import Any, Iterable, Mapping, Sequence
 
+from .planes import GRAPH_PLANES
+
 
 def trace_paths(
     graph: Mapping[str, Any],
@@ -87,3 +89,69 @@ def evidence_neighborhood(
         if edge.get("source") == node_id and edge.get("type") in evidence_types
     ]
     return {"incoming": incoming, "outgoing": outgoing}
+
+
+def plane_view(
+    graph: Mapping[str, Any],
+    plane: str,
+    *,
+    include_cross_plane_edges: bool = True,
+) -> dict[str, Any]:
+    """Return a deterministic read-only view for one Typed Graph plane.
+
+    The canonical artifact remains one graph.  Views are projections for
+    Agent context windows and permissions; they do not copy or mutate the
+    source graph.  By default, edges are retained when either endpoint is in
+    the selected plane so a Contract or Evidence view keeps its boundary
+    traceability.
+    """
+
+    if plane not in GRAPH_PLANES:
+        raise ValueError(f"unknown graph plane: {plane}")
+    nodes = [
+        dict(node)
+        for node in graph.get("nodes", [])
+        if node.get("plane") == plane
+    ]
+    node_ids = {str(node["id"]) for node in nodes}
+    edges = []
+    for edge in graph.get("edges", []):
+        source_in = str(edge.get("source")) in node_ids
+        target_in = str(edge.get("target")) in node_ids
+        if source_in and target_in or (include_cross_plane_edges and (source_in or target_in)):
+            edges.append(dict(edge))
+    nodes.sort(key=lambda item: str(item["id"]))
+    edges.sort(key=lambda item: (str(item["source"]), str(item["target"]), str(item["type"])))
+    return {
+        "graph_id": graph.get("graph_id"),
+        "graph_version": graph.get("graph_version"),
+        "plane": plane,
+        "nodes": nodes,
+        "edges": edges,
+        "metadata": {"view": plane, "read_only": True},
+    }
+
+
+def all_plane_views(
+    graph: Mapping[str, Any], *, include_cross_plane_edges: bool = True
+) -> dict[str, dict[str, Any]]:
+    """Build all four deterministic views in canonical plane order."""
+
+    return {
+        plane: plane_view(
+            graph, plane, include_cross_plane_edges=include_cross_plane_edges
+        )
+        for plane in ("schema", "contract", "realization", "evidence")
+    }
+
+
+def contract_view(graph: Mapping[str, Any]) -> dict[str, Any]:
+    return plane_view(graph, "contract")
+
+
+def realization_view(graph: Mapping[str, Any]) -> dict[str, Any]:
+    return plane_view(graph, "realization")
+
+
+def evidence_view(graph: Mapping[str, Any]) -> dict[str, Any]:
+    return plane_view(graph, "evidence")

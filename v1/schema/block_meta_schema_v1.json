@@ -2,17 +2,17 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/Jasperskkr/PLL_EVALAGENT/schema/block-meta-1.0",
   "title": "PLL_EVALAGENT BlockMetaSchema v1",
-  "description": "Fixed Agent-facing contract shape. Domain values and feasibility are validated by deterministic BlockTB/SystemTB.",
+  "description": "Fixed Architecture/Behavior/Influence/Evidence block metadata shape. Domain values and feasibility are validated by deterministic BlockTB/SystemTB.",
   "type": "object",
   "required": [
     "schema_version",
     "object_type",
     "block_id",
     "block_type",
-    "interface_contract",
-    "behavior_contract",
-    "capability_contract",
-    "verification_contract"
+    "architecture",
+    "behavior",
+    "influence",
+    "evidence"
   ],
   "properties": {
     "schema_version": {"const": "block-meta-1.0"},
@@ -20,34 +20,27 @@
     "block_id": {"type": "string", "minLength": 1},
     "block_type": {"type": "string", "minLength": 1},
     "provenance": {"type": "object"},
-    "interface_contract": {
+    "architecture": {
       "type": "object",
-      "required": ["function", "ports", "interaction_variables"],
+      "required": ["function", "ports", "context_inputs", "connections"],
       "properties": {
         "function": {"type": "string", "minLength": 1},
         "ports": {"type": "array", "items": {"$ref": "#/$defs/port"}},
-        "interaction_variables": {"type": "array", "items": {"type": "string"}}
+        "context_inputs": {"type": "array", "items": {"type": "string"}},
+        "connections": {"type": "array", "items": {"type": "string"}}
       }
     },
-    "behavior_contract": {
+    "behavior": {
       "type": "object",
-      "required": ["search_variables", "environment_contract", "system_influence_factors"],
+      "required": ["metrics", "context_dependencies", "evaluation_methods"],
       "properties": {
-        "search_variables": {"type": "array", "items": {"$ref": "#/$defs/field"}},
-        "environment_contract": {"type": "object"},
-        "system_influence_factors": {"type": "array", "items": {"type": "object"}}
+        "metrics": {"type": "array", "items": {"$ref": "#/$defs/field"}},
+        "context_dependencies": {"type": "object"},
+        "evaluation_methods": {"type": "object"}
       }
     },
-    "capability_contract": {
-      "type": "object",
-      "required": ["exported_specs", "capability_region", "tradeoffs"],
-      "properties": {
-        "exported_specs": {"type": "array", "items": {"$ref": "#/$defs/field"}},
-        "capability_region": {"type": "object"},
-        "tradeoffs": {"type": "array", "items": {"type": "object"}}
-      }
-    },
-    "verification_contract": {
+    "influence": {"type": "array", "items": {"type": "object"}},
+    "evidence": {
       "type": "object",
       "required": ["measurement_contracts", "validity_domain", "uncertainty", "evidence"],
       "properties": {

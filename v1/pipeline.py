@@ -27,6 +27,27 @@ from .model.pll_behavioral import CPPLLParams, VCOParams, simulate_cppll
 from .specs import CandidateDefinition, SystemSpec, VCORequirement
 
 
+LEGACY_VCO_PARAMETER_ALIASES = {
+    "pn_1mhz_dbc_hz": "pn_anchor_1mhz_dbc_hz",
+}
+
+
+def canonical_vco_parameter(name: str) -> str:
+    return LEGACY_VCO_PARAMETER_ALIASES.get(str(name), str(name))
+
+
+def normalize_vco_overrides(overrides: Mapping[str, Any] | None) -> Dict[str, Any]:
+    """Normalize legacy case names at the loading boundary."""
+
+    normalized: Dict[str, Any] = {}
+    for name, value in dict(overrides or {}).items():
+        canonical = canonical_vco_parameter(str(name))
+        if canonical in normalized and normalized[canonical] != value:
+            raise ValueError(f"conflicting VCO override aliases for {canonical}")
+        normalized[canonical] = value
+    return normalized
+
+
 def _jsonable(value: Any) -> Any:
     """Convert dataclasses and non-finite values to strict JSON values."""
 
@@ -109,6 +130,7 @@ def build_vco_instance(
         if isinstance(candidate, CandidateDefinition)
         else dict(candidate)
     )
+    overrides = normalize_vco_overrides(overrides)
     valid_names = set(asdict(base_vco))
     unknown = set(overrides) - valid_names
     if unknown:
@@ -341,6 +363,7 @@ def run_parameter_sweep(
 ) -> Dict[str, Any]:
     """Sweep one realized VCO parameter and record top-level metrics."""
 
+    parameter = canonical_vco_parameter(parameter)
     if not values:
         raise ValueError(f"empty sweep for {parameter}")
     rows: List[Dict[str, Any]] = []
@@ -388,11 +411,17 @@ def run_sensitivity_suite(
     sweeps: Mapping[str, Sequence[float]],
     model_overrides: Optional[Mapping[str, Any]] = None,
 ) -> Dict[str, Any]:
+    normalized_sweeps: Dict[str, Sequence[float]] = {}
+    for parameter, values in sweeps.items():
+        canonical = canonical_vco_parameter(str(parameter))
+        if canonical in normalized_sweeps and list(normalized_sweeps[canonical]) != list(values):
+            raise ValueError(f"conflicting sweep aliases for {canonical}")
+        normalized_sweeps[canonical] = values
     results = {
         parameter: run_parameter_sweep(
             system_spec, base_vco, parameter, values, model_overrides
         )
-        for parameter, values in sweeps.items()
+        for parameter, values in normalized_sweeps.items()
     }
     return {
         "method": "deterministic_finite_difference_and_grid_sweep",
@@ -404,7 +433,7 @@ def run_sensitivity_suite(
 def abstract_pn_evaluation(
     system_spec: SystemSpec,
     base_vco: VCOParams,
-    phase_noise_1mhz_max_dbc_hz: float,
+    pn_anchor_1mhz_dbc_hz: float,
     model_overrides: Optional[Mapping[str, Any]] = None,
 ) -> Dict[str, Any]:
     """Evaluate an abstract VCO capability envelope for allocation.
@@ -415,13 +444,16 @@ def abstract_pn_evaluation(
     """
 
     abstract_vco = replace(
-        base_vco, pn_1mhz_dbc_hz=float(phase_noise_1mhz_max_dbc_hz)
+        base_vco, pn_anchor_1mhz_dbc_hz=float(pn_anchor_1mhz_dbc_hz)
     )
     evaluation = evaluate_system(
         system_spec, abstract_vco, model_overrides=model_overrides, keep_raw=False
     )
     return {
-        "phase_noise_1mhz_max_dbc_hz": phase_noise_1mhz_max_dbc_hz,
+        "search_knob": "pn_anchor_1mhz_dbc_hz",
+        "search_knob_value": float(pn_anchor_1mhz_dbc_hz),
+        "pn_anchor_1mhz_dbc_hz": float(pn_anchor_1mhz_dbc_hz),
+        "target_system_metric": "integrated_jitter_s",
         "system_evaluation": evaluation,
     }
 
@@ -466,11 +498,26 @@ def search_required_pn_boundary(
         raise ValueError("tight PN search bound still fails; increase search range")
 
     history: List[Dict[str, Any]] = [
-        {"phase": "bracket", "bound": loose_bound_dbc_hz, "passed": False},
-        {"phase": "bracket", "bound": tight_bound_dbc_hz, "passed": True},
+        {
+            "phase": "bracket",
+            "value": loose_bound_dbc_hz,
+            "target_passed": False,
+            "system_passed": bool(loose["system_evaluation"]["passed"]),
+            "metrics": _metric_snapshot(loose["system_evaluation"]),
+            "residuals": loose["system_evaluation"]["residuals"],
+        },
+        {
+            "phase": "bracket",
+            "value": tight_bound_dbc_hz,
+            "target_passed": True,
+            "system_passed": bool(tight["system_evaluation"]["passed"]),
+            "metrics": _metric_snapshot(tight["system_evaluation"]),
+            "residuals": tight["system_evaluation"]["residuals"],
+        },
     ]
     passing = float(tight_bound_dbc_hz)
     failing = float(loose_bound_dbc_hz)
+    passing_evaluation = tight["system_evaluation"]
     for index in range(iterations):
         midpoint = 0.5 * (passing + failing)
         trial = abstract_pn_evaluation(
@@ -481,23 +528,246 @@ def search_required_pn_boundary(
             {
                 "phase": "bisection",
                 "iteration": index,
-                "bound": midpoint,
-                "passed": passed,
+                "value": midpoint,
+                "target_passed": passed,
+                "system_passed": bool(trial["system_evaluation"]["passed"]),
+                "metrics": _metric_snapshot(trial["system_evaluation"]),
                 "residuals": trial["system_evaluation"]["residuals"],
             }
         )
         if passed:
             passing = midpoint
+            passing_evaluation = trial["system_evaluation"]
         else:
             failing = midpoint
     return {
-        "metric": "phase_noise_1mhz_dbc_hz",
+        "search_knob": "pn_anchor_1mhz_dbc_hz",
+        "search_knob_boundary": passing,
+        "target_system_metric": "integrated_jitter_s",
+        "target_system_metric_at_boundary": passing_evaluation["metrics"].get(
+            "integrated_jitter_s"
+        ),
+        "block_metric_at_boundary": None,
+        "validity_domain": {
+            "search_knob_min": min(float(loose_bound_dbc_hz), float(tight_bound_dbc_hz)),
+            "search_knob_max": max(float(loose_bound_dbc_hz), float(tight_bound_dbc_hz)),
+        },
         "direction": "upper_bound; more_negative_is_tighter",
-        "required_boundary": passing,
-        "nearest_failing_bound": failing,
+        "nearest_failing_search_knob": failing,
         "bracket_width": failing - passing,
         "iterations": iterations,
         "history": history,
+    }
+
+
+SYSTEM_CHECK_RESIDUALS = {
+    "integrated_jitter": "integrated_jitter_residual_s_max",
+    "lock_time": "lock_time_residual_s_max",
+    "output_frequency": "output_frequency_residual_hz_max",
+    "power": "power_residual_w_max",
+}
+
+
+def _aggregate_checks(evaluation: Mapping[str, Any]) -> Dict[str, bool]:
+    """Normalize the per-context SystemTB checks used by an allocation proof."""
+
+    contexts = list(evaluation.get("per_context", []))
+    if contexts:
+        names = {
+            str(name)
+            for context in contexts
+            for name in context.get("checks", {})
+        }
+        return {
+            name: all(bool(context.get("checks", {}).get(name, False)) for context in contexts)
+            for name in sorted(names)
+        }
+    return {
+        str(name): bool(passed)
+        for name, passed in evaluation.get("checks", {}).items()
+    }
+
+
+def _target_check_passes(evaluation: Mapping[str, Any], target_check: str) -> bool:
+    checks = _aggregate_checks(evaluation)
+    if target_check not in checks:
+        raise ValueError(f"unknown SystemTB target check: {target_check}")
+    if target_check == "lock_time":
+        return bool(checks[target_check] and checks.get("locked", False))
+    return bool(checks[target_check])
+
+
+def abstract_vco_parameter_evaluation(
+    system_spec: SystemSpec,
+    base_vco: VCOParams,
+    parameter: str,
+    value: float,
+    *,
+    model_overrides: Optional[Mapping[str, Any]] = None,
+) -> Dict[str, Any]:
+    """Run SystemTB with one behavioral VCO parameter changed.
+
+    This is the scalar seam used by the multi-mapping proof suite.  The
+    returned object is an abstract allocation trial, not evidence that a
+    physical VCO can realize the value; a BlockTB must check that separately.
+    """
+
+    parameter = canonical_vco_parameter(parameter)
+    abstract_vco = build_vco_instance(base_vco, {parameter: float(value)})
+    return {
+        "parameter": parameter,
+        "value": float(value),
+        "system_evaluation": evaluate_system(
+            system_spec,
+            abstract_vco,
+            model_overrides=model_overrides,
+            keep_raw=False,
+        ),
+    }
+
+
+def search_required_scalar_boundary(
+    system_spec: SystemSpec,
+    base_vco: VCOParams,
+    *,
+    parameter: str,
+    target_check: str,
+    failing_bound: float,
+    passing_bound: float,
+    iterations: int = 24,
+    model_overrides: Optional[Mapping[str, Any]] = None,
+    require_other_checks: bool = True,
+) -> Dict[str, Any]:
+    """Search one local fail/pass boundary for a VCO behavioral parameter.
+
+    A valid one-dimensional allocation requires an explicit bracket and a
+    monotonic target check over that bracket.  The function deliberately does
+    not infer which side is physically "better" from the parameter name.
+    ``failing_bound`` and ``passing_bound`` encode the proved local direction.
+    Other SystemSpec checks must already pass at the passing endpoint unless
+    the caller explicitly disables that guard for a diagnostic experiment.
+    """
+
+    parameter = canonical_vco_parameter(parameter)
+    if iterations < 1:
+        raise ValueError("scalar boundary search requires at least one iteration")
+    if float(failing_bound) == float(passing_bound):
+        raise ValueError("scalar boundary search requires distinct bounds")
+
+    failing_trial = abstract_vco_parameter_evaluation(
+        system_spec,
+        base_vco,
+        parameter,
+        failing_bound,
+        model_overrides=model_overrides,
+    )
+    passing_trial = abstract_vco_parameter_evaluation(
+        system_spec,
+        base_vco,
+        parameter,
+        passing_bound,
+        model_overrides=model_overrides,
+    )
+    if _target_check_passes(failing_trial["system_evaluation"], target_check):
+        raise ValueError("declared failing scalar bound already passes target check")
+    if not _target_check_passes(passing_trial["system_evaluation"], target_check):
+        raise ValueError("declared passing scalar bound still fails target check")
+
+    passing_checks = _aggregate_checks(passing_trial["system_evaluation"])
+    if require_other_checks:
+        ignored = {target_check}
+        if target_check == "lock_time":
+            ignored.add("locked")
+        blocking = sorted(
+            name for name, passed in passing_checks.items()
+            if name not in ignored and not passed
+        )
+        if blocking:
+            raise ValueError(
+                f"{parameter}-only allocation infeasible; non-target checks fail "
+                f"at passing bound: {', '.join(blocking)}"
+            )
+
+    history: List[Dict[str, Any]] = []
+    for phase, trial in (("failing_bracket", failing_trial), ("passing_bracket", passing_trial)):
+        evaluation = trial["system_evaluation"]
+        history.append(
+            {
+                "phase": phase,
+                "value": trial["value"],
+                "target_passed": _target_check_passes(evaluation, target_check),
+                "system_passed": bool(evaluation["passed"]),
+                "metrics": _metric_snapshot(evaluation),
+                "residuals": evaluation["residuals"],
+            }
+        )
+
+    failing = float(failing_bound)
+    passing = float(passing_bound)
+    target_sequence = [False, True]
+    for index in range(iterations):
+        midpoint = 0.5 * (failing + passing)
+        trial = abstract_vco_parameter_evaluation(
+            system_spec,
+            base_vco,
+            parameter,
+            midpoint,
+            model_overrides=model_overrides,
+        )
+        evaluation = trial["system_evaluation"]
+        target_passed = _target_check_passes(evaluation, target_check)
+        target_sequence.append(target_passed)
+        history.append(
+            {
+                "phase": "bisection",
+                "iteration": index,
+                "value": midpoint,
+                "target_passed": target_passed,
+                "system_passed": bool(evaluation["passed"]),
+                "metrics": _metric_snapshot(evaluation),
+                "residuals": evaluation["residuals"],
+            }
+        )
+        if target_passed:
+            passing = midpoint
+        else:
+            failing = midpoint
+
+    return {
+        "parameter": parameter,
+        "target_check": target_check,
+        "target_residual": SYSTEM_CHECK_RESIDUALS[target_check],
+        "direction": (
+            "increasing_parameter_moves_fail_to_pass"
+            if passing_bound > failing_bound
+            else "decreasing_parameter_moves_fail_to_pass"
+        ),
+        "search_knob": parameter,
+        "search_knob_boundary": passing,
+        "target_system_metric": target_check,
+        "target_system_metric_at_boundary": history[-1]["metrics"].get(
+            "integrated_jitter_s"
+            if target_check == "integrated_jitter"
+            else "lock_time_s"
+            if target_check == "lock_time"
+            else "output_frequency_hz"
+            if target_check == "output_frequency"
+            else "power_w"
+        ) if history else None,
+        "block_metric_at_boundary": None,
+        "nearest_failing_search_knob": failing,
+        "bracket_width": abs(passing - failing),
+        "iterations": iterations,
+        "history": history,
+        "deterministic": True,
+        "random_seed": None,
+        "scope": "local_one_dimensional_bracket",
+        "validity_domain": {
+            "parameter_min": min(float(failing_bound), float(passing_bound)),
+            "parameter_max": max(float(failing_bound), float(passing_bound)),
+            "target_check": target_check,
+        },
+        "monotonic_target_assumption": True,
     }
 
 
@@ -507,21 +777,25 @@ def _sample_points(lower: float, upper: float, count: int) -> List[float]:
     return [lower + (upper - lower) * index / (count - 1) for index in range(count)]
 
 
-def validate_vco_spec(
+def measure_vco_behavior(
     system_spec: SystemSpec,
-    requirement: VCORequirement,
     vco: VCOParams,
     system_context: Mapping[str, Any],
     vctrl_points: int = 11,
 ) -> Dict[str, Any]:
-    """Context-aware VCO BlockTB for a realized candidate."""
+    """Measure VCO behavior over the frozen VCOBlockContext."""
 
     context_vctrl_min = float(system_context["vctrl_min_v"])
     context_vctrl_max = float(system_context["vctrl_max_v"])
     if context_vctrl_min > context_vctrl_max:
         raise ValueError("invalid system Vctrl context")
     vctrl_values = _sample_points(context_vctrl_min, context_vctrl_max, vctrl_points)
-    temperatures = list(system_spec.temperature_points_c)
+    temperatures = [
+        float(value)
+        for value in system_context.get(
+            "temperature_points_c", system_spec.temperature_points_c
+        )
+    ]
     observations: List[Dict[str, Any]] = []
     for temperature_c in temperatures:
         for vctrl_v in vctrl_values:
@@ -539,49 +813,207 @@ def validate_vco_spec(
                 }
             )
 
-    checks: Dict[str, bool] = {}
     worst_pn = max(item["phase_noise_1mhz_dbc_hz"] for item in observations)
-    checks["phase_noise_1mhz"] = (
-        worst_pn <= requirement.phase_noise_1mhz_max_dbc_hz
-    )
     frequencies = [item["fosc_hz"] for item in observations]
     frequency_span = max(frequencies) - min(frequencies)
-    target_low = system_spec.target_frequency_hz - system_spec.output_frequency_tolerance_hz
-    target_high = system_spec.target_frequency_hz + system_spec.output_frequency_tolerance_hz
-    checks["target_frequency_covered"] = min(frequencies) <= target_low and max(frequencies) >= target_high
-    if requirement.tuning_range_min_hz is not None:
-        checks["tuning_range_min"] = frequency_span >= requirement.tuning_range_min_hz
-    if requirement.kvco_min_hz_per_v is not None:
-        checks["kvco_min"] = min(item["kvco_hz_per_v"] for item in observations) >= requirement.kvco_min_hz_per_v
-    if requirement.kvco_max_hz_per_v is not None:
-        checks["kvco_max"] = max(item["kvco_hz_per_v"] for item in observations) <= requirement.kvco_max_hz_per_v
-    if requirement.power_max_w is not None:
-        checks["power"] = max(item["power_w"] for item in observations) <= requirement.power_max_w
-
-    pn_margin = requirement.phase_noise_1mhz_max_dbc_hz - worst_pn
     result = {
-        "passed": all(checks.values()),
-        "checks": checks,
-        "requirement": requirement.to_dict(),
+        "measurement_method": "context_sweep_behavioral_vco",
+        "provenance": {
+            "source": "v1.pipeline.measure_vco_behavior",
+            "model": "synthetic_behavioral_vco_v1",
+        },
         "context": {
             "vctrl_min_v": context_vctrl_min,
             "vctrl_max_v": context_vctrl_max,
             "temperature_points_c": temperatures,
-            "source": "SystemTB operating envelope",
+            "vdd_v": float(system_context.get("vdd_v", system_spec.vdd_v)),
+            "source": system_context.get("source", "frozen VCOBlockContext"),
+            "context_id": system_context.get("context_id", "VCOBlockContext.v1"),
         },
         "worst_case": {
-            "phase_noise_1mhz_dbc_hz": worst_pn,
-            "phase_noise_margin_db": pn_margin,
-            "fosc_min_hz": min(frequencies),
-            "fosc_max_hz": max(frequencies),
+            "worst_phase_noise_1mhz_dbc_hz": worst_pn,
+            "worst_frequency_hz": max(frequencies),
+            "frequency_min_hz": min(frequencies),
+            "frequency_max_hz": max(frequencies),
             "tuning_range_hz": frequency_span,
             "kvco_min_hz_per_v": min(item["kvco_hz_per_v"] for item in observations),
             "kvco_max_hz_per_v": max(item["kvco_hz_per_v"] for item in observations),
-            "power_max_w": max(item["power_w"] for item in observations),
+            "power_min_w": min(item["power_w"] for item in observations),
+            "worst_power_w": max(item["power_w"] for item in observations),
         },
         "observations": observations,
     }
+    result["measured"] = {
+        "phase_noise_1mhz_dbc_hz": [
+            float(item["phase_noise_1mhz_dbc_hz"]) for item in observations
+        ],
+        "frequency_hz": [float(item["fosc_hz"]) for item in observations],
+        "kvco_hz_per_v": [float(item["kvco_hz_per_v"]) for item in observations],
+        "power_w": [float(item["power_w"]) for item in observations],
+    }
     return result
+
+
+def validate_vco_spec(
+    system_spec: SystemSpec,
+    requirement: VCORequirement,
+    vco: VCOParams,
+    system_context: Mapping[str, Any],
+    vctrl_points: int = 11,
+) -> Dict[str, Any]:
+    """Context-aware VCO BlockTB for a realized candidate."""
+
+    measurement = measure_vco_behavior(
+        system_spec,
+        vco,
+        system_context,
+        vctrl_points=vctrl_points,
+    )
+    worst = measurement["worst_case"]
+    checks: Dict[str, bool] = {}
+    worst_pn = float(worst["worst_phase_noise_1mhz_dbc_hz"])
+    checks["phase_noise_1mhz"] = (
+        worst_pn <= requirement.phase_noise_1mhz_max_dbc_hz
+    )
+    target_low = system_spec.target_frequency_hz - system_spec.output_frequency_tolerance_hz
+    target_high = system_spec.target_frequency_hz + system_spec.output_frequency_tolerance_hz
+    checks["target_frequency_covered"] = (
+        float(worst["frequency_min_hz"]) <= target_low
+        and float(worst["frequency_max_hz"]) >= target_high
+    )
+    if requirement.tuning_range_min_hz is not None:
+        checks["tuning_range_min"] = (
+            float(worst["tuning_range_hz"]) >= requirement.tuning_range_min_hz
+        )
+    if requirement.kvco_min_hz_per_v is not None:
+        checks["kvco_min"] = (
+            float(worst["kvco_min_hz_per_v"]) >= requirement.kvco_min_hz_per_v
+        )
+    if requirement.kvco_max_hz_per_v is not None:
+        checks["kvco_max"] = (
+            float(worst["kvco_max_hz_per_v"]) <= requirement.kvco_max_hz_per_v
+        )
+    if requirement.power_max_w is not None:
+        checks["power"] = float(worst["worst_power_w"]) <= requirement.power_max_w
+
+    result = {
+        **measurement,
+        "passed": all(checks.values()),
+        "checks": checks,
+        "requirement": requirement.to_dict(),
+    }
+    result["worst_case"] = {
+        **dict(worst),
+        "phase_noise_margin_db": requirement.phase_noise_1mhz_max_dbc_hz - worst_pn,
+    }
+    return result
+
+
+def validate_vco_scalar_requirement(
+    system_spec: SystemSpec,
+    *,
+    parameter: str,
+    relation: str,
+    required_value: float,
+    vco: VCOParams,
+    system_context: Mapping[str, Any],
+    validity_min: float | None = None,
+    validity_max: float | None = None,
+    vctrl_points: int = 11,
+) -> Dict[str, Any]:
+    """Context-aware BlockTB for one allocated behavioral VCO requirement.
+
+    The internal scalar is only the search knob that produced the candidate.
+    Requirement verdicts are computed from measured Block behavior under the
+    frozen VCOBlockContext.
+    """
+
+    parameter = canonical_vco_parameter(parameter)
+    if relation not in {"min", "max"}:
+        raise ValueError("scalar VCO requirement relation must be min or max")
+    realized_parameters = asdict(vco)
+    if parameter not in realized_parameters:
+        raise ValueError(f"unknown scalar VCO requirement parameter: {parameter}")
+
+    measurement = measure_vco_behavior(
+        system_spec,
+        vco,
+        system_context,
+        vctrl_points=vctrl_points,
+    )
+    worst = measurement["worst_case"]
+    if parameter == "pn_anchor_1mhz_dbc_hz":
+        measured_metric = "worst_phase_noise_1mhz_dbc_hz"
+        behavior_metric = "phase_noise_1mhz_dbc_hz"
+    elif parameter == "k1_hz_per_v":
+        measured_metric = "kvco_min_hz_per_v" if relation == "min" else "kvco_max_hz_per_v"
+        behavior_metric = "kvco_hz_per_v"
+    elif parameter == "nominal_power_w":
+        measured_metric = "power_min_w" if relation == "min" else "worst_power_w"
+        behavior_metric = "power_w"
+    elif parameter == "f0_hz":
+        measured_metric = "frequency_max_hz" if relation == "min" else "frequency_min_hz"
+        behavior_metric = "frequency_hz"
+    else:
+        raise ValueError(
+            f"no measured behavior mapping for scalar VCO requirement: {parameter}"
+        )
+
+    measured_value = float(worst[measured_metric])
+    requirement_passed = (
+        measured_value >= float(required_value)
+        if relation == "min"
+        else measured_value <= float(required_value)
+    )
+    checks: Dict[str, bool] = {
+        f"{behavior_metric}_{relation}": requirement_passed
+    }
+
+    design_knob_value = float(realized_parameters[parameter])
+    allocation_domain_checks: Dict[str, bool] = {}
+    if validity_min is not None or validity_max is not None:
+        lower = float("-inf") if validity_min is None else float(validity_min)
+        upper = float("inf") if validity_max is None else float(validity_max)
+        allocation_domain_checks["within_allocation_search_domain"] = (
+            lower <= design_knob_value <= upper
+        )
+    if parameter == "f0_hz":
+        target_low = system_spec.target_frequency_hz - system_spec.output_frequency_tolerance_hz
+        target_high = system_spec.target_frequency_hz + system_spec.output_frequency_tolerance_hz
+        checks["target_frequency_covered"] = (
+            float(worst["frequency_min_hz"]) <= target_low
+            and float(worst["frequency_max_hz"]) >= target_high
+        )
+
+    return {
+        **measurement,
+        "passed": all(checks.values()) and all(allocation_domain_checks.values()),
+        "checks": checks,
+        "allocation_domain_checks": allocation_domain_checks,
+        "requirement": {
+            "search_knob": parameter,
+            "relation": relation,
+            "required_value": float(required_value),
+            "behavior_metric": behavior_metric,
+            "measured_metric": measured_metric,
+            "validity_domain": {
+                "parameter_min": validity_min,
+                "parameter_max": validity_max,
+            },
+        },
+        "measured_requirement": {
+            "metric": measured_metric,
+            "value": measured_value,
+            "required_value": float(required_value),
+            "relation": relation,
+            "passed": requirement_passed,
+        },
+        "design_knob": {
+            "parameter": parameter,
+            "value": design_knob_value,
+            "used_for_requirement_verdict": False,
+        },
+    }
 
 
 def strip_raw_results(evaluation: Mapping[str, Any]) -> Dict[str, Any]:

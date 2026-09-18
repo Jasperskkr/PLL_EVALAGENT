@@ -1,40 +1,49 @@
 # Phase 1 Schema and Graph Design
 
-本文是 Phase 1 的实现约定。它把早期讨论中的 Block 字段、System Graph 和 Agent 工作方式整理成一套可以逐步扩展、同时不破坏 V1.0 的结构。
+本文记录当前 V1 的 Semantic Freeze 结果。它不是功能扩展，也不是新的执行引擎；目标是把 Block Graph 对外语义固定下来，并消除 Requirement、model knob、Behavior metric、measured metric 之间的命名混用。
 
 ## 1. 设计原则
 
 ```text
 Schema is fixed grammar.
 Graph is a system-specific instance.
-Agent proposes.
-Deterministic tools validate.
+Workflow artifacts are objects, not Block Graph layers.
+Deterministic tools validate numeric claims.
 ```
 
-Schema 固定对象类型、字段含义、单位/端口规则、合法边类型和状态转换；它不固定每个未来 Block 的具体数值，也不替 Agent 猜测物理关系。
+Schema 固定对象类型、字段含义、单位、端口规则、合法边类型和证据要求。Graph 是某个具体 PLL case 的实例化关系地图。当前 V1 case 会把 VCO、SystemSpec、VCORequirement、Candidate、RealizedInstance、BlockTB、SystemTB 和 Evidence 放入同一张 typed graph，供追溯和查询。
 
-Graph 是某个具体 PLL case 的实例。当前 V1 case 会把 VCO、SystemSpec、VCORequirement、candidate、operator、BlockTB、SystemTB 和 evidence 放入同一张 typed graph，供追溯和查询。
+Block Graph 对外唯一语义分类是：
+
+```text
+architecture
+behavior
+influence
+evidence
+```
+
+`SystemSpec`、`BlockRequirement`、`Candidate`、`RealizedInstance`、`CapabilityRegion`、`DesignSpace`、`Schema` 和 `Contract` 都是 workflow object/artifact，不是 Block Graph layer。
 
 ## 2. BlockMetaSchema v1
 
-Block 不再是简单的 `parameters + outputs`，而是四个互相分工的 contract：
+BlockMeta 顶层固定为四部分：
 
 ```text
 BlockMeta
-├── InterfaceContract
-├── BehaviorContract
-├── CapabilityContract
-└── VerificationContract
+├── architecture
+├── behavior
+├── influence
+└── evidence
 ```
 
 对应关系如下：
 
-| Contract | 解决的问题 | 主要字段 |
+| 部分 | 回答的问题 | 当前 VCO 例子 |
 |---|---|---|
-| Interface | Block 做什么、怎么连接 | `function`, `ports`, `interaction_variables` |
-| Behavior | 变量怎样依赖 context、如何影响 system | `search_variables`, `environment_contract`, `system_influence_factors` |
-| Capability | Block 在 context 下能做到哪些组合 | `exported_specs`, `capability_region`, `tradeoffs` |
-| Verification | 指标如何测、在哪些范围可信 | `measurement_contracts`, `validity_domain`, `uncertainty`, `evidence` |
+| `architecture` | Block 是什么、怎么接 | VCO identity、`Vctrl`、oscillator output、temperature/VDD context |
+| `behavior` | Block 在给定 context 下表现出什么 | `frequency_hz`、`phase_noise_1mhz_dbc_hz`、`kvco_hz_per_v`、`power_w` |
+| `influence` | Block Behavior 如何影响 System Metric | VCO PN → PLL jitter，VCO Kvco → jitter/lock time |
+| `evidence` | 上述结论凭什么可信 | characterization、sensitivity、boundary search、BlockTB、SystemTB、audit/provenance |
 
 机器可读模板：[`../v1/schema/block_meta_schema_v1.json`](../v1/schema/block_meta_schema_v1.json)
 
@@ -42,84 +51,97 @@ BlockMeta
 
 当前 V1 实例化输出：`results/v1_vco_mapping_01/vco_block_meta_v1.json`。
 
-### 2.1 InterfaceContract
+### 2.1 Architecture
+
+Architecture 只包含 block identity、真实物理/功能端口、signal connections、feedback connections 和 environment/context inputs。
+
+VCO 的 architecture 例子：
 
 ```json
 {
-  "function": "Generate context-dependent oscillator behavior",
+  "block_id": "VCO",
+  "function": "Generate context-dependent oscillator output",
   "ports": [
-    {"name": "Vctrl", "direction": "in", "signal_type": "control_voltage", "unit": "V", "datatype": "float"},
-    {"name": "phase_noise_profile", "direction": "out", "signal_type": "ssb_phase_noise", "unit": "dBc/Hz", "datatype": "function(offset_hz)"}
+    {"name": "Vctrl", "direction": "in", "signal_type": "control_voltage", "unit": "V"},
+    {"name": "oscillation_output", "direction": "out", "signal_type": "oscillation", "unit": "Hz"}
   ],
-  "interaction_variables": ["VCO.vctrl", "VCO.phase_noise_profile", "VCO.Kvco"]
-}
-```
-
-Port 规定方向、信号语义、单位和数据类型。`interaction_variables` 是跨 Block 的显式接口，避免 Agent 直接把所有内部参数连接到所有系统指标。
-
-### 2.2 BehaviorContract
-
-`search_variables` 是优化器可以调整的 behavioral knob；`environment_contract` 是外部条件；`system_influence_factors` 是带机制和 evidence 引用的影响声明。
-
-```json
-{
-  "search_variables": [
-    {
-      "name": "phase_noise_1mhz_dbc_hz",
-      "role": "design_variable",
-      "unit": "dBc/Hz",
-      "datatype": "float",
-      "depends_on": ["Vctrl", "temperature", "power"],
-      "evaluation_method": "deterministic PN parameter sweep",
-      "description": "V1 allocation knob"
-    }
-  ],
-  "environment_contract": {
-    "variables": ["Vctrl", "temperature", "vdd_v"],
-    "context_source": "SystemTB operating envelope"
-  },
-  "system_influence_factors": [
-    {
-      "source": "phase_noise_1mhz_dbc_hz",
-      "target": "PLL.integrated_jitter",
-      "mechanism": "VCO noise transfer followed by phase-noise integration",
-      "evidence_id": "allocation:pn_1mhz_to_integrated_jitter"
-    }
+  "context_inputs": [
+    {"name": "temperature", "unit": "degC"},
+    {"name": "vdd", "unit": "V"}
   ]
 }
 ```
 
-### 2.3 CapabilityContract
+Phase noise、Kvco 和 power 不是 port。它们属于 Behavior。
 
-`exported_specs` 描述 System 可以向 Block 提出的要求；`capability_region` 描述 Block 实际可行的联合空间；`tradeoffs` 描述变量之间的制约。
+### 2.2 Behavior
 
-V1 只正式承诺一维 capability：
-
-```text
-dimension = phase_noise_1mhz_dbc_hz
-representation = sampled_feasible_points
-status = v1_one_dimensional_only
-```
-
-`Kvco`、tuning range 和 power 已有 sensitivity/characterization evidence，但不能因为它们出现在 schema 中就声称已经完成多维分配。
-
-### 2.4 VerificationContract
-
-测量合同必须让两个 Block 的指标可比较。至少记录：
+Behavior metric 是在给定 context 下实际可计算或可测量的 Block 表现。当前 VCO 正式 Behavior metrics 固定为：
 
 ```text
-metric
-method
-stimulus
-context source
-offset/integration band（如果适用）
-aggregation rule
-validity domain
-uncertainty status
-evidence id
+frequency_hz
+phase_noise_1mhz_dbc_hz
+kvco_hz_per_v
+power_w
 ```
 
-`Environment contract` 表示 Block 对哪些外部条件作出承诺；`Validity domain` 表示模型在哪些范围内经过验证、可信。两者不能混为一个 range。
+VCO 行为节点示例：
+
+```json
+{
+  "node_id": "VCO.phase_noise_1mhz",
+  "semantic_role": "behavior",
+  "properties": {
+    "metric_name": "phase_noise_1mhz_dbc_hz",
+    "unit": "dBc/Hz",
+    "depends_on": ["Vctrl", "temperature", "power_w", "realization"]
+  }
+}
+```
+
+Internal model coefficient / candidate knob 不能标记为 Behavior metric。比如 `pn_anchor_1mhz_dbc_hz`、`k1_hz_per_v`、`nominal_power_w` 是 candidate/model knobs，不是 measured Behavior。
+`vdd_v` 可以保留为 Architecture/Context input；当前 behavioral equations 未使用 VDD，因此 Graph 不声明 `VDD -> frequency/PN` 行为依赖。
+
+### 2.3 Influence
+
+Influence 表达 Block Behavior 怎么影响 System Metric。Influence 必须明确：
+
+```text
+source_behavior_metric
+target_system_metric
+mechanism
+evidence_refs
+validity_domain
+```
+
+当前至少保留：
+
+```text
+VCO.phase_noise_1mhz -> PLL.integrated_jitter
+VCO.kvco             -> PLL.integrated_jitter
+VCO.kvco             -> PLL.lock_time
+VCO.frequency        -> PLL.output_frequency
+VCO.power            -> PLL.power
+```
+
+Block 内部的 `Vctrl -> phase_noise_1mhz_dbc_hz` 属于 behavioral dependency；Block 到 System 的 `phase_noise_1mhz_dbc_hz -> integrated_jitter_s` 属于 `system_influence`。两者不能混用。
+
+### 2.4 Evidence
+
+Evidence 是实际产生的结果，不是 schema 断言。当前 Evidence 包括：
+
+```text
+characterization
+sensitivity
+boundary-search records
+BlockTB
+SystemTB
+context coverage
+holdout
+audit / provenance
+```
+
+Evidence node 必须带 provenance 和 measurement method。BlockTB evidence 还必须引用 frozen `VCOBlockContext.v1`。
 
 ## 3. TypedGraph v2
 
@@ -127,221 +149,195 @@ evidence id
 
 运行时模型：[`../v1/graph/model.py`](../v1/graph/model.py)
 
-图分为四层：
+Graph v2 node 对外使用 `semantic_role`，合法值只有：
 
 ```text
-interface      Block / Port / Signal / Context / InteractionVariable
-behavior       BehavioralOutput / DesignVariable / Operator / SystemMetric
-allocation     SystemRequirement / BlockRequirement / Capability / Candidate
-verification   Contract / Measurement / Validity / Evaluation / Evidence
+architecture
+behavior
+influence
+evidence
 ```
+
+Workflow artifacts 可以有 `node_type` / `artifact_type`，但不因此成为 graph layer。`VCORequirement`、`Candidate`、`RealizedInstance`、`DesignSpace`、`CapabilityRegion`、`MeasurementContract`、`ValidityDomain` 和 `Uncertainty` 都按对象身份记录。
+
+当前 JSON 仍保留 `plane`、`authority`、`scope`、`mutability` 和 `provenance` 字段，用于实现侧的 provenance/authority 分组。`plane` 不是公开 Block Graph semantic layer，也不参与 `semantic_role` 的四角色解释。
 
 ### 3.1 当前 V1 的核心路径
 
+System-to-Block requirement 路径：
+
 ```text
 SystemSpec.integrated_jitter
-        │ constrains
+        │ target_system_metric
+        ▼
+BoundarySearch.search_knob = pn_anchor_1mhz_dbc_hz
+        │ bisection under SystemTB
+        ▼
+search_knob_boundary
+        │ measure under frozen VCOBlockContext.v1
+        ▼
+worst_phase_noise_1mhz_dbc_hz
+        │ compare / margin
+        ▼
+VCORequirement.phase_noise_1mhz_max_dbc_hz
+```
+
+Influence path:
+
+```text
+VCO.phase_noise_1mhz
+        │ system_influence
         ▼
 PLL.integrated_jitter
-        ▲ produces
-        │
-operator.Noise_Integration
-        ▲ input_to
-        │
-operator.VCO_Noise_TF
-        ▲ input_to
-        │
-VCO.phase_noise_profile
 ```
 
-分配和验证路径：
+Candidate validation path:
 
 ```text
-SystemSpec.integrated_jitter
-        │ allocates
-        ▼
-VCORequirement.required
-        │ derived_from + margin
-        ▼
-VCORequirement.recommended
+VCORequirement
         │ constrains
         ▼
-VCO.capability_region
-        │ provides BlockTB-feasible candidate
+Candidate
+        │ compile
         ▼
-Candidate.candidate_low_noise
-        │ realizes
-        ▼
-Instance.candidate_low_noise
-        ├── evaluates → BlockTB.candidate_low_noise
-        ├── evaluates → SystemTB.candidate_low_noise
-        └── evaluates → Evidence.SystemTB.final
-                              │ yields_verdict
-                              ▼
-                       SystemSpec.verdict
-                       ├── verifies jitter
-                       ├── verifies lock time
-                       ├── verifies frequency
-                       └── verifies power
+RealizedInstance
+        ├── BlockTB under VCOBlockContext.v1
+        └── validation SystemTB
+                ▼
+          final PASS/FAIL Evidence
 ```
 
-所有尝试过的 candidate 先进入 `VCO.design_space`；只有 BlockTB PASS 的 candidate 才能进入 `VCO.capability_region`。反向语义边 `Candidate → CapabilityRegion: candidate_of` 同时保留，便于查询候选属于哪个 capability region。
-
-`VCORequirement`、`VCO capability`、`Candidate`、`Realized Instance` 和 `Evaluation` 是不同对象，不能因为数值相近而合并。Candidate 是待尝试的设计向量，Realized Instance 是把该向量代入指定模型后得到的完整参数实例。
+Candidate、RealizedInstance、Requirement 和 Evidence 是不同对象，不能因为数值相近而合并。
 
 ### 3.2 Context closure
 
-VCO BlockTB 的环境不能由候选运行结果反推。Runner 在评估任何 candidate 之前，根据初始 SystemTB 的实际工作区间和声明的 guard 冻结 `Context.VCO.contract`：
+VCO BlockTB 的 measurement context 在评估任何 candidate 之前冻结：
 
 ```text
-Initial SystemTB context + declared guard
-                    │ freeze before candidate evaluation
+Initial SystemTB operating envelope + declared guard
+                    │ freeze
                     ▼
-            Context.VCO.contract
-              ├── used by BlockTB
-              └── covers Candidate/Final SystemTB actual context
+            VCOBlockContext.v1
+              ├── boundary-point measurement
+              ├── candidate BlockTB
+              └── final context coverage check
 ```
 
-候选只有在 BlockTB PASS、SystemTB PASS 且实际 SystemTB context 被冻结合同覆盖时，才可参与最终选择。选中后还会独立重跑一次 Final SystemTB，避免把候选筛选阶段的结果直接当最终证据。
+所有 candidate 使用同一个 frozen Block Context。候选只有在 BlockTB PASS、SystemTB PASS 且实际 SystemTB context 被冻结合同覆盖时，才可参与最终选择。
 
-### 3.3 Architecture Graph 与 Evaluation Graph
+### 3.3 DesignSpace 与 CapabilityRegion
 
-PLL 的反馈关系在架构图中保留：
+DesignSpace 描述可以尝试哪些 candidate/model knobs，例如：
 
 ```text
-PLL → VCO.vctrl → VCO.oscillation → PLL
+pn_anchor_1mhz_dbc_hz
+k1_hz_per_v
+nominal_power_w
+f0_hz
 ```
 
-为了让数值执行路径可检查，Graph v2 把闭环内部封装成 operator：
+CapabilityRegion 描述经过 BlockTB Evidence 后，Block 在 Behavior space 中实际能做到什么。当前 capability axes 使用 measured Behavior aggregates：
 
 ```text
-VCO_Noise_TF → Noise_Integration → System Jitter
-Kvco / Icp / R / C / N → PLL_Dynamics → Lock Time / UGB / PM
+worst_phase_noise_1mhz_dbc_hz
+frequency_min_hz / frequency_max_hz
+kvco_min_hz_per_v / kvco_max_hz_per_v
+worst_power_w
 ```
 
-因此：
+V1 仍是一维 proof case，不声称已有完整 `PN × Kvco` feasible region。
 
-- architecture layer 可以表达反馈；
-- evaluation layer 沿 operator 形成可追溯的计算路径；
-- Agent 不能在执行图中随意制造未验证的循环依赖。
+## 4. PN 命名冻结
 
-### 3.4 Rejected allocation graph
+PN 的四种身份固定如下：
 
-当 tight PN 已经使 jitter 达标，但 lock time 或 power 仍失败时，PN-only allocator 不会伪造 VCO PN requirement。Graph 将 outcome 标记为 `rejected`，保留：
+| 身份 | 字段 | 含义 |
+|---|---|---|
+| internal model knob | `pn_anchor_1mhz_dbc_hz` | synthetic VCO realization knob |
+| point Behavior metric | `phase_noise_1mhz_dbc_hz` | 给定 Vctrl/T/VDD/realization 下的 PN@1MHz |
+| measured Block metric | `worst_phase_noise_1mhz_dbc_hz` | BlockTB 在 frozen context sweep 后的 max PN |
+| allocated Block Requirement | `phase_noise_1mhz_max_dbc_hz` | requirement object 中对 measured worst PN 的上限 |
+
+数据流固定为：
 
 ```text
-failed SystemSpec
-  → initial SystemTB residual/checks
-  → Evidence.PN.rejection
-  → deterministic sensitivity
-  → Agent goal context
-      lock-time failure → VCO.k1_design → parameter_sweep
-      power failure     → VCO.nominal_power_design → parameter_sweep
+pn_anchor_1mhz_dbc_hz
+            ↓
+phase_noise_1mhz_dbc_hz(context)
+            ↓
+worst_phase_noise_1mhz_dbc_hz
+            ↓ compare / margin
+phase_noise_1mhz_max_dbc_hz
 ```
 
-这让失败结果也成为下一轮多参数探索的输入，而不是一段不可查询的报错文本。
+旧字段 `pn_1mhz_dbc_hz` 只允许在 load boundary 作为 legacy alias 读取，并立即 normalize 为 `pn_anchor_1mhz_dbc_hz`。
 
-## 4. Edge 生命周期
+## 5. BoundarySearch 输出语义
 
-每条 Agent 提议的关系都应有状态：
+BoundarySearch 仍使用原来的 scalar bisection 算法，但输出字段必须说明它找的是 search knob boundary，而不是直接找到 Block Requirement。
+
+当前 PN case 输出：
 
 ```text
-proposed
-  → supported       有模型/文献/工程依据
-  → tested          已运行局部 BlockTB 或 sensitivity
-  → validated       已通过确定性 SystemTB/evaluator
-  → rejected        验证失败或超出 validity domain
+search_knob:                      pn_anchor_1mhz_dbc_hz
+search_knob_boundary:             -116.358121 dBc/Hz
+target_system_metric:             integrated_jitter_s
+target_system_metric_at_boundary: 7.999999e-14 s
+block_metric_at_boundary:         -113.511151 dBc/Hz
+validity_domain:                  bracket/domain metadata
+history:                          deterministic bisection records
 ```
 
-当前 V1 runner 编译出的关系来自固定模型、确定性 sweep 和验证结果，因此标记为 `validated`。未来 Agent 生成的 proposal 必须先进入 proposal graph 或以 `status=proposed` 存储，不能直接覆盖 canonical validated graph。
-
-## 5. Agent 接口
-
-Agent 的输入应是结构化 evidence，而不是一段自由文本：
+VCO PN requirement 来自 `block_metric_at_boundary`，再结合 margin：
 
 ```text
-SystemSpec
-Current BlockMeta
-Current Graph subgraph
-Metrics / Residuals
-Sensitivity / Contribution
-Operating Context
-Candidate history
-Validity / uncertainty
+required phase_noise_1mhz_max_dbc_hz     = -113.511151 dBc/Hz
+recommended phase_noise_1mhz_max_dbc_hz  = -115.011151 dBc/Hz
 ```
 
-Agent 可以提出：
+## 6. Semantic Validator
 
-```text
-add/remove variable
-add/remove context
-add/remove dependency
-change scalar → function/profile
-modify validity
-select search region
-propose candidate / Pareto preference
-```
+Graph validator 会拒绝以下错误，而不是只修改文档：
 
-Agent 不可以：
+1. Architecture 中出现 Kvco / PN / Power 作为 port；
+2. 同时存在 `VCO.Kvco` 和 `VCO.kvco`；
+3. internal model knob 被标记为 Behavior metric；
+4. Behavior → SystemMetric 的关系没有被标记为 Influence；
+5. Requirement 没有明确对应 measured Behavior metric；
+6. Candidate knob 被直接拿来判断 BlockRequirement；
+7. PN anchor boundary 被直接写成 `phase_noise_1mhz_max_dbc_hz`；
+8. BlockTB 没有使用 frozen `VCOBlockContext.v1`；
+9. Evidence 没有 provenance / measurement method；
+10. CapabilityRegion 使用未经 BlockTB 验证的点却声称 feasible。
 
-```text
-修改 SystemSpec 或 pass criteria
-猜测 sensitivity 数值
-把 requirement 当 capability
-伪造 BlockTB/SystemTB 结果
-直接宣布 PASS
-```
-
-标准动作链：
-
-```text
-Agent proposal
-  → schema/type/unit/context checks
-  → deterministic BlockTB / sweep / SystemTB
-  → independent evaluator
-  → evidence + status update
-  → accepted graph instance or rejected proposal
-```
-
-结构化 proposal 模板：[`../v1/graph/graph_proposal_schema_v1.json`](../v1/graph/graph_proposal_schema_v1.json)
-
-运行时 proposal validator：[`../v1/graph/proposals.py`](../v1/graph/proposals.py)。它只检查提议是否合法，不负责把提议直接写入 canonical graph；`validated` 状态只能由后续确定性验证流程产生。
-
-当前 runner 额外生成 `agent_goal_context.json`。它从初始 SystemTB 的失败 checks 出发，查询带 deterministic sensitivity evidence 的可操作变量；已扫出零影响的变量进入 `inactive_variables`，只有结构关系、尚无数值证据的变量进入 `structural_hypotheses`。因此 Agent 可以提出下一步搜索方向，但不能把结构连线直接当作已证明的分配关系。
-
-## 6. Graph semantic audit
-
-`graph_audit.json` 在产物写出前检查：
-
-- requirement → candidate → instance → BlockTB/SystemTB → final verdict 路径闭合；
-- Candidate 与 Realized Instance 一一对应，最终实例与 selected candidate 一致；
-- DesignSpace 包含全部候选，CapabilityRegion 只包含 BlockTB PASS 候选；
-- PASS/FAIL 与 `validated/rejected` 状态一致；
-- evidence id 都能解析到真实 Evidence Node；
-- 冻结的 VCO context contract 覆盖 candidate 和 final SystemTB 的实际 context；
-- requirement、worst-case、metrics、residuals 与原始 JSON artifact 数值一致。
-
-测试会分别破坏上述关键关系，确认 audit 必须 FAIL，而不仅是检查一张正常图能否生成。
+测试会构造这些破坏用例，确认 semantic validator 必须 FAIL。
 
 ## 7. 当前实现和下一步
 
-Phase 1 当前已实现：
+当前已实现：
 
 - `BlockMetaSchema v1` 的 JSON 模板和 Python validator；
-- VCO 四类 contract 的 canonical instance builder；
-- TypedGraph v2 的四层 node/edge vocabulary；
+- VCO `architecture` / `behavior` / `influence` / `evidence` canonical instance builder；
+- TypedGraph v2 的 `semantic_role` node/edge vocabulary；
 - Graph v2 semantic validator；
 - V1 runner 的 `vco_pll_graph_v2.json` artifact；
-- V1 runner 的 `vco_block_meta_v1.json` VCO contract instance；
+- V1 runner 的 `vco_block_meta_v1.json` VCO metadata instance；
 - 正向/拒绝 case 的 `graph_audit.json` 与 `agent_goal_context.json`；
 - 冻结的 `vco_environment_contract.json` 与独立 Final SystemTB context coverage；
-- deterministic tests，包括非法图拒绝、端口单位检查、schema 结构检查、语义破坏审计和 proposal 权限边界。
-- read-only requirement/evidence 查询和非权威 Agent proposal validator。
+- deterministic tests，包括非法图拒绝、端口单位检查、schema 结构检查、语义破坏审计和 legacy alias normalization。
 
-下一步不是立刻让 Agent 自由发现所有关系，而是：
+下一步不是把 workflow artifact 升级成新的 graph layer，而是在已有语义冻结上继续增加 verified data：
 
-1. 在已有 requirement trace 和 evidence lookup 上补充 influence trace 与 context compatibility；
-2. 将 sampled capability point 和 Pareto artifact 作为正式 allocation 对象；
-3. 保持 `PN × Kvco` 作为第一个二维扩展，并用 V1 一维结果做 regression control；
-4. 再加入 CP/Loop Filter 的 interaction contract；
-5. 最后接入 Agent proposal/verification loop。
+1. 保持 V1 PN anchor boundary 作为 regression control；
+2. 单独启动 `PN × Kvco` feasible-region 搜索时，仍以 BlockTB Evidence 判定 feasible points；
+3. 再加入 CP/Loop Filter 的 cross-block context；
+4. 任何 future action proposer 都只能提出候选动作，不能直接写入 validated Evidence。
+
+明确边界：
+
+```text
+no Proposal layer
+no Allocation layer in Block Graph
+no Capability layer
+no fifth Block Graph layer
+```

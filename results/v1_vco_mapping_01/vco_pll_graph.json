@@ -42,6 +42,30 @@
     },
     {
       "properties": {},
+      "source": "VCO.vctrl",
+      "target": "VCO.power",
+      "type": "behavioral_dependency"
+    },
+    {
+      "properties": {},
+      "source": "VCO.temperature",
+      "target": "VCO.power",
+      "type": "behavioral_dependency"
+    },
+    {
+      "properties": {},
+      "source": "VCO.power",
+      "target": "VCO.phase_noise_1mhz",
+      "type": "behavioral_dependency"
+    },
+    {
+      "properties": {},
+      "source": "VCO.vctrl",
+      "target": "VCO.kvco",
+      "type": "behavioral_dependency"
+    },
+    {
+      "properties": {},
       "source": "VCO.phase_noise_1mhz",
       "target": "PLL.integrated_jitter",
       "type": "noise_transfer"
@@ -108,7 +132,7 @@
     },
     {
       "properties": {
-        "evidence_id": "sensitivity:pn_1mhz_dbc_hz:integrated_jitter",
+        "evidence_id": "sensitivity:pn_anchor_1mhz_dbc_hz:integrated_jitter",
         "method": "central_finite_difference",
         "value": 9.683058812533833e-15
       },
@@ -118,7 +142,7 @@
     },
     {
       "properties": {
-        "evidence_id": "sensitivity:pn_1mhz_dbc_hz:lock_time",
+        "evidence_id": "sensitivity:pn_anchor_1mhz_dbc_hz:lock_time",
         "method": "central_finite_difference",
         "value": 0.0
       },

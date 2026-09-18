@@ -1,33 +1,43 @@
-"""Generic evaluator wrapper that reuses the existing deterministic pipeline."""
+"""Generic DesignVector evaluator using measured Block behavior."""
 
 from __future__ import annotations
 
-from typing import Any, Mapping, Optional
+from dataclasses import asdict
+from typing import Mapping
 
 from ..model.pll_behavioral import VCOParams
-from ..pipeline import evaluate_system
-from ..specs import SystemSpec
-from .spec_vector import SpecVector, compile_spec_vector_to_vco
+from ..pipeline import evaluate_system, validate_vco_spec
+from ..specs import SystemSpec, VCORequirement
+from .design_vector import DesignVector, compile_design_vector_to_vco
 
 
-def evaluate_spec_vector(
+def evaluate_design_vector(
     system_spec: SystemSpec,
     base_vco: VCOParams,
-    spec_vector: SpecVector,
+    design_vector: DesignVector,
     *,
+    block_context: Mapping[str, Any] | None = None,
+    requirement: VCORequirement | None = None,
     keep_raw: bool = False,
 ) -> dict[str, Any]:
-    """Evaluate an abstract VCO requirement vector using SystemTB.
+    """Evaluate a candidate DesignVector through realized behavior.
 
-    This is deliberately an adapter: the current V1 PN search remains the
-    canonical implementation, while future multi-parameter search can call a
-    stable vector evaluator.
+    SystemTB remains available for top-level metrics.  When a frozen
+    ``block_context`` and requirement are supplied, BlockTB measures the
+    realized behavior before checking the requirement.
     """
 
-    vco = compile_spec_vector_to_vco(base_vco, spec_vector)
+    vco = compile_design_vector_to_vco(base_vco, design_vector)
     result = evaluate_system(system_spec, vco, keep_raw=keep_raw)
-    return {
-        "spec_vector": spec_vector.to_dict(),
+    output: dict[str, Any] = {
+        "design_vector": design_vector.to_dict(),
+        "realized_vco": asdict(vco),
         "system_evaluation": result,
     }
-
+    if block_context is not None:
+        if requirement is None:
+            raise ValueError("BlockTB requirement is required with block_context")
+        output["block_evaluation"] = validate_vco_spec(
+            system_spec, requirement, vco, block_context
+        )
+    return output

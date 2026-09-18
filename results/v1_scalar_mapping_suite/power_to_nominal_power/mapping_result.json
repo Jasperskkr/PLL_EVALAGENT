@@ -1,0 +1,2445 @@
+{
+  "allocated_vco_parameter": "nominal_power_w",
+  "boundary": {
+    "allocated_block_metric": "worst_power_w",
+    "block_metric_at_boundary": 0.005370635070800781,
+    "boundary_block_measurement": {
+      "context": {
+        "context_id": "VCOBlockContext.v1",
+        "source": "declared SystemSpec operating envelope; frozen before candidate evaluation",
+        "temperature_points_c": [
+          25.0
+        ],
+        "vctrl_max_v": 1.1,
+        "vctrl_min_v": 0.1,
+        "vdd_v": 1.8
+      },
+      "measurement_method": "context_sweep_behavioral_vco",
+      "provenance": {
+        "model": "synthetic_behavioral_vco_v1",
+        "source": "v1.pipeline.measure_vco_behavior"
+      },
+      "worst_case": {
+        "frequency_max_hz": 5662000000.0,
+        "frequency_min_hz": 3922000000.0,
+        "kvco_max_hz_per_v": 2440000000.0,
+        "kvco_min_hz_per_v": 1040000000.0,
+        "power_min_w": 0.0047952098846435545,
+        "tuning_range_hz": 1740000000.0,
+        "worst_frequency_hz": 5662000000.0,
+        "worst_phase_noise_1mhz_dbc_hz": -111.34765406801054,
+        "worst_power_w": 0.005370635070800781
+      }
+    },
+    "bracket_width": 9.53674316600539e-10,
+    "deterministic": true,
+    "direction": "decreasing_parameter_moves_fail_to_pass",
+    "history": [
+      {
+        "metrics": {
+          "integrated_jitter_s": 8.336734952719942e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "passed": false,
+          "power_w": 0.005964284388762353
+        },
+        "phase": "failing_bracket",
+        "residuals": {
+          "integrated_jitter_residual_s_max": -9.999166326504729e-10,
+          "lock_time_residual_s_max": -0.0009634800000000001,
+          "output_frequency_error_hz_max": 0.0011682510375976562,
+          "output_frequency_residual_hz_max": -99999.99883174896,
+          "power_residual_w_max": 0.0007642843887623535
+        },
+        "system_passed": false,
+        "target_passed": false,
+        "value": 0.0055
+      },
+      {
+        "metrics": {
+          "integrated_jitter_s": 8.336734952719942e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "passed": true,
+          "power_w": 0.0048798690453510166
+        },
+        "phase": "passing_bracket",
+        "residuals": {
+          "integrated_jitter_residual_s_max": -9.999166326504729e-10,
+          "lock_time_residual_s_max": -0.0009634800000000001,
+          "output_frequency_error_hz_max": 0.0011682510375976562,
+          "output_frequency_residual_hz_max": -99999.99883174896,
+          "power_residual_w_max": -0.0003201309546489832
+        },
+        "system_passed": true,
+        "target_passed": true,
+        "value": 0.0045
+      },
+      {
+        "iteration": 0,
+        "metrics": {
+          "integrated_jitter_s": 8.336734952719942e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "passed": false,
+          "power_w": 0.0054220767170566845
+        },
+        "phase": "bisection",
+        "residuals": {
+          "integrated_jitter_residual_s_max": -9.999166326504729e-10,
+          "lock_time_residual_s_max": -0.0009634800000000001,
+          "output_frequency_error_hz_max": 0.0011682510375976562,
+          "output_frequency_residual_hz_max": -99999.99883174896,
+          "power_residual_w_max": 0.00022207671705668473
+        },
+        "system_passed": false,
+        "target_passed": false,
+        "value": 0.004999999999999999
+      },
+      {
+        "iteration": 1,
+        "metrics": {
+          "integrated_jitter_s": 8.336734952719942e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "passed": true,
+          "power_w": 0.00515097288120385
+        },
+        "phase": "bisection",
+        "residuals": {
+          "integrated_jitter_residual_s_max": -9.999166326504729e-10,
+          "lock_time_residual_s_max": -0.0009634800000000001,
+          "output_frequency_error_hz_max": 0.0011682510375976562,
+          "output_frequency_residual_hz_max": -99999.99883174896,
+          "power_residual_w_max": -4.90271187961501e-05
+        },
+        "system_passed": true,
+        "target_passed": true,
+        "value": 0.004749999999999999
+      },
+      {
+        "iteration": 2,
+        "metrics": {
+          "integrated_jitter_s": 8.336734952719942e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "passed": false,
+          "power_w": 0.005286524799130267
+        },
+        "phase": "bisection",
+        "residuals": {
+          "integrated_jitter_residual_s_max": -9.999166326504729e-10,
+          "lock_time_residual_s_max": -0.0009634800000000001,
+          "output_frequency_error_hz_max": 0.0011682510375976562,
+          "output_frequency_residual_hz_max": -99999.99883174896,
+          "power_residual_w_max": 8.652479913026732e-05
+        },
+        "system_passed": false,
+        "target_passed": false,
+        "value": 0.004874999999999999
+      },
+      {
+        "iteration": 3,
+        "metrics": {
+          "integrated_jitter_s": 8.336734952719942e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "passed": false,
+          "power_w": 0.005218748840167059
+        },
+        "phase": "bisection",
+        "residuals": {
+          "integrated_jitter_residual_s_max": -9.999166326504729e-10,
+          "lock_time_residual_s_max": -0.0009634800000000001,
+          "output_frequency_error_hz_max": 0.0011682510375976562,
+          "output_frequency_residual_hz_max": -99999.99883174896,
+          "power_residual_w_max": 1.8748840167059043e-05
+        },
+        "system_passed": false,
+        "target_passed": false,
+        "value": 0.004812499999999999
+      },
+      {
+        "iteration": 4,
+        "metrics": {
+          "integrated_jitter_s": 8.336734952719942e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "passed": true,
+          "power_w": 0.005184860860685455
+        },
+        "phase": "bisection",
+        "residuals": {
+          "integrated_jitter_residual_s_max": -9.999166326504729e-10,
+          "lock_time_residual_s_max": -0.0009634800000000001,
+          "output_frequency_error_hz_max": 0.0011682510375976562,
+          "output_frequency_residual_hz_max": -99999.99883174896,
+          "power_residual_w_max": -1.5139139314545094e-05
+        },
+        "system_passed": true,
+        "target_passed": true,
+        "value": 0.004781249999999999
+      },
+      {
+        "iteration": 5,
+        "metrics": {
+          "integrated_jitter_s": 8.336734952719942e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "passed": false,
+          "power_w": 0.005201804850426256
+        },
+        "phase": "bisection",
+        "residuals": {
+          "integrated_jitter_residual_s_max": -9.999166326504729e-10,
+          "lock_time_residual_s_max": -0.0009634800000000001,
+          "output_frequency_error_hz_max": 0.0011682510375976562,
+          "output_frequency_residual_hz_max": -99999.99883174896,
+          "power_residual_w_max": 1.8048504262565407e-06
+        },
+        "system_passed": false,
+        "target_passed": false,
+        "value": 0.004796874999999999
+      },
+      {
+        "iteration": 6,
+        "metrics": {
+          "integrated_jitter_s": 8.336734952719942e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "passed": true,
+          "power_w": 0.0051933328555558555
+        },
+        "phase": "bisection",
+        "residuals": {
+          "integrated_jitter_residual_s_max": -9.999166326504729e-10,
+          "lock_time_residual_s_max": -0.0009634800000000001,
+          "output_frequency_error_hz_max": 0.0011682510375976562,
+          "output_frequency_residual_hz_max": -99999.99883174896,
+          "power_residual_w_max": -6.667144444144277e-06
+        },
+        "system_passed": true,
+        "target_passed": true,
+        "value": 0.004789062499999999
+      },
+      {
+        "iteration": 7,
+        "metrics": {
+          "integrated_jitter_s": 8.336734952719942e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "passed": true,
+          "power_w": 0.005197568852991057
+        },
+        "phase": "bisection",
+        "residuals": {
+          "integrated_jitter_residual_s_max": -9.999166326504729e-10,
+          "lock_time_residual_s_max": -0.0009634800000000001,
+          "output_frequency_error_hz_max": 0.0011682510375976562,
+          "output_frequency_residual_hz_max": -99999.99883174896,
+          "power_residual_w_max": -2.4311470089430007e-06
+        },
+        "system_passed": true,
+        "target_passed": true,
+        "value": 0.0047929687499999995
+      },
+      {
+        "iteration": 8,
+        "metrics": {
+          "integrated_jitter_s": 8.336734952719942e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "passed": true,
+          "power_w": 0.005199686851708656
+        },
+        "phase": "bisection",
+        "residuals": {
+          "integrated_jitter_residual_s_max": -9.999166326504729e-10,
+          "lock_time_residual_s_max": -0.0009634800000000001,
+          "output_frequency_error_hz_max": 0.0011682510375976562,
+          "output_frequency_residual_hz_max": -99999.99883174896,
+          "power_residual_w_max": -3.131482913436637e-07
+        },
+        "system_passed": true,
+        "target_passed": true,
+        "value": 0.004794921874999999
+      },
+      {
+        "iteration": 9,
+        "metrics": {
+          "integrated_jitter_s": 8.336734952719942e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "passed": false,
+          "power_w": 0.005200745851067457
+        },
+        "phase": "bisection",
+        "residuals": {
+          "integrated_jitter_residual_s_max": -9.999166326504729e-10,
+          "lock_time_residual_s_max": -0.0009634800000000001,
+          "output_frequency_error_hz_max": 0.0011682510375976562,
+          "output_frequency_residual_hz_max": -99999.99883174896,
+          "power_residual_w_max": 7.458510674568722e-07
+        },
+        "system_passed": false,
+        "target_passed": false,
+        "value": 0.0047958984375
+      },
+      {
+        "iteration": 10,
+        "metrics": {
+          "integrated_jitter_s": 8.336734952719942e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "passed": false,
+          "power_w": 0.005200216351388056
+        },
+        "phase": "bisection",
+        "residuals": {
+          "integrated_jitter_residual_s_max": -9.999166326504729e-10,
+          "lock_time_residual_s_max": -0.0009634800000000001,
+          "output_frequency_error_hz_max": 0.0011682510375976562,
+          "output_frequency_residual_hz_max": -99999.99883174896,
+          "power_residual_w_max": 2.1635138805660425e-07
+        },
+        "system_passed": false,
+        "target_passed": false,
+        "value": 0.004795410156249999
+      },
+      {
+        "iteration": 11,
+        "metrics": {
+          "integrated_jitter_s": 8.336734952719942e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "passed": true,
+          "power_w": 0.005199951601548357
+        },
+        "phase": "bisection",
+        "residuals": {
+          "integrated_jitter_residual_s_max": -9.999166326504729e-10,
+          "lock_time_residual_s_max": -0.0009634800000000001,
+          "output_frequency_error_hz_max": 0.0011682510375976562,
+          "output_frequency_residual_hz_max": -99999.99883174896,
+          "power_residual_w_max": -4.839845164309603e-08
+        },
+        "system_passed": true,
+        "target_passed": true,
+        "value": 0.004795166015625
+      },
+      {
+        "iteration": 12,
+        "metrics": {
+          "integrated_jitter_s": 8.336734952719942e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "passed": false,
+          "power_w": 0.005200083976468206
+        },
+        "phase": "bisection",
+        "residuals": {
+          "integrated_jitter_residual_s_max": -9.999166326504729e-10,
+          "lock_time_residual_s_max": -0.0009634800000000001,
+          "output_frequency_error_hz_max": 0.0011682510375976562,
+          "output_frequency_residual_hz_max": -99999.99883174896,
+          "power_residual_w_max": 8.397646820632043e-08
+        },
+        "system_passed": false,
+        "target_passed": false,
+        "value": 0.004795288085937499
+      },
+      {
+        "iteration": 13,
+        "metrics": {
+          "integrated_jitter_s": 8.336734952719942e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "passed": false,
+          "power_w": 0.005200017789008282
+        },
+        "phase": "bisection",
+        "residuals": {
+          "integrated_jitter_residual_s_max": -9.999166326504729e-10,
+          "lock_time_residual_s_max": -0.0009634800000000001,
+          "output_frequency_error_hz_max": 0.0011682510375976562,
+          "output_frequency_residual_hz_max": -99999.99883174896,
+          "power_residual_w_max": 1.7789008282045882e-08
+        },
+        "system_passed": false,
+        "target_passed": false,
+        "value": 0.00479522705078125
+      },
+      {
+        "iteration": 14,
+        "metrics": {
+          "integrated_jitter_s": 8.336734952719942e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "passed": true,
+          "power_w": 0.00519998469527832
+        },
+        "phase": "bisection",
+        "residuals": {
+          "integrated_jitter_residual_s_max": -9.999166326504729e-10,
+          "lock_time_residual_s_max": -0.0009634800000000001,
+          "output_frequency_error_hz_max": 0.0011682510375976562,
+          "output_frequency_residual_hz_max": -99999.99883174896,
+          "power_residual_w_max": -1.5304721680091393e-08
+        },
+        "system_passed": true,
+        "target_passed": true,
+        "value": 0.004795196533203125
+      },
+      {
+        "iteration": 15,
+        "metrics": {
+          "integrated_jitter_s": 8.336734952719942e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "passed": false,
+          "power_w": 0.005200001242143301
+        },
+        "phase": "bisection",
+        "residuals": {
+          "integrated_jitter_residual_s_max": -9.999166326504729e-10,
+          "lock_time_residual_s_max": -0.0009634800000000001,
+          "output_frequency_error_hz_max": 0.0011682510375976562,
+          "output_frequency_residual_hz_max": -99999.99883174896,
+          "power_residual_w_max": 1.2421433014109251e-09
+        },
+        "system_passed": false,
+        "target_passed": false,
+        "value": 0.004795211791992188
+      },
+      {
+        "iteration": 16,
+        "metrics": {
+          "integrated_jitter_s": 8.336734952719942e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "passed": true,
+          "power_w": 0.005199992968710811
+        },
+        "phase": "bisection",
+        "residuals": {
+          "integrated_jitter_residual_s_max": -9.999166326504729e-10,
+          "lock_time_residual_s_max": -0.0009634800000000001,
+          "output_frequency_error_hz_max": 0.0011682510375976562,
+          "output_frequency_residual_hz_max": -99999.99883174896,
+          "power_residual_w_max": -7.031289188906553e-09
+        },
+        "system_passed": true,
+        "target_passed": true,
+        "value": 0.004795204162597657
+      },
+      {
+        "iteration": 17,
+        "metrics": {
+          "integrated_jitter_s": 8.336734952719942e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "passed": true,
+          "power_w": 0.005199997105427056
+        },
+        "phase": "bisection",
+        "residuals": {
+          "integrated_jitter_residual_s_max": -9.999166326504729e-10,
+          "lock_time_residual_s_max": -0.0009634800000000001,
+          "output_frequency_error_hz_max": 0.0011682510375976562,
+          "output_frequency_residual_hz_max": -99999.99883174896,
+          "power_residual_w_max": -2.894572944181495e-09
+        },
+        "system_passed": true,
+        "target_passed": true,
+        "value": 0.004795207977294922
+      },
+      {
+        "iteration": 18,
+        "metrics": {
+          "integrated_jitter_s": 8.336734952719942e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "passed": true,
+          "power_w": 0.005199999173785178
+        },
+        "phase": "bisection",
+        "residuals": {
+          "integrated_jitter_residual_s_max": -9.999166326504729e-10,
+          "lock_time_residual_s_max": -0.0009634800000000001,
+          "output_frequency_error_hz_max": 0.0011682510375976562,
+          "output_frequency_residual_hz_max": -99999.99883174896,
+          "power_residual_w_max": -8.262148213852849e-10
+        },
+        "system_passed": true,
+        "target_passed": true,
+        "value": 0.0047952098846435545
+      },
+      {
+        "iteration": 19,
+        "metrics": {
+          "integrated_jitter_s": 8.336734952719942e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "passed": false,
+          "power_w": 0.005200000207964239
+        },
+        "phase": "bisection",
+        "residuals": {
+          "integrated_jitter_residual_s_max": -9.999166326504729e-10,
+          "lock_time_residual_s_max": -0.0009634800000000001,
+          "output_frequency_error_hz_max": 0.0011682510375976562,
+          "output_frequency_residual_hz_max": -99999.99883174896,
+          "power_residual_w_max": 2.0796423957913923e-10
+        },
+        "system_passed": false,
+        "target_passed": false,
+        "value": 0.004795210838317871
+      }
+    ],
+    "iterations": 20,
+    "monotonic_target_assumption": true,
+    "nearest_failing_search_knob": 0.004795210838317871,
+    "parameter": "nominal_power_w",
+    "random_seed": null,
+    "scope": "local_one_dimensional_bracket",
+    "search_knob": "nominal_power_w",
+    "search_knob_boundary": 0.0047952098846435545,
+    "target_check": "power",
+    "target_residual": "power_residual_w_max",
+    "target_system_metric": "power",
+    "target_system_metric_at_boundary": 0.005200000207964239,
+    "validity_domain": {
+      "parameter_max": 0.0055,
+      "parameter_min": 0.0045,
+      "target_check": "power"
+    }
+  },
+  "boundary_error": null,
+  "candidate": {
+    "allocated_requirement": {
+      "behavior_metric": "power_w",
+      "measured_metric": "worst_power_w",
+      "relation": "max",
+      "required_value": 0.005370635070800781,
+      "search_knob": "nominal_power_w",
+      "validity_domain": {
+        "parameter_max": 0.0055,
+        "parameter_min": 0.0045,
+        "target_check": "power"
+      }
+    },
+    "block_tb": {
+      "allocation_domain_checks": {
+        "within_allocation_search_domain": true
+      },
+      "checks": {
+        "power_w_max": true
+      },
+      "context": {
+        "context_id": "VCOBlockContext.v1",
+        "source": "declared SystemSpec operating envelope; frozen before candidate evaluation",
+        "temperature_points_c": [
+          25.0
+        ],
+        "vctrl_max_v": 1.1,
+        "vctrl_min_v": 0.1,
+        "vdd_v": 1.8
+      },
+      "design_knob": {
+        "parameter": "nominal_power_w",
+        "used_for_requirement_verdict": false,
+        "value": 0.0047
+      },
+      "measured": {
+        "frequency_hz": [
+          3922000000.0,
+          4033000000.0,
+          4158000000.0,
+          4297000000.0,
+          4450000000.0,
+          4617000000.0,
+          4798000000.0,
+          4993000000.0,
+          5202000000.0,
+          5425000000.0,
+          5662000000.0
+        ],
+        "kvco_hz_per_v": [
+          1040000000.0,
+          1180000000.0,
+          1320000000.0,
+          1460000000.0,
+          1600000000.0,
+          1740000000.0,
+          1880000000.0,
+          2020000000.0,
+          2160000000.0,
+          2300000000.0,
+          2440000000.0
+        ],
+        "phase_noise_1mhz_dbc_hz": [
+          -119.2,
+          -118.41554153751134,
+          -117.63089986991943,
+          -116.84607926622763,
+          -116.06108384794312,
+          -115.27591759579431,
+          -114.49058435607026,
+          -113.7050878466071,
+          -112.91943166244505,
+          -112.13361928117723,
+          -111.34765406801054
+        ],
+        "power_w": [
+          0.0047,
+          0.0047564,
+          0.0048128,
+          0.004869200000000001,
+          0.0049256000000000005,
+          0.004982,
+          0.0050384,
+          0.005094800000000001,
+          0.005151200000000001,
+          0.005207600000000001,
+          0.0052640000000000004
+        ]
+      },
+      "measured_requirement": {
+        "metric": "worst_power_w",
+        "passed": true,
+        "relation": "max",
+        "required_value": 0.005370635070800781,
+        "value": 0.0052640000000000004
+      },
+      "measurement_method": "context_sweep_behavioral_vco",
+      "observations": [
+        {
+          "fosc_hz": 3922000000.0,
+          "kvco_hz_per_v": 1040000000.0,
+          "phase_noise_1mhz_dbc_hz": -119.2,
+          "power_w": 0.0047,
+          "temperature_c": 25.0,
+          "vctrl_v": 0.1
+        },
+        {
+          "fosc_hz": 4033000000.0,
+          "kvco_hz_per_v": 1180000000.0,
+          "phase_noise_1mhz_dbc_hz": -118.41554153751134,
+          "power_w": 0.0047564,
+          "temperature_c": 25.0,
+          "vctrl_v": 0.2
+        },
+        {
+          "fosc_hz": 4158000000.0,
+          "kvco_hz_per_v": 1320000000.0,
+          "phase_noise_1mhz_dbc_hz": -117.63089986991943,
+          "power_w": 0.0048128,
+          "temperature_c": 25.0,
+          "vctrl_v": 0.30000000000000004
+        },
+        {
+          "fosc_hz": 4297000000.0,
+          "kvco_hz_per_v": 1460000000.0,
+          "phase_noise_1mhz_dbc_hz": -116.84607926622763,
+          "power_w": 0.004869200000000001,
+          "temperature_c": 25.0,
+          "vctrl_v": 0.4
+        },
+        {
+          "fosc_hz": 4450000000.0,
+          "kvco_hz_per_v": 1600000000.0,
+          "phase_noise_1mhz_dbc_hz": -116.06108384794312,
+          "power_w": 0.0049256000000000005,
+          "temperature_c": 25.0,
+          "vctrl_v": 0.5
+        },
+        {
+          "fosc_hz": 4617000000.0,
+          "kvco_hz_per_v": 1740000000.0,
+          "phase_noise_1mhz_dbc_hz": -115.27591759579431,
+          "power_w": 0.004982,
+          "temperature_c": 25.0,
+          "vctrl_v": 0.6
+        },
+        {
+          "fosc_hz": 4798000000.0,
+          "kvco_hz_per_v": 1880000000.0,
+          "phase_noise_1mhz_dbc_hz": -114.49058435607026,
+          "power_w": 0.0050384,
+          "temperature_c": 25.0,
+          "vctrl_v": 0.7
+        },
+        {
+          "fosc_hz": 4993000000.0,
+          "kvco_hz_per_v": 2020000000.0,
+          "phase_noise_1mhz_dbc_hz": -113.7050878466071,
+          "power_w": 0.005094800000000001,
+          "temperature_c": 25.0,
+          "vctrl_v": 0.7999999999999999
+        },
+        {
+          "fosc_hz": 5202000000.0,
+          "kvco_hz_per_v": 2160000000.0,
+          "phase_noise_1mhz_dbc_hz": -112.91943166244505,
+          "power_w": 0.005151200000000001,
+          "temperature_c": 25.0,
+          "vctrl_v": 0.9
+        },
+        {
+          "fosc_hz": 5425000000.0,
+          "kvco_hz_per_v": 2300000000.0,
+          "phase_noise_1mhz_dbc_hz": -112.13361928117723,
+          "power_w": 0.005207600000000001,
+          "temperature_c": 25.0,
+          "vctrl_v": 1.0
+        },
+        {
+          "fosc_hz": 5662000000.0,
+          "kvco_hz_per_v": 2440000000.0,
+          "phase_noise_1mhz_dbc_hz": -111.34765406801054,
+          "power_w": 0.0052640000000000004,
+          "temperature_c": 25.0,
+          "vctrl_v": 1.1
+        }
+      ],
+      "passed": true,
+      "provenance": {
+        "model": "synthetic_behavioral_vco_v1",
+        "source": "v1.pipeline.measure_vco_behavior"
+      },
+      "requirement": {
+        "behavior_metric": "power_w",
+        "measured_metric": "worst_power_w",
+        "relation": "max",
+        "required_value": 0.005370635070800781,
+        "search_knob": "nominal_power_w",
+        "validity_domain": {
+          "parameter_max": 0.0055,
+          "parameter_min": 0.0045
+        }
+      },
+      "worst_case": {
+        "frequency_max_hz": 5662000000.0,
+        "frequency_min_hz": 3922000000.0,
+        "kvco_max_hz_per_v": 2440000000.0,
+        "kvco_min_hz_per_v": 1040000000.0,
+        "power_min_w": 0.0047,
+        "tuning_range_hz": 1740000000.0,
+        "worst_frequency_hz": 5662000000.0,
+        "worst_phase_noise_1mhz_dbc_hz": -111.34765406801054,
+        "worst_power_w": 0.0052640000000000004
+      }
+    },
+    "candidate_search": {
+      "method": "deterministic_one_dimensional_candidate_grid",
+      "objective": "minimum normalized distance from base parameter among feasible candidates",
+      "selected_candidate_id": "power_to_nominal_power:0.0047",
+      "trials": [
+        {
+          "block_tb": {
+            "allocation_domain_checks": {
+              "within_allocation_search_domain": true
+            },
+            "checks": {
+              "power_w_max": false
+            },
+            "context": {
+              "context_id": "VCOBlockContext.v1",
+              "source": "declared SystemSpec operating envelope; frozen before candidate evaluation",
+              "temperature_points_c": [
+                25.0
+              ],
+              "vctrl_max_v": 1.1,
+              "vctrl_min_v": 0.1,
+              "vdd_v": 1.8
+            },
+            "design_knob": {
+              "parameter": "nominal_power_w",
+              "used_for_requirement_verdict": false,
+              "value": 0.005
+            },
+            "measured": {
+              "frequency_hz": [
+                3922000000.0,
+                4033000000.0,
+                4158000000.0,
+                4297000000.0,
+                4450000000.0,
+                4617000000.0,
+                4798000000.0,
+                4993000000.0,
+                5202000000.0,
+                5425000000.0,
+                5662000000.0
+              ],
+              "kvco_hz_per_v": [
+                1040000000.0,
+                1180000000.0,
+                1320000000.0,
+                1460000000.0,
+                1600000000.0,
+                1740000000.0,
+                1880000000.0,
+                2020000000.0,
+                2160000000.0,
+                2300000000.0,
+                2440000000.0
+              ],
+              "phase_noise_1mhz_dbc_hz": [
+                -119.2,
+                -118.41554153751134,
+                -117.63089986991943,
+                -116.84607926622763,
+                -116.06108384794312,
+                -115.27591759579431,
+                -114.49058435607026,
+                -113.7050878466071,
+                -112.91943166244505,
+                -112.13361928117723,
+                -111.34765406801054
+              ],
+              "power_w": [
+                0.005,
+                0.00506,
+                0.00512,
+                0.005180000000000001,
+                0.005240000000000001,
+                0.0053,
+                0.00536,
+                0.00542,
+                0.0054800000000000005,
+                0.005540000000000001,
+                0.005600000000000001
+              ]
+            },
+            "measured_requirement": {
+              "metric": "worst_power_w",
+              "passed": false,
+              "relation": "max",
+              "required_value": 0.005370635070800781,
+              "value": 0.005600000000000001
+            },
+            "measurement_method": "context_sweep_behavioral_vco",
+            "observations": [
+              {
+                "fosc_hz": 3922000000.0,
+                "kvco_hz_per_v": 1040000000.0,
+                "phase_noise_1mhz_dbc_hz": -119.2,
+                "power_w": 0.005,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.1
+              },
+              {
+                "fosc_hz": 4033000000.0,
+                "kvco_hz_per_v": 1180000000.0,
+                "phase_noise_1mhz_dbc_hz": -118.41554153751134,
+                "power_w": 0.00506,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.2
+              },
+              {
+                "fosc_hz": 4158000000.0,
+                "kvco_hz_per_v": 1320000000.0,
+                "phase_noise_1mhz_dbc_hz": -117.63089986991943,
+                "power_w": 0.00512,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.30000000000000004
+              },
+              {
+                "fosc_hz": 4297000000.0,
+                "kvco_hz_per_v": 1460000000.0,
+                "phase_noise_1mhz_dbc_hz": -116.84607926622763,
+                "power_w": 0.005180000000000001,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.4
+              },
+              {
+                "fosc_hz": 4450000000.0,
+                "kvco_hz_per_v": 1600000000.0,
+                "phase_noise_1mhz_dbc_hz": -116.06108384794312,
+                "power_w": 0.005240000000000001,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.5
+              },
+              {
+                "fosc_hz": 4617000000.0,
+                "kvco_hz_per_v": 1740000000.0,
+                "phase_noise_1mhz_dbc_hz": -115.27591759579431,
+                "power_w": 0.0053,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.6
+              },
+              {
+                "fosc_hz": 4798000000.0,
+                "kvco_hz_per_v": 1880000000.0,
+                "phase_noise_1mhz_dbc_hz": -114.49058435607026,
+                "power_w": 0.00536,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.7
+              },
+              {
+                "fosc_hz": 4993000000.0,
+                "kvco_hz_per_v": 2020000000.0,
+                "phase_noise_1mhz_dbc_hz": -113.7050878466071,
+                "power_w": 0.00542,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.7999999999999999
+              },
+              {
+                "fosc_hz": 5202000000.0,
+                "kvco_hz_per_v": 2160000000.0,
+                "phase_noise_1mhz_dbc_hz": -112.91943166244505,
+                "power_w": 0.0054800000000000005,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.9
+              },
+              {
+                "fosc_hz": 5425000000.0,
+                "kvco_hz_per_v": 2300000000.0,
+                "phase_noise_1mhz_dbc_hz": -112.13361928117723,
+                "power_w": 0.005540000000000001,
+                "temperature_c": 25.0,
+                "vctrl_v": 1.0
+              },
+              {
+                "fosc_hz": 5662000000.0,
+                "kvco_hz_per_v": 2440000000.0,
+                "phase_noise_1mhz_dbc_hz": -111.34765406801054,
+                "power_w": 0.005600000000000001,
+                "temperature_c": 25.0,
+                "vctrl_v": 1.1
+              }
+            ],
+            "passed": false,
+            "provenance": {
+              "model": "synthetic_behavioral_vco_v1",
+              "source": "v1.pipeline.measure_vco_behavior"
+            },
+            "requirement": {
+              "behavior_metric": "power_w",
+              "measured_metric": "worst_power_w",
+              "relation": "max",
+              "required_value": 0.005370635070800781,
+              "search_knob": "nominal_power_w",
+              "validity_domain": {
+                "parameter_max": 0.0055,
+                "parameter_min": 0.0045
+              }
+            },
+            "worst_case": {
+              "frequency_max_hz": 5662000000.0,
+              "frequency_min_hz": 3922000000.0,
+              "kvco_max_hz_per_v": 2440000000.0,
+              "kvco_min_hz_per_v": 1040000000.0,
+              "power_min_w": 0.005,
+              "tuning_range_hz": 1740000000.0,
+              "worst_frequency_hz": 5662000000.0,
+              "worst_phase_noise_1mhz_dbc_hz": -111.34765406801054,
+              "worst_power_w": 0.005600000000000001
+            }
+          },
+          "candidate_id": "power_to_nominal_power:0.005",
+          "context_coverage": {
+            "actual": {
+              "divider_n": 100,
+              "f_ref_hz": 50000000.0,
+              "fosc_max_hz": 5117286410.328476,
+              "fosc_min_hz": 4158000000.0,
+              "temperature_points_c": [
+                25.0
+              ],
+              "vctrl_max_v": 0.8602691823227616,
+              "vctrl_min_v": 0.30845368,
+              "vdd_v": 1.8
+            },
+            "checks": {
+              "temperature": true,
+              "vctrl_max": true,
+              "vctrl_min": true,
+              "vdd": true
+            },
+            "contract": {
+              "context_id": "VCOBlockContext.v1",
+              "source": "declared SystemSpec operating envelope; frozen before candidate evaluation",
+              "temperature_points_c": [
+                25.0
+              ],
+              "vctrl_max_v": 1.1,
+              "vctrl_min_v": 0.1,
+              "vdd_v": 1.8
+            },
+            "passed": true
+          },
+          "engineering_cost": 0.0,
+          "feasible": false,
+          "parameter_value": 0.005,
+          "system_tb": {
+            "context": {
+              "divider_n": 100,
+              "f_ref_hz": 50000000.0,
+              "fosc_max_hz": 5117286410.328476,
+              "fosc_min_hz": 4158000000.0,
+              "temperature_points_c": [
+                25.0
+              ],
+              "vctrl_max_v": 0.8602691823227616,
+              "vctrl_min_v": 0.30845368,
+              "vdd_v": 1.8
+            },
+            "metrics": {
+              "final_relative_frequency_error": -2.3365020751953123e-13,
+              "final_vctrl_v": 0.8034611950944747,
+              "integrated_jitter_s": 8.336734952719942e-14,
+              "integrated_jitter_s_worst": 8.336734952719942e-14,
+              "kvco_hz_per_v": 2024845673.1322646,
+              "lock_time_s": 3.652e-05,
+              "lock_time_s_worst": 3.652e-05,
+              "locked_all_contexts": true,
+              "loop_bandwidth_hz": 4563619.049097231,
+              "output_frequency_hz": 5000000000.001168,
+              "output_frequency_hz_max": 5000000000.001168,
+              "output_frequency_hz_min": 5000000000.001168,
+              "phase_noise_100khz_dbc_hz": -83.67789740062024,
+              "phase_noise_10mhz_dbc_hz": -133.67789740062022,
+              "phase_noise_1mhz_dbc_hz": -113.67789740062024,
+              "power_w": 0.005422076717056685,
+              "power_worst_w": 0.005422076717056685
+            },
+            "passed": false,
+            "per_context": [
+              {
+                "checks": {
+                  "integrated_jitter": true,
+                  "lock_time": true,
+                  "locked": true,
+                  "output_frequency": true,
+                  "power": false
+                },
+                "context": {
+                  "divider_n": 100,
+                  "f_ref_hz": 50000000.0,
+                  "fosc_max_hz": 5117286410.328476,
+                  "fosc_min_hz": 4158000000.0,
+                  "temperature_c": 25.0,
+                  "vctrl_max_v": 0.8602691823227616,
+                  "vctrl_min_v": 0.30845368,
+                  "vdd_v": 1.8
+                },
+                "metrics": {
+                  "final_relative_frequency_error": -2.3365020751953123e-13,
+                  "final_vctrl_v": 0.8034611950944747,
+                  "integrated_jitter_s": 8.336734952719942e-14,
+                  "kvco_hz_per_v": 2024845673.1322646,
+                  "lock_time_s": 3.652e-05,
+                  "loop_bandwidth_hz": 4563619.049097231,
+                  "output_frequency_hz": 5000000000.001168,
+                  "phase_noise_100khz_dbc_hz": -83.67789740062024,
+                  "phase_noise_10mhz_dbc_hz": -133.67789740062022,
+                  "phase_noise_1mhz_dbc_hz": -113.67789740062024,
+                  "power_w": 0.005422076717056685
+                },
+                "passed": false,
+                "residuals": {
+                  "integrated_jitter_residual_s": -9.999166326504729e-10,
+                  "lock_time_residual_s": -0.0009634800000000001,
+                  "output_frequency_error_hz": 0.0011682510375976562,
+                  "output_frequency_residual_hz": -99999.99883174896,
+                  "power_residual_w": 0.0002220767170566856
+                },
+                "temperature_c": 25.0
+              }
+            ],
+            "residuals": {
+              "integrated_jitter_residual_s_max": -9.999166326504729e-10,
+              "lock_time_residual_s_max": -0.0009634800000000001,
+              "output_frequency_error_hz_max": 0.0011682510375976562,
+              "output_frequency_residual_hz_max": -99999.99883174896,
+              "power_residual_w_max": 0.0002220767170566856
+            }
+          }
+        },
+        {
+          "block_tb": {
+            "allocation_domain_checks": {
+              "within_allocation_search_domain": true
+            },
+            "checks": {
+              "power_w_max": false
+            },
+            "context": {
+              "context_id": "VCOBlockContext.v1",
+              "source": "declared SystemSpec operating envelope; frozen before candidate evaluation",
+              "temperature_points_c": [
+                25.0
+              ],
+              "vctrl_max_v": 1.1,
+              "vctrl_min_v": 0.1,
+              "vdd_v": 1.8
+            },
+            "design_knob": {
+              "parameter": "nominal_power_w",
+              "used_for_requirement_verdict": false,
+              "value": 0.0048
+            },
+            "measured": {
+              "frequency_hz": [
+                3922000000.0,
+                4033000000.0,
+                4158000000.0,
+                4297000000.0,
+                4450000000.0,
+                4617000000.0,
+                4798000000.0,
+                4993000000.0,
+                5202000000.0,
+                5425000000.0,
+                5662000000.0
+              ],
+              "kvco_hz_per_v": [
+                1040000000.0,
+                1180000000.0,
+                1320000000.0,
+                1460000000.0,
+                1600000000.0,
+                1740000000.0,
+                1880000000.0,
+                2020000000.0,
+                2160000000.0,
+                2300000000.0,
+                2440000000.0
+              ],
+              "phase_noise_1mhz_dbc_hz": [
+                -119.2,
+                -118.41554153751134,
+                -117.63089986991943,
+                -116.84607926622763,
+                -116.06108384794312,
+                -115.27591759579431,
+                -114.49058435607026,
+                -113.7050878466071,
+                -112.91943166244505,
+                -112.13361928117723,
+                -111.34765406801054
+              ],
+              "power_w": [
+                0.0048,
+                0.004857599999999999,
+                0.0049152,
+                0.0049727999999999994,
+                0.0050304,
+                0.005088,
+                0.0051456,
+                0.0052032,
+                0.0052608,
+                0.0053184,
+                0.005376
+              ]
+            },
+            "measured_requirement": {
+              "metric": "worst_power_w",
+              "passed": false,
+              "relation": "max",
+              "required_value": 0.005370635070800781,
+              "value": 0.005376
+            },
+            "measurement_method": "context_sweep_behavioral_vco",
+            "observations": [
+              {
+                "fosc_hz": 3922000000.0,
+                "kvco_hz_per_v": 1040000000.0,
+                "phase_noise_1mhz_dbc_hz": -119.2,
+                "power_w": 0.0048,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.1
+              },
+              {
+                "fosc_hz": 4033000000.0,
+                "kvco_hz_per_v": 1180000000.0,
+                "phase_noise_1mhz_dbc_hz": -118.41554153751134,
+                "power_w": 0.004857599999999999,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.2
+              },
+              {
+                "fosc_hz": 4158000000.0,
+                "kvco_hz_per_v": 1320000000.0,
+                "phase_noise_1mhz_dbc_hz": -117.63089986991943,
+                "power_w": 0.0049152,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.30000000000000004
+              },
+              {
+                "fosc_hz": 4297000000.0,
+                "kvco_hz_per_v": 1460000000.0,
+                "phase_noise_1mhz_dbc_hz": -116.84607926622763,
+                "power_w": 0.0049727999999999994,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.4
+              },
+              {
+                "fosc_hz": 4450000000.0,
+                "kvco_hz_per_v": 1600000000.0,
+                "phase_noise_1mhz_dbc_hz": -116.06108384794312,
+                "power_w": 0.0050304,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.5
+              },
+              {
+                "fosc_hz": 4617000000.0,
+                "kvco_hz_per_v": 1740000000.0,
+                "phase_noise_1mhz_dbc_hz": -115.27591759579431,
+                "power_w": 0.005088,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.6
+              },
+              {
+                "fosc_hz": 4798000000.0,
+                "kvco_hz_per_v": 1880000000.0,
+                "phase_noise_1mhz_dbc_hz": -114.49058435607026,
+                "power_w": 0.0051456,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.7
+              },
+              {
+                "fosc_hz": 4993000000.0,
+                "kvco_hz_per_v": 2020000000.0,
+                "phase_noise_1mhz_dbc_hz": -113.7050878466071,
+                "power_w": 0.0052032,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.7999999999999999
+              },
+              {
+                "fosc_hz": 5202000000.0,
+                "kvco_hz_per_v": 2160000000.0,
+                "phase_noise_1mhz_dbc_hz": -112.91943166244505,
+                "power_w": 0.0052608,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.9
+              },
+              {
+                "fosc_hz": 5425000000.0,
+                "kvco_hz_per_v": 2300000000.0,
+                "phase_noise_1mhz_dbc_hz": -112.13361928117723,
+                "power_w": 0.0053184,
+                "temperature_c": 25.0,
+                "vctrl_v": 1.0
+              },
+              {
+                "fosc_hz": 5662000000.0,
+                "kvco_hz_per_v": 2440000000.0,
+                "phase_noise_1mhz_dbc_hz": -111.34765406801054,
+                "power_w": 0.005376,
+                "temperature_c": 25.0,
+                "vctrl_v": 1.1
+              }
+            ],
+            "passed": false,
+            "provenance": {
+              "model": "synthetic_behavioral_vco_v1",
+              "source": "v1.pipeline.measure_vco_behavior"
+            },
+            "requirement": {
+              "behavior_metric": "power_w",
+              "measured_metric": "worst_power_w",
+              "relation": "max",
+              "required_value": 0.005370635070800781,
+              "search_knob": "nominal_power_w",
+              "validity_domain": {
+                "parameter_max": 0.0055,
+                "parameter_min": 0.0045
+              }
+            },
+            "worst_case": {
+              "frequency_max_hz": 5662000000.0,
+              "frequency_min_hz": 3922000000.0,
+              "kvco_max_hz_per_v": 2440000000.0,
+              "kvco_min_hz_per_v": 1040000000.0,
+              "power_min_w": 0.0048,
+              "tuning_range_hz": 1740000000.0,
+              "worst_frequency_hz": 5662000000.0,
+              "worst_phase_noise_1mhz_dbc_hz": -111.34765406801054,
+              "worst_power_w": 0.005376
+            }
+          },
+          "candidate_id": "power_to_nominal_power:0.0048",
+          "context_coverage": {
+            "actual": {
+              "divider_n": 100,
+              "f_ref_hz": 50000000.0,
+              "fosc_max_hz": 5117286410.328476,
+              "fosc_min_hz": 4158000000.0,
+              "temperature_points_c": [
+                25.0
+              ],
+              "vctrl_max_v": 0.8602691823227616,
+              "vctrl_min_v": 0.30845368,
+              "vdd_v": 1.8
+            },
+            "checks": {
+              "temperature": true,
+              "vctrl_max": true,
+              "vctrl_min": true,
+              "vdd": true
+            },
+            "contract": {
+              "context_id": "VCOBlockContext.v1",
+              "source": "declared SystemSpec operating envelope; frozen before candidate evaluation",
+              "temperature_points_c": [
+                25.0
+              ],
+              "vctrl_max_v": 1.1,
+              "vctrl_min_v": 0.1,
+              "vdd_v": 1.8
+            },
+            "passed": true
+          },
+          "engineering_cost": 0.040000000000000105,
+          "feasible": false,
+          "parameter_value": 0.0048,
+          "system_tb": {
+            "context": {
+              "divider_n": 100,
+              "f_ref_hz": 50000000.0,
+              "fosc_max_hz": 5117286410.328476,
+              "fosc_min_hz": 4158000000.0,
+              "temperature_points_c": [
+                25.0
+              ],
+              "vctrl_max_v": 0.8602691823227616,
+              "vctrl_min_v": 0.30845368,
+              "vdd_v": 1.8
+            },
+            "metrics": {
+              "final_relative_frequency_error": -2.3365020751953123e-13,
+              "final_vctrl_v": 0.8034611950944747,
+              "integrated_jitter_s": 8.336734952719942e-14,
+              "integrated_jitter_s_worst": 8.336734952719942e-14,
+              "kvco_hz_per_v": 2024845673.1322646,
+              "lock_time_s": 3.652e-05,
+              "lock_time_s_worst": 3.652e-05,
+              "locked_all_contexts": true,
+              "loop_bandwidth_hz": 4563619.049097231,
+              "output_frequency_hz": 5000000000.001168,
+              "output_frequency_hz_max": 5000000000.001168,
+              "output_frequency_hz_min": 5000000000.001168,
+              "phase_noise_100khz_dbc_hz": -83.67789740062024,
+              "phase_noise_10mhz_dbc_hz": -133.67789740062022,
+              "phase_noise_1mhz_dbc_hz": -113.67789740062024,
+              "power_w": 0.005205193648374417,
+              "power_worst_w": 0.005205193648374417
+            },
+            "passed": false,
+            "per_context": [
+              {
+                "checks": {
+                  "integrated_jitter": true,
+                  "lock_time": true,
+                  "locked": true,
+                  "output_frequency": true,
+                  "power": false
+                },
+                "context": {
+                  "divider_n": 100,
+                  "f_ref_hz": 50000000.0,
+                  "fosc_max_hz": 5117286410.328476,
+                  "fosc_min_hz": 4158000000.0,
+                  "temperature_c": 25.0,
+                  "vctrl_max_v": 0.8602691823227616,
+                  "vctrl_min_v": 0.30845368,
+                  "vdd_v": 1.8
+                },
+                "metrics": {
+                  "final_relative_frequency_error": -2.3365020751953123e-13,
+                  "final_vctrl_v": 0.8034611950944747,
+                  "integrated_jitter_s": 8.336734952719942e-14,
+                  "kvco_hz_per_v": 2024845673.1322646,
+                  "lock_time_s": 3.652e-05,
+                  "loop_bandwidth_hz": 4563619.049097231,
+                  "output_frequency_hz": 5000000000.001168,
+                  "phase_noise_100khz_dbc_hz": -83.67789740062024,
+                  "phase_noise_10mhz_dbc_hz": -133.67789740062022,
+                  "phase_noise_1mhz_dbc_hz": -113.67789740062024,
+                  "power_w": 0.005205193648374417
+                },
+                "passed": false,
+                "residuals": {
+                  "integrated_jitter_residual_s": -9.999166326504729e-10,
+                  "lock_time_residual_s": -0.0009634800000000001,
+                  "output_frequency_error_hz": 0.0011682510375976562,
+                  "output_frequency_residual_hz": -99999.99883174896,
+                  "power_residual_w": 5.193648374417215e-06
+                },
+                "temperature_c": 25.0
+              }
+            ],
+            "residuals": {
+              "integrated_jitter_residual_s_max": -9.999166326504729e-10,
+              "lock_time_residual_s_max": -0.0009634800000000001,
+              "output_frequency_error_hz_max": 0.0011682510375976562,
+              "output_frequency_residual_hz_max": -99999.99883174896,
+              "power_residual_w_max": 5.193648374417215e-06
+            }
+          }
+        },
+        {
+          "block_tb": {
+            "allocation_domain_checks": {
+              "within_allocation_search_domain": true
+            },
+            "checks": {
+              "power_w_max": true
+            },
+            "context": {
+              "context_id": "VCOBlockContext.v1",
+              "source": "declared SystemSpec operating envelope; frozen before candidate evaluation",
+              "temperature_points_c": [
+                25.0
+              ],
+              "vctrl_max_v": 1.1,
+              "vctrl_min_v": 0.1,
+              "vdd_v": 1.8
+            },
+            "design_knob": {
+              "parameter": "nominal_power_w",
+              "used_for_requirement_verdict": false,
+              "value": 0.0047
+            },
+            "measured": {
+              "frequency_hz": [
+                3922000000.0,
+                4033000000.0,
+                4158000000.0,
+                4297000000.0,
+                4450000000.0,
+                4617000000.0,
+                4798000000.0,
+                4993000000.0,
+                5202000000.0,
+                5425000000.0,
+                5662000000.0
+              ],
+              "kvco_hz_per_v": [
+                1040000000.0,
+                1180000000.0,
+                1320000000.0,
+                1460000000.0,
+                1600000000.0,
+                1740000000.0,
+                1880000000.0,
+                2020000000.0,
+                2160000000.0,
+                2300000000.0,
+                2440000000.0
+              ],
+              "phase_noise_1mhz_dbc_hz": [
+                -119.2,
+                -118.41554153751134,
+                -117.63089986991943,
+                -116.84607926622763,
+                -116.06108384794312,
+                -115.27591759579431,
+                -114.49058435607026,
+                -113.7050878466071,
+                -112.91943166244505,
+                -112.13361928117723,
+                -111.34765406801054
+              ],
+              "power_w": [
+                0.0047,
+                0.0047564,
+                0.0048128,
+                0.004869200000000001,
+                0.0049256000000000005,
+                0.004982,
+                0.0050384,
+                0.005094800000000001,
+                0.005151200000000001,
+                0.005207600000000001,
+                0.0052640000000000004
+              ]
+            },
+            "measured_requirement": {
+              "metric": "worst_power_w",
+              "passed": true,
+              "relation": "max",
+              "required_value": 0.005370635070800781,
+              "value": 0.0052640000000000004
+            },
+            "measurement_method": "context_sweep_behavioral_vco",
+            "observations": [
+              {
+                "fosc_hz": 3922000000.0,
+                "kvco_hz_per_v": 1040000000.0,
+                "phase_noise_1mhz_dbc_hz": -119.2,
+                "power_w": 0.0047,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.1
+              },
+              {
+                "fosc_hz": 4033000000.0,
+                "kvco_hz_per_v": 1180000000.0,
+                "phase_noise_1mhz_dbc_hz": -118.41554153751134,
+                "power_w": 0.0047564,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.2
+              },
+              {
+                "fosc_hz": 4158000000.0,
+                "kvco_hz_per_v": 1320000000.0,
+                "phase_noise_1mhz_dbc_hz": -117.63089986991943,
+                "power_w": 0.0048128,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.30000000000000004
+              },
+              {
+                "fosc_hz": 4297000000.0,
+                "kvco_hz_per_v": 1460000000.0,
+                "phase_noise_1mhz_dbc_hz": -116.84607926622763,
+                "power_w": 0.004869200000000001,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.4
+              },
+              {
+                "fosc_hz": 4450000000.0,
+                "kvco_hz_per_v": 1600000000.0,
+                "phase_noise_1mhz_dbc_hz": -116.06108384794312,
+                "power_w": 0.0049256000000000005,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.5
+              },
+              {
+                "fosc_hz": 4617000000.0,
+                "kvco_hz_per_v": 1740000000.0,
+                "phase_noise_1mhz_dbc_hz": -115.27591759579431,
+                "power_w": 0.004982,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.6
+              },
+              {
+                "fosc_hz": 4798000000.0,
+                "kvco_hz_per_v": 1880000000.0,
+                "phase_noise_1mhz_dbc_hz": -114.49058435607026,
+                "power_w": 0.0050384,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.7
+              },
+              {
+                "fosc_hz": 4993000000.0,
+                "kvco_hz_per_v": 2020000000.0,
+                "phase_noise_1mhz_dbc_hz": -113.7050878466071,
+                "power_w": 0.005094800000000001,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.7999999999999999
+              },
+              {
+                "fosc_hz": 5202000000.0,
+                "kvco_hz_per_v": 2160000000.0,
+                "phase_noise_1mhz_dbc_hz": -112.91943166244505,
+                "power_w": 0.005151200000000001,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.9
+              },
+              {
+                "fosc_hz": 5425000000.0,
+                "kvco_hz_per_v": 2300000000.0,
+                "phase_noise_1mhz_dbc_hz": -112.13361928117723,
+                "power_w": 0.005207600000000001,
+                "temperature_c": 25.0,
+                "vctrl_v": 1.0
+              },
+              {
+                "fosc_hz": 5662000000.0,
+                "kvco_hz_per_v": 2440000000.0,
+                "phase_noise_1mhz_dbc_hz": -111.34765406801054,
+                "power_w": 0.0052640000000000004,
+                "temperature_c": 25.0,
+                "vctrl_v": 1.1
+              }
+            ],
+            "passed": true,
+            "provenance": {
+              "model": "synthetic_behavioral_vco_v1",
+              "source": "v1.pipeline.measure_vco_behavior"
+            },
+            "requirement": {
+              "behavior_metric": "power_w",
+              "measured_metric": "worst_power_w",
+              "relation": "max",
+              "required_value": 0.005370635070800781,
+              "search_knob": "nominal_power_w",
+              "validity_domain": {
+                "parameter_max": 0.0055,
+                "parameter_min": 0.0045
+              }
+            },
+            "worst_case": {
+              "frequency_max_hz": 5662000000.0,
+              "frequency_min_hz": 3922000000.0,
+              "kvco_max_hz_per_v": 2440000000.0,
+              "kvco_min_hz_per_v": 1040000000.0,
+              "power_min_w": 0.0047,
+              "tuning_range_hz": 1740000000.0,
+              "worst_frequency_hz": 5662000000.0,
+              "worst_phase_noise_1mhz_dbc_hz": -111.34765406801054,
+              "worst_power_w": 0.0052640000000000004
+            }
+          },
+          "candidate_id": "power_to_nominal_power:0.0047",
+          "context_coverage": {
+            "actual": {
+              "divider_n": 100,
+              "f_ref_hz": 50000000.0,
+              "fosc_max_hz": 5117286410.328476,
+              "fosc_min_hz": 4158000000.0,
+              "temperature_points_c": [
+                25.0
+              ],
+              "vctrl_max_v": 0.8602691823227616,
+              "vctrl_min_v": 0.30845368,
+              "vdd_v": 1.8
+            },
+            "checks": {
+              "temperature": true,
+              "vctrl_max": true,
+              "vctrl_min": true,
+              "vdd": true
+            },
+            "contract": {
+              "context_id": "VCOBlockContext.v1",
+              "source": "declared SystemSpec operating envelope; frozen before candidate evaluation",
+              "temperature_points_c": [
+                25.0
+              ],
+              "vctrl_max_v": 1.1,
+              "vctrl_min_v": 0.1,
+              "vdd_v": 1.8
+            },
+            "passed": true
+          },
+          "engineering_cost": 0.059999999999999984,
+          "feasible": true,
+          "parameter_value": 0.0047,
+          "system_tb": {
+            "context": {
+              "divider_n": 100,
+              "f_ref_hz": 50000000.0,
+              "fosc_max_hz": 5117286410.328476,
+              "fosc_min_hz": 4158000000.0,
+              "temperature_points_c": [
+                25.0
+              ],
+              "vctrl_max_v": 0.8602691823227616,
+              "vctrl_min_v": 0.30845368,
+              "vdd_v": 1.8
+            },
+            "metrics": {
+              "final_relative_frequency_error": -2.3365020751953123e-13,
+              "final_vctrl_v": 0.8034611950944747,
+              "integrated_jitter_s": 8.336734952719942e-14,
+              "integrated_jitter_s_worst": 8.336734952719942e-14,
+              "kvco_hz_per_v": 2024845673.1322646,
+              "lock_time_s": 3.652e-05,
+              "lock_time_s_worst": 3.652e-05,
+              "locked_all_contexts": true,
+              "loop_bandwidth_hz": 4563619.049097231,
+              "output_frequency_hz": 5000000000.001168,
+              "output_frequency_hz_max": 5000000000.001168,
+              "output_frequency_hz_min": 5000000000.001168,
+              "phase_noise_100khz_dbc_hz": -83.67789740062024,
+              "phase_noise_10mhz_dbc_hz": -133.67789740062022,
+              "phase_noise_1mhz_dbc_hz": -113.67789740062024,
+              "power_w": 0.005096752114033284,
+              "power_worst_w": 0.005096752114033284
+            },
+            "passed": true,
+            "per_context": [
+              {
+                "checks": {
+                  "integrated_jitter": true,
+                  "lock_time": true,
+                  "locked": true,
+                  "output_frequency": true,
+                  "power": true
+                },
+                "context": {
+                  "divider_n": 100,
+                  "f_ref_hz": 50000000.0,
+                  "fosc_max_hz": 5117286410.328476,
+                  "fosc_min_hz": 4158000000.0,
+                  "temperature_c": 25.0,
+                  "vctrl_max_v": 0.8602691823227616,
+                  "vctrl_min_v": 0.30845368,
+                  "vdd_v": 1.8
+                },
+                "metrics": {
+                  "final_relative_frequency_error": -2.3365020751953123e-13,
+                  "final_vctrl_v": 0.8034611950944747,
+                  "integrated_jitter_s": 8.336734952719942e-14,
+                  "kvco_hz_per_v": 2024845673.1322646,
+                  "lock_time_s": 3.652e-05,
+                  "loop_bandwidth_hz": 4563619.049097231,
+                  "output_frequency_hz": 5000000000.001168,
+                  "phase_noise_100khz_dbc_hz": -83.67789740062024,
+                  "phase_noise_10mhz_dbc_hz": -133.67789740062022,
+                  "phase_noise_1mhz_dbc_hz": -113.67789740062024,
+                  "power_w": 0.005096752114033284
+                },
+                "passed": true,
+                "residuals": {
+                  "integrated_jitter_residual_s": -9.999166326504729e-10,
+                  "lock_time_residual_s": -0.0009634800000000001,
+                  "output_frequency_error_hz": 0.0011682510375976562,
+                  "output_frequency_residual_hz": -99999.99883174896,
+                  "power_residual_w": -0.00010324788596671568
+                },
+                "temperature_c": 25.0
+              }
+            ],
+            "residuals": {
+              "integrated_jitter_residual_s_max": -9.999166326504729e-10,
+              "lock_time_residual_s_max": -0.0009634800000000001,
+              "output_frequency_error_hz_max": 0.0011682510375976562,
+              "output_frequency_residual_hz_max": -99999.99883174896,
+              "power_residual_w_max": -0.00010324788596671568
+            }
+          }
+        },
+        {
+          "block_tb": {
+            "allocation_domain_checks": {
+              "within_allocation_search_domain": true
+            },
+            "checks": {
+              "power_w_max": true
+            },
+            "context": {
+              "context_id": "VCOBlockContext.v1",
+              "source": "declared SystemSpec operating envelope; frozen before candidate evaluation",
+              "temperature_points_c": [
+                25.0
+              ],
+              "vctrl_max_v": 1.1,
+              "vctrl_min_v": 0.1,
+              "vdd_v": 1.8
+            },
+            "design_knob": {
+              "parameter": "nominal_power_w",
+              "used_for_requirement_verdict": false,
+              "value": 0.0045
+            },
+            "measured": {
+              "frequency_hz": [
+                3922000000.0,
+                4033000000.0,
+                4158000000.0,
+                4297000000.0,
+                4450000000.0,
+                4617000000.0,
+                4798000000.0,
+                4993000000.0,
+                5202000000.0,
+                5425000000.0,
+                5662000000.0
+              ],
+              "kvco_hz_per_v": [
+                1040000000.0,
+                1180000000.0,
+                1320000000.0,
+                1460000000.0,
+                1600000000.0,
+                1740000000.0,
+                1880000000.0,
+                2020000000.0,
+                2160000000.0,
+                2300000000.0,
+                2440000000.0
+              ],
+              "phase_noise_1mhz_dbc_hz": [
+                -119.2,
+                -118.41554153751134,
+                -117.63089986991943,
+                -116.84607926622763,
+                -116.06108384794312,
+                -115.27591759579431,
+                -114.49058435607026,
+                -113.7050878466071,
+                -112.91943166244505,
+                -112.13361928117723,
+                -111.34765406801054
+              ],
+              "power_w": [
+                0.0045,
+                0.004554,
+                0.004608,
+                0.0046619999999999995,
+                0.004716,
+                0.00477,
+                0.004824,
+                0.004878,
+                0.004932,
+                0.004986,
+                0.00504
+              ]
+            },
+            "measured_requirement": {
+              "metric": "worst_power_w",
+              "passed": true,
+              "relation": "max",
+              "required_value": 0.005370635070800781,
+              "value": 0.00504
+            },
+            "measurement_method": "context_sweep_behavioral_vco",
+            "observations": [
+              {
+                "fosc_hz": 3922000000.0,
+                "kvco_hz_per_v": 1040000000.0,
+                "phase_noise_1mhz_dbc_hz": -119.2,
+                "power_w": 0.0045,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.1
+              },
+              {
+                "fosc_hz": 4033000000.0,
+                "kvco_hz_per_v": 1180000000.0,
+                "phase_noise_1mhz_dbc_hz": -118.41554153751134,
+                "power_w": 0.004554,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.2
+              },
+              {
+                "fosc_hz": 4158000000.0,
+                "kvco_hz_per_v": 1320000000.0,
+                "phase_noise_1mhz_dbc_hz": -117.63089986991943,
+                "power_w": 0.004608,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.30000000000000004
+              },
+              {
+                "fosc_hz": 4297000000.0,
+                "kvco_hz_per_v": 1460000000.0,
+                "phase_noise_1mhz_dbc_hz": -116.84607926622763,
+                "power_w": 0.0046619999999999995,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.4
+              },
+              {
+                "fosc_hz": 4450000000.0,
+                "kvco_hz_per_v": 1600000000.0,
+                "phase_noise_1mhz_dbc_hz": -116.06108384794312,
+                "power_w": 0.004716,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.5
+              },
+              {
+                "fosc_hz": 4617000000.0,
+                "kvco_hz_per_v": 1740000000.0,
+                "phase_noise_1mhz_dbc_hz": -115.27591759579431,
+                "power_w": 0.00477,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.6
+              },
+              {
+                "fosc_hz": 4798000000.0,
+                "kvco_hz_per_v": 1880000000.0,
+                "phase_noise_1mhz_dbc_hz": -114.49058435607026,
+                "power_w": 0.004824,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.7
+              },
+              {
+                "fosc_hz": 4993000000.0,
+                "kvco_hz_per_v": 2020000000.0,
+                "phase_noise_1mhz_dbc_hz": -113.7050878466071,
+                "power_w": 0.004878,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.7999999999999999
+              },
+              {
+                "fosc_hz": 5202000000.0,
+                "kvco_hz_per_v": 2160000000.0,
+                "phase_noise_1mhz_dbc_hz": -112.91943166244505,
+                "power_w": 0.004932,
+                "temperature_c": 25.0,
+                "vctrl_v": 0.9
+              },
+              {
+                "fosc_hz": 5425000000.0,
+                "kvco_hz_per_v": 2300000000.0,
+                "phase_noise_1mhz_dbc_hz": -112.13361928117723,
+                "power_w": 0.004986,
+                "temperature_c": 25.0,
+                "vctrl_v": 1.0
+              },
+              {
+                "fosc_hz": 5662000000.0,
+                "kvco_hz_per_v": 2440000000.0,
+                "phase_noise_1mhz_dbc_hz": -111.34765406801054,
+                "power_w": 0.00504,
+                "temperature_c": 25.0,
+                "vctrl_v": 1.1
+              }
+            ],
+            "passed": true,
+            "provenance": {
+              "model": "synthetic_behavioral_vco_v1",
+              "source": "v1.pipeline.measure_vco_behavior"
+            },
+            "requirement": {
+              "behavior_metric": "power_w",
+              "measured_metric": "worst_power_w",
+              "relation": "max",
+              "required_value": 0.005370635070800781,
+              "search_knob": "nominal_power_w",
+              "validity_domain": {
+                "parameter_max": 0.0055,
+                "parameter_min": 0.0045
+              }
+            },
+            "worst_case": {
+              "frequency_max_hz": 5662000000.0,
+              "frequency_min_hz": 3922000000.0,
+              "kvco_max_hz_per_v": 2440000000.0,
+              "kvco_min_hz_per_v": 1040000000.0,
+              "power_min_w": 0.0045,
+              "tuning_range_hz": 1740000000.0,
+              "worst_frequency_hz": 5662000000.0,
+              "worst_phase_noise_1mhz_dbc_hz": -111.34765406801054,
+              "worst_power_w": 0.00504
+            }
+          },
+          "candidate_id": "power_to_nominal_power:0.0045",
+          "context_coverage": {
+            "actual": {
+              "divider_n": 100,
+              "f_ref_hz": 50000000.0,
+              "fosc_max_hz": 5117286410.328476,
+              "fosc_min_hz": 4158000000.0,
+              "temperature_points_c": [
+                25.0
+              ],
+              "vctrl_max_v": 0.8602691823227616,
+              "vctrl_min_v": 0.30845368,
+              "vdd_v": 1.8
+            },
+            "checks": {
+              "temperature": true,
+              "vctrl_max": true,
+              "vctrl_min": true,
+              "vdd": true
+            },
+            "contract": {
+              "context_id": "VCOBlockContext.v1",
+              "source": "declared SystemSpec operating envelope; frozen before candidate evaluation",
+              "temperature_points_c": [
+                25.0
+              ],
+              "vctrl_max_v": 1.1,
+              "vctrl_min_v": 0.1,
+              "vdd_v": 1.8
+            },
+            "passed": true
+          },
+          "engineering_cost": 0.10000000000000009,
+          "feasible": true,
+          "parameter_value": 0.0045,
+          "system_tb": {
+            "context": {
+              "divider_n": 100,
+              "f_ref_hz": 50000000.0,
+              "fosc_max_hz": 5117286410.328476,
+              "fosc_min_hz": 4158000000.0,
+              "temperature_points_c": [
+                25.0
+              ],
+              "vctrl_max_v": 0.8602691823227616,
+              "vctrl_min_v": 0.30845368,
+              "vdd_v": 1.8
+            },
+            "metrics": {
+              "final_relative_frequency_error": -2.3365020751953123e-13,
+              "final_vctrl_v": 0.8034611950944747,
+              "integrated_jitter_s": 8.336734952719942e-14,
+              "integrated_jitter_s_worst": 8.336734952719942e-14,
+              "kvco_hz_per_v": 2024845673.1322646,
+              "lock_time_s": 3.652e-05,
+              "lock_time_s_worst": 3.652e-05,
+              "locked_all_contexts": true,
+              "loop_bandwidth_hz": 4563619.049097231,
+              "output_frequency_hz": 5000000000.001168,
+              "output_frequency_hz_max": 5000000000.001168,
+              "output_frequency_hz_min": 5000000000.001168,
+              "phase_noise_100khz_dbc_hz": -83.67789740062024,
+              "phase_noise_10mhz_dbc_hz": -133.67789740062022,
+              "phase_noise_1mhz_dbc_hz": -113.67789740062024,
+              "power_w": 0.0048798690453510166,
+              "power_worst_w": 0.0048798690453510166
+            },
+            "passed": true,
+            "per_context": [
+              {
+                "checks": {
+                  "integrated_jitter": true,
+                  "lock_time": true,
+                  "locked": true,
+                  "output_frequency": true,
+                  "power": true
+                },
+                "context": {
+                  "divider_n": 100,
+                  "f_ref_hz": 50000000.0,
+                  "fosc_max_hz": 5117286410.328476,
+                  "fosc_min_hz": 4158000000.0,
+                  "temperature_c": 25.0,
+                  "vctrl_max_v": 0.8602691823227616,
+                  "vctrl_min_v": 0.30845368,
+                  "vdd_v": 1.8
+                },
+                "metrics": {
+                  "final_relative_frequency_error": -2.3365020751953123e-13,
+                  "final_vctrl_v": 0.8034611950944747,
+                  "integrated_jitter_s": 8.336734952719942e-14,
+                  "kvco_hz_per_v": 2024845673.1322646,
+                  "lock_time_s": 3.652e-05,
+                  "loop_bandwidth_hz": 4563619.049097231,
+                  "output_frequency_hz": 5000000000.001168,
+                  "phase_noise_100khz_dbc_hz": -83.67789740062024,
+                  "phase_noise_10mhz_dbc_hz": -133.67789740062022,
+                  "phase_noise_1mhz_dbc_hz": -113.67789740062024,
+                  "power_w": 0.0048798690453510166
+                },
+                "passed": true,
+                "residuals": {
+                  "integrated_jitter_residual_s": -9.999166326504729e-10,
+                  "lock_time_residual_s": -0.0009634800000000001,
+                  "output_frequency_error_hz": 0.0011682510375976562,
+                  "output_frequency_residual_hz": -99999.99883174896,
+                  "power_residual_w": -0.0003201309546489832
+                },
+                "temperature_c": 25.0
+              }
+            ],
+            "residuals": {
+              "integrated_jitter_residual_s_max": -9.999166326504729e-10,
+              "lock_time_residual_s_max": -0.0009634800000000001,
+              "output_frequency_error_hz_max": 0.0011682510375976562,
+              "output_frequency_residual_hz_max": -99999.99883174896,
+              "power_residual_w_max": -0.0003201309546489832
+            }
+          }
+        }
+      ]
+    },
+    "context_coverage": {
+      "actual": {
+        "divider_n": 100,
+        "f_ref_hz": 50000000.0,
+        "fosc_max_hz": 5117286410.328476,
+        "fosc_min_hz": 4158000000.0,
+        "temperature_points_c": [
+          25.0
+        ],
+        "vctrl_max_v": 0.8602691823227616,
+        "vctrl_min_v": 0.30845368,
+        "vdd_v": 1.8
+      },
+      "checks": {
+        "temperature": true,
+        "vctrl_max": true,
+        "vctrl_min": true,
+        "vdd": true
+      },
+      "contract": {
+        "context_id": "VCOBlockContext.v1",
+        "source": "declared SystemSpec operating envelope; frozen before candidate evaluation",
+        "temperature_points_c": [
+          25.0
+        ],
+        "vctrl_max_v": 1.1,
+        "vctrl_min_v": 0.1,
+        "vdd_v": 1.8
+      },
+      "passed": true
+    },
+    "final_system_tb": {
+      "context": {
+        "divider_n": 100,
+        "f_ref_hz": 50000000.0,
+        "fosc_max_hz": 5117286410.328476,
+        "fosc_min_hz": 4158000000.0,
+        "temperature_points_c": [
+          25.0
+        ],
+        "vctrl_max_v": 0.8602691823227616,
+        "vctrl_min_v": 0.30845368,
+        "vdd_v": 1.8
+      },
+      "metrics": {
+        "final_relative_frequency_error": -2.3365020751953123e-13,
+        "final_vctrl_v": 0.8034611950944747,
+        "integrated_jitter_s": 8.336734952719942e-14,
+        "integrated_jitter_s_worst": 8.336734952719942e-14,
+        "kvco_hz_per_v": 2024845673.1322646,
+        "lock_time_s": 3.652e-05,
+        "lock_time_s_worst": 3.652e-05,
+        "locked_all_contexts": true,
+        "loop_bandwidth_hz": 4563619.049097231,
+        "output_frequency_hz": 5000000000.001168,
+        "output_frequency_hz_max": 5000000000.001168,
+        "output_frequency_hz_min": 5000000000.001168,
+        "phase_noise_100khz_dbc_hz": -83.67789740062024,
+        "phase_noise_10mhz_dbc_hz": -133.67789740062022,
+        "phase_noise_1mhz_dbc_hz": -113.67789740062024,
+        "power_w": 0.005096752114033284,
+        "power_worst_w": 0.005096752114033284
+      },
+      "passed": true,
+      "per_context": [
+        {
+          "checks": {
+            "integrated_jitter": true,
+            "lock_time": true,
+            "locked": true,
+            "output_frequency": true,
+            "power": true
+          },
+          "context": {
+            "divider_n": 100,
+            "f_ref_hz": 50000000.0,
+            "fosc_max_hz": 5117286410.328476,
+            "fosc_min_hz": 4158000000.0,
+            "temperature_c": 25.0,
+            "vctrl_max_v": 0.8602691823227616,
+            "vctrl_min_v": 0.30845368,
+            "vdd_v": 1.8
+          },
+          "metrics": {
+            "final_relative_frequency_error": -2.3365020751953123e-13,
+            "final_vctrl_v": 0.8034611950944747,
+            "integrated_jitter_s": 8.336734952719942e-14,
+            "kvco_hz_per_v": 2024845673.1322646,
+            "lock_time_s": 3.652e-05,
+            "loop_bandwidth_hz": 4563619.049097231,
+            "output_frequency_hz": 5000000000.001168,
+            "phase_noise_100khz_dbc_hz": -83.67789740062024,
+            "phase_noise_10mhz_dbc_hz": -133.67789740062022,
+            "phase_noise_1mhz_dbc_hz": -113.67789740062024,
+            "power_w": 0.005096752114033284
+          },
+          "passed": true,
+          "residuals": {
+            "integrated_jitter_residual_s": -9.999166326504729e-10,
+            "lock_time_residual_s": -0.0009634800000000001,
+            "output_frequency_error_hz": 0.0011682510375976562,
+            "output_frequency_residual_hz": -99999.99883174896,
+            "power_residual_w": -0.00010324788596671568
+          },
+          "temperature_c": 25.0
+        }
+      ],
+      "residuals": {
+        "integrated_jitter_residual_s_max": -9.999166326504729e-10,
+        "lock_time_residual_s_max": -0.0009634800000000001,
+        "output_frequency_error_hz_max": 0.0011682510375976562,
+        "output_frequency_residual_hz_max": -99999.99883174896,
+        "power_residual_w_max": -0.00010324788596671568
+      }
+    },
+    "final_target": {
+      "requirement": 0.0052,
+      "residual": -0.00010324788596671568,
+      "unit": "W",
+      "value": 0.005096752114033284
+    },
+    "parameter_value": 0.0047,
+    "system_tb": {
+      "context": {
+        "divider_n": 100,
+        "f_ref_hz": 50000000.0,
+        "fosc_max_hz": 5117286410.328476,
+        "fosc_min_hz": 4158000000.0,
+        "temperature_points_c": [
+          25.0
+        ],
+        "vctrl_max_v": 0.8602691823227616,
+        "vctrl_min_v": 0.30845368,
+        "vdd_v": 1.8
+      },
+      "metrics": {
+        "final_relative_frequency_error": -2.3365020751953123e-13,
+        "final_vctrl_v": 0.8034611950944747,
+        "integrated_jitter_s": 8.336734952719942e-14,
+        "integrated_jitter_s_worst": 8.336734952719942e-14,
+        "kvco_hz_per_v": 2024845673.1322646,
+        "lock_time_s": 3.652e-05,
+        "lock_time_s_worst": 3.652e-05,
+        "locked_all_contexts": true,
+        "loop_bandwidth_hz": 4563619.049097231,
+        "output_frequency_hz": 5000000000.001168,
+        "output_frequency_hz_max": 5000000000.001168,
+        "output_frequency_hz_min": 5000000000.001168,
+        "phase_noise_100khz_dbc_hz": -83.67789740062024,
+        "phase_noise_10mhz_dbc_hz": -133.67789740062022,
+        "phase_noise_1mhz_dbc_hz": -113.67789740062024,
+        "power_w": 0.005096752114033284,
+        "power_worst_w": 0.005096752114033284
+      },
+      "passed": true,
+      "per_context": [
+        {
+          "checks": {
+            "integrated_jitter": true,
+            "lock_time": true,
+            "locked": true,
+            "output_frequency": true,
+            "power": true
+          },
+          "context": {
+            "divider_n": 100,
+            "f_ref_hz": 50000000.0,
+            "fosc_max_hz": 5117286410.328476,
+            "fosc_min_hz": 4158000000.0,
+            "temperature_c": 25.0,
+            "vctrl_max_v": 0.8602691823227616,
+            "vctrl_min_v": 0.30845368,
+            "vdd_v": 1.8
+          },
+          "metrics": {
+            "final_relative_frequency_error": -2.3365020751953123e-13,
+            "final_vctrl_v": 0.8034611950944747,
+            "integrated_jitter_s": 8.336734952719942e-14,
+            "kvco_hz_per_v": 2024845673.1322646,
+            "lock_time_s": 3.652e-05,
+            "loop_bandwidth_hz": 4563619.049097231,
+            "output_frequency_hz": 5000000000.001168,
+            "phase_noise_100khz_dbc_hz": -83.67789740062024,
+            "phase_noise_10mhz_dbc_hz": -133.67789740062022,
+            "phase_noise_1mhz_dbc_hz": -113.67789740062024,
+            "power_w": 0.005096752114033284
+          },
+          "passed": true,
+          "residuals": {
+            "integrated_jitter_residual_s": -9.999166326504729e-10,
+            "lock_time_residual_s": -0.0009634800000000001,
+            "output_frequency_error_hz": 0.0011682510375976562,
+            "output_frequency_residual_hz": -99999.99883174896,
+            "power_residual_w": -0.00010324788596671568
+          },
+          "temperature_c": 25.0
+        }
+      ],
+      "residuals": {
+        "integrated_jitter_residual_s_max": -9.999166326504729e-10,
+        "lock_time_residual_s_max": -0.0009634800000000001,
+        "output_frequency_error_hz_max": 0.0011682510375976562,
+        "output_frequency_residual_hz_max": -99999.99883174896,
+        "power_residual_w_max": -0.00010324788596671568
+      }
+    }
+  },
+  "candidate_id": "power_to_nominal_power:0.0047",
+  "claims": {
+    "boundary_found": true,
+    "candidate_block_tb_passed": true,
+    "candidate_context_covered": true,
+    "candidate_system_tb_passed": true,
+    "global_single_boundary_over_probed_range": true,
+    "initial_target_failed": true,
+    "local_one_dimensional_proof": true,
+    "replay_identical": true
+  },
+  "global_shape": {
+    "classification": "single_boundary_over_probed_range",
+    "finite_metric_values": true,
+    "pass_fail_transitions": 1,
+    "single_transition": true,
+    "target_metric_values": [
+      0.00379545370193968,
+      0.004337661373645349,
+      0.0048798690453510166,
+      0.005422076717056685,
+      0.005964284388762353,
+      0.006506492060468022,
+      0.00759090740387936
+    ],
+    "target_pass_sequence": [
+      true,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false
+    ],
+    "values": [
+      0.0035,
+      0.004,
+      0.0045,
+      0.005,
+      0.0055,
+      0.006,
+      0.007
+    ]
+  },
+  "initial": {
+    "context": {
+      "divider_n": 100,
+      "f_ref_hz": 50000000.0,
+      "fosc_max_hz": 5117286410.328476,
+      "fosc_min_hz": 4158000000.0,
+      "temperature_points_c": [
+        25.0
+      ],
+      "vctrl_max_v": 0.8602691823227616,
+      "vctrl_min_v": 0.30845368,
+      "vdd_v": 1.8
+    },
+    "metrics": {
+      "final_relative_frequency_error": -2.3365020751953123e-13,
+      "final_vctrl_v": 0.8034611950944747,
+      "integrated_jitter_s": 8.336734952719942e-14,
+      "integrated_jitter_s_worst": 8.336734952719942e-14,
+      "kvco_hz_per_v": 2024845673.1322646,
+      "lock_time_s": 3.652e-05,
+      "lock_time_s_worst": 3.652e-05,
+      "locked_all_contexts": true,
+      "loop_bandwidth_hz": 4563619.049097231,
+      "output_frequency_hz": 5000000000.001168,
+      "output_frequency_hz_max": 5000000000.001168,
+      "output_frequency_hz_min": 5000000000.001168,
+      "phase_noise_100khz_dbc_hz": -83.67789740062024,
+      "phase_noise_10mhz_dbc_hz": -133.67789740062022,
+      "phase_noise_1mhz_dbc_hz": -113.67789740062024,
+      "power_w": 0.005422076717056685,
+      "power_worst_w": 0.005422076717056685
+    },
+    "passed": false,
+    "per_context": [
+      {
+        "checks": {
+          "integrated_jitter": true,
+          "lock_time": true,
+          "locked": true,
+          "output_frequency": true,
+          "power": false
+        },
+        "context": {
+          "divider_n": 100,
+          "f_ref_hz": 50000000.0,
+          "fosc_max_hz": 5117286410.328476,
+          "fosc_min_hz": 4158000000.0,
+          "temperature_c": 25.0,
+          "vctrl_max_v": 0.8602691823227616,
+          "vctrl_min_v": 0.30845368,
+          "vdd_v": 1.8
+        },
+        "metrics": {
+          "final_relative_frequency_error": -2.3365020751953123e-13,
+          "final_vctrl_v": 0.8034611950944747,
+          "integrated_jitter_s": 8.336734952719942e-14,
+          "kvco_hz_per_v": 2024845673.1322646,
+          "lock_time_s": 3.652e-05,
+          "loop_bandwidth_hz": 4563619.049097231,
+          "output_frequency_hz": 5000000000.001168,
+          "phase_noise_100khz_dbc_hz": -83.67789740062024,
+          "phase_noise_10mhz_dbc_hz": -133.67789740062022,
+          "phase_noise_1mhz_dbc_hz": -113.67789740062024,
+          "power_w": 0.005422076717056685
+        },
+        "passed": false,
+        "residuals": {
+          "integrated_jitter_residual_s": -9.999166326504729e-10,
+          "lock_time_residual_s": -0.0009634800000000001,
+          "output_frequency_error_hz": 0.0011682510375976562,
+          "output_frequency_residual_hz": -99999.99883174896,
+          "power_residual_w": 0.0002220767170566856
+        },
+        "temperature_c": 25.0
+      }
+    ],
+    "residuals": {
+      "integrated_jitter_residual_s_max": -9.999166326504729e-10,
+      "lock_time_residual_s_max": -0.0009634800000000001,
+      "output_frequency_error_hz_max": 0.0011682510375976562,
+      "output_frequency_residual_hz_max": -99999.99883174896,
+      "power_residual_w_max": 0.0002220767170566856
+    }
+  },
+  "initial_target": {
+    "requirement": 0.0052,
+    "residual": 0.0002220767170566856,
+    "unit": "W",
+    "value": 0.005422076717056685
+  },
+  "mapping_id": "power_to_nominal_power",
+  "sensitivity": {
+    "finite_metric_values": true,
+    "pass_fail_transitions": 1,
+    "single_transition": true,
+    "target_metric_values": [
+      0.00379545370193968,
+      0.004337661373645349,
+      0.0048798690453510166,
+      0.005422076717056685,
+      0.005964284388762353
+    ],
+    "target_pass_sequence": [
+      true,
+      true,
+      true,
+      false,
+      false
+    ],
+    "values": [
+      0.0035,
+      0.004,
+      0.0045,
+      0.005,
+      0.0055
+    ]
+  },
+  "target_system_metric": "power"
+}

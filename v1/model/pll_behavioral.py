@@ -29,7 +29,7 @@ class VCOParams:
     vctrl_max_v: float = 1.10
     nominal_power_w: float = 5.0e-3
     power_vctrl_coeff: float = 0.12
-    pn_1mhz_dbc_hz: float = -116.0
+    pn_anchor_1mhz_dbc_hz: float = -116.0
     pn_vctrl_coeff_db_per_v: float = 8.0
     pn_temp_coeff_db_per_c: float = 0.018
     pn_power_coeff_db_per_decade: float = -3.0
@@ -85,7 +85,7 @@ class VCOParams:
 
         power_ratio = max(power_w / self.nominal_power_w, 1.0e-6)
         return (
-            self.pn_1mhz_dbc_hz
+            self.pn_anchor_1mhz_dbc_hz
             + self.pn_vctrl_coeff_db_per_v * (vctrl_v - self.v0_v)
             + self.pn_temp_coeff_db_per_c * (temperature_c - self.nominal_temperature_c)
             + self.pn_power_coeff_db_per_decade * math.log10(power_ratio)

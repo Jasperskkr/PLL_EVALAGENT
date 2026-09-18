@@ -132,7 +132,7 @@ def _predict_v1(vco: VCOParams, row: Mapping[str, Any]) -> float:
         slope_term = -20.0 * math.log10(offset_hz / 1.0e6)
     power_ratio = max(power_w / vco.nominal_power_w, 1.0e-6)
     return (
-        vco.pn_1mhz_dbc_hz
+        vco.pn_anchor_1mhz_dbc_hz
         + vco.pn_vctrl_coeff_db_per_v * (vctrl_v - vco.v0_v)
         + vco.pn_temp_coeff_db_per_c * (temperature_c - vco.nominal_temperature_c)
         + vco.pn_power_coeff_db_per_decade * math.log10(power_ratio)
@@ -189,4 +189,3 @@ def build_contract_evidence(
             "fidelity": "synthetic_behavioral",
         },
     }
-

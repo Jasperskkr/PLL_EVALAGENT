@@ -2,9 +2,13 @@
 
 The graph is intentionally a small property graph rather than a dependency on
 an external graph database.  V1 callers can continue to create plain nodes and
-edges.  Graph v2 callers may additionally attach a layer, owner and lifecycle
-status; the validator then checks the graph vocabulary and semantic edge
-references before an artifact is serialized.
+edges.  Graph v2 callers may additionally attach a semantic role, owner and
+lifecycle status; the validator then checks the graph vocabulary and semantic
+edge references before an artifact is serialized.
+
+Public Block Graph semantics are carried only by ``semantic_role``.  The
+``plane`` metadata is retained for implementation provenance/authority and is
+not a Block Graph layer.
 """
 
 from __future__ import annotations
@@ -12,8 +16,35 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Mapping, Optional
 
+from .planes import (
+    GRAPH_AUTHORITIES,
+    GRAPH_MUTABILITIES,
+    GRAPH_PLANES,
+    GRAPH_SCOPES,
+    default_edge_metadata,
+    default_node_metadata,
+)
 
-GRAPH_LAYERS = frozenset({"interface", "behavior", "allocation", "verification"})
+
+GRAPH_SEMANTIC_ROLES = frozenset(
+    {"architecture", "behavior", "influence", "evidence"}
+)
+WORKFLOW_NODE_TYPES = frozenset(
+    {
+        "system_requirement",
+        "block_requirement",
+        "capability_region",
+        "design_space",
+        "candidate",
+        "candidate_knob",
+        "realized_instance",
+        "contract",
+        "schema_definition",
+        "measurement_contract",
+        "validity_domain",
+        "uncertainty_model",
+    }
+)
 GRAPH_STATUSES = frozenset(
     {"proposed", "supported", "tested", "partially_validated", "validated", "rejected"}
 )
@@ -28,6 +59,7 @@ NODE_TYPES = frozenset(
         "signal",
         "context",
         "context_variable",
+        "behavioral_variable",
         "design_variable",
         "behavioral_output",
         "system_metric",
@@ -36,13 +68,16 @@ NODE_TYPES = frozenset(
         "capability_region",
         "design_space",
         "candidate",
+        "candidate_knob",
         "realized_instance",
         "operator",
         "contract",
+        "schema_definition",
         "measurement_contract",
         "validity_domain",
         "uncertainty_model",
         "evidence",
+        "measured_result",
         "evaluation",
     }
 )
@@ -90,9 +125,14 @@ class GraphNode:
     node_id: str
     node_type: str
     properties: Dict[str, Any] = field(default_factory=dict)
-    layer: Optional[str] = None
+    semantic_role: Optional[str] = None
     owner: Optional[str] = None
     status: Optional[str] = None
+    plane: Optional[str] = None
+    authority: Optional[str] = None
+    scope: Optional[str] = None
+    mutability: Optional[str] = None
+    provenance: Optional[Dict[str, Any]] = None
 
     def to_dict(self) -> Dict[str, Any]:
         result = {
@@ -100,12 +140,22 @@ class GraphNode:
             "type": self.node_type,
             "properties": self.properties,
         }
-        if self.layer is not None:
-            result["layer"] = self.layer
+        if self.semantic_role is not None:
+            result["semantic_role"] = self.semantic_role
         if self.owner is not None:
             result["owner"] = self.owner
         if self.status is not None:
             result["status"] = self.status
+        if self.plane is not None:
+            result["plane"] = self.plane
+        if self.authority is not None:
+            result["authority"] = self.authority
+        if self.scope is not None:
+            result["scope"] = self.scope
+        if self.mutability is not None:
+            result["mutability"] = self.mutability
+        if self.provenance is not None:
+            result["provenance"] = self.provenance
         return result
 
 
@@ -116,6 +166,11 @@ class GraphEdge:
     edge_type: str
     properties: Dict[str, Any] = field(default_factory=dict)
     status: Optional[str] = None
+    plane: Optional[str] = None
+    authority: Optional[str] = None
+    scope: Optional[str] = None
+    mutability: Optional[str] = None
+    provenance: Optional[Dict[str, Any]] = None
 
     def to_dict(self) -> Dict[str, Any]:
         result = {
@@ -126,6 +181,16 @@ class GraphEdge:
         }
         if self.status is not None:
             result["status"] = self.status
+        if self.plane is not None:
+            result["plane"] = self.plane
+        if self.authority is not None:
+            result["authority"] = self.authority
+        if self.scope is not None:
+            result["scope"] = self.scope
+        if self.mutability is not None:
+            result["mutability"] = self.mutability
+        if self.provenance is not None:
+            result["provenance"] = self.provenance
         return result
 
 
@@ -144,19 +209,40 @@ class TypedGraph:
         properties: Mapping[str, Any] | None = None,
         *,
         layer: Optional[str] = None,
+        semantic_role: Optional[str] = None,
         owner: Optional[str] = None,
         status: Optional[str] = None,
+        plane: Optional[str] = None,
+        authority: Optional[str] = None,
+        scope: Optional[str] = None,
+        mutability: Optional[str] = None,
+        provenance: Mapping[str, Any] | None = None,
     ) -> None:
         if any(node.node_id == node_id for node in self.nodes):
             return
+        node_properties = dict(properties or {})
+        if semantic_role is None and layer is not None:
+            semantic_role = layer
+        if self.graph_version.startswith("2."):
+            defaults = default_node_metadata(node_id, node_type, node_properties)
+            plane = plane or defaults["plane"]
+            authority = authority or defaults["authority"]
+            scope = scope or defaults["scope"]
+            mutability = mutability or defaults["mutability"]
+            provenance = dict(provenance or defaults["provenance"])
         self.nodes.append(
             GraphNode(
                 node_id,
                 node_type,
-                dict(properties or {}),
-                layer=layer,
+                node_properties,
+                semantic_role=semantic_role,
                 owner=owner,
                 status=status,
+                plane=plane,
+                authority=authority,
+                scope=scope,
+                mutability=mutability,
+                provenance=dict(provenance) if provenance is not None else None,
             )
         )
 
@@ -168,6 +254,11 @@ class TypedGraph:
         properties: Mapping[str, Any] | None = None,
         *,
         status: Optional[str] = None,
+        plane: Optional[str] = None,
+        authority: Optional[str] = None,
+        scope: Optional[str] = None,
+        mutability: Optional[str] = None,
+        provenance: Mapping[str, Any] | None = None,
     ) -> None:
         if not any(
             edge.source == source
@@ -175,13 +266,33 @@ class TypedGraph:
             and edge.edge_type == edge_type
             for edge in self.edges
         ):
+            edge_properties = dict(properties or {})
+            source_node = next((node for node in self.nodes if node.node_id == source), None)
+            target_node = next((node for node in self.nodes if node.node_id == target), None)
+            if self.graph_version.startswith("2.") and source_node and target_node:
+                defaults = default_edge_metadata(
+                    edge_type,
+                    source_node.to_dict(),
+                    target_node.to_dict(),
+                    edge_properties,
+                )
+                plane = plane or defaults["plane"]
+                authority = authority or defaults["authority"]
+                scope = scope or defaults["scope"]
+                mutability = mutability or defaults["mutability"]
+                provenance = dict(provenance or defaults["provenance"])
             self.edges.append(
                 GraphEdge(
                     source,
                     target,
                     edge_type,
-                    dict(properties or {}),
+                    edge_properties,
                     status=status,
+                    plane=plane,
+                    authority=authority,
+                    scope=scope,
+                    mutability=mutability,
+                    provenance=dict(provenance) if provenance is not None else None,
                 )
             )
 
@@ -194,12 +305,32 @@ class TypedGraph:
             for node in self.nodes:
                 if node.node_type not in NODE_TYPES:
                     raise ValueError(f"unknown graph node type: {node.node_type}")
-                if node.layer not in GRAPH_LAYERS:
+                if (
+                    node.semantic_role is not None
+                    and node.semantic_role not in GRAPH_SEMANTIC_ROLES
+                ):
                     raise ValueError(
-                        f"graph v2 node {node.node_id} must have a valid layer"
+                        f"graph v2 node {node.node_id} must have a valid semantic_role"
+                    )
+                if (
+                    node.semantic_role is None
+                    and node.node_type not in WORKFLOW_NODE_TYPES
+                ):
+                    raise ValueError(
+                        f"graph v2 node {node.node_id} must declare semantic_role"
                     )
                 if node.status is not None and node.status not in GRAPH_STATUSES:
                     raise ValueError(f"unknown node status: {node.status}")
+                if node.plane not in GRAPH_PLANES:
+                    raise ValueError(f"unknown graph plane: {node.plane}")
+                if node.authority not in GRAPH_AUTHORITIES:
+                    raise ValueError(f"unknown graph authority: {node.authority}")
+                if node.scope not in GRAPH_SCOPES:
+                    raise ValueError(f"unknown graph scope: {node.scope}")
+                if node.mutability not in GRAPH_MUTABILITIES:
+                    raise ValueError(f"unknown graph mutability: {node.mutability}")
+                if not isinstance(node.provenance, Mapping) or not node.provenance:
+                    raise ValueError(f"graph v2 node {node.node_id} must have provenance")
         for edge in self.edges:
             if edge.source not in node_ids or edge.target not in node_ids:
                 raise ValueError(
@@ -209,6 +340,19 @@ class TypedGraph:
                 raise ValueError(f"unknown graph edge type: {edge.edge_type}")
             if edge.status is not None and edge.status not in GRAPH_STATUSES:
                 raise ValueError(f"unknown edge status: {edge.status}")
+            if strict:
+                if edge.plane not in GRAPH_PLANES:
+                    raise ValueError(f"unknown graph edge plane: {edge.plane}")
+                if edge.authority not in GRAPH_AUTHORITIES:
+                    raise ValueError(f"unknown graph edge authority: {edge.authority}")
+                if edge.scope not in GRAPH_SCOPES:
+                    raise ValueError(f"unknown graph edge scope: {edge.scope}")
+                if edge.mutability not in GRAPH_MUTABILITIES:
+                    raise ValueError(f"unknown graph edge mutability: {edge.mutability}")
+                if not isinstance(edge.provenance, Mapping) or not edge.provenance:
+                    raise ValueError(
+                        f"graph v2 edge {edge.source} -> {edge.target} must have provenance"
+                    )
 
     def to_dict(self) -> Dict[str, Any]:
         self.validate()

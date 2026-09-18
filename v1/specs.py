@@ -17,6 +17,17 @@ def _as_float(value: Any) -> float:
     return float(value)
 
 
+def _normalize_candidate_overrides(values: Mapping[str, Any]) -> Dict[str, Any]:
+    aliases = {"pn_1mhz_dbc_hz": "pn_anchor_1mhz_dbc_hz"}
+    normalized: Dict[str, Any] = {}
+    for name, value in values.items():
+        canonical = aliases.get(str(name), str(name))
+        if canonical in normalized and normalized[canonical] != value:
+            raise ValueError(f"conflicting candidate override aliases for {canonical}")
+        normalized[canonical] = value
+    return normalized
+
+
 @dataclass(frozen=True)
 class SystemSpec:
     """Immutable system-level requirements used by the evaluator."""
@@ -168,7 +179,7 @@ class CandidateDefinition:
     def from_dict(cls, data: Mapping[str, Any]) -> "CandidateDefinition":
         return cls(
             candidate_id=str(data["candidate_id"]),
-            overrides=dict(data.get("overrides", {})),
+            overrides=_normalize_candidate_overrides(data.get("overrides", {})),
             engineering_cost=_as_float(data.get("engineering_cost", 0.0)),
             description=str(data.get("description", "")),
         )
@@ -183,4 +194,3 @@ def load_case(path: str | Path) -> Dict[str, Any]:
     if not isinstance(data, dict):
         raise ValueError("case file must contain a JSON object")
     return data
-

@@ -192,7 +192,7 @@ def build_agent_goal_context(graph: Mapping[str, Any]) -> Dict[str, Any]:
                 continue
             source = str(edge["source"])
             source_node = nodes.get(source, {})
-            if source_node.get("type") not in {"design_variable", "behavioral_output", "port"}:
+            if source_node.get("type") not in {"candidate_knob", "design_variable", "behavioral_output", "port"}:
                 continue
             evidence_id = edge.get("properties", {}).get("evidence_id")
             raw_value = edge.get("properties", {}).get("value")

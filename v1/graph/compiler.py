@@ -39,6 +39,29 @@ def _requirement_verdicts(checks: Mapping[str, bool]) -> dict[str, bool]:
     }
 
 
+def _validated_domain_from_context(
+    context_contract: Mapping[str, Any] | None,
+) -> dict[str, Any]:
+    if context_contract is None:
+        return {
+            "temperature_c": [25.0],
+            "validation_source": "v1_observation_holdout",
+        }
+    return {
+        "vctrl_v": [
+            float(context_contract["vctrl_min_v"]),
+            float(context_contract["vctrl_max_v"]),
+        ],
+        "temperature_c": [
+            float(value) for value in context_contract["temperature_points_c"]
+        ],
+        "vdd_v": [float(context_contract["vdd_v"])],
+        "validation_source": str(
+            context_contract.get("context_id", "VCOBlockContext.v1")
+        ),
+    }
+
+
 def build_v1_graph_artifact(
     *,
     contract: Mapping[str, Any],
@@ -77,6 +100,10 @@ def build_v1_graph_artifact(
     graph.add_edge("VCO.temperature", "VCO.oscillation_frequency", "behavioral_dependency")
     graph.add_edge("VCO.vctrl", "VCO.phase_noise_1mhz", "behavioral_dependency")
     graph.add_edge("VCO.temperature", "VCO.phase_noise_1mhz", "behavioral_dependency")
+    graph.add_edge("VCO.vctrl", "VCO.power", "behavioral_dependency")
+    graph.add_edge("VCO.temperature", "VCO.power", "behavioral_dependency")
+    graph.add_edge("VCO.power", "VCO.phase_noise_1mhz", "behavioral_dependency")
+    graph.add_edge("VCO.vctrl", "VCO.kvco", "behavioral_dependency")
     graph.add_edge("VCO.phase_noise_1mhz", "PLL.integrated_jitter", "noise_transfer")
     graph.add_edge("VCO.kvco", "PLL.lock_time", "system_influence")
     graph.add_edge("VCO.kvco", "PLL.integrated_jitter", "system_influence")
@@ -110,7 +137,7 @@ def build_v1_graph_artifact(
     for parameter, sweep in sensitivity.get("sweeps", {}).items():
         derivatives = sweep.get("local_derivatives", {})
         parameter_node = {
-            "pn_1mhz_dbc_hz": "VCO.phase_noise_1mhz",
+            "pn_anchor_1mhz_dbc_hz": "VCO.phase_noise_1mhz",
             "k1_hz_per_v": "VCO.kvco",
             "vctrl_max_v": "VCO.vctrl",
         }.get(parameter)
@@ -168,21 +195,28 @@ def build_v1_graph_v2_artifact(
     final_context_coverage: Mapping[str, Any] | None = None,
     rejection: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Compile an executable, four-layer graph for the current V1 instance.
+    """Compile an executable graph with frozen semantic roles for V1.
 
     This is additive to :func:`build_v1_graph_artifact`.  The existing graph
     remains the compatibility artifact; Graph v2 adds explicit requirement,
-    capability, operator and verification nodes without changing any numeric
+    capability, operator and evidence nodes without changing any numeric
     calculation in ``v1.pipeline``.
     """
 
+    validated_domain = _validated_domain_from_context(context_contract)
     if block_meta is None:
-        block_meta = build_vco_block_meta_v1(contract)
+        block_meta = build_vco_block_meta_v1(
+            contract,
+            validated_domain=validated_domain,
+        )
     graph = TypedGraph(
         graph_id=f"{run_id}:vco_pll_graph_v2",
         graph_version="2.0",
         metadata={
             "schema": "BlockMetaSchema v1 + TypedGraph v2",
+            "plane_model": "implementation_metadata_schema_contract_realization_evidence",
+            "planes": ["schema", "contract", "realization", "evidence"],
+            "semantic_role_model": ["architecture", "behavior", "influence", "evidence"],
             "block_meta_ref": "vco_block_meta_v1.json",
             "execution_model": "architecture_feedback_plus_evaluation_operators",
             "deterministic": True,
@@ -194,7 +228,7 @@ def build_v1_graph_v2_artifact(
     def node(
         node_id: str,
         node_type: str,
-        layer: str,
+        semantic_role: str | None,
         properties: Mapping[str, Any] | None = None,
         *,
         owner: str | None = None,
@@ -204,7 +238,7 @@ def build_v1_graph_v2_artifact(
             node_id,
             node_type,
             properties,
-            layer=layer,
+            semantic_role=semantic_role,
             owner=owner,
             status=status,
         )
@@ -219,18 +253,16 @@ def build_v1_graph_v2_artifact(
     ) -> None:
         graph.add_edge(source, target, edge_type, properties, status=status)
 
-    # Interface layer: architecture, ports, contexts and interactions.
-    node("PLL", "architecture_block", "interface", {"architecture": "integer_n_cppll"})
-    node("VCO", "architecture_block", "interface", {"target_block": True})
-    node("PLL.reference", "port", "interface", {"direction": "in", "unit": "Hz"}, owner="PLL")
-    node("PLL.control_voltage", "port", "interface", {"direction": "out", "unit": "V"}, owner="PLL")
-    node("PLL.oscillation", "port", "interface", {"direction": "in", "unit": "Hz"}, owner="PLL")
-    node("VCO.vctrl", "port", "interface", {"direction": "in", "unit": "V"}, owner="VCO")
-    node("VCO.oscillation", "port", "interface", {"direction": "out", "unit": "Hz"}, owner="VCO")
-    node("VCO.phase_noise_profile", "port", "interface", {"direction": "out", "unit": "dBc/Hz"}, owner="VCO")
-    node("VCO.Kvco", "port", "interface", {"direction": "out", "unit": "Hz/V"}, owner="VCO")
-    node("Environment.temperature", "context_variable", "interface", {"unit": "degC"})
-    node("Environment.vdd", "context_variable", "interface", {"unit": "V"})
+    # Architecture: block identity, physical ports, feedback and context.
+    node("PLL", "architecture_block", "architecture", {"architecture": "integer_n_cppll"})
+    node("VCO", "architecture_block", "architecture", {"target_block": True})
+    node("PLL.reference", "port", "architecture", {"direction": "in", "unit": "Hz"}, owner="PLL")
+    node("PLL.control_voltage", "port", "architecture", {"direction": "out", "unit": "V"}, owner="PLL")
+    node("PLL.oscillation", "port", "architecture", {"direction": "in", "unit": "Hz"}, owner="PLL")
+    node("VCO.vctrl", "port", "architecture", {"direction": "in", "unit": "V"}, owner="VCO")
+    node("VCO.oscillation", "port", "architecture", {"direction": "out", "unit": "Hz"}, owner="VCO")
+    node("Environment.temperature", "context_variable", "architecture", {"unit": "degC"})
+    node("Environment.vdd", "context_variable", "architecture", {"unit": "V"})
     edge("VCO", "PLL", "signal_flow", {"signal": "oscillation"})
     edge("PLL", "VCO.vctrl", "feedback", {"signal": "control_voltage"})
     edge("PLL.control_voltage", "VCO.vctrl", "connects_to", {"signal": "control_voltage"})
@@ -238,66 +270,72 @@ def build_v1_graph_v2_artifact(
     edge("Environment.temperature", "VCO", "requires", {"role": "system_context"})
     edge("Environment.vdd", "VCO", "requires", {"role": "system_context"})
 
-    # Behavior layer: explicit operators separate the physical mechanism from
-    # the architecture feedback loop, making the evaluation path acyclic.
-    node("VCO.phase_noise_1mhz", "behavioral_output", "behavior", {"unit": "dBc/Hz"}, owner="VCO")
-    node("VCO.frequency", "behavioral_output", "behavior", {"unit": "Hz"}, owner="VCO")
-    node("VCO.kvco", "behavioral_output", "behavior", {"unit": "Hz/V"}, owner="VCO")
-    node("VCO.power", "behavioral_output", "behavior", {"unit": "W"}, owner="VCO")
-    node("VCO.phase_noise_1mhz_design", "design_variable", "behavior", {"unit": "dBc/Hz"}, owner="VCO")
-    node("VCO.k1_design", "design_variable", "behavior", {"unit": "Hz/V"}, owner="VCO")
-    node("VCO.nominal_power_design", "design_variable", "behavior", {"unit": "W"}, owner="VCO")
-    node("operator.VCO_Noise_TF", "operator", "behavior", {"operator": "vco_noise_transfer", "model_ref": "behavioral_vco_noise_v1"})
-    node("operator.Noise_Integration", "operator", "behavior", {"operator": "psd_to_integrated_jitter", "aggregation": "quadrature_psd_integral"})
-    node("operator.PLL_Dynamics", "operator", "behavior", {"operator": "closed_loop_dynamics", "model_ref": "averaged_cppll_v1"})
-    node("PLL.integrated_jitter", "system_metric", "behavior", {"unit": "s"}, owner="PLL")
-    node("PLL.lock_time", "system_metric", "behavior", {"unit": "s"}, owner="PLL")
-    node("PLL.output_frequency", "system_metric", "behavior", {"unit": "Hz"}, owner="PLL")
-    node("PLL.power", "system_metric", "behavior", {"unit": "W"}, owner="PLL")
+    # Behavior: actual block metrics under context.
+    node("VCO.phase_noise_1mhz", "behavioral_output", "behavior", {"metric_name": "phase_noise_1mhz_dbc_hz", "unit": "dBc/Hz"}, owner="VCO")
+    node("VCO.frequency", "behavioral_output", "behavior", {"metric_name": "frequency_hz", "unit": "Hz"}, owner="VCO")
+    node("VCO.kvco", "behavioral_output", "behavior", {"metric_name": "kvco_hz_per_v", "unit": "Hz/V"}, owner="VCO")
+    node("VCO.power", "behavioral_output", "behavior", {"metric_name": "power_w", "unit": "W"}, owner="VCO")
+    node("VCO.pn_anchor_1mhz", "candidate_knob", None, {"parameter_identity": "internal_model_knob", "knob_name": "pn_anchor_1mhz_dbc_hz", "unit": "dBc/Hz"}, owner="VCO")
+    node("VCO.f0_hz", "candidate_knob", None, {"parameter_identity": "internal_model_knob", "knob_name": "f0_hz", "unit": "Hz"}, owner="VCO")
+    node("VCO.k1_hz_per_v", "candidate_knob", None, {"parameter_identity": "internal_model_knob", "knob_name": "k1_hz_per_v", "unit": "Hz/V"}, owner="VCO")
+    node("VCO.nominal_power_w", "candidate_knob", None, {"parameter_identity": "internal_model_knob", "knob_name": "nominal_power_w", "unit": "W"}, owner="VCO")
+    # Influence: block behavior to system metric mechanisms/operators.
+    node("operator.VCO_Noise_TF", "operator", "influence", {"operator": "vco_noise_transfer", "model_ref": "behavioral_vco_noise_v1"})
+    node("operator.Noise_Integration", "operator", "influence", {"operator": "psd_to_integrated_jitter", "aggregation": "quadrature_psd_integral"})
+    node("operator.PLL_Dynamics", "operator", "influence", {"operator": "closed_loop_dynamics", "model_ref": "averaged_cppll_v1"})
+    node("PLL.integrated_jitter", "system_metric", "influence", {"metric_name": "integrated_jitter_s", "unit": "s"}, owner="PLL")
+    node("PLL.lock_time", "system_metric", "influence", {"metric_name": "lock_time_s", "unit": "s"}, owner="PLL")
+    node("PLL.output_frequency", "system_metric", "influence", {"metric_name": "output_frequency_hz", "unit": "Hz"}, owner="PLL")
+    node("PLL.power", "system_metric", "influence", {"metric_name": "power_w", "unit": "W"}, owner="PLL")
     edge("VCO.vctrl", "VCO.frequency", "behavioral_dependency", {"equation_ref": "frequency_hz(Vctrl,T)"})
     edge("Environment.temperature", "VCO.frequency", "behavioral_dependency", {"equation_ref": "frequency_hz(Vctrl,T)"})
-    edge("VCO.phase_noise_1mhz_design", "VCO.phase_noise_1mhz", "behavioral_dependency", {"mechanism": "parameterizes_context_dependent_profile"})
+    edge("VCO.f0_hz", "VCO.frequency", "behavioral_dependency", {"mechanism": "sets_nominal_center_frequency"})
+    edge("VCO.k1_hz_per_v", "VCO.frequency", "behavioral_dependency", {"mechanism": "parameterizes_linear_tuning_term"})
+    edge("VCO.pn_anchor_1mhz", "VCO.phase_noise_1mhz", "behavioral_dependency", {"mechanism": "parameterizes_context_dependent_profile"})
     edge("VCO.vctrl", "VCO.phase_noise_1mhz", "behavioral_dependency", {"equation_ref": "phase_noise_dbc_hz(offset,Vctrl,T,power)"})
     edge("Environment.temperature", "VCO.phase_noise_1mhz", "behavioral_dependency", {"equation_ref": "phase_noise_dbc_hz(offset,Vctrl,T,power)"})
-    edge("VCO.phase_noise_1mhz", "VCO.phase_noise_profile", "provides", {"relationship": "1MHz anchor parameterizes profile"})
-    edge("VCO.k1_design", "VCO.kvco", "behavioral_dependency", {"mechanism": "parameterizes_nonlinear_tuning_slope"})
-    edge("VCO.nominal_power_design", "VCO.power", "behavioral_dependency", {"mechanism": "parameterizes_nominal_block_power"})
+    edge("VCO.power", "VCO.phase_noise_1mhz", "behavioral_dependency", {"equation_ref": "phase_noise_dbc_hz(offset,Vctrl,T,power)"})
+    edge("VCO.k1_hz_per_v", "VCO.kvco", "behavioral_dependency", {"mechanism": "parameterizes_nonlinear_tuning_slope"})
+    edge("VCO.nominal_power_w", "VCO.power", "behavioral_dependency", {"mechanism": "parameterizes_nominal_block_power"})
     edge("VCO.vctrl", "VCO.kvco", "behavioral_dependency", {"equation_ref": "kvco_hz_per_v(Vctrl)"})
-    edge("VCO.kvco", "VCO.Kvco", "provides", {"relationship": "realized interaction value"})
-    edge("VCO.phase_noise_profile", "operator.VCO_Noise_TF", "input_to", {"context_ref": "SystemTB.operating_envelope"})
+    edge("VCO.vctrl", "VCO.power", "behavioral_dependency", {"equation_ref": "power_w(Vctrl,T)"})
+    edge("Environment.temperature", "VCO.power", "behavioral_dependency", {"equation_ref": "power_w(Vctrl,T)"})
+    edge("VCO.phase_noise_1mhz", "operator.VCO_Noise_TF", "input_to", {"context_ref": "VCOBlockContext.v1"})
     edge("operator.VCO_Noise_TF", "operator.Noise_Integration", "input_to", {"transfer": "high_pass_locked_loop"})
     edge("operator.Noise_Integration", "PLL.integrated_jitter", "produces", {"equation_ref": "integrated_vco_jitter_s"})
-    edge("VCO.phase_noise_1mhz", "PLL.integrated_jitter", "shortcut", {"derived_from": ["operator.VCO_Noise_TF", "operator.Noise_Integration"], "query_only": True})
-    edge("VCO.Kvco", "operator.PLL_Dynamics", "input_to", {"context_ref": "SystemTB.operating_envelope"})
+    edge("VCO.phase_noise_1mhz", "PLL.integrated_jitter", "system_influence", {"source_behavior_metric": "phase_noise_1mhz_dbc_hz", "target_system_metric": "integrated_jitter_s", "mechanism": "noise_transfer_and_integration", "evidence_refs": ["Evidence.sensitivity"], "validity_domain": "VCOBlockContext.v1"})
+    edge("VCO.kvco", "operator.PLL_Dynamics", "input_to", {"context_ref": "VCOBlockContext.v1"})
     edge("operator.PLL_Dynamics", "PLL.lock_time", "produces", {"equation_ref": "lock_time_from_reference_cycles"})
-    edge("VCO.frequency", "PLL.output_frequency", "system_influence", {"mechanism": "divider_feedback"})
-    edge("VCO.power", "PLL.power", "system_influence", {"mechanism": "block_power_aggregation"})
+    edge("VCO.kvco", "PLL.integrated_jitter", "system_influence", {"source_behavior_metric": "kvco_hz_per_v", "target_system_metric": "integrated_jitter_s", "mechanism": "loop_bandwidth_change", "evidence_refs": ["Evidence.sensitivity"], "validity_domain": "VCOBlockContext.v1"})
+    edge("VCO.kvco", "PLL.lock_time", "system_influence", {"source_behavior_metric": "kvco_hz_per_v", "target_system_metric": "lock_time_s", "mechanism": "closed_loop_dynamics", "evidence_refs": ["Evidence.sensitivity"], "validity_domain": "VCOBlockContext.v1"})
+    edge("VCO.frequency", "PLL.output_frequency", "system_influence", {"source_behavior_metric": "frequency_hz", "target_system_metric": "output_frequency_hz", "mechanism": "divider_feedback"})
+    edge("VCO.power", "PLL.power", "system_influence", {"source_behavior_metric": "power_w", "target_system_metric": "power_w", "mechanism": "block_power_aggregation"})
 
-    # Allocation layer: requirements, capabilities and candidate instances are
-    # distinct objects.  Optional run artifacts enrich the properties but are
-    # never required to invent a graph edge.
+    # Workflow artifacts: requirements, capabilities and candidate instances
+    # are objects, not Block Graph semantic roles.
     limits = system_spec.get("limits", {})
-    node("SystemSpec.integrated_jitter", "system_requirement", "allocation", {"source": "SystemSpec", "limit": limits.get("integrated_jitter_max_s"), "metric": "PLL.integrated_jitter"})
-    node("SystemSpec.lock_time", "system_requirement", "allocation", {"source": "SystemSpec", "limit": limits.get("lock_time_max_s"), "metric": "PLL.lock_time"})
-    node("SystemSpec.output_frequency", "system_requirement", "allocation", {"source": "SystemSpec", "limit": limits.get("output_frequency_tolerance_hz"), "metric": "PLL.output_frequency"})
-    node("SystemSpec.power", "system_requirement", "allocation", {"source": "SystemSpec", "limit": limits.get("power_max_w"), "metric": "PLL.power"})
-    required_pn = None if boundary is None else boundary.get("required_boundary")
+    node("SystemSpec.integrated_jitter", "system_requirement", None, {"source": "SystemSpec", "parameter_identity": "requirement", "requirement_id": "SystemSpec.integrated_jitter", "limit": limits.get("integrated_jitter_max_s"), "metric": "PLL.integrated_jitter"})
+    node("SystemSpec.lock_time", "system_requirement", None, {"source": "SystemSpec", "parameter_identity": "requirement", "requirement_id": "SystemSpec.lock_time", "limit": limits.get("lock_time_max_s"), "metric": "PLL.lock_time"})
+    node("SystemSpec.output_frequency", "system_requirement", None, {"source": "SystemSpec", "parameter_identity": "requirement", "requirement_id": "SystemSpec.output_frequency", "limit": limits.get("output_frequency_tolerance_hz"), "metric": "PLL.output_frequency"})
+    node("SystemSpec.power", "system_requirement", None, {"source": "SystemSpec", "parameter_identity": "requirement", "requirement_id": "SystemSpec.power", "limit": limits.get("power_max_w"), "metric": "PLL.power"})
+    required_pn = None if boundary is None else boundary.get("block_metric_at_boundary")
+    search_knob_boundary = None if boundary is None else boundary.get("search_knob_boundary")
     recommended_pn = None if recommended_requirement is None else recommended_requirement.get("phase_noise_1mhz_max_dbc_hz")
-    node("VCORequirement.required", "block_requirement", "allocation", {"source": "deterministic_pn_boundary_search", "metric": "phase_noise_1mhz_max_dbc_hz", "value": required_pn, "margin_db": 0.0}, status="rejected" if rejection is not None else None)
-    node("VCORequirement.recommended", "block_requirement", "allocation", {"source": "deterministic_boundary_plus_margin", "metric": "phase_noise_1mhz_max_dbc_hz", "value": recommended_pn, "margin_db": None if recommended_requirement is None else recommended_requirement.get("margin_db")}, status="rejected" if rejection is not None else None)
-    node("VCO.design_space", "design_space", "allocation", {"representation": "sampled_candidates", "dimensions": ["phase_noise_1mhz_dbc_hz"], "includes_infeasible": True}, owner="VCO")
-    node("VCO.capability_region", "capability_region", "allocation", {"representation": "sampled_feasible_candidates", "dimensions": ["phase_noise_1mhz_dbc_hz"], "status_note": "V1 formal dimension is one-dimensional; membership requires BlockTB PASS"}, owner="VCO")
+    node("VCORequirement.required", "block_requirement", None, {"source": "boundary_measurement_under_frozen_context", "parameter_identity": "requirement", "requirement_id": "VCORequirement.required", "metric": "phase_noise_1mhz_max_dbc_hz", "measured_metric": "worst_phase_noise_1mhz_dbc_hz", "value": required_pn, "margin_db": 0.0, "search_knob": None if boundary is None else boundary.get("search_knob"), "search_knob_boundary": search_knob_boundary}, status="rejected" if rejection is not None else None)
+    node("VCORequirement.recommended", "block_requirement", None, {"source": "measured_boundary_plus_margin", "parameter_identity": "requirement", "requirement_id": "VCORequirement.recommended", "metric": "phase_noise_1mhz_max_dbc_hz", "measured_metric": "worst_phase_noise_1mhz_dbc_hz", "value": recommended_pn, "margin_db": None if recommended_requirement is None else recommended_requirement.get("margin_db")}, status="rejected" if rejection is not None else None)
+    node("VCO.design_space", "design_space", None, {"representation": "candidate_knobs", "dimensions": ["pn_anchor_1mhz_dbc_hz", "k1_hz_per_v"], "includes_infeasible": True}, owner="VCO")
+    node("VCO.capability_region", "capability_region", None, {"representation": "sampled_feasible_candidates", "dimensions": ["worst_phase_noise_1mhz_dbc_hz", "kvco_min_hz_per_v", "kvco_max_hz_per_v", "worst_power_w", "frequency_min_hz", "frequency_max_hz"], "formal_status": "sampled_partial_one_dimensional", "status_note": "V1 capability points require BlockTB PASS; this is not a complete PN-by-Kvco region"}, owner="VCO")
     edge("SystemSpec.integrated_jitter", "PLL.integrated_jitter", "constrains", {"direction": "upper_bound", "value": limits.get("integrated_jitter_max_s")})
     edge("SystemSpec.lock_time", "PLL.lock_time", "constrains", {"direction": "upper_bound", "value": limits.get("lock_time_max_s")})
     edge("SystemSpec.output_frequency", "PLL.output_frequency", "constrains", {"direction": "tolerance", "value": limits.get("output_frequency_tolerance_hz")})
     edge("SystemSpec.power", "PLL.power", "constrains", {"direction": "upper_bound", "value": limits.get("power_max_w")})
     if rejection is None:
-        edge("SystemSpec.integrated_jitter", "VCORequirement.required", "allocates", {"allocation_metric": "phase_noise_1mhz_dbc_hz", "method": "bracketed_bisection", "evidence_id": "Evidence.boundary_search"})
+        edge("SystemSpec.integrated_jitter", "VCORequirement.required", "allocates", {"target_system_metric": "integrated_jitter_s", "search_knob": "pn_anchor_1mhz_dbc_hz", "allocated_block_metric": "worst_phase_noise_1mhz_dbc_hz", "method": "bracketed_bisection_then_frozen_context_measurement", "evidence_id": "Evidence.boundary_search"})
         edge("VCORequirement.required", "VCORequirement.recommended", "derived_from", {"margin_db": None if recommended_requirement is None else recommended_requirement.get("margin_db")})
-        edge("VCORequirement.recommended", "VCO.capability_region", "constrains", {"metric": "phase_noise_1mhz_dbc_hz"})
+        edge("VCORequirement.recommended", "VCO.capability_region", "constrains", {"metric": "worst_phase_noise_1mhz_dbc_hz"})
 
     if context_contract is not None:
-        node("Context.VCO.contract", "context", "verification", dict(context_contract), owner="VCO", status="validated")
+        node("Context.VCO.contract", "context", "architecture", dict(context_contract), owner="VCO", status="validated")
 
     candidate_results = list(candidate_results or [])
     for item in candidate_results:
@@ -309,10 +347,17 @@ def build_v1_graph_v2_artifact(
         coverage = item.get("context_coverage", {})
         system_checks = _evaluation_checks(system_eval)
         system_verdicts = _requirement_verdicts(system_checks)
-        node(candidate_node, "candidate", "allocation", {"engineering_cost": item.get("engineering_cost"), "description": item.get("description", ""), "design_vector": item.get("design_vector", {}), "selected": bool(item.get("selected"))}, owner="VCO", status="validated" if item.get("selected") else "tested")
-        node(instance_node, "realized_instance", "allocation", {"parameters": item.get("realized_parameters", {}), "model_ref": "synthetic_behavioral_vco_v1"}, owner="VCO", status="validated" if item.get("selected") else "tested")
-        node(f"BlockTB.{candidate_id}", "evaluation", "verification", {"passed": block_tb.get("passed"), "requirement": block_tb.get("requirement"), "context": block_tb.get("context"), "checks": block_tb.get("checks"), "worst_case": block_tb.get("worst_case"), "evaluation_kind": "context_aware_block_tb", "artifact_ref": f"block_feasibility.json#candidate_id={candidate_id}", "evidence_validated": True}, status="validated" if block_tb.get("passed") else "rejected")
-        node(f"SystemTB.{candidate_id}", "evaluation", "verification", {"passed": system_eval.get("passed"), "metrics": system_eval.get("metrics"), "residuals": system_eval.get("residuals"), "context": system_eval.get("context"), "checks": system_checks, "evaluation_kind": "realized_instance_system_tb", "artifact_ref": f"block_feasibility.json#candidate_id={candidate_id}", "evidence_validated": True}, status="validated" if system_eval.get("passed") else "rejected")
+        design_vector = dict(item.get("design_vector", {}))
+        realized_parameters = dict(item.get("realized_parameters", {}))
+        candidate_status = "validated" if item.get("selected") else "tested"
+        node(candidate_node, "candidate", None, {"parameter_identity": "candidate", "candidate_id": candidate_id, "engineering_cost": item.get("engineering_cost"), "description": item.get("description", ""), "candidate_knobs": design_vector, "design_vector": design_vector, "selected": bool(item.get("selected"))}, owner="VCO", status=candidate_status)
+        node(instance_node, "realized_instance", None, {"parameter_identity": "realized_instance", "source_candidate_id": candidate_id, "behavioral_variables": realized_parameters, "parameters": realized_parameters, "model_ref": "synthetic_behavioral_vco_v1"}, owner="VCO", status=candidate_status)
+        for knob_name, knob_value in sorted(design_vector.items()):
+            knob_node = f"Knob.{candidate_id}.{knob_name}"
+            node(knob_node, "candidate_knob", None, {"parameter_identity": "candidate_knob", "knob_name": knob_name, "value": knob_value, "candidate_id": candidate_id}, owner="VCO", status=candidate_status)
+            edge(candidate_node, knob_node, "contains", {"candidate_id": candidate_id, "knob_name": knob_name}, status=candidate_status)
+        node(f"BlockTB.{candidate_id}", "evaluation", "evidence", {"result_identity": "measured_result", "candidate_id": candidate_id, "passed": block_tb.get("passed"), "requirement": block_tb.get("requirement"), "context": block_tb.get("context"), "checks": block_tb.get("checks"), "worst_case": block_tb.get("worst_case"), "measurement_method": block_tb.get("measurement_method"), "provenance": block_tb.get("provenance"), "evaluation_kind": "context_aware_block_tb", "artifact_ref": f"block_feasibility.json#candidate_id={candidate_id}", "evidence_validated": True}, status="validated" if block_tb.get("passed") else "rejected")
+        node(f"SystemTB.{candidate_id}", "evaluation", "evidence", {"result_identity": "measured_result", "candidate_id": candidate_id, "passed": system_eval.get("passed"), "metrics": system_eval.get("metrics"), "residuals": system_eval.get("residuals"), "context": system_eval.get("context"), "checks": system_checks, "measurement_method": "evaluate_system", "evaluation_kind": "realized_instance_system_tb", "artifact_ref": f"block_feasibility.json#candidate_id={candidate_id}", "evidence_validated": True}, status="validated" if system_eval.get("passed") else "rejected")
         edge(candidate_node, instance_node, "realizes", {"model_ref": "synthetic_behavioral_vco_v1"})
         edge(instance_node, f"BlockTB.{candidate_id}", "evaluates", {"passed": block_tb.get("passed")}, status="validated" if block_tb.get("passed") else "rejected")
         edge(instance_node, f"SystemTB.{candidate_id}", "evaluates", {"passed": system_eval.get("passed")}, status="validated" if system_eval.get("passed") else "rejected")
@@ -329,26 +374,25 @@ def build_v1_graph_v2_artifact(
                 edge(f"SystemTB.{candidate_id}", requirement_id, "verifies_requirement", {"passed": passed}, status="validated" if passed else "rejected")
         if context_contract is not None:
             actual_node = f"Context.SystemTB.{candidate_id}"
-            node(actual_node, "context", "verification", {**dict(system_eval.get("context", {})), "coverage": dict(coverage)}, status="validated" if coverage.get("passed") else "rejected")
+            node(actual_node, "context", "evidence", {**dict(system_eval.get("context", {})), "coverage": dict(coverage)}, status="validated" if coverage.get("passed") else "rejected")
             edge(f"BlockTB.{candidate_id}", "Context.VCO.contract", "uses_context", {"source": "frozen_pre_candidate_contract"})
             edge(f"SystemTB.{candidate_id}", actual_node, "uses_context", {"source": "actual_simulated_context"})
             edge("Context.VCO.contract", actual_node, "covers", {"passed": coverage.get("passed"), "checks": coverage.get("checks", {})}, status="validated" if coverage.get("passed") else "rejected")
         if item.get("selected"):
-            node("Candidate.selected", "candidate", "allocation", {"candidate_id": candidate_id, "selection_basis": "feasible_min_engineering_cost"}, status="validated")
+            node("Candidate.selected", "candidate", None, {"candidate_id": candidate_id, "selection_basis": "feasible_min_engineering_cost"}, status="validated")
             edge(candidate_node, "Candidate.selected", "selected_for", {"candidate_id": candidate_id})
             edge("Candidate.selected", instance_node, "realizes", {"candidate_id": candidate_id})
 
-    # Verification layer: contracts and evidence link mechanisms to the
-    # deterministic artifacts which support their current status.
-    node("Schema.BlockMeta.VCO", "contract", "verification", {"schema_version": block_meta.get("schema_version"), "object_type": block_meta.get("object_type"), "block_id": block_meta.get("block_id"), "contract_sections": ["interface_contract", "behavior_contract", "capability_contract", "verification_contract"]}, owner="VCO", status="validated")
-    node("Contract.VCO.v1", "contract", "verification", {"contract_id": contract.get("contract_id"), "status": contract.get("status")}, owner="VCO")
-    node("Measurement.VCO.phase_noise_1mhz", "measurement_contract", "verification", {"metric": "phase_noise_1mhz_dbc_hz", "method": "behavioral_psd_evaluation", "offset_hz": 1.0e6, "context_source": "SystemTB operating envelope"})
-    node("Validity.VCO.v1", "validity_domain", "verification", {"domain": contract.get("validity", {}), "fidelity": "synthetic_behavioral"}, owner="VCO")
-    node("Evidence.sensitivity", "evidence", "verification", {"kind": "deterministic_sensitivity_suite", "method": sensitivity.get("method"), "source": "v1.pipeline.run_sensitivity_suite"})
+    # Evidence and supporting workflow objects.
+    node("Schema.BlockMeta.VCO", "schema_definition", None, {"parameter_identity": "schema_rule", "schema_version": block_meta.get("schema_version"), "object_type": block_meta.get("object_type"), "block_id": block_meta.get("block_id"), "contract_sections": ["architecture", "behavior", "influence", "evidence"]}, owner="VCO", status="validated")
+    node("Contract.VCO.v1", "contract", None, {"contract_id": contract.get("contract_id"), "status": contract.get("status")}, owner="VCO")
+    node("Measurement.VCO.phase_noise_1mhz", "measurement_contract", None, {"metric": "phase_noise_1mhz_dbc_hz", "measured_metric": "worst_phase_noise_1mhz_dbc_hz", "method": "behavioral_psd_evaluation", "offset_hz": 1.0e6, "context_source": "VCOBlockContext.v1"})
+    node("Validity.VCO.v1", "validity_domain", None, {"declared_domain": contract.get("validity", {}), "validated_domain": validated_domain, "fidelity": "synthetic_behavioral"}, owner="VCO")
+    node("Evidence.sensitivity", "evidence", "evidence", {"kind": "deterministic_sensitivity_suite", "method": sensitivity.get("method"), "source": "v1.pipeline.run_sensitivity_suite", "measurement_method": "deterministic_finite_difference_and_grid_sweep"})
     if rejection is None:
-        node("Evidence.boundary_search", "evidence", "verification", {"kind": "required_pn_boundary", "required_boundary": required_pn, "iterations": None if boundary is None else boundary.get("iterations"), "artifact_ref": "required_vco_spec_boundary.json"})
+        node("Evidence.boundary_search", "evidence", "evidence", {"kind": "pn_anchor_boundary_search", "search_knob": None if boundary is None else boundary.get("search_knob"), "search_knob_boundary": search_knob_boundary, "target_system_metric": None if boundary is None else boundary.get("target_system_metric"), "target_system_metric_at_boundary": None if boundary is None else boundary.get("target_system_metric_at_boundary"), "block_metric_at_boundary": required_pn, "validity_domain": None if boundary is None else boundary.get("validity_domain"), "iterations": None if boundary is None else boundary.get("iterations"), "measurement_method": "bracketed_bisection_plus_frozen_context_block_measurement", "artifact_ref": "required_vco_spec_boundary.json"})
     else:
-        node("Evidence.PN.rejection", "evidence", "verification", {"kind": "non_pn_constraint_blocks_allocation", "blocking_checks": rejection.get("blocking_checks", []), "tight_trial": rejection.get("tight_trial"), "reason": rejection.get("allocator_error")}, status="validated")
+        node("Evidence.PN.rejection", "evidence", "evidence", {"kind": "non_pn_constraint_blocks_allocation", "blocking_checks": rejection.get("blocking_checks", []), "tight_trial": rejection.get("tight_trial"), "reason": rejection.get("allocator_error"), "measurement_method": "tight_bound_systemtb"}, status="validated")
         for check in rejection.get("blocking_checks", []):
             requirement_id = {"lock_time": "SystemSpec.lock_time", "power": "SystemSpec.power", "output_frequency": "SystemSpec.output_frequency", "locked": "SystemSpec.lock_time"}.get(check)
             if requirement_id:
@@ -356,14 +400,14 @@ def build_v1_graph_v2_artifact(
     if initial_evaluation is not None:
         initial_checks = _evaluation_checks(initial_evaluation)
         initial_verdicts = _requirement_verdicts(initial_checks)
-        node("Evidence.SystemTB.initial", "evaluation", "verification", {"passed": initial_evaluation.get("passed"), "metrics": initial_evaluation.get("metrics"), "residuals": initial_evaluation.get("residuals"), "checks": initial_checks, "context": initial_evaluation.get("context"), "artifact_ref": "initial_system_evaluation.json"}, status="validated" if initial_evaluation.get("passed") else "rejected")
+        node("Evidence.SystemTB.initial", "evaluation", "evidence", {"passed": initial_evaluation.get("passed"), "metrics": initial_evaluation.get("metrics"), "residuals": initial_evaluation.get("residuals"), "checks": initial_checks, "context": initial_evaluation.get("context"), "measurement_method": "evaluate_system", "artifact_ref": "initial_system_evaluation.json"}, status="validated" if initial_evaluation.get("passed") else "rejected")
         for requirement_id, passed in initial_verdicts.items():
             edge("Evidence.SystemTB.initial", requirement_id, "verifies_requirement", {"passed": passed, "phase": "initial_system_evaluation"}, status="validated" if passed else "rejected")
     if final_evaluation is not None:
         final_checks = _evaluation_checks(final_evaluation)
         final_verdicts = _requirement_verdicts(final_checks)
-        node("Evidence.SystemTB.final", "evaluation", "verification", {"passed": final_evaluation.get("passed"), "metrics": final_evaluation.get("metrics"), "residuals": final_evaluation.get("residuals"), "checks": final_checks, "context": final_evaluation.get("context"), "evaluation_kind": "independent_final_system_tb", "artifact_ref": "final_system_evaluation.json"}, status="validated" if final_evaluation.get("passed") else "rejected")
-        node("SystemSpec.verdict", "evaluation", "verification", {"passed": final_evaluation.get("passed"), "checks": final_verdicts, "residuals": final_evaluation.get("residuals"), "source": "independent_final_system_tb"}, status="validated" if final_evaluation.get("passed") else "rejected")
+        node("Evidence.SystemTB.final", "evaluation", "evidence", {"passed": final_evaluation.get("passed"), "metrics": final_evaluation.get("metrics"), "residuals": final_evaluation.get("residuals"), "checks": final_checks, "context": final_evaluation.get("context"), "measurement_method": "evaluate_system", "evaluation_kind": "independent_final_system_tb", "artifact_ref": "final_system_evaluation.json"}, status="validated" if final_evaluation.get("passed") else "rejected")
+        node("SystemSpec.verdict", "evaluation", "evidence", {"passed": final_evaluation.get("passed"), "checks": final_verdicts, "residuals": final_evaluation.get("residuals"), "source": "independent_final_system_tb", "measurement_method": "requirement_verdict_from_systemtb"}, status="validated" if final_evaluation.get("passed") else "rejected")
         edge("Evidence.SystemTB.final", "SystemSpec.verdict", "yields_verdict", {"passed": final_evaluation.get("passed")}, status="validated" if final_evaluation.get("passed") else "rejected")
         for requirement_id, passed in final_verdicts.items():
             edge("SystemSpec.verdict", requirement_id, "verifies_requirement", {"passed": passed}, status="validated" if passed else "rejected")
@@ -375,7 +419,7 @@ def build_v1_graph_v2_artifact(
                 if context_contract is not None:
                     final_coverage = dict(final_context_coverage or {})
                     coverage_passed = final_coverage.get("passed")
-                    node("Context.SystemTB.final", "context", "verification", {**dict(final_evaluation.get("context", {})), "coverage": final_coverage}, status="validated" if coverage_passed else "rejected")
+                    node("Context.SystemTB.final", "context", "evidence", {**dict(final_evaluation.get("context", {})), "coverage": final_coverage}, status="validated" if coverage_passed else "rejected")
                     edge("Evidence.SystemTB.final", "Context.SystemTB.final", "uses_context")
                     edge("Context.VCO.contract", "Context.SystemTB.final", "covers", {"passed": coverage_passed, "checks": final_coverage.get("checks", {})}, status="validated" if coverage_passed else "rejected")
     edge("VCO.phase_noise_1mhz", "Measurement.VCO.phase_noise_1mhz", "measured_by", {"context_source": "SystemTB operating envelope"})
@@ -390,10 +434,10 @@ def build_v1_graph_v2_artifact(
 
     for parameter, sweep in sensitivity.get("sweeps", {}).items():
         source = {
-            "pn_1mhz_dbc_hz": "VCO.phase_noise_1mhz_design",
-            "k1_hz_per_v": "VCO.k1_design",
+            "pn_anchor_1mhz_dbc_hz": "VCO.pn_anchor_1mhz",
+            "k1_hz_per_v": "VCO.k1_hz_per_v",
             "vctrl_max_v": "VCO.vctrl",
-            "nominal_power_w": "VCO.nominal_power_design",
+            "nominal_power_w": "VCO.nominal_power_w",
         }.get(parameter)
         if source is None:
             continue

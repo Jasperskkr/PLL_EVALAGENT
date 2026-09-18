@@ -15,11 +15,13 @@ VCO behavioral metric
 当前第一条规格分配链路是：
 
 ```text
-phase_noise_1mhz
-    → integrated_jitter
+pn_anchor_1mhz_dbc_hz
+    → phase_noise_1mhz_dbc_hz(context)
+    → worst_phase_noise_1mhz_dbc_hz
+    → integrated_jitter_s
 ```
 
-`Kvco`、`tuning curve` 和 `Vctrl` envelope 同时作为 prove/sensitivity 证据输出。
+其中 `pn_anchor_1mhz_dbc_hz` 只是 internal model knob；真正写入 VCO requirement 的是 frozen context 下测得的 `worst_phase_noise_1mhz_dbc_hz`，再加 engineering margin。`Kvco`、`tuning curve` 和 `Vctrl` envelope 同时作为 prove/sensitivity 证据输出。
 
 ## 运行
 
@@ -44,11 +46,12 @@ results/v1_vco_mapping_01/
 2. 运行 baseline SystemTB；
 3. 生成 VCO characterization table；
 4. 对 PN、K1 和 Vctrl 上限做确定性 sweep；
-5. 用 bracketed bisection 搜索 Required PN Boundary；
-6. 加入显式 margin 生成 Recommended VCO Spec；
-7. 用每个 candidate 的 SystemTB context 运行 VCO BlockTB；
-8. 对可行 candidate 重用 realized instance 重跑 SystemTB；
-9. 输出 before/after、trajectory 和 replayable evidence。
+5. 用 bracketed bisection 搜索 `pn_anchor_1mhz_dbc_hz` boundary；
+6. 冻结 `VCOBlockContext.v1` 并测量 boundary 对应的 `worst_phase_noise_1mhz_dbc_hz`；
+7. 由 measured worst PN 生成 required/recommended VCO Spec；
+8. 用同一个 frozen Block Context 运行所有 candidate 的 VCO BlockTB；
+9. 对可行 candidate 重用 realized instance 重跑 SystemTB；
+10. 输出 before/after、trajectory 和 replayable evidence。
 
 ## 关键产物
 
@@ -71,7 +74,7 @@ summary.md
 plots/
 ```
 
-## V1.0 兼容扩展层
+## V1.0 兼容扩展产物
 
 现有 `v1/pipeline.py` 仍是确定性数值内核。当前 runner 额外输出：
 
@@ -80,21 +83,20 @@ canonical_system_spec.json
 canonical_initial_system_evaluation.json
 vco_pll_graph.json
 vco_pll_graph_v2.json
-initial_vco_spec_vector.json
-recommended_vco_spec_vector.json
-recommended_spec_vector_evaluation.json
+initial_vco_design_vector.json
+recommended_requirement_evaluation.json
 agent_action_policy.json
 ```
 
 这些文件为后续扩展提供稳定接口：
 
-- envelope 层为对象增加 `schema_version`、`object_type`、`object_id` 和 provenance；
-- graph 层显式记录 signal flow、feedback、behavioral dependency、noise transfer、system influence 和 sensitivity evidence；
-- Graph v2 以 interface / behavior / allocation / verification 四层显式记录中间 operator、Requirement、Capability、Candidate、BlockTB/SystemTB 和 evidence；
-- `SpecVector` 为 PN、Kvco、tuning range、power 的联合规格表示预留入口；
+- canonical envelope 为对象增加 `schema_version`、`object_type`、`object_id` 和 provenance；
+- graph artifact 显式记录 architecture、behavioral dependency、system influence 和 evidence；
+- Graph v2 对外只使用 `semantic_role = architecture | behavior | influence | evidence`；Requirement、Candidate、CapabilityRegion、BlockTB/SystemTB 是 workflow artifact，不是 Block Graph layer；
+- `DesignVector` 只保存 candidate/internal knobs；Requirement 只由 frozen context 下的 measured Behavior 判断；
 - Agent action policy 约束 Agent 只能提出带 evidence 的 contract/search action，不能修改 SystemSpec 或宣布 PASS。
 
-默认运行仍然是 deterministic V1.0；这些扩展不会改变现有 `SystemTB`、PN boundary search、BlockTB 或最终 candidate 选择逻辑。
+默认运行仍然是 deterministic V1.0；这些扩展不会改变现有 `SystemTB`、scalar boundary search、BlockTB 或最终 candidate 选择逻辑。
 
 `candidate_baseline` 被设计为对 jitter target 失败，`candidate_low_noise` 在 BlockTB 和最终 SystemTB 中通过。这是为了保证脚本实际经过一次可追溯的 allocation/validation 闭环，而不是默认点直接 PASS。
 
@@ -115,5 +117,5 @@ agent_action_policy.json
 - 多维 VCO feasible/Pareto search；
 - 更物理的 CP/loop-filter backend；
 - MATLAB backend adapter 的自动一致性测试；
-- Problem 1/Problem 2 Agent 作为 action proposer；
+- 后续如单独启动 Agent 化，只能作为 action proposer；
 - 真实 circuit/engineering-data candidate provider。

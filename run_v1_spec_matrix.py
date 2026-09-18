@@ -42,6 +42,8 @@ REQUIRED_CASE_ARTIFACTS = (
     "sensitivity.json",
     "required_vco_spec_boundary.json",
     "recommended_vco_spec.json",
+    "recommended_requirement_evaluation.json",
+    "initial_vco_design_vector.json",
     "block_feasibility.json",
     "realized_vco_instance.json",
     "final_system_evaluation.json",
@@ -155,7 +157,7 @@ def _write_report(
             [
                 ["1–3", "SystemSpec → SystemTB → residual", "system_spec.json + initial_system_evaluation.json + 表 1"],
                 ["4–5", "characterization → sensitivity", "vco_characterization.csv + sensitivity.json"],
-                ["6–7", "PN boundary → margin", "required_vco_spec_boundary.json + recommended_vco_spec.json + 表 2"],
+                ["6–7", "PN anchor boundary → frozen-context BlockTB measurement → margin", "required_vco_spec_boundary.json + recommended_vco_spec.json + 表 2"],
                 ["8–9", "candidate → BlockTB → SystemTB", "block_feasibility.json + 表 3"],
                 ["10–11", "cost selection → final SystemTB", "realized_vco_instance.json + final_system_evaluation.json"],
                 ["12", "trace/schema/graph", "trajectory.jsonl + BlockMeta + Graph v2 + artifact completeness assertion"],
@@ -169,7 +171,7 @@ def _write_report(
     ])
     lines.extend(
         _markdown_table(
-            ["Case", "Temp (C)", "Jitter limit (fs)", "Initial (fs)", "Residual (fs)", "Initial", "Required PN", "Recommended PN", "Abstract @rec (fs)", "Selected", "Final (fs)", "Final"],
+            ["Case", "Temp (C)", "Jitter limit (fs)", "Initial (fs)", "Residual (fs)", "Initial", "PN anchor boundary", "Required PN", "Recommended PN", "Selected", "Final (fs)", "Final"],
             [
                 [
                     row["case_id"],
@@ -178,9 +180,9 @@ def _write_report(
                     _fmt(row["initial_jitter_fs"]),
                     _fmt(row["initial_jitter_residual_fs"]),
                     _fmt(row["initial_passed"]),
+                    _fmt(row["pn_anchor_boundary_dbc_hz"], 6),
                     _fmt(row["required_pn_dbc_hz"], 6),
                     _fmt(row["recommended_pn_dbc_hz"], 6),
-                    _fmt(row["recommended_abstract_jitter_fs"]),
                     row["selected_candidate"],
                     _fmt(row["final_jitter_fs"]),
                     _fmt(row["final_system_passed"]),
@@ -194,11 +196,11 @@ def _write_report(
     lines.append("")
     lines.extend(
         _markdown_table(
-            ["Case", "Required PN", "Tighter PN", "Tighter jitter", "Result", "Looser PN", "Looser jitter", "Result"],
+            ["Case", "PN anchor boundary", "Tighter anchor", "Tighter jitter", "Result", "Looser anchor", "Looser jitter", "Result"],
             [
                 [
                     row["case_id"],
-                    _fmt(row["required_pn_dbc_hz"], 6),
+                    _fmt(row["pn_anchor_boundary_dbc_hz"], 6),
                     _fmt(row["tighter_pn_dbc_hz"], 6),
                     _fmt(row["tighter_jitter_fs"]),
                     _fmt(row["tighter_passed"]),
@@ -330,7 +332,7 @@ def run_matrix(
             rejection = {
                 "blocking_checks": blocking_checks,
                 "tight_trial": {
-                    "pn_1mhz_dbc_hz": tight,
+                    "pn_anchor_1mhz_dbc_hz": tight,
                     "system_evaluation": tight_evaluation,
                 },
                 "allocator_error": error,
@@ -360,8 +362,8 @@ def run_matrix(
                 item["variable"] for item in rejected_goal["candidate_variables"]
             ]
             expected_variables = {
-                "lock_time": "VCO.k1_design",
-                "power": "VCO.nominal_power_design",
+                "lock_time": "VCO.k1_hz_per_v",
+                "power": "VCO.nominal_power_w",
             }
             blocking_variables_found = all(
                 expected_variables[check] in candidate_variables
@@ -390,9 +392,7 @@ def run_matrix(
         initial = _read_json(case_dir / "initial_system_evaluation.json")
         boundary = _read_json(case_dir / "required_vco_spec_boundary.json")
         recommended = _read_json(case_dir / "recommended_vco_spec.json")
-        recommended_eval = _read_json(
-            case_dir / "recommended_spec_vector_evaluation.json"
-        )["system_evaluation"]
+        recommended_eval = _read_json(case_dir / "recommended_requirement_evaluation.json")
         candidates = _read_json(case_dir / "block_feasibility.json")
         final = _read_json(case_dir / "final_system_evaluation.json")
         graph_audit = _read_json(case_dir / "graph_audit.json")
@@ -401,9 +401,10 @@ def run_matrix(
         missing_artifacts = [
             name for name in REQUIRED_CASE_ARTIFACTS if not (case_dir / name).is_file()
         ]
-        required_pn = float(boundary["required_boundary"])
-        tighter_pn = required_pn - guard_db
-        looser_pn = required_pn + guard_db
+        search_knob_boundary = float(boundary["search_knob_boundary"])
+        required_pn = float(_read_json(case_dir / "required_vco_spec.json")["phase_noise_1mhz_max_dbc_hz"])
+        tighter_pn = search_knob_boundary - guard_db
+        looser_pn = search_knob_boundary + guard_db
         tighter_eval = abstract_pn_evaluation(system_spec, base_vco, tighter_pn)[
             "system_evaluation"
         ]
@@ -425,9 +426,10 @@ def run_matrix(
                 "initial_jitter_residual_fs": initial["residuals"]["integrated_jitter_residual_s_max"] * 1e15,
                 "initial_passed": bool(initial["passed"]),
                 "required_pn_dbc_hz": required_pn,
+                "pn_anchor_boundary_dbc_hz": search_knob_boundary,
                 "recommended_pn_dbc_hz": float(recommended["phase_noise_1mhz_max_dbc_hz"]),
-                "recommended_abstract_jitter_fs": recommended_eval["metrics"]["integrated_jitter_s"] * 1e15,
-                "recommended_abstract_passed": bool(recommended_eval["passed"]),
+                "recommended_abstract_jitter_fs": None,
+                "recommended_abstract_passed": recommended_eval.get("status") == "not_applicable",
                 "selected_candidate": str(result["selected_candidate"]),
                 "selected_block_tb_passed": bool(selected["block_tb"]["passed"]),
                 "final_jitter_fs": final["metrics"]["integrated_jitter_s"] * 1e15,
@@ -447,6 +449,7 @@ def run_matrix(
             {
                 "case_id": case_id,
                 "required_pn_dbc_hz": required_pn,
+                "pn_anchor_boundary_dbc_hz": search_knob_boundary,
                 "guard_db": guard_db,
                 "tighter_pn_dbc_hz": tighter_pn,
                 "tighter_jitter_fs": tighter_eval["metrics"]["integrated_jitter_s"] * 1e15,
@@ -466,9 +469,9 @@ def run_matrix(
                     "case_id": case_id,
                     "recommended_pn_dbc_hz": float(recommended["phase_noise_1mhz_max_dbc_hz"]),
                     "candidate_id": candidate_id,
-                    "candidate_pn_knob_dbc_hz": float(overrides.get("pn_1mhz_dbc_hz", base_vco.pn_1mhz_dbc_hz)),
+                    "candidate_pn_knob_dbc_hz": float(overrides.get("pn_anchor_1mhz_dbc_hz", base_vco.pn_anchor_1mhz_dbc_hz)),
                     "candidate_k1_hz_per_v": float(overrides.get("k1_hz_per_v", base_vco.k1_hz_per_v)),
-                    "worst_context_pn_dbc_hz": float(item["block_tb"]["worst_case"]["phase_noise_1mhz_dbc_hz"]),
+                    "worst_context_pn_dbc_hz": float(item["block_tb"]["worst_case"]["worst_phase_noise_1mhz_dbc_hz"]),
                     "block_tb_passed": bool(item["block_tb"]["passed"]),
                     "system_jitter_fs": system_eval["metrics"]["integrated_jitter_s"] * 1e15,
                     "system_lock_time_us": system_eval["metrics"]["lock_time_s"] * 1e6,
@@ -493,7 +496,7 @@ def run_matrix(
         ),
         "boundary_tighter_side_passes": all(row["tighter_passed"] for row in boundary_rows),
         "boundary_looser_side_fails": all(not row["looser_passed"] for row in boundary_rows),
-        "recommended_abstract_specs_pass": all(row["recommended_abstract_passed"] for row in forward_rows),
+        "requirement_not_compiled_to_anchor": all(row["recommended_abstract_passed"] for row in forward_rows),
         "selected_candidates_pass_blocktb": all(row["selected_block_tb_passed"] for row in forward_rows),
         "selected_candidates_pass_systemtb": all(row["final_system_passed"] for row in forward_rows),
         "all_case_evidence_artifacts_exist": all(row["evidence_artifacts_complete"] for row in forward_rows),

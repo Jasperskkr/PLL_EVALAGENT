@@ -3,12 +3,12 @@
 The schema is deliberately JSON-friendly and dependency free.  It freezes the
 vocabulary and section boundaries; a domain pack may fill in values, but an
 Agent may not silently invent a new section or change the meaning of a field.
-The four contracts map directly to the project requirements:
+The four sections map directly to the frozen Block Graph semantics:
 
-* Interface: what the block is and how it connects;
-* Behavior: variables, context and system influence;
-* Capability: exported requirements and jointly feasible capabilities;
-* Verification: measurement, validity and evidence quality.
+* Architecture: what the block is and how it connects;
+* Behavior: actual block metrics under context;
+* Influence: how block behavior affects system metrics;
+* Evidence: measurement, validity and evidence quality.
 """
 
 from __future__ import annotations
@@ -18,10 +18,10 @@ from typing import Any, Dict, Iterable, Mapping, Sequence
 
 BLOCK_SCHEMA_VERSION = "block-meta-1.0"
 CONTRACT_SECTIONS = (
-    "interface_contract",
-    "behavior_contract",
-    "capability_contract",
-    "verification_contract",
+    "architecture",
+    "behavior",
+    "influence",
+    "evidence",
 )
 FIELD_ROLES = frozenset(
     {
@@ -128,97 +128,93 @@ def validate_block_meta(value: Mapping[str, Any]) -> None:
         if section not in value:
             raise ValueError(f"block meta missing contract section: {section}")
 
-    interface = _require_mapping(value["interface_contract"], "interface_contract")
+    architecture = _require_mapping(value["architecture"], "architecture")
     _reject_unknown(
-        interface,
-        {"function", "ports", "interaction_variables"},
-        "interface_contract",
+        architecture,
+        {"function", "ports", "context_inputs", "connections"},
+        "architecture",
     )
-    if not interface.get("function"):
-        raise ValueError("interface_contract.function must be non-empty")
-    ports = _require_list(interface.get("ports"), "interface_contract.ports")
+    if not architecture.get("function"):
+        raise ValueError("architecture.function must be non-empty")
+    ports = _require_list(architecture.get("ports"), "architecture.ports")
     for index, port in enumerate(ports):
-        _validate_port(_require_mapping(port, f"ports[{index}]"), f"ports[{index}]")
-    _require_list(
-        interface.get("interaction_variables"),
-        "interface_contract.interaction_variables",
-    )
+        port_value = _require_mapping(port, f"ports[{index}]")
+        _validate_port(port_value, f"ports[{index}]")
+        port_name = str(port_value.get("name", "")).lower()
+        if any(token in port_name for token in ("phase_noise", "kvco", "power")):
+            raise ValueError(f"architecture port cannot be a behavior metric: {port_name}")
+    _require_list(architecture.get("context_inputs"), "architecture.context_inputs")
+    _require_list(architecture.get("connections"), "architecture.connections")
 
-    behavior = _require_mapping(value["behavior_contract"], "behavior_contract")
+    behavior = _require_mapping(value["behavior"], "behavior")
     _reject_unknown(
         behavior,
-        {"search_variables", "environment_contract", "system_influence_factors"},
-        "behavior_contract",
+        {"metrics", "context_dependencies", "evaluation_methods"},
+        "behavior",
     )
-    for key in ("search_variables", "environment_contract", "system_influence_factors"):
+    for key in ("metrics", "context_dependencies", "evaluation_methods"):
         if key not in behavior:
-            raise ValueError(f"behavior_contract missing field: {key}")
+            raise ValueError(f"behavior missing field: {key}")
     for index, field in enumerate(
-        _require_list(behavior["search_variables"], "behavior_contract.search_variables")
+        _require_list(behavior["metrics"], "behavior.metrics")
     ):
         _validate_field(
-            _require_mapping(field, f"search_variables[{index}]"),
-            f"search_variables[{index}]",
+            _require_mapping(field, f"metrics[{index}]"),
+            f"metrics[{index}]",
         )
-    environment = _require_mapping(behavior["environment_contract"], "environment_contract")
+        if field["role"] != "performance_metric":
+            raise ValueError(f"behavior metric cannot be a model knob: {field['name']}")
+    environment = _require_mapping(behavior["context_dependencies"], "context_dependencies")
     for key in ("variables", "ranges", "context_source"):
         if key not in environment:
-            raise ValueError(f"environment_contract missing field: {key}")
+            raise ValueError(f"context_dependencies missing field: {key}")
     _reject_unknown(
         environment,
-        {"variables", "ranges", "context_source"},
-        "environment_contract",
+        {"variables", "architecture_context_variables", "ranges", "context_source"},
+        "context_dependencies",
     )
-    _require_list(environment["variables"], "environment_contract.variables")
-    _require_mapping(environment["ranges"], "environment_contract.ranges")
-    influences = _require_list(
-        behavior["system_influence_factors"],
-        "behavior_contract.system_influence_factors",
-    )
+    _require_list(environment["variables"], "context_dependencies.variables")
+    _require_mapping(environment["ranges"], "context_dependencies.ranges")
+    _require_mapping(behavior["evaluation_methods"], "behavior.evaluation_methods")
+
+    influences = _require_list(value["influence"], "influence")
     for index, influence in enumerate(influences):
-        item = _require_mapping(influence, f"system_influence_factors[{index}]")
-        for key in ("source", "target", "mechanism", "evidence_id"):
+        item = _require_mapping(influence, f"influence[{index}]")
+        for key in (
+            "source_behavior_metric",
+            "target_system_metric",
+            "mechanism",
+            "evidence_refs",
+            "validity_domain",
+        ):
             if key not in item:
-                raise ValueError(f"system_influence_factors[{index}] missing field: {key}")
+                raise ValueError(f"influence[{index}] missing field: {key}")
         _reject_unknown(
             item,
-            {"source", "target", "mechanism", "evidence_id"},
-            f"system_influence_factors[{index}]",
+            {
+                "source_behavior_metric",
+                "target_system_metric",
+                "mechanism",
+                "evidence_refs",
+                "validity_domain",
+            },
+            f"influence[{index}]",
         )
-
-    capability = _require_mapping(value["capability_contract"], "capability_contract")
-    _reject_unknown(
-        capability,
-        {"exported_specs", "capability_region", "tradeoffs"},
-        "capability_contract",
-    )
-    for key in ("exported_specs", "capability_region", "tradeoffs"):
-        if key not in capability:
-            raise ValueError(f"capability_contract missing field: {key}")
-    for index, field in enumerate(
-        _require_list(capability["exported_specs"], "capability_contract.exported_specs")
-    ):
-        _validate_field(
-            _require_mapping(field, f"exported_specs[{index}]"),
-            f"exported_specs[{index}]",
+        _require_list(item["evidence_refs"], f"influence[{index}].evidence_refs")
+        validity_domain = _require_mapping(
+            item["validity_domain"], f"influence[{index}].validity_domain"
         )
-    region = _require_mapping(capability["capability_region"], "capability_region")
-    for key in ("representation", "dimensions", "formal_status"):
-        if key not in region:
-            raise ValueError(f"capability_region missing field: {key}")
-    _require_list(region["dimensions"], "capability_region.dimensions")
-    tradeoffs = _require_list(capability["tradeoffs"], "capability_contract.tradeoffs")
-    for index, tradeoff in enumerate(tradeoffs):
-        item = _require_mapping(tradeoff, f"tradeoffs[{index}]")
-        for key in ("variables", "status", "evidence_ids"):
-            if key not in item:
-                raise ValueError(f"tradeoffs[{index}] missing field: {key}")
+        for key in ("declared_domain", "validated_domain"):
+            if key not in validity_domain:
+                raise ValueError(
+                    f"influence[{index}].validity_domain missing field: {key}"
+                )
 
-    verification = _require_mapping(value["verification_contract"], "verification_contract")
+    evidence_section = _require_mapping(value["evidence"], "evidence")
     _reject_unknown(
-        verification,
+        evidence_section,
         {"measurement_contracts", "validity_domain", "uncertainty", "evidence"},
-        "verification_contract",
+        "evidence",
     )
     for key in (
         "measurement_contracts",
@@ -226,25 +222,30 @@ def validate_block_meta(value: Mapping[str, Any]) -> None:
         "uncertainty",
         "evidence",
     ):
-        if key not in verification:
-            raise ValueError(f"verification_contract missing field: {key}")
+        if key not in evidence_section:
+            raise ValueError(f"evidence missing field: {key}")
     measurements = _require_list(
-        verification["measurement_contracts"],
-        "verification_contract.measurement_contracts",
+        evidence_section["measurement_contracts"],
+        "evidence.measurement_contracts",
     )
     for index, measurement in enumerate(measurements):
         item = _require_mapping(measurement, f"measurement_contracts[{index}]")
         for key in ("id", "metric", "method", "stimulus", "context_source", "aggregation"):
             if key not in item:
                 raise ValueError(f"measurement_contracts[{index}] missing field: {key}")
-    _require_mapping(verification["validity_domain"], "verification_contract.validity_domain")
+    evidence_validity = _require_mapping(
+        evidence_section["validity_domain"], "evidence.validity_domain"
+    )
+    for key in ("declared_domain", "validated_domain"):
+        if key not in evidence_validity:
+            raise ValueError(f"evidence.validity_domain missing field: {key}")
     uncertainty = _require_mapping(
-        verification["uncertainty"], "verification_contract.uncertainty"
+        evidence_section["uncertainty"], "evidence.uncertainty"
     )
     for key in ("quantified", "type"):
         if key not in uncertainty:
-            raise ValueError(f"verification_contract.uncertainty missing field: {key}")
-    evidence = _require_list(verification["evidence"], "verification_contract.evidence")
+            raise ValueError(f"evidence.uncertainty missing field: {key}")
+    evidence = _require_list(evidence_section["evidence"], "evidence.evidence")
     for index, evidence_item in enumerate(evidence):
         item = _require_mapping(evidence_item, f"evidence[{index}]")
         for key in ("id", "kind", "status"):
@@ -276,10 +277,18 @@ def _field(
     return result
 
 
+def _default_validated_domain() -> Dict[str, Any]:
+    return {
+        "temperature_c": [25.0],
+        "validation_source": "v1_observation_holdout",
+    }
+
+
 def build_vco_block_meta_v1(
     contract: Mapping[str, Any],
     *,
-    allocation_evidence_id: str = "allocation:v1:pn_1mhz_to_integrated_jitter",
+    validated_domain: Mapping[str, Any] | None = None,
+    allocation_evidence_id: str = "allocation:v1:pn_anchor_to_measured_worst_pn_to_integrated_jitter",
 ) -> Dict[str, Any]:
     """Build the canonical VCO instance of BlockMetaSchema v1.
 
@@ -291,7 +300,12 @@ def build_vco_block_meta_v1(
     fields = {str(item.get("name")): item for item in contract.get("fields", [])}
     vctrl_range = fields.get("Vctrl", {}).get("range", [0.1, 1.1])
     temperature_range = fields.get("temperature", {}).get("range", [-40.0, 125.0])
-    validity = dict(contract.get("validity", {}))
+    declared_domain = dict(contract.get("validity", {}))
+    validation_domain = dict(validated_domain or _default_validated_domain())
+    domain_contract = {
+        "declared_domain": declared_domain,
+        "validated_domain": validation_domain,
+    }
     meta: Dict[str, Any] = {
         "schema_version": BLOCK_SCHEMA_VERSION,
         "object_type": "block_meta",
@@ -301,7 +315,7 @@ def build_vco_block_meta_v1(
             "source_contract_id": contract.get("contract_id"),
             "status": "schema_instance; behavioral_validity_requires_tb",
         },
-        "interface_contract": {
+        "architecture": {
             "function": "Generate a context-dependent oscillator frequency and phase-noise output for the PLL.",
             "ports": [
                 {
@@ -313,167 +327,122 @@ def build_vco_block_meta_v1(
                     "range": list(vctrl_range),
                 },
                 {
-                    "name": "temperature",
-                    "direction": "in",
-                    "signal_type": "environment",
-                    "unit": "degC",
-                    "datatype": "float",
-                    "range": list(temperature_range),
-                },
-                {
                     "name": "oscillation_frequency",
                     "direction": "out",
                     "signal_type": "frequency",
                     "unit": "Hz",
                     "datatype": "float",
                 },
-                {
-                    "name": "phase_noise_profile",
-                    "direction": "out",
-                    "signal_type": "ssb_phase_noise",
-                    "unit": "dBc/Hz",
-                    "datatype": "function(offset_hz)",
-                },
-                {
-                    "name": "Kvco",
-                    "direction": "out",
-                    "signal_type": "local_tuning_slope",
-                    "unit": "Hz/V",
-                    "datatype": "float",
-                },
             ],
-            "interaction_variables": [
-                "VCO.vctrl",
-                "VCO.oscillation_frequency",
-                "VCO.phase_noise_profile",
-                "VCO.Kvco",
-            ],
+            "context_inputs": ["Environment.temperature", "Environment.vdd"],
+            "connections": ["PLL.control_voltage -> VCO.vctrl", "VCO.oscillation -> PLL.oscillation"],
         },
-        "behavior_contract": {
-            "search_variables": [
+        "behavior": {
+            "metrics": [
                 _field(
-                    "phase_noise_1mhz_dbc_hz",
-                    "design_variable",
-                    "dBc/Hz",
+                    "frequency_hz",
+                    "performance_metric",
+                    "Hz",
                     "float",
-                    ["Vctrl", "temperature", "power"],
-                    "deterministic PN parameter sweep",
-                    "1 MHz phase-noise allocation knob in V1.",
-                    validity,
+                    ["Vctrl", "temperature"],
+                    "frequency_hz(Vctrl, temperature)",
+                    "Oscillation frequency under the frozen context.",
+                    domain_contract,
                 ),
                 _field(
-                    "k1_hz_per_v",
-                    "design_variable",
+                    "phase_noise_1mhz_dbc_hz",
+                    "performance_metric",
+                    "dBc/Hz",
+                    "float",
+                    ["Vctrl", "temperature", "power_w"],
+                    "phase_noise_dbc_hz(1MHz, Vctrl, temperature, power)",
+                    "Point phase-noise behavior at 1 MHz under a specific context.",
+                    domain_contract,
+                ),
+                _field(
+                    "kvco_hz_per_v",
+                    "performance_metric",
                     "Hz/V",
                     "float",
                     ["Vctrl"],
-                    "deterministic SystemTB sweep",
-                    "First-order tuning coefficient exposed for sensitivity evidence.",
-                    validity,
+                    "local_derivative_of_tuning_curve",
+                    "Local tuning gain df/dVctrl.",
+                    domain_contract,
                 ),
                 _field(
-                    "vctrl_max_v",
-                    "design_variable",
-                    "V",
-                    "float",
-                    [],
-                    "deterministic SystemTB sweep",
-                    "Control-voltage envelope knob used in V1 evidence.",
-                    validity,
-                ),
-                _field(
-                    "nominal_power_w",
-                    "design_variable",
+                    "power_w",
+                    "performance_metric",
                     "W",
                     "float",
                     ["Vctrl", "temperature"],
-                    "deterministic SystemTB sweep",
-                    "Behavioral power knob available for residual-driven exploration.",
-                    validity,
+                    "power_w(Vctrl, temperature)",
+                    "Point VCO power under a specific context.",
+                    domain_contract,
                 ),
             ],
-            "environment_contract": {
-                "variables": ["Vctrl", "temperature", "vdd_v"],
+            "context_dependencies": {
+                "variables": ["Vctrl", "temperature"],
+                "architecture_context_variables": ["vdd_v"],
                 "ranges": {
                     "Vctrl": list(vctrl_range),
                     "temperature_c": list(temperature_range),
                 },
-                "context_source": "SystemTB operating envelope",
+                "context_source": "VCOBlockContext.v1",
             },
-            "system_influence_factors": [
-                {
-                    "source": "phase_noise_1mhz_dbc_hz",
-                    "target": "PLL.integrated_jitter",
-                    "mechanism": "VCO noise transfer followed by phase-noise integration",
-                    "evidence_id": allocation_evidence_id,
-                },
-                {
-                    "source": "k1_hz_per_v",
-                    "target": "PLL.lock_time",
-                    "mechanism": "effective PLL dynamics / loop bandwidth",
-                    "evidence_id": "sensitivity:k1_hz_per_v:lock_time",
-                },
-            ],
-        },
-        "capability_contract": {
-            "exported_specs": [
-                _field(
-                    "phase_noise_1mhz_max_dbc_hz",
-                    "hard_constraint",
-                    "dBc/Hz",
-                    "float",
-                    ["Vctrl", "temperature", "power"],
-                    "context-aware VCO BlockTB",
-                    "Maximum allowed phase noise at 1 MHz over the SystemTB envelope.",
-                    validity,
-                ),
-                _field(
-                    "kvco_range_hz_per_v",
-                    "hard_constraint",
-                    "Hz/V",
-                    "interval",
-                    ["Vctrl"],
-                    "context-aware VCO BlockTB",
-                    "Optional Kvco range requirement reserved for multi-parameter allocation.",
-                    validity,
-                ),
-                _field(
-                    "power_max_w",
-                    "hard_constraint",
-                    "W",
-                    "float",
-                    ["Vctrl", "temperature"],
-                    "context-aware VCO BlockTB",
-                    "Optional VCO power upper bound.",
-                    validity,
-                ),
-            ],
-            "capability_region": {
-                "representation": "sampled_feasible_points",
-                "dimensions": ["phase_noise_1mhz_dbc_hz"],
-                "formal_status": "v1_one_dimensional_only",
-                "future_dimensions": ["k1_hz_per_v", "tuning_range_hz", "power_w"],
+            "evaluation_methods": {
+                "frequency_hz": "behavioral_vco_frequency",
+                "phase_noise_1mhz_dbc_hz": "behavioral_psd_evaluation",
+                "kvco_hz_per_v": "local_derivative_of_tuning_curve",
+                "power_w": "behavioral_power_model",
             },
-            "tradeoffs": [
-                {
-                    "variables": ["phase_noise_1mhz_dbc_hz", "k1_hz_per_v"],
-                    "status": "sensitivity_evidence_only",
-                    "evidence_ids": [
-                        "sensitivity:pn_1mhz_dbc_hz:integrated_jitter",
-                        "sensitivity:k1_hz_per_v:lock_time",
-                    ],
-                }
-            ],
         },
-        "verification_contract": {
+        "influence": [
+            {
+                "source_behavior_metric": "phase_noise_1mhz_dbc_hz",
+                "target_system_metric": "integrated_jitter_s",
+                "mechanism": "VCO noise transfer followed by phase-noise integration",
+                "evidence_refs": [allocation_evidence_id, "Evidence.sensitivity"],
+                "validity_domain": domain_contract,
+            },
+            {
+                "source_behavior_metric": "kvco_hz_per_v",
+                "target_system_metric": "integrated_jitter_s",
+                "mechanism": "loop bandwidth changes VCO noise integration",
+                "evidence_refs": ["Evidence.sensitivity"],
+                "validity_domain": domain_contract,
+            },
+            {
+                "source_behavior_metric": "kvco_hz_per_v",
+                "target_system_metric": "lock_time_s",
+                "mechanism": "effective PLL dynamics / loop bandwidth",
+                "evidence_refs": ["sensitivity:k1_hz_per_v:lock_time"],
+                "validity_domain": domain_contract,
+            },
+            {
+                "source_behavior_metric": "frequency_hz",
+                "target_system_metric": "output_frequency_hz",
+                "mechanism": "divider feedback",
+                "evidence_refs": ["SystemTB"],
+                "validity_domain": domain_contract,
+            },
+            {
+                "source_behavior_metric": "power_w",
+                "target_system_metric": "power_w",
+                "mechanism": "block power aggregation",
+                "evidence_refs": ["SystemTB"],
+                "validity_domain": domain_contract,
+            },
+        ],
+        "evidence": {
             "measurement_contracts": [
                 {
                     "id": "measurement:vco:phase_noise_1mhz",
                     "metric": "phase_noise_1mhz_dbc_hz",
+                    "measured_metric": "worst_phase_noise_1mhz_dbc_hz",
                     "method": "behavioral_psd_evaluation",
-                    "stimulus": "steady_state_system_context",
+                    "stimulus": "frozen_vco_block_context_sweep",
                     "offset_hz": 1.0e6,
-                    "context_source": "SystemTB operating envelope",
+                    "context_source": "VCOBlockContext.v1",
                     "aggregation": "worst_case_over_context",
                 },
                 {
@@ -481,12 +450,13 @@ def build_vco_block_meta_v1(
                     "metric": "kvco_hz_per_v",
                     "method": "local_derivative_of_tuning_curve",
                     "stimulus": "Vctrl sweep",
-                    "context_source": "SystemTB operating envelope",
+                    "context_source": "VCOBlockContext.v1",
                     "aggregation": "range_over_context",
                 },
             ],
             "validity_domain": {
-                "contract_validity": validity,
+                "declared_domain": declared_domain,
+                "validated_domain": validation_domain,
                 "model_fidelity": "synthetic_behavioral",
                 "out_of_domain_policy": "reject_or_recharacterize",
             },

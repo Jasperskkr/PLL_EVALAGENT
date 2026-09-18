@@ -65,7 +65,8 @@ V1 固定：
 - Architecture：Integer-N CPPLL；
 - Target Block：VCO；
 - Backend：Python deterministic behavioral model，MATLAB equation-level cross-check；
-- Formal allocation knob：VCO `phase_noise_1mhz`；
+- Search knob：VCO internal `pn_anchor_1mhz_dbc_hz`；
+- Allocated measured metric：VCO `worst_phase_noise_1mhz_dbc_hz`；
 - Top-level metrics：output frequency、integrated jitter、lock time、power；
 - Search：deterministic finite-difference/grid sensitivity + bracketed bisection；
 - Validation：context-aware VCO BlockTB + realized-instance SystemTB。
@@ -86,20 +87,36 @@ V1 实际结果：
 
 ```text
 Initial jitter:             83.367 fs  (limit 80 fs, FAIL)
-Required PN boundary:       -116.358121 dBc/Hz
-Recommended PN:             -117.858121 dBc/Hz
+PN anchor boundary:         -116.358121 dBc/Hz
+Worst measured PN boundary: -113.511151 dBc/Hz
+Required PN requirement:    -113.511151 dBc/Hz
+Recommended phase-noise req:-115.011151 dBc/Hz
 Selected candidate:         candidate_low_noise
 Final jitter:               41.783 fs
 Final lock time:            36.520 us
 Final frequency:            5.000 GHz
 Final SystemTB:             PASS
-Tests:                      10/10 PASS
+Core pytest regression:     23/23 PASS
 ```
 
 V1 同时证明了两件事：
 
 1. 一个不足的 VCO contract 可以被 observation holdout 发现，并通过添加 context/dependency 得到 refinement evidence；
-2. 在 immutable SystemSpec 下，可以把 VCO PN requirement 搜索成 boundary，经过 BlockTB 后再用同一个 realized instance 回到 SystemTB 验证。
+2. 在 immutable SystemSpec 下，可以先搜索 internal PN anchor boundary，再用 frozen Block Context 测得 worst PN，生成 VCO PN requirement，经过 BlockTB 后再用同一个 realized instance 回到 SystemTB 验证。
+
+在不改动该基线的附加映射实验中，现已用同一确定性 workflow 执行：
+
+```text
+jitter      → PN@1MHz upper bound
+lock time   → VCO k1 local lower boundary
+power       → VCO nominal-power upper bound
+frequency   → VCO f0 / tuning-coverage local boundary
+```
+
+其中 PN 和 power 在已扫描范围表现为单边界；lock-time/Kvco 与 frequency/f0
+在宽范围内表现为可行窗口，只能在记录的 validity bracket 内作为局部一维映射。
+这一步增加的是多种“一维 proof case”，不是多个参数同时优化，因此不应标记为
+Phase 2 多维 capability region 已完成。
 
 ## 4. 现阶段明确没有完成的内容
 
@@ -126,44 +143,60 @@ V1 同时证明了两件事：
 - benchmark 的 boundary、candidate、final SystemTB 结果稳定；
 - summary、trajectory、provenance 和关键 JSON/CSV 可追溯。
 
-### Phase 1：Schema 和 Graph v2（已完成第一版）
+### Phase 1：Semantic-role Schema 和 Graph v2（已完成）
 
-目标：保留 V1 数值结果，把关系地图变成类型化、分层、可检查的结构。
+目标：保留 V1 数值结果，把关系地图变成类型化、可检查的结构，同时冻结 Block Graph 对外语义。
 
-计划：
-
-1. 冻结 `BlockMetaSchema v1`，分成 Interface、Behavior、Capability、Verification 四类 contract；
-2. 为 Node/Edge 增加 layer、owner、unit、domain、context、status、contract_ref、evidence_refs；
-3. 增加合法 NodeType/EdgeType、单位兼容性和路径完整性 validator；
-4. 显式加入 `VCORequirement`、`Candidate`、`BlockTBResult`、`SystemTBResult`、`MeasurementContract`；
-5. 将 `VCO Noise TF`、`Noise Integration`、`PLL Dynamics` 作为 intermediate operator nodes；
-6. 区分 Architecture Graph（允许 feedback）和 Evaluation Graph（可执行、闭环封装）；
-7. 保留当前直接影响边作为带 `derived_from` 的查询 shortcut，不改变旧 V1 图语义。
-
-当前 Phase 1 已落地的第一版结构：
+当前 Phase 1 已落地的结构：
 
 ```text
 BlockMetaSchema v1
-  ├─ InterfaceContract
-  ├─ BehaviorContract
-  ├─ CapabilityContract
-  └─ VerificationContract
+  ├─ architecture
+  ├─ behavior
+  ├─ influence
+  └─ evidence
 
-TypedGraph v2
-  ├─ interface layer
-  ├─ behavior layer
-  ├─ allocation layer
-  └─ verification layer
+TypedGraph v2 semantic_role
+  ├─ architecture
+  ├─ behavior
+  ├─ influence
+  └─ evidence
 ```
 
-runner 会继续生成兼容的 `vco_pll_graph.json`，并新增经过 validator 检查的 `vco_pll_graph_v2.json`。Graph v2 的状态字段支持 `proposed → supported → tested → validated/rejected`，当前 V1 编译出来的确定性边标为 `validated`，Agent 尚不能直接写入正式 validated graph。
+Workflow artifacts 仍然存在，但只作为对象记录：
+
+```text
+SystemSpec
+BlockRequirement
+Candidate
+RealizedInstance
+DesignSpace
+CapabilityRegion
+Schema
+Contract
+```
+
+这些对象不是 Block Graph layer。runner 会继续生成兼容的 `vco_pll_graph.json`，并新增经过 validator 检查的 `vco_pll_graph_v2.json`。
+
+本阶段完成的语义修正：
+
+1. `layer` 对外替换为 `semantic_role`，合法值只允许 `architecture`、`behavior`、`influence`、`evidence`；
+2. VCO architecture 只保留真实接口和 context input，不再把 phase noise、Kvco、power 当 port；
+3. VCO Behavior metrics 固定为 `frequency_hz`、`phase_noise_1mhz_dbc_hz`、`kvco_hz_per_v`、`power_w`；
+4. Influence 从 Behavior 中拆出，要求明确 source Behavior metric、target System metric、mechanism、evidence_refs 和 validity_domain；
+5. PN 命名拆成 `pn_anchor_1mhz_dbc_hz`、`phase_noise_1mhz_dbc_hz`、`worst_phase_noise_1mhz_dbc_hz`、`phase_noise_1mhz_max_dbc_hz`；
+6. BoundarySearch 输出 `search_knob_boundary`，并用 frozen `VCOBlockContext.v1` 测得 `block_metric_at_boundary` 后再生成 requirement；
+7. Candidate/internal knobs 统一称为 `DesignVector`，不再使用旧 Spec 命名；
+8. CapabilityRegion 使用 BlockTB 验证过的 Behavior aggregate，不把 internal anchor 当 capability。
 
 验收：
 
-- 原有 V1 测试全部通过；
-- graph 能追溯 `SystemSpec → Requirement → Candidate → BlockTB → SystemTB`；
-- 每条 validated influence edge 都有模型、context 和 evidence 引用；
-- replay 的数值结果与 `v1.0-baseline` 一致。
+- 原有 V1 SystemTB / BlockTB / scalar bisection 数值 replay 保持稳定；
+- graph 能追溯 `SystemSpec → Requirement → Candidate → RealizedInstance → BlockTB/SystemTB → Evidence`；
+- 每条 influence edge 都有模型、context 和 evidence 引用；
+- semantic validator 会拒绝旧端口、旧 layer、knob-as-behavior、candidate-as-requirement、anchor-as-requirement 等破坏用例；
+- 核心 pytest 回归 23/23 PASS；
+- 明确没有 Proposal layer、没有 Allocation layer in Block Graph、没有 Capability layer、没有第五个 Block Graph layer。
 
 ### Phase 2：多参数 VCO Capability Region
 
@@ -237,7 +270,7 @@ Agent proposal
 
 - Spectre/SpectreRF、SPICE、Verilog-A backend；
 - engineering data / silicon measurement backend；
-- calibration 和 model-correlation layer；
+- calibration 和 model-correlation flow；
 - architecture decomposition、Block split/merge 和 adaptive partition。
 
 V3 才研究从 architecture 自动构建 behavioral design space，不让这个长期目标阻塞 V1/V2。
