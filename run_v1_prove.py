@@ -18,18 +18,17 @@ from v1.model.pll_behavioral import VCOParams
 from v1.contract import build_contract_evidence
 from v1.agent_actions import ALLOWED_ACTIONS
 from v1.allocation.design_vector import DesignVector
+from v1.allocation.service import allocate_system_spec
+from v1.api.allocation import SpecAllocationRequest
 from v1.graph.compiler import build_v1_graph_artifact, build_v1_graph_v2_artifact
 from v1.graph.audit import audit_allocation_graph, build_agent_goal_context
-from v1.graph.queries import all_plane_views
+from v1.graph.queries import all_plane_views, factor_view
 from v1.pipeline import (
     build_vco_instance,
     characterize_vco,
     evaluate_system,
     run_sensitivity_suite,
-    search_required_pn_boundary,
     strip_raw_results,
-    measure_vco_behavior,
-    validate_vco_spec,
     write_csv,
     write_json,
 )
@@ -37,6 +36,8 @@ from v1.schema.envelopes import make_envelope
 from v1.schema.block_schema import build_vco_block_meta_v1, validate_block_meta
 from v1.schema.validators import validate_envelope, validate_system_spec_payload
 from v1.specs import CandidateDefinition, SystemSpec, VCORequirement, load_case
+from v1.api.verification import VerificationRequest
+from v1.verification.service import verify_block_assignment
 
 
 DEFAULT_CASE = Path(__file__).parent / "v1" / "cases" / "vco_mapping_01.json"
@@ -391,50 +392,29 @@ def run(case_path: str | Path, output_dir: str | Path) -> Dict[str, Any]:
     write_json(initial_vector.to_dict(), output_path / "initial_vco_design_vector.json")
 
     allocation_cfg = case.get("allocation", {})
-    boundary = search_required_pn_boundary(
-        system_spec,
-        base_vco,
-        float(allocation_cfg.get("loose_bound_dbc_hz", -110.0)),
-        float(allocation_cfg.get("tight_bound_dbc_hz", -125.0)),
-        int(allocation_cfg.get("iterations", 24)),
+    allocation_report = allocate_system_spec(
+        SpecAllocationRequest(
+            system_spec=system_spec,
+            base_instance=base_vco,
+            operating_context=context_contract,
+            allocation_problem={
+                **allocation_cfg,
+                "initial_block_spec": initial_requirement.to_dict(),
+            },
+            block_id="VCO",
+            request_id=f"{run_id}:forward-allocation",
+        )
     )
-    boundary_vco = build_vco_instance(
-        base_vco, {boundary["search_knob"]: boundary["search_knob_boundary"]}
+    if not allocation_report["allocated"]:
+        raise ValueError(f"SystemSpec allocation failed: {allocation_report}")
+    boundary = dict(allocation_report["evidence"]["boundary"])
+    required_requirement = VCORequirement.from_dict(
+        allocation_report["allocated_block_spec"]
     )
-    boundary_measurement = measure_vco_behavior(
-        system_spec,
-        boundary_vco,
-        context_contract,
+    recommended_requirement = VCORequirement.from_dict(
+        allocation_report["recommended_block_spec"]
     )
-    boundary = {
-        **boundary,
-        "block_metric_at_boundary": boundary_measurement["worst_case"][
-            "worst_phase_noise_1mhz_dbc_hz"
-        ],
-        "boundary_block_measurement": {
-            "context": boundary_measurement["context"],
-            "worst_case": boundary_measurement["worst_case"],
-            "measurement_method": boundary_measurement["measurement_method"],
-            "provenance": boundary_measurement["provenance"],
-        },
-    }
-    required_requirement = VCORequirement(
-        phase_noise_1mhz_max_dbc_hz=float(boundary["block_metric_at_boundary"]),
-        tuning_range_min_hz=initial_requirement.tuning_range_min_hz,
-        kvco_min_hz_per_v=initial_requirement.kvco_min_hz_per_v,
-        kvco_max_hz_per_v=initial_requirement.kvco_max_hz_per_v,
-        power_max_w=initial_requirement.power_max_w,
-        margin_db=0.0,
-    )
-    recommended_requirement = VCORequirement(
-        phase_noise_1mhz_max_dbc_hz=required_requirement.phase_noise_1mhz_max_dbc_hz
-        - float(allocation_cfg.get("recommended_margin_db", 1.0)),
-        tuning_range_min_hz=required_requirement.tuning_range_min_hz,
-        kvco_min_hz_per_v=required_requirement.kvco_min_hz_per_v,
-        kvco_max_hz_per_v=required_requirement.kvco_max_hz_per_v,
-        power_max_w=required_requirement.power_max_w,
-        margin_db=float(allocation_cfg.get("recommended_margin_db", 1.0)),
-    )
+    write_json(allocation_report, output_path / "spec_allocation_report.json")
     write_json(boundary, output_path / "required_vco_spec_boundary.json")
     write_json(required_requirement.to_dict(), output_path / "required_vco_spec.json")
     write_json(recommended_requirement.to_dict(), output_path / "recommended_vco_spec.json")
@@ -468,7 +448,9 @@ def run(case_path: str | Path, output_dir: str | Path) -> Dict[str, Any]:
     )
     events.append(
         {
-            "step": "required_boundary_search",
+            "step": "system_to_block_allocation",
+            "direction": "SystemSpec -> BlockSpec",
+            "allocation_status": allocation_report["status"],
             "search_knob": boundary["search_knob"],
             "search_knob_boundary": boundary["search_knob_boundary"],
             "nearest_failing_search_knob": boundary["nearest_failing_search_knob"],
@@ -480,14 +462,20 @@ def run(case_path: str | Path, output_dir: str | Path) -> Dict[str, Any]:
     candidate_results: List[Dict[str, Any]] = []
     for candidate_id, definition in candidates.items():
         instance = build_vco_instance(base_vco, definition)
-        block_tb = validate_vco_spec(
-            system_spec,
-            recommended_requirement,
-            instance,
-            context_contract,
+        verification = verify_block_assignment(
+            VerificationRequest(
+                system_spec=system_spec,
+                block_spec=recommended_requirement,
+                realized_instance=instance,
+                operating_context=context_contract,
+                block_id="VCO",
+                request_id=f"{run_id}:candidate:{candidate_id}",
+                keep_raw=True,
+            )
         )
-        candidate_eval = evaluate_system(system_spec, instance, keep_raw=True)
-        coverage = _context_coverage(context_contract, candidate_eval["context"])
+        block_tb = verification["block_tb"]
+        candidate_eval = verification["system_tb"]
+        coverage = verification["context_coverage"]
         candidate_result = {
             "candidate_id": candidate_id,
             "engineering_cost": definition.engineering_cost,
@@ -520,9 +508,20 @@ def run(case_path: str | Path, output_dir: str | Path) -> Dict[str, Any]:
     if selected is not None:
         selected["selected"] = True
         final_instance = build_vco_instance(base_vco, candidates[selected["candidate_id"]])
-        final_eval = evaluate_system(system_spec, final_instance, keep_raw=False)
-        final_coverage = _context_coverage(context_contract, final_eval["context"])
-        if not final_eval["passed"] or not final_coverage["passed"]:
+        final_verification = verify_block_assignment(
+            VerificationRequest(
+                system_spec=system_spec,
+                block_spec=recommended_requirement,
+                realized_instance=final_instance,
+                operating_context=context_contract,
+                block_id="VCO",
+                request_id=f"{run_id}:final",
+                keep_raw=False,
+            )
+        )
+        final_eval = final_verification["system_tb"]
+        final_coverage = final_verification["context_coverage"]
+        if not final_verification["passed"]:
             raise ValueError("independent final SystemTB or context closure failed")
         write_json(final_coverage, output_path / "final_context_coverage.json")
         # The compact evaluation is already written in candidate_results; write
@@ -572,6 +571,7 @@ def run(case_path: str | Path, output_dir: str | Path) -> Dict[str, Any]:
     # graph.  They give a future Agent the smallest authorized context while
     # preserving the full cross-plane trace in vco_pll_graph_v2.json.
     write_json(all_plane_views(graph_v2_artifact), output_path / "graph_plane_views.json")
+    write_json(factor_view(graph_v2_artifact), output_path / "graph_factor_view.json")
     events.append(
         {
             "step": "final_selection",

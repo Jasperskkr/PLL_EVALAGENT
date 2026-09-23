@@ -1572,6 +1572,112 @@
     {
       "authority": "deterministic_graph_compiler",
       "mutability": "append_only",
+      "plane": "contract",
+      "properties": {
+        "factor_id": "pll_jitter_response",
+        "role": "input"
+      },
+      "provenance": {
+        "edge_type": "factor_input",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "VCO.pn_anchor_1mhz",
+      "status": "validated",
+      "target": "Factor.pll_jitter_response",
+      "type": "factor_input"
+    },
+    {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "contract",
+      "properties": {
+        "factor_id": "pll_jitter_response",
+        "role": "input"
+      },
+      "provenance": {
+        "edge_type": "factor_input",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "VCO.k1_hz_per_v",
+      "status": "validated",
+      "target": "Factor.pll_jitter_response",
+      "type": "factor_input"
+    },
+    {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "contract",
+      "properties": {
+        "factor_id": "pll_jitter_response",
+        "role": "input"
+      },
+      "provenance": {
+        "edge_type": "factor_input",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "Context.VCO.contract",
+      "status": "validated",
+      "target": "Factor.pll_jitter_response",
+      "type": "factor_input"
+    },
+    {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "contract",
+      "properties": {
+        "factor_id": "pll_jitter_response",
+        "role": "output"
+      },
+      "provenance": {
+        "edge_type": "factor_output",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "Factor.pll_jitter_response",
+      "status": "validated",
+      "target": "PLL.integrated_jitter",
+      "type": "factor_output"
+    },
+    {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
+      "properties": {
+        "factor_id": "pll_jitter_response"
+      },
+      "provenance": {
+        "edge_type": "supports",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "Evidence.sensitivity",
+      "status": "validated",
+      "target": "Factor.pll_jitter_response",
+      "type": "supports"
+    },
+    {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
+      "plane": "evidence",
+      "properties": {
+        "factor_id": "pll_jitter_response"
+      },
+      "provenance": {
+        "edge_type": "supported_by",
+        "source": "v1.graph.compiler"
+      },
+      "scope": "run_specific",
+      "source": "Factor.pll_jitter_response",
+      "status": "validated",
+      "target": "Evidence.sensitivity",
+      "type": "supported_by"
+    },
+    {
+      "authority": "deterministic_graph_compiler",
+      "mutability": "append_only",
       "plane": "evidence",
       "properties": {
         "passed": false,
@@ -2140,6 +2246,10 @@
     "block_meta_ref": "vco_block_meta_v1.json",
     "deterministic": true,
     "execution_model": "architecture_feedback_plus_evaluation_operators",
+    "factor_ids": [
+      "pll_jitter_response"
+    ],
+    "factor_schema_version": "1.0",
     "plane_model": "implementation_metadata_schema_contract_realization_evidence",
     "planes": [
       "schema",
@@ -3004,6 +3114,7 @@
             "vctrl_min": true,
             "vdd": true
           },
+          "contract_context_id": "VCOBlockContext.v1",
           "passed": true
         },
         "divider_n": 100,
@@ -3282,6 +3393,7 @@
             "vctrl_min": true,
             "vdd": true
           },
+          "contract_context_id": "VCOBlockContext.v1",
           "passed": true
         },
         "divider_n": 100,
@@ -3599,6 +3711,7 @@
             "vctrl_min": true,
             "vdd": true
           },
+          "contract_context_id": "VCOBlockContext.v1",
           "passed": false
         },
         "divider_n": 100,
@@ -3773,6 +3886,59 @@
       "scope": "run_specific",
       "semantic_role": "evidence",
       "type": "evidence"
+    },
+    {
+      "authority": "contract_builder",
+      "id": "Factor.pll_jitter_response",
+      "mutability": "versioned",
+      "plane": "contract",
+      "properties": {
+        "artifact_ref": "sensitivity.json",
+        "context_refs": [
+          "Context.VCO.contract"
+        ],
+        "evidence_refs": [
+          "Evidence.sensitivity"
+        ],
+        "factor_id": "pll_jitter_response",
+        "factor_type": "system_response",
+        "input_refs": [
+          "VCO.pn_anchor_1mhz",
+          "VCO.k1_hz_per_v",
+          "Context.VCO.contract"
+        ],
+        "metadata": {
+          "joint_dependency": true
+        },
+        "model_kind": "deterministic_behavioral_response",
+        "model_ref": "averaged_cppll_v1",
+        "name": "PLL_JITTER_RESPONSE_FACTOR",
+        "output_refs": [
+          "PLL.integrated_jitter"
+        ],
+        "relation_kind": "joint_system_response",
+        "source_run_ids": [
+          "vco_mapping_01:deterministic-v1"
+        ],
+        "uncertainty": {
+          "claim": "deterministic V1 sensitivity",
+          "status": "not_modeled"
+        },
+        "validity_domain": {
+          "context_id": "VCOBlockContext.v1"
+        },
+        "verification_status": "validated",
+        "version": "1.0"
+      },
+      "provenance": {
+        "artifact_ref": "sensitivity.json",
+        "model_ref": "averaged_cppll_v1",
+        "plane": "contract",
+        "source": "v1.contract / v1.schema"
+      },
+      "scope": "reusable",
+      "status": "validated",
+      "type": "factor"
     },
     {
       "authority": "deterministic_evaluator",
@@ -3962,6 +4128,7 @@
             "vctrl_min": true,
             "vdd": true
           },
+          "contract_context_id": "VCOBlockContext.v1",
           "passed": true
         },
         "divider_n": 100,

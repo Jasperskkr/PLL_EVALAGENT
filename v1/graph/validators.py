@@ -19,6 +19,7 @@ from .planes import (
     EDGE_PLANE_RULES,
     node_plane,
 )
+from .factors import FACTOR_TYPES, FACTOR_VERIFICATION_STATUSES, MODEL_KINDS
 
 
 EDGE_ENDPOINT_RULES = {
@@ -26,7 +27,10 @@ EDGE_ENDPOINT_RULES = {
     "input_to": ({"port", "behavioral_output", "design_variable", "operator"}, {"operator"}),
     "produces": ({"operator"}, {"system_metric", "behavioral_output", "evaluation"}),
     "allocates": ({"system_requirement", "system_metric"}, {"block_requirement"}),
-    "candidate_of": ({"candidate"}, {"capability_region", "design_space"}),
+    "candidate_of": (
+        {"candidate"},
+        {"capability_region", "system_feasible_region", "design_space"},
+    ),
     "realizes": ({"candidate"}, {"realized_instance"}),
     "measured_by": ({"behavioral_output", "system_metric"}, {"measurement_contract"}),
     "valid_in": ({"contract"}, {"validity_domain"}),
@@ -36,6 +40,8 @@ EDGE_ENDPOINT_RULES = {
     "verifies_requirement": ({"evaluation"}, {"system_requirement", "block_requirement"}),
     "yields_verdict": ({"evaluation"}, {"evaluation"}),
     "selected_for": ({"candidate"}, {"candidate"}),
+    "factor_input": (NODE_TYPES - {"factor"}, {"factor"}),
+    "factor_output": ({"factor"}, NODE_TYPES - {"factor"}),
 }
 
 
@@ -159,21 +165,79 @@ def validate_graph_v2_artifact(artifact: Mapping[str, Any]) -> None:
 
     _validate_semantic_freeze(nodes, edges, artifact)
 
-    required_ids = (
-        "SystemSpec.integrated_jitter",
-        "VCORequirement.required",
-        "VCO.capability_region",
-        "operator.VCO_Noise_TF",
-        "operator.Noise_Integration",
-        "operator.PLL_Dynamics",
-    )
+    profile = artifact.get("metadata", {}).get("artifact_profile", "v1_scalar")
+    if profile == "v1_5_multidim":
+        required_ids = (
+            "SystemSpec.integrated_jitter",
+            "SystemSpec.lock_time",
+            "VCO.design_space",
+            "VCO.capability_region",
+            "PLL.system_feasible_region",
+            "operator.VCO_Noise_TF",
+            "operator.Noise_Integration",
+            "operator.PLL_Dynamics",
+            "Evidence.V1_5.sample_set",
+            "Evidence.V1_5.system_boundary_map",
+            "Contract.VCO.boundary_behavior.v1_5",
+            "Validity.VCO.boundary_behavior.v1_5",
+            "Evidence.V1_5.boundary_block_contract",
+            "VCORequirement.conditional_phase_noise",
+            "Evidence.V1_5.conditional_block_spec_map",
+            "Evidence.V1_5.conditional_candidate_validation",
+            "Evidence.V1_5.conditional_contract_prediction",
+            "Evidence.V1_5.selection",
+            "Evidence.V1_5.selected_replay",
+        )
+    elif profile == "spec_closure_workflow":
+        required_ids = (
+            "Workflow.design_space",
+            "BlockRequirement.allocated",
+            "Evidence.allocation",
+        )
+        if artifact.get("metadata", {}).get("workflow_status") == "passed":
+            required_ids += ("Candidate.selected", "SystemSpec.verdict")
+    else:
+        required_ids = (
+            "SystemSpec.integrated_jitter",
+            "VCORequirement.required",
+            "VCO.capability_region",
+            "operator.VCO_Noise_TF",
+            "operator.Noise_Integration",
+            "operator.PLL_Dynamics",
+        )
     missing = [node_id for node_id in required_ids if node_id not in nodes]
     if missing:
         raise ValueError(f"graph v2 missing required node(s): {missing}")
 
     edge_types = {edge["type"] for edge in edges}
-    required_edge_types = ["input_to", "produces"]
-    if artifact.get("metadata", {}).get("allocation_outcome") == "rejected":
+    required_edge_types = [] if profile == "spec_closure_workflow" else ["input_to", "produces"]
+    if profile == "v1_5_multidim":
+        required_edge_types.extend(
+            [
+                "candidate_of",
+                "realizes",
+                "evaluates",
+                "verifies_requirement",
+                "selected_for",
+                "allocates",
+            ]
+        )
+    elif profile == "spec_closure_workflow":
+        required_edge_types.append("system_influence")
+        if int(artifact.get("metadata", {}).get("candidate_count", 0)) > 0:
+            required_edge_types.extend(
+                [
+                    "candidate_of",
+                    "realizes",
+                    "evaluates",
+                    "verifies_requirement",
+                ]
+            )
+        if artifact.get("metadata", {}).get("allocation_outcome") == "allocated":
+            required_edge_types.append("allocates")
+        if artifact.get("metadata", {}).get("workflow_status") == "passed":
+            required_edge_types.extend(["selected_for", "yields_verdict"])
+    elif artifact.get("metadata", {}).get("allocation_outcome") == "rejected":
         required_edge_types.append("supported_by")
     else:
         required_edge_types.extend(["allocates", "validated_by"])
@@ -194,6 +258,24 @@ def validate_graph_v2_artifact(artifact: Mapping[str, Any]) -> None:
                 raise ValueError(f"failed evaluation node must be rejected: {node_id}")
             if passed is True and node.get("status") == "rejected":
                 raise ValueError(f"passing evaluation node cannot be rejected: {node_id}")
+        if node["type"] == "factor":
+            props = node.get("properties", {})
+            if not isinstance(props, Mapping):
+                raise ValueError(f"factor node {node_id} properties must be an object")
+            for key in ("factor_id", "factor_type", "name", "relation_kind", "model_kind"):
+                if not props.get(key):
+                    raise ValueError(f"factor node {node_id} missing {key}")
+            if props.get("factor_type") not in FACTOR_TYPES:
+                raise ValueError(f"factor node {node_id} has invalid factor_type")
+            if props.get("model_kind") not in MODEL_KINDS:
+                raise ValueError(f"factor node {node_id} has invalid model_kind")
+            if props.get("verification_status") not in FACTOR_VERIFICATION_STATUSES:
+                raise ValueError(f"factor node {node_id} has invalid verification_status")
+            for key in ("input_refs", "output_refs", "context_refs", "evidence_refs"):
+                if not isinstance(props.get(key, []), list):
+                    raise ValueError(f"factor node {node_id} field {key} must be an array")
+            if not props.get("input_refs") or not props.get("output_refs"):
+                raise ValueError(f"factor node {node_id} must have inputs and outputs")
 
         plane = node["plane"]
         node_type = node["type"]
@@ -274,6 +356,9 @@ def _validate_semantic_freeze(
 
     behavior_knobs = {"pn_anchor", "k1_hz_per_v", "nominal_power", "f0_hz"}
     forbidden_ports = {"phase_noise", "kvco", "power"}
+    expected_block_context_id = str(
+        metadata.get("block_context_id", "VCOBlockContext.v1")
+    )
     for node_id, node in nodes.items():
         props = node.get("properties", {})
         semantic_role = node.get("semantic_role")
@@ -308,7 +393,7 @@ def _validate_semantic_freeze(
                     raise ValueError(f"validity domain missing {key}: {node_id}")
         if node_id.startswith("BlockTB."):
             context = props.get("context", {})
-            if context.get("context_id") != "VCOBlockContext.v1":
+            if context.get("context_id") != expected_block_context_id:
                 raise ValueError(f"BlockTB did not use frozen VCOBlockContext: {node_id}")
             for key in ("vctrl_min_v", "vctrl_max_v", "temperature_points_c", "vdd_v"):
                 if key not in context:

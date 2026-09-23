@@ -6,6 +6,7 @@ from collections import deque
 from typing import Any, Iterable, Mapping, Sequence
 
 from .planes import GRAPH_PLANES
+from .factors import factor_view as _factor_view
 
 
 def trace_paths(
@@ -155,3 +156,9 @@ def realization_view(graph: Mapping[str, Any]) -> dict[str, Any]:
 
 def evidence_view(graph: Mapping[str, Any]) -> dict[str, Any]:
     return plane_view(graph, "evidence")
+
+
+def factor_view(graph: Mapping[str, Any]) -> dict[str, Any]:
+    """Return the factor projection without creating another graph artifact."""
+
+    return _factor_view(graph)

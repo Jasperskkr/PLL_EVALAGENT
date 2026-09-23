@@ -4,9 +4,9 @@
 {"refinement_action": "add_context_and_dependency", "step": "contract_validation", "v0_mae_db": 2.355718938556118, "v1_mae_db": 0.0}
 {"observation_count": 33, "source": "realized synthetic candidate", "step": "vco_characterization"}
 {"method": "deterministic_finite_difference_and_grid_sweep", "parameters": ["k1_hz_per_v", "nominal_power_w", "pn_anchor_1mhz_dbc_hz", "vctrl_max_v"], "step": "sensitivity"}
-{"block_metric_at_boundary": -113.51115117853384, "nearest_failing_search_knob": -116.35812014341354, "search_knob": "pn_anchor_1mhz_dbc_hz", "search_knob_boundary": -116.35812103748322, "step": "required_boundary_search", "target_system_metric": "integrated_jitter_s"}
+{"allocation_status": "allocated", "block_metric_at_boundary": -113.51115117853384, "direction": "SystemSpec -> BlockSpec", "nearest_failing_search_knob": -116.35812014341354, "search_knob": "pn_anchor_1mhz_dbc_hz", "search_knob_boundary": -116.35812103748322, "step": "system_to_block_allocation", "target_system_metric": "integrated_jitter_s"}
 {"block_tb_passed": false, "candidate_id": "candidate_baseline", "context_covered": true, "step": "candidate_validation", "system_passed": false}
 {"block_tb_passed": true, "candidate_id": "candidate_low_noise", "context_covered": true, "step": "candidate_validation", "system_passed": true}
 {"block_tb_passed": false, "candidate_id": "candidate_low_noise_fast_lock", "context_covered": false, "step": "candidate_validation", "system_passed": true}
 {"final_passed": true, "selected_candidate": "candidate_low_noise", "step": "final_selection"}
-{"output_dir": "results\\v1_vco_mapping_01", "plots": {"available": true, "files": ["vco_tuning_curve.png", "phase_noise_vs_vctrl.png", "jitter_vs_pn.png", "lock_time_vs_k1.png"]}, "simulator_calls": 46, "step": "report"}
+{"output_dir": "results\\v1_vco_mapping_01", "plots": {"available": false, "reason": "No module named 'matplotlib'"}, "simulator_calls": 46, "step": "report"}

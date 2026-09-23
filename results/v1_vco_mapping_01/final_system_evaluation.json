@@ -1,4 +1,11 @@
 {
+  "checks": {
+    "integrated_jitter": true,
+    "lock_time": true,
+    "locked": true,
+    "output_frequency": true,
+    "power": true
+  },
   "context": {
     "divider_n": 100,
     "f_ref_hz": 50000000.0,
@@ -11,6 +18,7 @@
     "vctrl_min_v": 0.30845368,
     "vdd_v": 1.8
   },
+  "measurement_method": "backend.evaluate_system",
   "metrics": {
     "final_relative_frequency_error": -2.3365020751953123e-13,
     "final_vctrl_v": 0.8034611950944747,

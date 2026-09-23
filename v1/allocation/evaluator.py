@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 from dataclasses import asdict
-from typing import Mapping
+from typing import Any, Mapping
 
 from ..model.pll_behavioral import VCOParams
-from ..pipeline import evaluate_system, validate_vco_spec
+from ..pipeline import evaluate_system
 from ..specs import SystemSpec, VCORequirement
+from ..api.verification import VerificationRequest
+from ..verification.service import verify_block_assignment
 from .design_vector import DesignVector, compile_design_vector_to_vco
 
 
@@ -37,7 +39,18 @@ def evaluate_design_vector(
     if block_context is not None:
         if requirement is None:
             raise ValueError("BlockTB requirement is required with block_context")
-        output["block_evaluation"] = validate_vco_spec(
-            system_spec, requirement, vco, block_context
+        verification = verify_block_assignment(
+            VerificationRequest(
+                system_spec=system_spec,
+                block_spec=requirement,
+                realized_instance=vco,
+                operating_context=block_context,
+                block_id="VCO",
+                request_id=f"design-vector:{design_vector.source}",
+                keep_raw=keep_raw,
+            )
         )
+        output["block_evaluation"] = verification["block_tb"]
+        output["system_evaluation"] = verification["system_tb"]
+        output["verification_report"] = verification
     return output

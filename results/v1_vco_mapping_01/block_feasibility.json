@@ -207,6 +207,7 @@
         "vctrl_min": true,
         "vdd": true
       },
+      "contract_context_id": "VCOBlockContext.v1",
       "passed": true
     },
     "description": "Current prototype VCO; intentionally misses the jitter target",
@@ -229,6 +230,13 @@
       "vctrl_min_v": 0.1
     },
     "system_evaluation": {
+      "checks": {
+        "integrated_jitter": false,
+        "lock_time": true,
+        "locked": true,
+        "output_frequency": true,
+        "power": true
+      },
       "context": {
         "divider_n": 100,
         "f_ref_hz": 50000000.0,
@@ -241,6 +249,7 @@
         "vctrl_min_v": 0.30845368,
         "vdd_v": 1.8
       },
+      "measurement_method": "backend.evaluate_system",
       "metrics": {
         "final_relative_frequency_error": -2.3365020751953123e-13,
         "final_vctrl_v": 0.8034611950944747,
@@ -521,6 +530,7 @@
         "vctrl_min": true,
         "vdd": true
       },
+      "contract_context_id": "VCOBlockContext.v1",
       "passed": true
     },
     "description": "Lower-noise VCO candidate",
@@ -546,6 +556,13 @@
     },
     "selected": true,
     "system_evaluation": {
+      "checks": {
+        "integrated_jitter": true,
+        "lock_time": true,
+        "locked": true,
+        "output_frequency": true,
+        "power": true
+      },
       "context": {
         "divider_n": 100,
         "f_ref_hz": 50000000.0,
@@ -558,6 +575,7 @@
         "vctrl_min_v": 0.30845368,
         "vdd_v": 1.8
       },
+      "measurement_method": "backend.evaluate_system",
       "metrics": {
         "final_relative_frequency_error": -2.3365020751953123e-13,
         "final_vctrl_v": 0.8034611950944747,
@@ -838,6 +856,7 @@
         "vctrl_min": true,
         "vdd": true
       },
+      "contract_context_id": "VCOBlockContext.v1",
       "passed": false
     },
     "description": "Lower-noise, lower-Kvco candidate showing the lock/jitter trade-off",
@@ -863,6 +882,13 @@
       "vctrl_min_v": 0.1
     },
     "system_evaluation": {
+      "checks": {
+        "integrated_jitter": true,
+        "lock_time": true,
+        "locked": true,
+        "output_frequency": true,
+        "power": true
+      },
       "context": {
         "divider_n": 100,
         "f_ref_hz": 50000000.0,
@@ -875,6 +901,7 @@
         "vctrl_min_v": 0.30684728,
         "vdd_v": 1.8
       },
+      "measurement_method": "backend.evaluate_system",
       "metrics": {
         "final_relative_frequency_error": -1.9073486328125e-16,
         "final_vctrl_v": 0.9832016471595293,

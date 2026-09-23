@@ -2,13 +2,16 @@
 
 ## 目标
 
-这个 demo 用固定 Integer-N CPPLL 和确定性行为级 VCO 模型验证：
+这个 demo 用固定 Integer-N CPPLL 和确定性行为级 VCO 模型验证一条明确的双向链：
 
 ```text
-VCO behavioral metric
-    → PLL top-level metric
-    → VCO requirement boundary
-    → realized VCO feasibility
+正向 allocation：SystemSpec
+    → PLL top-level metric / boundary
+    → allocated VCO BlockSpec
+
+反向 verification：allocated BlockSpec + realized VCO
+    → BlockTB
+    → same-instance SystemTB
     → PLL re-evaluation
 ```
 
@@ -29,16 +32,25 @@ pn_anchor_1mhz_dbc_hz
 
 ```powershell
 python run_v1_prove.py --case v1\cases\vco_mapping_01.json
-python run_v1_spec_matrix.py
+python run_jitter_pn_roundtrip_demo.py
 ```
 
-批量命令会对多组 jitter/temperature SystemSpec 重复运行正向分配与反向验证，并用 lock-time/power 负向 case 验证 PN-only allocator 的正确拒绝行为。汇总见 `results/v1_spec_matrix/SPEC_MATRIX_REPORT.md`。
+V1.0 主入口只保留单个 canonical case；如需保存结果，可通过 `--output-dir` 指定运行时目录。历史批量矩阵和测试产物不属于当前主干。
 
-默认结果目录为：
+`run_jitter_pn_roundtrip_demo.py` 是模块化 reference case。它只负责把 JSON case
+编译成 `SpecClosureRequest`、绑定 VCO adapters 并调用 `run_spec_closure()`；正向
+allocation、candidate realization、反向 verification、selection 和 Graph audit 都是
+可单独替换的 workflow stage。
+
+默认运行时结果目录为（被 Git 忽略）：
 
 ```text
-results/v1_vco_mapping_01/
+results/jitter_pn_roundtrip_demo/（运行时生成，不提交到源码树）
 ```
+
+模块化 demo 的输入是 `v1/cases/jitter_pn_roundtrip_01.json`；主要输出是
+`spec_closure_report.json`、`allocation_report.json`、`workflow_graph_v2.json` 和
+`workflow_graph_audit.json`。
 
 ## 运行阶段
 
@@ -48,9 +60,9 @@ results/v1_vco_mapping_01/
 4. 对 PN、K1 和 Vctrl 上限做确定性 sweep；
 5. 用 bracketed bisection 搜索 `pn_anchor_1mhz_dbc_hz` boundary；
 6. 冻结 `VCOBlockContext.v1` 并测量 boundary 对应的 `worst_phase_noise_1mhz_dbc_hz`；
-7. 由 measured worst PN 生成 required/recommended VCO Spec；
+7. 通过 allocation service 由 measured worst PN 生成 required/recommended VCO Spec；
 8. 用同一个 frozen Block Context 运行所有 candidate 的 VCO BlockTB；
-9. 对可行 candidate 重用 realized instance 重跑 SystemTB；
+9. 通过 verification service 对可行 candidate 重用 realized instance 重跑 SystemTB；
 10. 输出 before/after、trajectory 和 replayable evidence。
 
 ## 关键产物
@@ -67,6 +79,7 @@ sensitivity.json
 required_vco_spec_boundary.json
 required_vco_spec.json
 recommended_vco_spec.json
+spec_allocation_report.json
 block_feasibility.json
 final_system_evaluation.json
 trajectory.jsonl
@@ -96,7 +109,10 @@ agent_action_policy.json
 - `DesignVector` 只保存 candidate/internal knobs；Requirement 只由 frozen context 下的 measured Behavior 判断；
 - Agent action policy 约束 Agent 只能提出带 evidence 的 contract/search action，不能修改 SystemSpec 或宣布 PASS。
 
-默认运行仍然是 deterministic V1.0；这些扩展不会改变现有 `SystemTB`、scalar boundary search、BlockTB 或最终 candidate 选择逻辑。
+默认运行仍然是 deterministic V1.0；模块化 round-trip 运行时输出
+`spec_closure_report.json`、`allocation_report.json`、`workflow_graph_v2.json` 和
+`workflow_graph_audit.json`。V1 runner 的 JSON/CSV/trajectory 仍只作为临时 evidence
+生成，不提交到源码树。
 
 `candidate_baseline` 被设计为对 jitter target 失败，`candidate_low_noise` 在 BlockTB 和最终 SystemTB 中通过。这是为了保证脚本实际经过一次可追溯的 allocation/validation 闭环，而不是默认点直接 PASS。
 

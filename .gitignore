@@ -6,13 +6,8 @@ __pycache__/
 venv/
 tmp/
 
-# Deterministic summary artifacts are tracked; large raw traces are regenerated.
-results/**/initial_system_raw.json
-results/**/system_raw_*.json
-
-# The matrix runner recreates per-case evidence locally; compact aggregate
-# tables and the JSON report under results/v1_spec_matrix remain tracked.
-results/v1_spec_matrix/cases/
+# Generated verification evidence; never part of the source tree.
+results/
 
 # Local editor and OS files
 .vscode/

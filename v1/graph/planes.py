@@ -1,11 +1,11 @@
 """Orthogonal plane metadata for the unified Typed Graph.
 
-``layer`` remains the V1 semantic vocabulary (interface/behavior/allocation/
-verification).  A plane answers a different question: is a node a schema
-definition, a reusable contract/hypothesis, a run-time realization, or
-immutable evaluation evidence?  Keeping these dimensions orthogonal lets the
-V1 graph stay backward compatible while giving future Agents enforceable
-authority boundaries.
+Public Block Graph semantics are expressed by ``semantic_role``
+(``architecture/behavior/influence/evidence``).  A plane answers a different
+question: is a node a schema definition, a reusable contract/hypothesis, a
+run-time realization, or immutable evaluation evidence?  Keeping these
+dimensions orthogonal gives future Agents enforceable authority boundaries;
+planes are implementation metadata, not public Block Graph layers.
 """
 
 from __future__ import annotations
@@ -55,6 +55,8 @@ EDGE_PLANE_RULES = {
     "constrains": "realization",
     "measured_by": "contract",
     "valid_in": "contract",
+    "factor_input": "contract",
+    "factor_output": "contract",
 }
 
 SCHEMA_NODE_TYPES = frozenset(
@@ -75,6 +77,7 @@ REALIZATION_NODE_TYPES = frozenset(
         "system_requirement",
         "block_requirement",
         "capability_region",
+        "system_feasible_region",
         "design_space",
         "candidate",
         "candidate_knob",
@@ -88,6 +91,7 @@ CONTRACT_NODE_TYPES = frozenset(
         "validity_domain",
         "uncertainty_model",
         "behavioral_variable",
+        "factor",
     }
 )
 
@@ -142,7 +146,12 @@ def node_authority(node_id: str, node_type: str, plane: str) -> str:
         return "system_spec_input"
     if node_type in {"candidate", "candidate_knob"}:
         return "agent_or_allocator"
-    if node_type in {"capability_region", "design_space", "block_requirement"}:
+    if node_type in {
+        "capability_region",
+        "system_feasible_region",
+        "design_space",
+        "block_requirement",
+    }:
         return "deterministic_allocator"
     if node_type == "realized_instance":
         return "realization_compiler"

@@ -6,6 +6,7 @@ from typing import Any, Mapping, Sequence
 
 from .model import TypedGraph
 from .validators import validate_graph_v2_artifact
+from .factors import Factor, add_factor_to_graph
 from ..schema.block_schema import build_vco_block_meta_v1
 
 
@@ -222,6 +223,8 @@ def build_v1_graph_v2_artifact(
             "deterministic": True,
             "agent_policy": "propose_only; deterministic_tools_validate",
             "allocation_outcome": "rejected" if rejection is not None else "allocated",
+            "factor_schema_version": "1.0" if context_contract is not None else None,
+            "factor_ids": ["pll_jitter_response"] if context_contract is not None else [],
         },
     )
 
@@ -397,6 +400,33 @@ def build_v1_graph_v2_artifact(
             requirement_id = {"lock_time": "SystemSpec.lock_time", "power": "SystemSpec.power", "output_frequency": "SystemSpec.output_frequency", "locked": "SystemSpec.lock_time"}.get(check)
             if requirement_id:
                 edge(requirement_id, "Evidence.PN.rejection", "supported_by", {"blocking_check": check})
+    if context_contract is not None:
+        add_factor_to_graph(
+            graph,
+            Factor(
+                factor_id="pll_jitter_response",
+                factor_type="system_response",
+                name="PLL_JITTER_RESPONSE_FACTOR",
+                input_refs=(
+                    "VCO.pn_anchor_1mhz",
+                    "VCO.k1_hz_per_v",
+                    "Context.VCO.contract",
+                ),
+                output_refs=("PLL.integrated_jitter",),
+                relation_kind="joint_system_response",
+                model_kind="deterministic_behavioral_response",
+                model_ref="averaged_cppll_v1",
+                artifact_ref="sensitivity.json",
+                validity_domain={"context_id": context_contract["context_id"]},
+                context_refs=("Context.VCO.contract",),
+                evidence_refs=("Evidence.sensitivity",),
+                uncertainty={"status": "not_modeled", "claim": "deterministic V1 sensitivity"},
+                verification_status="validated",
+                source_run_ids=(run_id,),
+                metadata={"joint_dependency": True},
+            ),
+            status="validated",
+        )
     if initial_evaluation is not None:
         initial_checks = _evaluation_checks(initial_evaluation)
         initial_verdicts = _requirement_verdicts(initial_checks)

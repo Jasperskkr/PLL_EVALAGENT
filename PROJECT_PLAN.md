@@ -96,7 +96,7 @@ Final jitter:               41.783 fs
 Final lock time:            36.520 us
 Final frequency:            5.000 GHz
 Final SystemTB:             PASS
-Core pytest regression:     23/23 PASS
+Historical deterministic regression completed; test sources and generated evidence are not retained in the cleaned source tree.
 ```
 
 V1 同时证明了两件事：
@@ -139,9 +139,8 @@ Phase 2 多维 capability region 已完成。
 验收：
 
 - Git tag `v1.0-baseline`；
-- 原有 10 个测试通过；
 - benchmark 的 boundary、candidate、final SystemTB 结果稳定；
-- summary、trajectory、provenance 和关键 JSON/CSV 可追溯。
+- summary、trajectory、provenance 和关键 JSON/CSV 可由 runner 重新生成。
 
 ### Phase 1：Semantic-role Schema 和 Graph v2（已完成）
 
@@ -195,26 +194,39 @@ Contract
 - graph 能追溯 `SystemSpec → Requirement → Candidate → RealizedInstance → BlockTB/SystemTB → Evidence`；
 - 每条 influence edge 都有模型、context 和 evidence 引用；
 - semantic validator 会拒绝旧端口、旧 layer、knob-as-behavior、candidate-as-requirement、anchor-as-requirement 等破坏用例；
-- 核心 pytest 回归 23/23 PASS；
+- V1.0 runner 的 deterministic 数值闭环保持可重放；
 - 明确没有 Proposal layer、没有 Allocation layer in Block Graph、没有 Capability layer、没有第五个 Block Graph layer。
 
-### Phase 2：多参数 VCO Capability Region
+### V1.5（Phase 2）：多参数行为级规格分配与 VCO Capability Region
 
-目标：从一维 PN mapping 扩展到真实的联合可行域。
+当前状态：二维 `PN anchor × k1` 的 234 点 design space、逐点 BlockTB/SystemTB、
+Capability/System-feasible Region、条件化 System boundary、边界 Block contract、固定
+1.5 dB margin 的离散 `PN_BlockSpec(k1)`、逐 k1 candidate validation 和 V1.5 Graph audit
+已经落地。18 个 k1 slice 中有 9 个完成条件分配和独立 replay，另外 9 个明确记录为
+当前搜索范围内不可分配。block-agnostic `SpecClosureRequest`、workflow stage protocol、
+candidate proposal schema 和 workflow Graph/Schema finalizer 也已存在；但 V1.5 多维
+evaluator 尚未完全接入通用 `AllocationModule`，连续插值、多变量 margin policy 和真实
+电路数据验证也未完成，因此本阶段仍不标记为完全完成。
+
+目标：从一维 PN mapping 扩展到真实的联合可行域。本阶段正式命名为
+`V1.5：多参数行为级规格分配`；详细交接和验收定义见
+[`docs/V1.5_PROJECT_INTRODUCTION.md`](docs/V1.5_PROJECT_INTRODUCTION.md)。
 
 最小实验：
 
 ```text
-PN@1MHz × Kvco
+PN anchor@1MHz × k1
 ```
 
-输出 sampled feasible points、constraint residual 和 Pareto candidates。随后再加入 tuning range 和 power。
+输出 sampled feasible points、constraint residual、条件化 BlockSpec 和逐 slice 验证候选。
+当前 Pareto 明确关闭；后续若启用，必须显式记录目标、权重和支配规则，再扩展 tuning
+range、power 或更多 design variables。
 
 验收：
 
 - 每个点都有明确 context 和 BlockTB result；
 - feasible/infeasible 由确定性 evaluator 判定；
-- Pareto 规则和目标权重显式记录；
+- 当前 deterministic selection 规则显式记录；若启用 Pareto，其目标和权重必须显式记录；
 - 一维 V1 baseline 作为 regression control 保持不变。
 
 ### Phase 3：多 Block 固定架构（V2）

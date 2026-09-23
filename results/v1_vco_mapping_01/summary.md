@@ -33,4 +33,4 @@
 - BlockTB uses the same frozen VCOBlockContext for every candidate.
 - Final PASS is accepted only when both BlockTB and validation-mode SystemTB pass.
 
-Plots: `{'available': True, 'files': ['vco_tuning_curve.png', 'phase_noise_vs_vctrl.png', 'jitter_vs_pn.png', 'lock_time_vs_k1.png']}`
+Plots: `{'available': False, 'reason': "No module named 'matplotlib'"}`

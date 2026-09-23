@@ -27,12 +27,14 @@
             "candidate",
             "candidate_knob",
             "capability_region",
+            "system_feasible_region",
             "context",
             "context_variable",
             "contract",
             "design_space",
             "design_variable",
             "evaluation",
+            "factor",
             "evidence",
             "measured_result",
             "measurement_contract",
@@ -59,6 +61,49 @@
         "owner": {"type": "string"},
         "status": {"enum": ["proposed", "supported", "tested", "partially_validated", "validated", "rejected"]},
         "properties": {"type": "object"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"type": {"const": "factor"}}},
+          "then": {"properties": {"properties": {"$ref": "#/$defs/factor_properties"}}}
+        }
+      ]
+    },
+    "factor_properties": {
+      "type": "object",
+      "required": [
+        "factor_id",
+        "factor_type",
+        "name",
+        "input_refs",
+        "output_refs",
+        "relation_kind",
+        "model_kind",
+        "context_refs",
+        "evidence_refs",
+        "verification_status",
+        "source_run_ids",
+        "version"
+      ],
+      "properties": {
+        "factor_id": {"type": "string", "minLength": 1},
+        "factor_type": {"enum": ["system_response", "allocation", "constraint", "block_response"]},
+        "name": {"type": "string", "minLength": 1},
+        "input_refs": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1},
+        "output_refs": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1},
+        "relation_kind": {"type": "string", "minLength": 1},
+        "model_kind": {"type": "string", "minLength": 1},
+        "model_ref": {"type": ["string", "null"]},
+        "artifact_ref": {"type": ["string", "null"]},
+        "validity_domain": {"type": ["object", "null"]},
+        "context_refs": {"type": "array", "items": {"type": "string"}},
+        "evidence_refs": {"type": "array", "items": {"type": "string"}},
+        "uncertainty": {"type": ["object", "null"]},
+        "verification_status": {"type": "string"},
+        "source_run_ids": {"type": "array", "items": {"type": "string"}},
+        "artifact_hashes": {"type": ["object", "null"]},
+        "version": {"type": "string", "minLength": 1},
+        "metadata": {"type": "object"}
       }
     },
     "edge": {
@@ -80,6 +125,8 @@
             "derived_from",
             "evaluates",
             "feedback",
+            "factor_input",
+            "factor_output",
             "input_to",
             "measured_by",
             "noise_transfer",

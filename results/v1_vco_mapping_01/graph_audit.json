@@ -9,6 +9,7 @@
     "evaluation_status_consistent": true,
     "evidence_references_resolve": true,
     "exactly_one_selected_candidate": true,
+    "factor_schema_and_closure": true,
     "final_context_coverage_matches_artifact": true,
     "final_systemtb_matches_artifact": true,
     "final_systemtb_yields_verdict": true,
@@ -30,6 +31,24 @@
     "systemtb_matches_artifact": true
   },
   "diagnostics": [],
+  "factor_audit": {
+    "checks": {
+      "factor_artifact_hashes_match": true,
+      "factor_evidence_refs_resolve": true,
+      "factor_input_output_edges_match": true,
+      "factor_nodes_exist": true,
+      "factor_refs_resolve": true,
+      "required_factor_nodes_exist": true
+    },
+    "counts": {
+      "factors": 1
+    },
+    "diagnostics": [],
+    "factor_ids": [
+      "Factor.pll_jitter_response"
+    ],
+    "passed": true
+  },
   "outcome": "allocated",
   "passed": true,
   "selected_candidate": "candidate_low_noise"

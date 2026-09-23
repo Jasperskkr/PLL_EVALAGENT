@@ -1,0 +1,177 @@
+{
+  "case_id": "vco_multidim_01",
+  "schema_version": "v1.5-design-space-1.0",
+  "description": "Deterministic PN-anchor by k1 VCO design space with conditional SystemSpec-boundary mapping.",
+  "claim_boundary": "Synthetic behavioral conditional BlockSpec allocation is validated on listed discrete k1 slices; interpolation, a global continuous k1 requirement, and transistor-level signoff are not claimed.",
+  "system_spec": {
+    "pll": {
+      "f_ref_hz": 50000000.0,
+      "divider_n": 100
+    },
+    "target_frequency_hz": 5000000000.0,
+    "limits": {
+      "output_frequency_tolerance_hz": 100000.0,
+      "integrated_jitter_max_s": 8.0e-14,
+      "lock_time_max_s": 3.4e-5,
+      "power_max_w": 8.0e-3
+    },
+    "operating_context": {
+      "vdd_v": 1.8,
+      "temperature_points_c": [25.0],
+      "vctrl_initial_v": 0.3,
+      "vctrl_min_v": 0.1,
+      "vctrl_max_v": 1.1
+    },
+    "jitter": {
+      "f_low_hz": 10.0,
+      "f_high_hz": 20000000.0,
+      "points": 240
+    }
+  },
+  "base_vco": {},
+  "design_space": {
+    "method": "deterministic_cartesian_grid",
+    "axes": [
+      {
+        "name": "pn_anchor_1mhz_dbc_hz",
+        "unit": "dBc/Hz",
+        "start": -124.0,
+        "stop": -112.0,
+        "step": 1.0
+      },
+      {
+        "name": "k1_hz_per_v",
+        "unit": "Hz/V",
+        "start": 550000000.0,
+        "stop": 1400000000.0,
+        "step": 50000000.0
+      }
+    ],
+    "axis_order": [
+      "pn_anchor_1mhz_dbc_hz",
+      "k1_hz_per_v"
+    ],
+    "traversal": "first_axis_outer",
+    "point_id_scheme": "sha256_canonical_design_vector_v1",
+    "expected_point_count": 234,
+    "random_seed": null,
+    "refinement": null
+  },
+  "block_context": {
+    "context_id": "VCOBlockContext.v1_5",
+    "policy": "declared_system_operating_envelope",
+    "source": "immutable SystemSpec operating context; frozen before candidate evaluation",
+    "freeze_before_search": true,
+    "context_coverage_required": true,
+    "vctrl_min_v": 0.1,
+    "vctrl_max_v": 1.1,
+    "vctrl_points": 11,
+    "temperature_points_c": [25.0],
+    "vdd_v": 1.8
+  },
+  "block_constraints": [
+    {
+      "constraint_id": "target_frequency_covered",
+      "kind": "coverage",
+      "measured_metrics": ["frequency_min_hz", "frequency_max_hz"],
+      "target_ref": "system_spec.target_frequency_hz",
+      "tolerance_ref": "system_spec.limits.output_frequency_tolerance_hz"
+    },
+    {
+      "constraint_id": "positive_kvco",
+      "kind": "lower_bound",
+      "measured_metric": "kvco_min_hz_per_v",
+      "operator": ">",
+      "limit": 0.0
+    },
+    {
+      "constraint_id": "worst_power",
+      "kind": "upper_bound",
+      "measured_metric": "worst_power_w",
+      "operator": "<=",
+      "limit_ref": "system_spec.limits.power_max_w"
+    },
+    {
+      "constraint_id": "finite_behavior_vector",
+      "kind": "validity",
+      "required": true
+    }
+  ],
+  "system_constraints": {
+    "active_for_region": [
+      {
+        "check": "integrated_jitter",
+        "metric": "integrated_jitter_s",
+        "residual": "integrated_jitter_residual_s_max",
+        "limit_ref": "system_spec.limits.integrated_jitter_max_s"
+      },
+      {
+        "check": "lock_time",
+        "metric": "lock_time_s",
+        "residual": "lock_time_residual_s_max",
+        "limit_ref": "system_spec.limits.lock_time_max_s",
+        "also_requires": "locked"
+      }
+    ],
+    "always_checked": ["output_frequency", "power", "locked"]
+  },
+  "measurement_contract": {
+    "behavior_vector": [
+      "worst_phase_noise_1mhz_dbc_hz",
+      "kvco_min_hz_per_v",
+      "kvco_max_hz_per_v",
+      "frequency_min_hz",
+      "frequency_max_hz",
+      "worst_power_w"
+    ],
+    "phase_noise_is_measured_not_preconstrained": true
+  },
+  "system_boundary_mapping": {
+    "status": "enabled",
+    "method": "sampled_bracket_then_deterministic_bisection",
+    "condition_axis": "k1_hz_per_v",
+    "search_axis": "pn_anchor_1mhz_dbc_hz",
+    "search_direction": "increasing_value_moves_pass_to_fail",
+    "refinement_iterations": 20,
+    "block_spec_mapping_status": "pending"
+  },
+  "boundary_contract_extraction": {
+    "status": "enabled",
+    "method": "independent_frozen_context_blocktb_replay",
+    "source_boundary_side": "passing",
+    "contract_form": "discrete_conditional_table",
+    "interpolation_allowed": false,
+    "block_spec_mapping_status": "pending"
+  },
+  "conditional_block_spec_allocation": {
+    "status": "enabled",
+    "method": "boundary_measured_behavior_minus_fixed_margin",
+    "condition_axis": "k1_hz_per_v",
+    "allocated_measured_metric": "worst_phase_noise_1mhz_dbc_hz",
+    "requirement_metric": "phase_noise_1mhz_max_dbc_hz",
+    "direction": "upper_bound_more_negative_is_tighter",
+    "engineering_margin": {
+      "type": "fixed_db",
+      "value_db": 1.5,
+      "policy_source": "V1.0 canonical engineering-margin baseline"
+    },
+    "contract_form": "discrete_conditional_table",
+    "interpolation_allowed": false,
+    "candidate_validation_method": "per_condition_least_overdesign_independent_replay"
+    ,"contract_prediction_policy": "block_pass_must_imply_system_pass"
+  },
+  "selection": {
+    "status": "enabled",
+    "method": "lexicographic_interior_min_cost_v1",
+    "require_all_immediate_grid_neighbors_feasible": true,
+    "engineering_cost": "normalized_l1_distance_from_base_vco",
+    "margin_normalization": "negative_residual_over_absolute_limit",
+    "tie_break_order": [
+      "engineering_cost_ascending",
+      "minimum_normalized_active_margin_descending",
+      "point_id_ascending"
+    ],
+    "independent_replay_required": true,
+    "pareto_enabled": false
+  }
+}

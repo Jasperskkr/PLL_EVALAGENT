@@ -34,6 +34,7 @@ WORKFLOW_NODE_TYPES = frozenset(
         "system_requirement",
         "block_requirement",
         "capability_region",
+        "system_feasible_region",
         "design_space",
         "candidate",
         "candidate_knob",
@@ -43,6 +44,7 @@ WORKFLOW_NODE_TYPES = frozenset(
         "measurement_contract",
         "validity_domain",
         "uncertainty_model",
+        "factor",
     }
 )
 GRAPH_STATUSES = frozenset(
@@ -66,6 +68,7 @@ NODE_TYPES = frozenset(
         "system_requirement",
         "block_requirement",
         "capability_region",
+        "system_feasible_region",
         "design_space",
         "candidate",
         "candidate_knob",
@@ -79,6 +82,7 @@ NODE_TYPES = frozenset(
         "evidence",
         "measured_result",
         "evaluation",
+        "factor",
     }
 )
 
@@ -116,6 +120,8 @@ EDGE_TYPES = frozenset(
         "verifies_requirement",
         "yields_verdict",
         "selected_for",
+        "factor_input",
+        "factor_output",
     }
 )
 
@@ -365,3 +371,10 @@ class TypedGraph:
         if self.metadata:
             result["metadata"] = self.metadata
         return result
+
+    def factor_view(self) -> Dict[str, Any]:
+        """Return the factor projection of this canonical graph."""
+
+        from .factors import factor_view
+
+        return factor_view(self.to_dict())

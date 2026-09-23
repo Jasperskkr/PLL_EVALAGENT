@@ -6,27 +6,27 @@
 
 > 给定不可修改的 PLL SystemSpec，如何构造可测试的行为级 Block abstraction，在其中搜索可行的 BlockSpec，并用确定性仿真证明这组规格确实能满足系统指标。
 
-当前仓库先用固定 Integer-N CPPLL 和 VCO 完成 V1.0 最小闭环。长期目标是扩展到多个 PLL Block，再研究由 Agent 协助构建 behavioral design space 和执行规格分配。
+当前仓库先用固定 Integer-N CPPLL 和 VCO 完成 V1.0 最小闭环，并保留了已落地的 V1.5 `PN × Kvco` 多参数分配代码。长期目标是扩展到多个 PLL Block，再研究由 Agent 协助构建 behavioral design space 和执行规格分配。
 
 ## 当前状态
 
 当前 Git 基线为 [`v1.0-baseline`](https://github.com/Jasperskkr/PLL_EVALAGENT/releases/tag/v1.0-baseline)。
 
-V1.0 已经真实运行并验证：
+V1.0 已经真实运行并验证，主干现在明确拆成两个方向：
 
 ```text
-SystemSpec
-  → deterministic SystemTB
-  → residual / finite-difference sensitivity
-  → PN anchor boundary search
-  → frozen-context VCO measurement
-  → measured VCO requirement
-  → candidate VCO
-  → context-aware VCO BlockTB
-  → realized-instance SystemTB validation
+正向：SystemSpec → BlockSpec allocation
+  → deterministic boundary search
+  → frozen-context block measurement
+  → allocated VCO requirement
+
+反向：BlockSpec + realized instance → spec verification
+  → BlockTB
+  → same-instance SystemTB
+  → context coverage / final verdict
 ```
 
-当前正式 deterministic case 仍是一维的，但命名已经拆开：
+V1.0 的正式 deterministic case 仍是一维；V1.5 已有独立的二维 PN anchor × k1 / measured Kvco 行为级 runner。两条路径的命名已经拆开：
 
 ```text
 target_system_metric:   integrated_jitter_s
@@ -36,7 +36,9 @@ allocated_block_metric: worst_phase_noise_1mhz_dbc_hz
 
 `pn_anchor_1mhz_dbc_hz` 是 synthetic VCO model 的 internal knob，不是 Block Requirement。VCO requirement 由 frozen `VCOBlockContext.v1` 下测得的 `worst_phase_noise_1mhz_dbc_hz` 推导。
 
-`Kvco`、VCO tuning curve、Vctrl envelope、power 和 lock-time sensitivity 已作为 characterization/prove evidence 输出，但还没有进入正式的多参数联合 allocation。
+在 V1.0 主路径中，`Kvco`、VCO tuning curve、Vctrl envelope、power 和 lock-time sensitivity 仍主要作为 characterization/prove evidence 输出。
+
+V1.5 已部分实现 `PN × Kvco` 二维 design space、逐点 BlockTB/SystemTB 评估、可行域和候选选择；它是更高维的 allocation/search runner，尚未成为通用多 Block allocation service。
 
 ## V1.0 已验证的结果
 
@@ -56,28 +58,21 @@ allocated_block_metric: worst_phase_noise_1mhz_dbc_hz
 | Final frequency | 5.000 GHz |
 | Final SystemTB | PASS |
 
-V1.0 baseline 的原始测试为 10/10 通过；当前加入 semantic-role graph、schema、unit、semantic-freeze validator 和多类型标量映射测试后，核心 pytest 回归为 23/23 通过。V1 runner 的 SystemTB、BlockTB、scalar bisection 和 candidate replay 仍保持 deterministic。
+V1.0 和 V1.5 的历史回归已完成并用于冻结当前实现；测试代码、临时目录和历史运行产物不作为主干内容保留。当前主干以模块化 round-trip、V1.0/V1.5 三个确定性 runner 和 `v1/` 包中的实现为准。
 
 ## 快速运行
 
 建议使用 Python 3.10+。从仓库根目录运行：
 
 ```powershell
-python -m unittest discover -s tests -v
+python run_jitter_pn_roundtrip_demo.py
 python run_v1_prove.py --case v1\cases\vco_mapping_01.json
-python run_v1_spec_matrix.py
-python run_v1_mapping_suite.py
+python run_v1_5_allocate.py --case v1\cases\vco_multidim_01.json
 ```
 
-结果写入：
+运行结果默认写入被 Git 忽略的 `results/` 目录；也可以通过 `--output-dir` 指定目录。仓库不保留历史运行结果、raw trace 或测试缓存。
 
-```text
-results/v1_vco_mapping_01/
-results/v1_spec_matrix/
-results/v1_scalar_mapping_suite/
-```
-
-最重要的输出包括：
+V1.0 runner 的主要输出包括：
 
 ```text
 summary.md                         # before/after 和最终判定
@@ -85,6 +80,7 @@ sensitivity.json                   # 确定性 sweep 与局部导数
 required_vco_spec_boundary.json   # PN boundary search 证据
 required_vco_spec.json             # 无 margin 的 required spec
 recommended_vco_spec.json         # 加 margin 后的推荐 spec
+spec_allocation_report.json       # 正向 SystemSpec -> BlockSpec allocation report
 block_feasibility.json             # BlockTB + SystemTB candidate 结果
 final_system_evaluation.json      # 最终 SystemTB 结果
 vco_pll_graph.json                 # 当前图结构和 sensitivity evidence
@@ -93,16 +89,9 @@ vco_block_meta_v1.json             # VCO 的四部分 BlockMetaSchema 实例
 trajectory.jsonl                   # 可回放执行轨迹
 ```
 
-`run_v1_spec_matrix.py` 另外执行 6 组完整正向 case 和 2 组负向控制 case，生成 SystemSpec → VCO PN 分配表、PN 边界两侧 PASS/FAIL 表、candidate 回代 BlockTB/SystemTB 表和一维分配拒绝表。
+`initial_system_raw.json` 和 `system_raw_*.json` 等逐周期 raw trace 很大；它们和摘要、关键证据一样，都由 runner 在运行时重新生成。
 
-`run_v1_mapping_suite.py` 在不改变 PN baseline 的情况下，复用同一
-SystemTB/BlockTB 执行四类一维映射：jitter→PN、lock time→VCO `k1`、
-power→nominal power、frequency→`f0`/tuning coverage。每个 case 都要求初始
-目标失败、边界两侧可辨识、candidate 通过冻结 context 下的 BlockTB，并由独立
-SystemTB 回代。宽范围 probe 同时检查该关系是单边界还是仅在局部 validity
-bracket 内成立。
-
-`initial_system_raw.json` 和 `system_raw_*.json` 等逐周期 raw trace 很大，按 `.gitignore` 忽略；它们由 runner 重新生成，摘要和关键证据仍被跟踪。
+这些输出都是运行时 evidence，不是源码的一部分。
 
 ## 当前实现如何分工
 
@@ -114,7 +103,10 @@ v1/pipeline.py
     SystemTB、residual、characterization、sweep、sensitivity、PN boundary、BlockTB
 
 run_v1_prove.py
-    V1 runner、candidate selection、artifact/report/trajectory 生成
+    V1.0 runner、candidate selection、artifact/report/trajectory 生成
+
+run_v1_5_allocate.py
+    部分 V1.5 的 PN × Kvco 设计空间、可行域、候选选择和 Graph audit
 
 v1/specs.py
     SystemSpec、VCORequirement、CandidateDefinition
@@ -128,11 +120,168 @@ v1/schema/
 v1/graph/
     typed graph model、V1 compatibility graph 和 semantic-role graph compiler/validators
 
+v1/workflow/
+    与 Block 无关的 spec-closure 编排；九个依赖注入阶段及当前 VCO adapters
+
 v1/allocation/
-    DesignVector candidate-knob compiler 和 measured-Behavior evaluator
+    SpecAllocationRequest/Report、正向 allocation service、DesignVector、二维 design space、可行域和 selection
 
 v1/agent_actions.py
     Agent action 白名单与治理约束
+```
+
+## 模块化 Spec Closure 主流程
+
+`run_v1_prove.py` 保留为 V1.0 完整证明与兼容 runner；可扩展主入口是
+`v1.workflow.run_spec_closure()`。它不直接导入 VCO 数值模型，所有 Block 专用行为都
+通过模块插槽注入：
+
+```text
+SpecClosureRequest
+  → BlockDefinitionProvider
+  → BaselineEvaluator
+  → ContextBuilder
+  → AllocationModule
+  → CandidateProvider
+  → CandidateRealizer
+  → AssignmentVerifier
+  → CandidateSelector
+  → EvidenceFinalizer
+  → SpecClosureReport
+```
+
+各阶段的 protocol 定义在 `v1/workflow/protocols.py`，通用编排在
+`v1/workflow/service.py`，当前 VCO 实现在 `v1/workflow/vco.py`。因此扩展时的修改边界是：
+
+| 扩展目标 | 替换/新增模块 | 不需要修改 |
+|---|---|---|
+| `PN × Kvco × power` 多维分配 | `AllocationModule`、design-space provider/selector | workflow service |
+| 新增 CP、LF、Divider Block | Block definition、realizer、verifier adapter | workflow service |
+| 行为模型替换为 Spectre/SPICE | candidate realizer、verification backend | allocation/graph orchestration |
+| Agent 构建 Block | `BlockDefinitionProvider` | deterministic schema validator |
+| Agent 提议候选/搜索区间 | `CandidateProvider` / `AllocationModule` proposal adapter | BlockTB/SystemTB verdict |
+| 新的排序/Pareto 策略 | `CandidateSelector` | evaluator/backend |
+
+Agent 产出的 block definition 和 candidate 都只能以 `proposed` 身份进入；
+`v1/schema/workflow.py` 先验证字段、单位、指标引用、design variable 和禁止权限，最终
+PASS 只能由 deterministic verification 与 Graph audit 给出。
+
+## 正向 allocation 与反向 verification 边界
+
+这两个方向是两个独立的一等服务，不能混称为 verification：
+
+```text
+SystemSpec + allocation problem + base model/context
+                ↓
+      allocate_system_spec()
+                ↓
+       allocated BlockSpec
+```
+
+```text
+SystemSpec + allocated BlockSpec + realized instance/context
+                ↓
+      verify_block_assignment()
+                ↓
+       BlockTB/SystemTB report
+```
+
+正向 allocation 的稳定边界：
+
+```text
+v1/api/allocation.py
+    SpecAllocationRequest / SpecAllocationReport
+
+v1/backends/protocol.py
+    AllocationBackend
+
+v1/backends/synthetic.py
+    SyntheticVCOAllocationBackend（当前 V1.0 PN boundary allocator）
+
+v1/allocation/service.py
+    allocate_system_spec()
+```
+
+反向 verification 的稳定边界：
+
+```text
+v1/api/verification.py
+    VerificationRequest / VerificationReport
+
+v1/backends/
+    backend protocol；当前 SyntheticVCOBackend，后续可替换 MATLAB、Spectre、SPICE 或 measurement backend
+
+v1/verification/
+    context coverage、BlockTB/SystemTB 编排和统一 verify_block_assignment()
+
+v1/model/ + v1/pipeline.py
+    当前 Python 行为模型和确定性数值内核
+
+run_v1_prove.py / run_v1_5_allocate.py
+    薄层 runner；负责 case、allocation、报告和 Graph artifact 投影
+
+results/
+    运行时 evidence，不属于源码树，默认被 Git 忽略
+```
+
+`run_v1_prove.py` 现在先写出 `spec_allocation_report.json`，再对每个
+candidate 调用 verification；因此 candidate search 是 allocation 后的候选实现选择，
+不是 allocation service 本身。V1.5 runner 继续负责二维 design-space allocation/search，
+其中每个点的 BlockTB/SystemTB 复用同一个 verification service。
+
+两条统一入口的输入/输出关系是：
+
+```text
+SpecAllocationRequest
+  = SystemSpec + AllocationProblem + BaseInstance + OperatingContext + Backend
+                         ↓
+              allocate_system_spec()
+                         ↓
+SpecAllocationReport
+  = AllocatedBlockSpec + BoundaryEvidence + Provenance
+
+VerificationRequest
+  = SystemSpec + BlockSpec + RealizedInstance + OperatingContext + Backend
+                         ↓
+              verify_block_assignment()
+                         ↓
+VerificationReport
+  = BlockTB + validation-mode SystemTB + ContextCoverage + FailureReasons
+```
+
+V1.0 runner 先通过 allocation service 得到 BlockSpec，再通过 verification service
+验证候选；V1.5 多参数 evaluator 负责设计空间 allocation/search，并复用 verification
+执行每个点的 BlockTB/SystemTB。后续替换真实电路或真实搜索器时，优先新增 backend
+adapter，不修改上层 request/report 和 verdict 规则。
+
+## Jitter ↔ VCO PN round-trip demo
+
+可以用下面的轻量 demo 检查“系统 jitter 分配到 VCO PN，再用 PN candidate 回代系统
+jitter”的闭环：
+
+```powershell
+python run_jitter_pn_roundtrip_demo.py
+```
+
+它会依次执行两个方向：
+
+```text
+初始 SystemTB（jitter FAIL）
+  → 正向 `allocate_system_spec()` 生成 VCO PN BlockSpec
+  → candidate realization
+  → 反向 `verify_block_assignment()` 执行 BlockTB + SystemTB
+  → jitter PASS / round-trip PASS
+```
+
+这个 demo 已经通过完整的模块化主流程执行，而不是手工串接两个函数。输入是
+`v1/cases/jitter_pn_roundtrip_01.json`，输出为：
+
+```text
+results/jitter_pn_roundtrip_demo/
+  spec_closure_report.json       # 完整 workflow I/O
+  allocation_report.json         # 正向 allocation 投影
+  workflow_graph_v2.json         # allocation/verification 证据图
+  workflow_graph_audit.json      # Schema + Graph 闭环审计
 ```
 
 核心治理规则是：
@@ -142,7 +291,7 @@ Workflow artifacts are objects, not Block Graph layers.
 Deterministic tools validate every accepted numeric claim.
 ```
 
-当前代码没有把 LLM 作为 V1 数值内核，也没有让 Agent 修改 SystemSpec、猜测 sensitivity 或宣布 PASS。V1 使用 deterministic baseline 证明流程；未来 Agent 只能作为候选动作提出器，不能替换 SystemTB、BlockTB 和独立 evaluator。
+当前代码没有把 LLM 作为 V1/V1.5 数值内核，也没有让 Agent 修改 SystemSpec、猜测 sensitivity 或宣布 PASS。现阶段保留 deterministic baseline；未来 Agent 只能作为候选动作提出器，不能替换 SystemTB、BlockTB 和独立 evaluator。
 
 ## 图结构和 Schema 的定位
 
@@ -165,7 +314,7 @@ V1 是 behavioral mapping proof，不是 transistor-level PLL signoff。当前�
 - VCO 支持非线性 tuning、Kvco、context-dependent phase noise 和 power；
 - 当前 jitter 只包含 VCO phase-noise contribution；CP、divider 和连续时间 loop-filter noise 尚未作为独立 signoff-quality source 建模；
 - `cp_current`、R/C 参数已保留接口，但当前 effective loop gains 仍是简化模型；
-- Python 是 V1 canonical runner，MATLAB 用于方程级交叉验证；
+- Python 是 V1 canonical runner，MATLAB 文件仅作为早期方程级交叉验证参考；
 - Synthetic behavioral candidate 不能替代真实 PSS/PNOISE、SpectreRF 或 silicon measurement。
 
 ## 文档导航
@@ -184,11 +333,13 @@ V1 是 behavioral mapping proof，不是 transistor-level PLL signoff。当前�
 
 ## 下一步
 
-近期优先级不是重写 V1，而是在已完成的 semantic-role schema/graph 上继续扩展。以下都是后续阶段，不属于本次 semantic freeze：
+当前优先级是把已验证的 V1.5 数值能力逐步接入模块化 workflow。后续阶段包括：
 
-1. 实现 `PN × Kvco` 的二维 feasible-region 搜索，保留 V1 一维结果作为 regression control；
-2. 将 sampled feasible points、constraint residual 和 Pareto candidate 纳入正式 allocation artifact；
+1. 将现有 `PN × Kvco` design-space runner 封装为新的 `AllocationModule`，保留 V1 一维结果作为 regression control；
+2. 将 sampled feasible points、constraint residual 和 Pareto candidate 统一投影到 `SpecClosureReport`；
 3. 再引入 CP、Loop Filter、Divider 的 cross-block context；
 4. 让 Agent 负责 contract/connection/search proposal，并由 deterministic tools 验证和升级 graph 状态。
 
-详细路线见 [`PROJECT_PLAN.md`](PROJECT_PLAN.md)。
+详细路线见 [`PROJECT_PLAN.md`](PROJECT_PLAN.md)，新会话开发交接见
+[`docs/V1.5_PROJECT_INTRODUCTION.md`](docs/V1.5_PROJECT_INTRODUCTION.md)，当前二维输入/输出和
+正式 BlockSpec 见 [`docs/V1.5_CURRENT_INPUT_OUTPUT.md`](docs/V1.5_CURRENT_INPUT_OUTPUT.md)。

@@ -17,6 +17,11 @@ from .queries import (
 from .planes import EDGE_PLANE_RULES, GRAPH_PLANES
 from .model import GRAPH_SEMANTIC_ROLES
 from .audit import audit_allocation_graph, build_agent_goal_context
+from .audit_v15 import audit_v15_graph
+from .compiler_v15 import build_v15_graph_artifact
+from .compiler_workflow import build_spec_closure_graph
+from .audit_workflow import audit_spec_closure_graph
+from .factors import Factor, add_factor_to_graph, audit_factor_graph, factor_view
 
 __all__ = [
     "TypedGraph",
@@ -37,4 +42,12 @@ __all__ = [
     "EDGE_PLANE_RULES",
     "audit_allocation_graph",
     "build_agent_goal_context",
+    "audit_v15_graph",
+    "build_v15_graph_artifact",
+    "build_spec_closure_graph",
+    "audit_spec_closure_graph",
+    "Factor",
+    "add_factor_to_graph",
+    "audit_factor_graph",
+    "factor_view",
 ]

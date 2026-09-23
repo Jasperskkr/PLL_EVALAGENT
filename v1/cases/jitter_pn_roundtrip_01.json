@@ -1,0 +1,86 @@
+{
+  "case_id": "jitter_pn_roundtrip_01",
+  "description": "Modular SystemSpec jitter to VCO PN allocation and reverse verification reference case.",
+  "system_spec": {
+    "pll": {"f_ref_hz": 50000000.0, "divider_n": 100},
+    "target_frequency_hz": 5000000000.0,
+    "limits": {
+      "output_frequency_tolerance_hz": 100000.0,
+      "integrated_jitter_max_s": 8.0e-14,
+      "lock_time_max_s": 4.0e-5,
+      "power_max_w": 8.0e-3
+    },
+    "operating_context": {
+      "vdd_v": 1.8,
+      "temperature_points_c": [25.0],
+      "vctrl_initial_v": 0.3,
+      "vctrl_min_v": 0.1,
+      "vctrl_max_v": 1.1
+    },
+    "jitter": {"f_low_hz": 10.0, "f_high_hz": 20000000.0, "points": 240}
+  },
+  "base_instance": {},
+  "block_definition": {
+    "schema_version": "block-definition-1.0",
+    "block_id": "VCO",
+    "block_type": "voltage_controlled_oscillator",
+    "design_variables": [
+      {"name": "pn_anchor_1mhz_dbc_hz", "unit": "dBc/Hz"}
+    ],
+    "behavior_metrics": [
+      {"name": "worst_phase_noise_1mhz_dbc_hz", "unit": "dBc/Hz"}
+    ],
+    "system_influences": [
+      {
+        "source_metric": "worst_phase_noise_1mhz_dbc_hz",
+        "target_metric": "integrated_jitter_s",
+        "system_requirement_id": "SystemSpec.integrated_jitter",
+        "system_check": "integrated_jitter",
+        "mechanism": "PLL noise transfer and phase-noise integration",
+        "unit": "s",
+        "limit": 8.0e-14
+      }
+    ],
+    "requirement_mapping": {
+      "block_requirement_id": "BlockRequirement.allocated",
+      "metric": "phase_noise_1mhz_max_dbc_hz",
+      "measured_metric": "worst_phase_noise_1mhz_dbc_hz",
+      "system_requirement_id": "SystemSpec.integrated_jitter",
+      "search_knob": "pn_anchor_1mhz_dbc_hz"
+    }
+  },
+  "allocation_problem": {
+    "target_system_metric": "integrated_jitter_s",
+    "search_knob": "pn_anchor_1mhz_dbc_hz",
+    "allocated_block_metric": "worst_phase_noise_1mhz_dbc_hz",
+    "loose_bound_dbc_hz": -110.0,
+    "tight_bound_dbc_hz": -125.0,
+    "iterations": 24,
+    "recommended_margin_db": 1.5,
+    "initial_block_spec": {
+      "phase_noise_1mhz_max_dbc_hz": -116.0,
+      "power_max_w": 8.0e-3,
+      "margin_db": 0.0
+    }
+  },
+  "candidate_proposals": [
+    {
+      "schema_version": "candidate-proposal-1.0",
+      "proposal_id": "proposal.vco.low_noise",
+      "candidate_id": "candidate_low_noise",
+      "block_id": "VCO",
+      "source": "deterministic_reference_case",
+      "status": "proposed",
+      "design_vector": {"pn_anchor_1mhz_dbc_hz": -122.0},
+      "engineering_cost": 1.0,
+      "rationale": "Use a lower-noise VCO candidate to close the allocated jitter requirement.",
+      "evidence_refs": ["forward_allocation.boundary"],
+      "requested_verification": ["block_tb", "system_tb", "context_coverage"]
+    }
+  ],
+  "workflow_policy": {
+    "context_guard_v": 0.01,
+    "verification_block_spec": "allocated",
+    "keep_raw": false
+  }
+}

@@ -49,7 +49,8 @@ BlockMeta
 
 运行时结构校验：[`../v1/schema/block_schema.py`](../v1/schema/block_schema.py)
 
-当前 V1 实例化输出：`results/v1_vco_mapping_01/vco_block_meta_v1.json`。
+当前 V1 实例化输出会在运行时写入 `results/`（该目录被 Git 忽略），例如
+`results/v1_vco_mapping_01/vco_block_meta_v1.json`。
 
 ### 2.1 Architecture
 

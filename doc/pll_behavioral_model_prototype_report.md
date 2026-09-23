@@ -24,7 +24,7 @@ Python 模型：
 
 Python 运行入口：
 
-[run_pll_demo.py](run_pll_demo.py)
+当前 canonical 入口为 `run_v1_prove.py`；早期的 `run_pll_demo.py` 已清理。
 
 MATLAB 模型：
 
@@ -32,9 +32,8 @@ MATLAB 模型：
 
 示例输出：
 
-[results/python_pll_demo.json](results/python_pll_demo.json)
-
-[results/matlab_pll_demo.json](results/matlab_pll_demo.json)
+历史 Python/MATLAB JSON 输出已清理，运行时 evidence 默认写入被 Git 忽略的
+`results/` 目录。
 
 ## 3. 模型结构
 
@@ -149,14 +148,14 @@ Integrated jitter 使用 VCO phase noise 通过一个简化的 PLL high-pass noi
 Python：
 
 ~~~powershell
-python .\run_pll_demo.py --output .\results\python_pll_demo.json
+python run_v1_prove.py --case v1\cases\vco_mapping_01.json
 ~~~
 
 MATLAB：
 
 ~~~powershell
 $matlab = (Get-Command matlab).Source
-& $matlab -batch "addpath('matlab'); r=pll_behavioral_demo('results/matlab_pll_demo.json'); fprintf('locked=%d fGHz=%.9f lock_us=%.6f jitter_fs=%.6f vctrl=%.9f\n', r.locked, r.simulation_cycles, r.metrics.output_frequency_hz/1e9, r.metrics.lock_time_s*1e6, r.metrics.integrated_jitter_s*1e15, r.metrics.final_vctrl_v);"
+MATLAB 版本仍保留在 `matlab/pll_behavioral_demo.m`，作为早期方程级参考，不属于当前 canonical runner。
 ~~~
 
 ## 7. 本次运行结果

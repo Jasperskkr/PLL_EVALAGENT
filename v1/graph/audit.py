@@ -6,6 +6,7 @@ from typing import Any, Dict, Mapping, Sequence
 
 from .queries import trace_paths
 from .validators import validate_graph_v2_artifact
+from .factors import audit_factor_graph
 
 
 def _node_map(graph: Mapping[str, Any]) -> Dict[str, Mapping[str, Any]]:
@@ -48,6 +49,14 @@ def audit_allocation_graph(
         diagnostics.append(str(exc))
 
     nodes = _node_map(graph)
+    metadata = graph.get("metadata", {})
+    factor_audit = audit_factor_graph(
+        graph,
+        required_factor_ids=metadata.get("factor_ids", ()),
+    )
+    if metadata.get("factor_schema_version") is not None:
+        checks["factor_schema_and_closure"] = factor_audit["passed"]
+        diagnostics.extend(factor_audit.get("diagnostics", []))
     outcome = graph.get("metadata", {}).get("allocation_outcome")
     checks["outcome_declared"] = outcome in {"allocated", "rejected"}
     if outcome == "rejected":
@@ -82,7 +91,7 @@ def audit_allocation_graph(
         )
         if expected is not None:
             checks["blocking_checks_match_artifact"] = blocking == set(expected.get("blocking_checks", []))
-        return {"passed": all(checks.values()), "outcome": outcome, "checks": checks, "diagnostics": diagnostics}
+        return {"passed": all(checks.values()), "outcome": outcome, "checks": checks, "diagnostics": diagnostics, "factor_audit": factor_audit}
 
     selected_markers = [edge for edge in _edges(graph, "selected_for") if edge.get("target") == "Candidate.selected"]
     checks["exactly_one_selected_candidate"] = len(selected_markers) == 1
@@ -157,7 +166,7 @@ def audit_allocation_graph(
         checks["final_systemtb_matches_artifact"] = final_props.get("metrics") == expected.get("final_system", {}).get("metrics") and final_props.get("residuals") == expected.get("final_system", {}).get("residuals")
         checks["final_context_coverage_matches_artifact"] = nodes["Context.SystemTB.final"]["properties"].get("coverage") == expected.get("final_context_coverage")
 
-    return {"passed": all(checks.values()), "outcome": outcome, "selected_candidate": selected_id, "checks": checks, "diagnostics": diagnostics}
+    return {"passed": all(checks.values()), "outcome": outcome, "selected_candidate": selected_id, "checks": checks, "diagnostics": diagnostics, "factor_audit": factor_audit}
 
 
 def build_agent_goal_context(graph: Mapping[str, Any]) -> Dict[str, Any]:
