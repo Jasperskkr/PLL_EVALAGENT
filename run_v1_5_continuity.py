@@ -11,18 +11,23 @@ production requirement.
 from __future__ import annotations
 
 import argparse
-import csv
-from hashlib import sha256
 import json
 from pathlib import Path
-from typing import Any, Dict, Iterable, Mapping, Sequence
+from typing import Any, Dict, Mapping, Sequence
 
 from v1.allocation.design_space import DesignPointDefinition, DesignSpaceDefinition
 from v1.allocation.multidim_evaluator import evaluate_design_point
 from v1.api.verification import VerificationRequest
 from v1.backends.synthetic import SyntheticVCOBackend
 from v1.model.pll_behavioral import VCOParams
-from v1.pipeline import build_vco_instance, write_json
+from v1.model.instances import build_vco_instance
+from v1.io import (
+    evidence_digest,
+    file_sha256,
+    read_json,
+    write_csv,
+    write_evidence_json as write_json,
+)
 from v1.specs import SystemSpec, VCORequirement, load_case
 from v1.verification.service import verify_block_assignment
 
@@ -47,38 +52,8 @@ PREDICTION_ACCEPTANCE_TOLERANCE_DB = 0.01
 CONTRACT_EDGE_OFFSET_DB = 0.20
 
 
-def _read_json(path: Path) -> Dict[str, Any]:
-    return json.loads(path.read_text(encoding="utf-8"))
-
-
 def _read_jsonl(path: Path) -> list[Dict[str, Any]]:
     return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line]
-
-
-def _file_sha256(path: Path) -> str:
-    return sha256(path.read_bytes()).hexdigest()
-
-
-def _digest(value: Mapping[str, Any]) -> str:
-    payload = json.dumps(
-        value,
-        ensure_ascii=False,
-        sort_keys=True,
-        separators=(",", ":"),
-        allow_nan=False,
-    )
-    return sha256(payload.encode("utf-8")).hexdigest()
-
-
-def _write_csv(rows: Sequence[Mapping[str, Any]], path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    if not rows:
-        path.write_text("", encoding="utf-8")
-        return
-    with path.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
-        writer.writeheader()
-        writer.writerows(rows)
 
 
 def _compact_record(record: Mapping[str, Any]) -> Dict[str, Any]:
@@ -800,8 +775,8 @@ def run(
     boundary_contract_path = source / "boundary_block_contract.json"
     block_spec_map_path = source / "conditional_block_spec_map.json"
     sampled_points_path = source / "sampled_points.jsonl"
-    boundary_contract = _read_json(boundary_contract_path)
-    block_spec_map = _read_json(block_spec_map_path)
+    boundary_contract = read_json(boundary_contract_path)
+    block_spec_map = read_json(block_spec_map_path)
     sampled_records = _read_jsonl(sampled_points_path)
 
     if boundary_contract.get("entry_count") != 9 or block_spec_map.get("entry_count") != 9:
@@ -821,20 +796,19 @@ def run(
 
     frozen_manifest = {
         "status": "frozen_for_continuity_experiment",
-        "source_dir": str(source),
         "source_artifacts": {
             "boundary_block_contract.json": {
-                "file_sha256": _file_sha256(boundary_contract_path),
+                "file_sha256": file_sha256(boundary_contract_path),
                 "internal_contract_sha256": boundary_contract["contract_sha256"],
             },
             "conditional_block_spec_map.json": {
-                "file_sha256": _file_sha256(block_spec_map_path),
+                "file_sha256": file_sha256(block_spec_map_path),
                 "internal_block_spec_map_sha256": block_spec_map[
                     "block_spec_map_sha256"
                 ],
             },
             "sampled_points.jsonl": {
-                "file_sha256": _file_sha256(sampled_points_path),
+                "file_sha256": file_sha256(sampled_points_path),
                 "record_count": len(sampled_records),
             },
         },
@@ -880,8 +854,8 @@ def run(
         "coupling_rows": coupling_rows,
     }
     write_json(predictor, output / "continuous_boundary_prediction.json")
-    _write_csv(known_rows, output / "boundary_evolution.csv")
-    _write_csv(coupling_rows, output / "coupling_analysis.csv")
+    write_csv(known_rows, output / "boundary_evolution.csv")
+    write_csv(coupling_rows, output / "coupling_analysis.csv")
 
     pn_axis = next(
         axis for axis in design_space.axes if axis.name == "pn_anchor_1mhz_dbc_hz"
@@ -976,7 +950,7 @@ def run(
         },
         output / "offgrid_boundary_allocations.json",
     )
-    _write_csv(
+    write_csv(
         [
             {
                 key: value
@@ -1022,7 +996,7 @@ def run(
         },
         output / "offgrid_candidate_replay.json",
     )
-    _write_csv(
+    write_csv(
         [
             {
                 "k1_ghz_per_v": entry["condition"]["k1_ghz_per_v"],
@@ -1050,12 +1024,13 @@ def run(
     abs_anchor_errors = [
         abs(float(entry["boundary_pn_anchor_error_db"])) for entry in offgrid_allocations
     ]
-    replay_validation = _read_json(output / "offgrid_candidate_replay.json")
-    plot_name = _build_plot(
+    replay_validation = read_json(output / "offgrid_candidate_replay.json")
+    plot_name = "boundary_evolution.png"
+    _build_plot(
         known_rows=known_rows,
         offgrid_rows=offgrid_allocations,
         coupling_rows=coupling_rows,
-        output=output / "boundary_evolution.png",
+        output=output / plot_name,
     )
     summary = {
         "schema_version": "v1.5-continuity-validation-summary-1.0",
@@ -1137,7 +1112,7 @@ def run(
             "boundary_evolution_plot": plot_name,
         },
     }
-    summary["summary_sha256"] = _digest(summary)
+    summary["summary_sha256"] = evidence_digest(summary)
     write_json(summary, output / "continuity_validation_summary.json")
     lines = [
         f"# V1.5 continuity validation: `{summary['case_id']}`",

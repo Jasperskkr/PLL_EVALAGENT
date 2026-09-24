@@ -17,9 +17,14 @@ class AllocationBackend(Protocol):
 
 class BlockBackend(Protocol):
     backend_id: str
+    judgment: str
 
-    def validate_block(self, request: VerificationRequest) -> Mapping[str, Any]:
-        """Measure a realized block and evaluate its BlockSpec."""
+    def measure_block(self, request: VerificationRequest) -> Mapping[str, Any]:
+        """Observe a realized block; BlockSpec judgment belongs to the service.
+
+        ``judgment`` names the policy the service applies to the observation,
+        so the injected adapter and the judgment can never disagree.
+        """
 
 
 class SystemBackend(Protocol):

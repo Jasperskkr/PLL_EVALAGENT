@@ -58,19 +58,31 @@ V1.5 已部分实现 `PN × Kvco` 二维 design space、逐点 BlockTB/SystemTB 
 | Final frequency | 5.000 GHz |
 | Final SystemTB | PASS |
 
-V1.0 和 V1.5 的历史回归已完成并用于冻结当前实现；测试代码、临时目录和历史运行产物不作为主干内容保留。当前主干以模块化 round-trip、V1.0/V1.5 三个确定性 runner 和 `v1/` 包中的实现为准。
+V1.0 和 V1.5 的历史回归已完成并用于冻结当前实现。仓库保留已有的
+`results/v1_vco_mapping_01` 历史基线；新的本地运行产物默认由 Git 忽略，
+可重复的数值与 artifact 摘要断言保存在 `tests/`。当前主干以模块化
+round-trip、V1.0/V1.5 确定性 runner 和 `v1/` 包中的实现为准。
 
 ## 快速运行
 
-建议使用 Python 3.10+。从仓库根目录运行：
+项目统一使用 Python 3.13。首次使用时，从仓库根目录创建并安装项目环境：
 
 ```powershell
-python run_jitter_pn_roundtrip_demo.py
-python run_v1_prove.py --case v1\cases\vco_mapping_01.json
-python run_v1_5_allocate.py --case v1\cases\vco_multidim_01.json
+py -3.13 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -e ".[test]"
 ```
 
-运行结果默认写入被 Git 忽略的 `results/` 目录；也可以通过 `--output-dir` 指定目录。仓库不保留历史运行结果、raw trace 或测试缓存。
+后续直接使用项目环境运行，避免调用系统中其他版本的 Python：
+
+```powershell
+.\.venv\Scripts\python.exe run_jitter_pn_roundtrip_demo.py
+.\.venv\Scripts\python.exe run_v1_prove.py --case v1\cases\vco_mapping_01.json
+.\.venv\Scripts\python.exe run_v1_5_allocate.py --case v1\cases\vco_multidim_01.json
+.\.venv\Scripts\python.exe -m pytest -q
+```
+
+运行结果默认写入被 Git 忽略的 `results/` 目录；也可以通过 `--output-dir`
+指定目录。除已有 V1.0 历史基线外，仓库不新增 raw trace 或临时运行目录。
 
 V1.0 runner 的主要输出包括：
 
@@ -99,8 +111,23 @@ trajectory.jsonl                   # 可回放执行轨迹
 v1/model/pll_behavioral.py
     averaged reference-cycle Integer-N CPPLL + nonlinear/context-aware VCO
 
+v1/evaluation/
+    纯数值测量：SystemTB、VCO characterization、sensitivity、scalar boundary search
+
+v1/verification/
+    BlockSpec 判定、约束解析、BlockTB/SystemTB 编排、context coverage
+
+v1/allocation/
+    正向分配、二维 design space、边界、区域、候选选择和 replay evidence
+
+v1/backends/
+    可替换测量/仿真适配器；包入口只公开 protocol，不隐式加载实现
+
 v1/pipeline.py
-    SystemTB、residual、characterization、sweep、sensitivity、PN boundary、BlockTB
+    旧 API 的兼容 facade；不再承载业务逻辑，新代码不要在这里扩展
+
+v1/io.py
+    JSON/CSV、严格 evidence JSON 和统一 SHA-256
 
 run_v1_prove.py
     V1.0 runner、candidate selection、artifact/report/trajectory 生成
@@ -123,12 +150,16 @@ v1/graph/
 v1/workflow/
     与 Block 无关的 spec-closure 编排；九个依赖注入阶段及当前 VCO adapters
 
-v1/allocation/
-    SpecAllocationRequest/Report、正向 allocation service、DesignVector、二维 design space、可行域和 selection
-
 v1/agent_actions.py
     Agent action 白名单与治理约束
 ```
+
+SystemTB 的 `trajectory_envelope` 是仿真实际走过的轨迹；BlockTB 的
+`characterization_window` 是声明并冻结的表征窗口。旧 artifact 中的 `context`
+字段暂时保留为兼容别名，新代码应使用两个显式名称。
+
+模型输出的 `effective_noise_shaping_bandwidth_hz` 是行为级 PN 噪声整形参数，
+不是从闭环响应提取的物理环路带宽。历史字段 `loop_bandwidth_hz` 暂时保留为同值别名。
 
 ## 模块化 Spec Closure 主流程
 

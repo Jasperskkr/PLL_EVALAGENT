@@ -14,20 +14,11 @@ outer service boundary.
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass, is_dataclass
+from dataclasses import dataclass
 from typing import Any, Mapping
 
+from ..io import jsonable
 from ..specs import SystemSpec
-
-
-def _jsonable(value: Any) -> Any:
-    if is_dataclass(value):
-        return {key: _jsonable(item) for key, item in asdict(value).items()}
-    if isinstance(value, Mapping):
-        return {str(key): _jsonable(item) for key, item in value.items()}
-    if isinstance(value, (list, tuple)):
-        return [_jsonable(item) for item in value]
-    return value
 
 
 @dataclass(frozen=True)
@@ -49,10 +40,10 @@ class SpecAllocationRequest:
             "request_id": self.request_id,
             "block_id": self.block_id,
             "backend_id": self.backend_id,
-            "system_spec": _jsonable(self.system_spec.to_dict()),
-            "base_instance": _jsonable(self.base_instance),
-            "operating_context": _jsonable(self.operating_context),
-            "allocation_problem": _jsonable(self.allocation_problem),
+            "system_spec": jsonable(self.system_spec.to_dict()),
+            "base_instance": jsonable(self.base_instance),
+            "operating_context": jsonable(self.operating_context),
+            "allocation_problem": jsonable(self.allocation_problem),
             "keep_raw": self.keep_raw,
         }
 
@@ -79,11 +70,11 @@ class SpecAllocationReport:
             "request_id": self.request_id,
             "status": self.status,
             "allocated": self.allocated,
-            "allocated_block_spec": _jsonable(self.allocated_block_spec),
-            "recommended_block_spec": _jsonable(self.recommended_block_spec),
-            "evidence": _jsonable(self.evidence),
+            "allocated_block_spec": jsonable(self.allocated_block_spec),
+            "recommended_block_spec": jsonable(self.recommended_block_spec),
+            "evidence": jsonable(self.evidence),
             "failure_reasons": list(self.failure_reasons),
-            "provenance": _jsonable(self.provenance),
+            "provenance": jsonable(self.provenance),
         }
 
 

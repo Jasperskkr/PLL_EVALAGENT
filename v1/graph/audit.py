@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict, Mapping, Sequence
+from typing import Any, Dict, Mapping
 
 from .queries import trace_paths
 from .validators import validate_graph_v2_artifact

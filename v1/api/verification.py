@@ -8,20 +8,11 @@ the same outer contract.
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass, is_dataclass
-from typing import Any, Mapping, Optional
+from dataclasses import dataclass
+from typing import Any, Mapping
 
+from ..io import jsonable
 from ..specs import SystemSpec, VCORequirement
-
-
-def _jsonable(value: Any) -> Any:
-    if is_dataclass(value):
-        return {key: _jsonable(item) for key, item in asdict(value).items()}
-    if isinstance(value, Mapping):
-        return {str(key): _jsonable(item) for key, item in value.items()}
-    if isinstance(value, (list, tuple)):
-        return [_jsonable(item) for item in value]
-    return value
 
 
 @dataclass(frozen=True)
@@ -49,10 +40,10 @@ class VerificationRequest:
             "request_id": self.request_id,
             "block_id": self.block_id,
             "backend_id": self.backend_id,
-            "system_spec": _jsonable(system_payload),
-            "block_spec": _jsonable(block_payload),
-            "realized_instance": _jsonable(self.realized_instance),
-            "operating_context": _jsonable(self.operating_context),
+            "system_spec": jsonable(system_payload),
+            "block_spec": jsonable(block_payload),
+            "realized_instance": jsonable(self.realized_instance),
+            "operating_context": jsonable(self.operating_context),
             "keep_raw": self.keep_raw,
         }
 
@@ -79,11 +70,11 @@ class VerificationReport:
             "request_id": self.request_id,
             "status": self.status,
             "passed": self.passed,
-            "block_tb": _jsonable(self.block_tb),
-            "system_tb": _jsonable(self.system_tb),
-            "context_coverage": _jsonable(self.context_coverage),
+            "block_tb": jsonable(self.block_tb),
+            "system_tb": jsonable(self.system_tb),
+            "context_coverage": jsonable(self.context_coverage),
             "failure_reasons": list(self.failure_reasons),
-            "provenance": _jsonable(self.provenance),
+            "provenance": jsonable(self.provenance),
         }
 
 

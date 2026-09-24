@@ -12,7 +12,7 @@ import json
 import math
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Tuple
+from typing import Any, Dict, Iterable, List, Optional
 
 
 @dataclass(frozen=True)
@@ -33,6 +33,19 @@ class VCOParams:
     pn_vctrl_coeff_db_per_v: float = 8.0
     pn_temp_coeff_db_per_c: float = 0.018
     pn_power_coeff_db_per_decade: float = -3.0
+
+    def __post_init__(self) -> None:
+        for name, value in asdict(self).items():
+            if not math.isfinite(value):
+                raise ValueError(f"VCO parameter {name} must be finite")
+        if self.f0_hz <= 0.0:
+            raise ValueError("f0_hz must be positive")
+        if self.vctrl_min_v >= self.vctrl_max_v:
+            raise ValueError("VCO vctrl_min_v must be lower than vctrl_max_v")
+        if not self.vctrl_min_v <= self.v0_v <= self.vctrl_max_v:
+            raise ValueError("VCO v0_v must be inside the Vctrl range")
+        if self.nominal_power_w <= 0.0:
+            raise ValueError("nominal_power_w must be positive")
 
     def frequency_hz(self, vctrl_v: float, temperature_c: float) -> float:
         """Nonlinear tuning curve f(Vctrl, temperature)."""
@@ -122,6 +135,27 @@ class CPPLLParams:
     jitter_points: int = 240
     loop_bandwidth_hz: Optional[float] = None
 
+    def __post_init__(self) -> None:
+        if self.f_ref_hz <= 0.0 or self.divider_n <= 0:
+            raise ValueError("f_ref_hz and divider_n must be positive")
+        if self.vctrl_min_v >= self.vctrl_max_v:
+            raise ValueError("PLL vctrl_min_v must be lower than vctrl_max_v")
+        if not self.vctrl_min_v <= self.vctrl_initial_v <= self.vctrl_max_v:
+            raise ValueError("PLL vctrl_initial_v must be inside the Vctrl range")
+        if self.max_cycles <= 0 or self.lock_consecutive_cycles <= 0:
+            raise ValueError("simulation and lock cycle counts must be positive")
+        if self.lock_consecutive_cycles > self.max_cycles:
+            raise ValueError("lock_consecutive_cycles cannot exceed max_cycles")
+        if not 0.0 < self.jitter_f_low_hz < self.jitter_f_high_hz:
+            raise ValueError("jitter integration frequencies must satisfy 0 < low < high")
+        if self.jitter_points < 2:
+            raise ValueError("jitter_points must be at least 2")
+        if self.loop_bandwidth_hz is not None and (
+            not math.isfinite(self.loop_bandwidth_hz)
+            or self.loop_bandwidth_hz <= 0.0
+        ):
+            raise ValueError("loop_bandwidth_hz must be finite and positive")
+
 
 def _clip(value: float, lower: float, upper: float) -> float:
     return min(max(value, lower), upper)
@@ -138,7 +172,14 @@ def _logspace(start: float, stop: float, points: int) -> Iterable[float]:
 def estimate_loop_bandwidth_hz(
     pll: CPPLLParams, vco: VCOParams, vctrl_v: float
 ) -> float:
-    """Return an effective bandwidth for the phase-noise approximation."""
+    """Return the heuristic bandwidth used only for PN noise shaping.
+
+    This value is not extracted from the simulated closed-loop response and
+    must not be presented as a transistor-level or measured loop bandwidth.
+    Kvco already participates in the simulated feedback plant through
+    ``VCOParams.frequency_hz(vctrl)``; the square-root Kvco term here is the
+    behavioral noise-transfer approximation used by ``integrated_vco_jitter_s``.
+    """
     if pll.loop_bandwidth_hz is not None:
         return max(1.0, pll.loop_bandwidth_hz)
 
@@ -208,6 +249,7 @@ def simulate_cppll(
         max(pll.vctrl_min_v, vco.vctrl_min_v),
         min(pll.vctrl_max_v, vco.vctrl_max_v),
     )
+    initial_vctrl_v = vctrl
     integrator = 0.0
     phase_reference_cycles = 0.0
     phase_divided_cycles = 0.0
@@ -276,6 +318,9 @@ def simulate_cppll(
 
     vctrl_values = [item["vctrl_v"] for item in history]
     fosc_values = [item["fosc_hz"] for item in history]
+    noise_shaping_bandwidth_hz = estimate_loop_bandwidth_hz(
+        pll, vco, final_vctrl_v
+    )
     metrics: Dict[str, Optional[float]] = {
         "output_frequency_hz": final_output_frequency_hz,
         "integrated_jitter_s": integrated_jitter,
@@ -295,14 +340,19 @@ def simulate_cppll(
             10.0e6, final_vctrl_v, pll.temperature_c, final_power_w
         ),
         "kvco_hz_per_v": vco.kvco_hz_per_v(final_vctrl_v),
-        "loop_bandwidth_hz": estimate_loop_bandwidth_hz(
-            pll, vco, final_vctrl_v
-        ),
+        # Compatibility name retained for V1.0/V1.5 artifacts. New consumers
+        # should use the explicit effective-noise-shaping name below.
+        "loop_bandwidth_hz": noise_shaping_bandwidth_hz,
+        "effective_noise_shaping_bandwidth_hz": noise_shaping_bandwidth_hz,
         "final_relative_frequency_error": final_relative_error,
         "final_vctrl_v": final_vctrl_v,
     }
 
-    context = {
+    lower_rail_v = max(pll.vctrl_min_v, vco.vctrl_min_v)
+    upper_rail_v = min(pll.vctrl_max_v, vco.vctrl_max_v)
+    rail_tolerance_v = 1.0e-12
+    movement = final_vctrl_v - initial_vctrl_v
+    trajectory_envelope = {
         "vctrl_min_v": min(vctrl_values),
         "vctrl_max_v": max(vctrl_values),
         "fosc_min_hz": min(fosc_values),
@@ -311,6 +361,20 @@ def simulate_cppll(
         "vdd_v": pll.vdd_v,
         "divider_n": pll.divider_n,
         "f_ref_hz": pll.f_ref_hz,
+        "reached_lower_rail": min(vctrl_values) <= lower_rail_v + rail_tolerance_v,
+        "reached_upper_rail": max(vctrl_values) >= upper_rail_v - rail_tolerance_v,
+        "settled_from": {
+            "initial_vctrl_v": initial_vctrl_v,
+            "final_vctrl_v": final_vctrl_v,
+            "direction": (
+                "increasing"
+                if movement > rail_tolerance_v
+                else "decreasing"
+                if movement < -rail_tolerance_v
+                else "stationary"
+            ),
+        },
+        "semantics": "observed_simulation_trajectory_envelope",
     }
 
     return {
@@ -318,7 +382,16 @@ def simulate_cppll(
         "mode": "reference_cycle_phase_domain",
         "target_frequency_hz": target_frequency_hz,
         "metrics": metrics,
-        "context": context,
+        "trajectory_envelope": trajectory_envelope,
+        # Backward-compatible alias. New code must use trajectory_envelope so
+        # it cannot be confused with the BlockTB characterization contract.
+        "context": trajectory_envelope,
+        "metric_semantics": {
+            "loop_bandwidth_hz": (
+                "compatibility alias for effective_noise_shaping_bandwidth_hz; "
+                "heuristic PN-transfer parameter, not extracted loop bandwidth"
+            )
+        },
         "locked": lock_cycle is not None,
         "lock_cycle": lock_cycle,
         "simulation_cycles": len(history),

@@ -2,13 +2,12 @@
 
 from __future__ import annotations
 
-from hashlib import sha256
-import json
 from math import prod
 from typing import Any, Dict, Mapping, Sequence
 
+from ..evaluation.constraints import BEHAVIOR_VECTOR_FIELDS
+from ..io import evidence_digest
 from .design_space import DesignSpaceDefinition
-from .multidim_evaluator import BEHAVIOR_VECTOR_FIELDS
 
 
 SYSTEM_METRIC_FIELDS = (
@@ -17,17 +16,6 @@ SYSTEM_METRIC_FIELDS = (
     "output_frequency_hz",
     "power_w",
 )
-
-
-def _artifact_digest(value: Mapping[str, Any]) -> str:
-    payload = json.dumps(
-        value,
-        ensure_ascii=False,
-        sort_keys=True,
-        separators=(",", ":"),
-        allow_nan=False,
-    )
-    return sha256(payload.encode("utf-8")).hexdigest()
 
 
 def _record_map(
@@ -180,7 +168,7 @@ def build_capability_region(
             "deterministic": True,
         },
     }
-    artifact["region_sha256"] = _artifact_digest(artifact)
+    artifact["region_sha256"] = evidence_digest(artifact)
     return artifact
 
 
@@ -271,7 +259,7 @@ def build_system_feasible_region(
             "deterministic": True,
         },
     }
-    artifact["region_sha256"] = _artifact_digest(artifact)
+    artifact["region_sha256"] = evidence_digest(artifact)
     return artifact
 
 

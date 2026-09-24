@@ -11,9 +11,9 @@ from ..backends.protocol import BlockBackend
 def run_block_tb(
     request: VerificationRequest, backend: BlockBackend
 ) -> Mapping[str, Any]:
-    """Delegate block measurement and requirement checks to the backend."""
+    """Collect block measurements from the backend; the service judges them."""
 
-    return backend.validate_block(request)
+    return backend.measure_block(request)
 
 
 __all__ = ["run_block_tb"]

@@ -9,10 +9,9 @@ a discrete conditional contract, not yet an engineering-margin BlockSpec.
 from __future__ import annotations
 
 from dataclasses import asdict
-from hashlib import sha256
-import json
 from typing import Any, Dict, Mapping
 
+from ..io import evidence_digest
 from ..model.pll_behavioral import VCOParams
 from ..specs import SystemSpec
 from .design_space import DesignPointDefinition, DesignSpaceDefinition
@@ -22,17 +21,6 @@ from .multidim_evaluator import evaluate_design_point
 CONTRACT_METHOD = "independent_frozen_context_blocktb_replay"
 CONTRACT_STATUS = "validated_boundary_block_contract"
 WORKFLOW_OUTCOME = "boundary_block_contract_extracted_block_spec_pending"
-
-
-def _digest(value: Mapping[str, Any]) -> str:
-    payload = json.dumps(
-        value,
-        ensure_ascii=False,
-        sort_keys=True,
-        separators=(",", ":"),
-        allow_nan=False,
-    )
-    return sha256(payload.encode("utf-8")).hexdigest()
 
 
 def _measurement_context(case: Mapping[str, Any]) -> Dict[str, Any]:
@@ -47,6 +35,14 @@ def _measurement_context(case: Mapping[str, Any]) -> Dict[str, Any]:
         "source": context.get("source", "frozen VCOBlockContext"),
         "context_id": context["context_id"],
     }
+
+
+def _context_contract_matches(
+    actual: Mapping[str, Any], expected: Mapping[str, Any]
+) -> bool:
+    """Compare contract fields while allowing additive observation metadata."""
+
+    return all(actual.get(name) == value for name, value in expected.items())
 
 
 def _unchanged_hidden_parameters(
@@ -162,8 +158,12 @@ def extract_boundary_block_contract(
                 replay["system_tb"]["residuals"]
                 == source_passing["system_residuals"]
             ),
-            "frozen_context_matches": replay["block_tb"]["context"]
-            == expected_context,
+            "frozen_context_matches": _context_contract_matches(
+                replay["block_tb"].get(
+                    "characterization_window", replay["block_tb"]["context"]
+                ),
+                expected_context,
+            ),
             "context_covered": (
                 bool(replay["context_coverage"]["passed"])
                 and bool(source_passing["context_covered"])
@@ -322,7 +322,7 @@ def extract_boundary_block_contract(
             "random_seed": None,
         },
     }
-    artifact["contract_sha256"] = _digest(artifact)
+    artifact["contract_sha256"] = evidence_digest(artifact)
     return artifact
 
 

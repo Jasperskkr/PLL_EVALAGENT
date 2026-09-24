@@ -8,7 +8,8 @@ from typing import Any
 
 from v1.api.workflow import SpecClosureRequest
 from v1.model.pll_behavioral import VCOParams
-from v1.pipeline import build_vco_instance, write_json
+from v1.model.instances import build_vco_instance
+from v1.io import write_json
 from v1.specs import SystemSpec, load_case
 from v1.workflow import (
     GraphEvidenceFinalizer,

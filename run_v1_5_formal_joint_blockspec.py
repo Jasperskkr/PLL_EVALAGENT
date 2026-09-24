@@ -18,8 +18,6 @@ from __future__ import annotations
 
 import argparse
 import csv
-import json
-from hashlib import sha256
 from pathlib import Path
 from typing import Any, Dict, Mapping, Sequence
 
@@ -27,8 +25,9 @@ from v1.allocation.design_space import DesignPointDefinition, DesignSpaceDefinit
 from v1.allocation.multidim_evaluator import evaluate_design_point
 from v1.api.verification import VerificationRequest
 from v1.backends.synthetic import SyntheticVCOConstraintBackend
+from v1.io import evidence_digest, read_json, write_evidence_json
 from v1.model.pll_behavioral import VCOParams
-from v1.pipeline import build_vco_instance
+from v1.model.instances import build_vco_instance
 from v1.specs import SystemSpec, load_case
 from v1.verification.service import verify_block_assignment
 
@@ -40,18 +39,6 @@ DEFAULT_CASE = ROOT / "v1" / "cases" / "vco_multidim_01.json"
 DEFAULT_SOURCE = ROOT / "results" / "v1_5_kvco_mapping_v1_5"
 DEFAULT_HOLDOUT = ROOT / "results" / "v1_5_joint_boundary_validation_v1_5"
 DEFAULT_OUTPUT = ROOT / "results" / "v1_5_formal_joint_blockspec_v1_5"
-
-
-def _digest(value: Mapping[str, Any]) -> str:
-    payload = json.dumps(value, ensure_ascii=False, sort_keys=True,
-                         separators=(",", ":"), allow_nan=False)
-    return sha256(payload.encode("utf-8")).hexdigest()
-
-
-def _write_json(value: Any, path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True),
-                    encoding="utf-8")
 
 
 def _formal_constraints(
@@ -164,7 +151,7 @@ def _evaluate_formal_candidate(
             request_id=f"{case['case_id']}:formal-joint:{candidate_id}",
             keep_raw=False,
         ),
-        backend=SyntheticVCOConstraintBackend(case),
+        backend=SyntheticVCOConstraintBackend(),
     )
     replay_identical = (
         verification["system_tb"]["metrics"] == evaluated["system_tb"]["metrics"]
@@ -222,10 +209,12 @@ def run(
     holdout = Path(holdout_dir).resolve()
     output = Path(output_dir).resolve()
     output.mkdir(parents=True, exist_ok=True)
+    mapping_artifact = read_json(source / "measured_kvco_mapping.json")
+    axis_decision = read_json(source / "joint_contract_axis_decision.json")
     rows = _known_contract_rows(source)
     if len(rows) != 9:
         raise ValueError(f"expected nine canonical rows, got {len(rows)}")
-    holdout_artifact = json.loads((holdout / "joint_boundary_validation.json").read_text(encoding="utf-8"))
+    holdout_artifact = read_json(holdout / "joint_boundary_validation.json")
     holdout_validation = holdout_artifact["validation"]
     required_holdout_checks = (
         holdout_validation["inside_joint_contract_all_pass"],
@@ -415,8 +404,14 @@ def run(
         "allocation_provenance": {
             "v1_0_reference": "PN boundary -> frozen-context BlockTB -> 1.5 dB margin -> BlockSpec",
             "v1_5_extension": "measured Kvco window + PN_spec(measured Kvco) joint contract",
-            "source_provisional_contract": str(source / "../v1_5_joint_contract_v1_5" / "provisional_joint_contract.json"),
-            "source_holdout": str(holdout / "joint_boundary_validation.json"),
+            "source_mapping_artifact": "measured_kvco_mapping.json",
+            "source_mapping_sha256": mapping_artifact["mapping_sha256"],
+            "source_axis_decision_artifact": "joint_contract_axis_decision.json",
+            "source_axis_decision_sha256": axis_decision["decision_sha256"],
+            "source_holdout_artifact": "joint_boundary_validation.json",
+            "source_holdout_validation_sha256": holdout_artifact[
+                "validation_sha256"
+            ],
         },
         "validation": {"checks": checks, "candidate_validation": validation},
         "claim_boundary": (
@@ -425,9 +420,9 @@ def run(
             "or transistor-level signoff."
         ),
     }
-    contract["contract_sha256"] = _digest(contract)
-    _write_json(contract, output / "formal_2d_blockspec.json")
-    _write_json({
+    contract["contract_sha256"] = evidence_digest(contract)
+    write_evidence_json(contract, output / "formal_2d_blockspec.json")
+    write_evidence_json({
         "schema_version": "v1.5-formal-2d-blockspec-candidate-validation-1.0",
         "status": "formal_2d_blockspec_candidate_validation_passed",
         "source_contract_sha256": contract["contract_sha256"],

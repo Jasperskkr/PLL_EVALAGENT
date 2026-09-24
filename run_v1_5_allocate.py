@@ -3,9 +3,7 @@
 from __future__ import annotations
 
 import argparse
-import csv
 from hashlib import sha256
-import json
 from pathlib import Path
 from typing import Any, Dict, Iterable, Mapping, Sequence
 
@@ -27,23 +25,14 @@ from v1.model.pll_behavioral import VCOParams
 from v1.graph.audit_v15 import audit_v15_graph
 from v1.graph.compiler_v15 import build_v15_graph_artifact
 from v1.graph.queries import factor_view
-from v1.pipeline import build_vco_instance, write_json
+from v1.model.instances import build_vco_instance
+from v1.io import canonical_evidence_json, write_csv, write_evidence_json as write_json
 from v1.specs import SystemSpec, load_case
 
 
 ROOT = Path(__file__).resolve().parent
 DEFAULT_CASE = ROOT / "v1" / "cases" / "vco_multidim_01.json"
 DEFAULT_OUTPUT = ROOT / "results" / "v1_5_vco_multidim_01"
-
-
-def _json_line(value: Mapping[str, Any]) -> str:
-    return json.dumps(
-        value,
-        ensure_ascii=False,
-        sort_keys=True,
-        separators=(",", ":"),
-        allow_nan=False,
-    )
 
 
 def _write_jsonl(
@@ -53,7 +42,7 @@ def _write_jsonl(
     digest = sha256()
     with path.open("w", encoding="utf-8", newline="\n") as handle:
         for record in records:
-            line = _json_line(record) + "\n"
+            line = canonical_evidence_json(record) + "\n"
             handle.write(line)
             digest.update(line.encode("utf-8"))
     return digest.hexdigest()
@@ -149,17 +138,6 @@ def _block_spec_csv_row(entry: Mapping[str, Any]) -> Dict[str, Any]:
         "power_max_w": allocated["power_max_w"],
         "condition_semantics": entry["condition_semantics"],
     }
-
-
-def _write_csv(rows: Sequence[Mapping[str, Any]], path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    if not rows:
-        path.write_text("", encoding="utf-8")
-        return
-    with path.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
-        writer.writeheader()
-        writer.writerows(rows)
 
 
 def _exclusive_failure_counts(
@@ -278,7 +256,7 @@ def run(
         output / "design_space.json",
     )
     sample_set_sha256 = _write_jsonl(records, output / "sampled_points.jsonl")
-    _write_csv([_csv_row(record) for record in records], output / "sampled_points.csv")
+    write_csv([_csv_row(record) for record in records], output / "sampled_points.csv")
 
     system_boundary_map = build_system_boundary_map(
         case=case,
@@ -301,7 +279,7 @@ def run(
         boundary_block_contract,
         output / "boundary_block_contract.json",
     )
-    _write_csv(
+    write_csv(
         [
             _contract_csv_row(entry)
             for entry in boundary_block_contract["entries"]
@@ -317,7 +295,7 @@ def run(
         conditional_block_spec_map,
         output / "conditional_block_spec_map.json",
     )
-    _write_csv(
+    write_csv(
         [
             _block_spec_csv_row(entry)
             for entry in conditional_block_spec_map["entries"]

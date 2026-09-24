@@ -15,43 +15,20 @@ BlockSpec allocation or transistor-level signoff.
 from __future__ import annotations
 
 import argparse
-import csv
-from hashlib import sha256
-import json
 from pathlib import Path
 from typing import Any, Dict, Mapping, Sequence
+
+from v1.io import (
+    evidence_digest,
+    file_sha256,
+    read_json,
+    write_csv,
+    write_evidence_json,
+)
 
 ROOT = Path(__file__).resolve().parent
 DEFAULT_SOURCE = ROOT / "results" / "v1_5_continuity_v1_5"
 DEFAULT_OUTPUT = ROOT / "results" / "v1_5_kvco_mapping_v1_5"
-
-
-def _read_json(path: Path) -> Dict[str, Any]:
-    return json.loads(path.read_text(encoding="utf-8"))
-
-
-def _digest(value: Mapping[str, Any]) -> str:
-    payload = json.dumps(
-        value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False
-    )
-    return sha256(payload.encode("utf-8")).hexdigest()
-
-
-def _write_json(value: Any, path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True), encoding="utf-8")
-
-
-def _write_csv(rows: Sequence[Mapping[str, Any]], path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
-        writer.writeheader()
-        writer.writerows(rows)
-
-
-def _file_sha256(path: Path) -> str:
-    return sha256(path.read_bytes()).hexdigest()
 
 
 def _monotonic(values: Sequence[float], direction: str) -> bool:
@@ -88,7 +65,7 @@ def _linear_fit(x: Sequence[float], y: Sequence[float]) -> Dict[str, float]:
 
 
 def _boundary_rows(source: Path) -> list[Dict[str, Any]]:
-    frozen = _read_json(source / "frozen_conditional_contracts.json")
+    frozen = read_json(source / "frozen_conditional_contracts.json")
     snapshot = frozen["snapshot"]["boundary_block_contract"]
     rows: list[Dict[str, Any]] = []
     for entry in snapshot["entries"]:
@@ -124,7 +101,7 @@ def _boundary_rows(source: Path) -> list[Dict[str, Any]]:
                 ),
             }
         )
-    offgrid = _read_json(source / "offgrid_boundary_allocations.json")
+    offgrid = read_json(source / "offgrid_boundary_allocations.json")
     for item in offgrid["entries"]:
         detail = item["detail"]
         behavior = detail["boundary_replay"]["behavior_vector"]
@@ -185,6 +162,7 @@ def run(source_dir: str | Path = DEFAULT_SOURCE, output_dir: str | Path = DEFAUL
     source = Path(source_dir).resolve()
     output = Path(output_dir).resolve()
     output.mkdir(parents=True, exist_ok=True)
+    continuity_summary = read_json(source / "continuity_validation_summary.json")
     rows = _boundary_rows(source)
     if len(rows) != 17:
         raise ValueError(f"expected 17 mapped/off-grid boundary rows, got {len(rows)}")
@@ -244,9 +222,15 @@ def run(source_dir: str | Path = DEFAULT_SOURCE, output_dir: str | Path = DEFAUL
         "schema_version": "v1.5-measured-kvco-mapping-1.0",
         "status": "measured_behavior_axis_qualification",
         "source": {
-            "directory": str(source),
             "frozen_contracts": "frozen_conditional_contracts.json",
             "offgrid_boundaries": "offgrid_boundary_allocations.json",
+            "frozen_contracts_file_sha256": file_sha256(
+                source / "frozen_conditional_contracts.json"
+            ),
+            "offgrid_boundaries_file_sha256": file_sha256(
+                source / "offgrid_boundary_allocations.json"
+            ),
+            "continuity_summary_sha256": continuity_summary["summary_sha256"],
         },
         "row_count": len(rows),
         "rows": rows,
@@ -256,13 +240,14 @@ def run(source_dir: str | Path = DEFAULT_SOURCE, output_dir: str | Path = DEFAUL
             "joint PN-Kvco contract. It does not allocate a Kvco requirement."
         ),
     }
-    rows_json["mapping_sha256"] = _digest(rows_json)
-    _write_json(rows_json, output / "measured_kvco_mapping.json")
-    _write_csv(rows, output / "measured_kvco_mapping.csv")
+    rows_json["mapping_sha256"] = evidence_digest(rows_json)
+    write_evidence_json(rows_json, output / "measured_kvco_mapping.json")
+    write_csv(rows, output / "measured_kvco_mapping.csv")
     decision["source_mapping_sha256"] = rows_json["mapping_sha256"]
-    decision["decision_sha256"] = _digest(decision)
-    _write_json(decision, output / "joint_contract_axis_decision.json")
+    decision["decision_sha256"] = evidence_digest(decision)
+    write_evidence_json(decision, output / "joint_contract_axis_decision.json")
 
+    optional_plot_artifact = "k1_to_measured_kvco.png"
     try:
         import matplotlib.pyplot as plt
 
@@ -281,11 +266,10 @@ def run(source_dir: str | Path = DEFAULT_SOURCE, output_dir: str | Path = DEFAUL
         axes[1].set_ylabel("PN_spec (dBc/Hz)")
         axes[1].set_title("Candidate joint-contract projection")
         axes[1].grid(True, alpha=0.3)
-        plot_name = "k1_to_measured_kvco.png"
-        fig.savefig(output / plot_name, dpi=160)
+        fig.savefig(output / optional_plot_artifact, dpi=160)
         plt.close(fig)
     except Exception:
-        plot_name = None
+        pass
 
     report = {
         "schema_version": "v1.5-measured-kvco-report-1.0",
@@ -298,14 +282,15 @@ def run(source_dir: str | Path = DEFAULT_SOURCE, output_dir: str | Path = DEFAUL
         "selected_axis_fit": analyses[selected_axis]["pn_spec_linear_fit"],
         "all_three_axes_monotonic": decision["checks"]["all_three_axes_monotonic"],
         "joint_contract_allocation_started": False,
-        "plot": plot_name,
+        "optional_plot_artifact": optional_plot_artifact,
+        "plot_is_excluded_from_scientific_evidence": True,
         "next_step": (
             "define and validate a Kvco window/margin policy, then generate joint "
             "PN-Kvco candidate contracts and replay boundary-adjacent candidates"
         ),
     }
-    report["report_sha256"] = _digest(report)
-    _write_json(report, output / "measured_kvco_report.json")
+    report["report_sha256"] = evidence_digest(report)
+    write_evidence_json(report, output / "measured_kvco_report.json")
     (output / "measured_kvco_report.md").write_text(
         "\n".join(
             [

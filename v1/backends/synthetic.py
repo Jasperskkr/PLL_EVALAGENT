@@ -7,26 +7,13 @@ from typing import Any, Mapping
 
 from ..api.allocation import SpecAllocationRequest
 from ..api.verification import VerificationRequest
+from ..evaluation.constraints import behavior_vector
+from ..evaluation.system import evaluate_system
+from ..evaluation.vco import measure_vco_behavior
+from ..evaluation.scalar import search_required_pn_boundary
+from ..model.instances import build_vco_instance
 from ..model.pll_behavioral import VCOParams
-from ..pipeline import (
-    build_vco_instance,
-    evaluate_system,
-    measure_vco_behavior,
-    search_required_pn_boundary,
-    validate_vco_spec,
-)
 from ..specs import VCORequirement
-from ..verification.constraints import evaluate_block_constraints
-
-
-BEHAVIOR_VECTOR_FIELDS = (
-    "worst_phase_noise_1mhz_dbc_hz",
-    "kvco_min_hz_per_v",
-    "kvco_max_hz_per_v",
-    "frequency_min_hz",
-    "frequency_max_hz",
-    "worst_power_w",
-)
 
 
 class SyntheticVCOAllocationBackend:
@@ -91,9 +78,10 @@ class SyntheticVCOAllocationBackend:
 
 
 class SyntheticVCOBackend:
-    """Use the existing VCO/SystemTB implementation behind stable seams."""
+    """Measure the existing VCO/SystemTB implementation behind stable seams."""
 
     backend_id = "synthetic_vco_v1"
+    judgment = "vco_requirement"
 
     @staticmethod
     def _instance(request: VerificationRequest) -> VCOParams:
@@ -104,19 +92,11 @@ class SyntheticVCOBackend:
             return VCOParams(**dict(instance))
         raise TypeError("synthetic_vco_v1 expects VCOParams or a parameter mapping")
 
-    @staticmethod
-    def _requirement(request: VerificationRequest) -> VCORequirement:
-        spec = request.block_spec
-        if isinstance(spec, VCORequirement):
-            return spec
-        if isinstance(spec, Mapping):
-            return VCORequirement.from_dict(spec)
-        raise TypeError("synthetic_vco_v1 expects a VCORequirement block spec")
+    def measure_block(self, request: VerificationRequest) -> Mapping[str, Any]:
+        """Observe realized block behavior; BlockSpec judgment stays above."""
 
-    def validate_block(self, request: VerificationRequest) -> Mapping[str, Any]:
-        return validate_vco_spec(
+        return measure_vco_behavior(
             request.system_spec,
-            self._requirement(request),
             self._instance(request),
             request.operating_context,
         )
@@ -133,36 +113,19 @@ class SyntheticVCOBackend:
 
 
 class SyntheticVCOConstraintBackend(SyntheticVCOBackend):
-    """V1.5 adapter for declarative measured-behavior constraints."""
+    """V1.5 adapter measuring the declarative behavior-vector vocabulary."""
 
-    def __init__(self, case: Mapping[str, Any]):
-        self.case = case
-        self.backend_id = "synthetic_vco_v1_constraint_set"
+    backend_id = "synthetic_vco_v1_constraint_set"
+    judgment = "constraint_set"
 
-    def validate_block(self, request: VerificationRequest) -> Mapping[str, Any]:
+    def measure_block(self, request: VerificationRequest) -> Mapping[str, Any]:
         measurement = measure_vco_behavior(
             request.system_spec,
             self._instance(request),
             request.operating_context,
             vctrl_points=int(request.operating_context.get("vctrl_points", 11)),
         )
-        worst = measurement["worst_case"]
-        behavior_vector = {
-            name: float(worst[name]) for name in BEHAVIOR_VECTOR_FIELDS
-        }
-        constraints = list(request.block_spec.get("constraints", []))
-        verdict = evaluate_block_constraints(
-            self.case,
-            behavior_vector,
-            constraints,
-        )
-        return {
-            **verdict,
-            "measurement_method": measurement["measurement_method"],
-            "provenance": measurement["provenance"],
-            "context": measurement["context"],
-            "behavior_vector": behavior_vector,
-        }
+        return {**measurement, "behavior_vector": behavior_vector(measurement)}
 
 
 __all__ = [

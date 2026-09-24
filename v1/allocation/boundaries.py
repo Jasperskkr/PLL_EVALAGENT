@@ -8,10 +8,9 @@ here.
 
 from __future__ import annotations
 
-from hashlib import sha256
-import json
 from typing import Any, Dict, Mapping, Sequence
 
+from ..io import evidence_digest
 from ..model.pll_behavioral import VCOParams
 from ..specs import SystemSpec
 from .design_space import DesignPointDefinition, DesignSpaceDefinition
@@ -20,17 +19,6 @@ from .multidim_evaluator import evaluate_design_point
 
 BOUNDARY_METHOD = "sampled_bracket_then_deterministic_bisection"
 BOUNDARY_OUTCOME = "system_boundary_mapped_block_spec_pending"
-
-
-def _digest(value: Mapping[str, Any]) -> str:
-    payload = json.dumps(
-        value,
-        ensure_ascii=False,
-        sort_keys=True,
-        separators=(",", ":"),
-        allow_nan=False,
-    )
-    return sha256(payload.encode("utf-8")).hexdigest()
 
 
 def _system_passed(record: Mapping[str, Any]) -> bool:
@@ -342,7 +330,7 @@ def build_system_boundary_map(
             "random_seed": None,
         },
     }
-    artifact["boundary_map_sha256"] = _digest(artifact)
+    artifact["boundary_map_sha256"] = evidence_digest(artifact)
     return artifact
 
 
@@ -351,4 +339,3 @@ __all__ = [
     "BOUNDARY_OUTCOME",
     "build_system_boundary_map",
 ]
-

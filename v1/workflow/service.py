@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, replace
-from typing import Any, Mapping
+from typing import Any
 
 from ..api.workflow import SpecClosureReport, SpecClosureRequest, jsonable
 from ..schema.workflow import (
@@ -118,7 +118,7 @@ def run_spec_closure(
                         ),
                     }
                 )
-            except Exception as exc:
+            except (TypeError, ValueError) as exc:
                 evaluations.append(
                     {
                         "candidate_id": str(proposal["candidate_id"]),

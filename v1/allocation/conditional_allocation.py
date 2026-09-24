@@ -8,12 +8,10 @@ It does not interpolate across k1 or invent requirements for unmapped slices.
 
 from __future__ import annotations
 
-from hashlib import sha256
-import json
 from typing import Any, Dict, Mapping, Sequence
 
 from ..api.verification import VerificationRequest
-from ..backends.synthetic import SyntheticVCOBackend
+from ..io import evidence_digest
 from ..model.pll_behavioral import VCOParams
 from ..specs import SystemSpec, VCORequirement
 from ..verification.service import verify_block_assignment
@@ -25,17 +23,6 @@ ALLOCATION_METHOD = "boundary_measured_behavior_minus_fixed_margin"
 VALIDATION_METHOD = "per_condition_least_overdesign_independent_replay"
 ALLOCATION_STATUS = "allocated_on_mapped_slices"
 WORKFLOW_OUTCOME = "conditional_block_spec_allocated_and_validated_on_mapped_slices"
-
-
-def _digest(value: Mapping[str, Any]) -> str:
-    payload = json.dumps(
-        value,
-        ensure_ascii=False,
-        sort_keys=True,
-        separators=(",", ":"),
-        allow_nan=False,
-    )
-    return sha256(payload.encode("utf-8")).hexdigest()
 
 
 def build_conditional_block_spec_map(
@@ -213,7 +200,7 @@ def build_conditional_block_spec_map(
             "random_seed": None,
         },
     }
-    artifact["block_spec_map_sha256"] = _digest(artifact)
+    artifact["block_spec_map_sha256"] = evidence_digest(artifact)
     return artifact
 
 
@@ -334,7 +321,6 @@ def validate_conditional_block_spec_map(
                 ),
                 keep_raw=False,
             ),
-            backend=SyntheticVCOBackend(),
         )
         verification_metrics_match = (
             verification["system_tb"]["metrics"]
@@ -466,7 +452,7 @@ def validate_conditional_block_spec_map(
             "random_seed": None,
         },
     }
-    artifact["validation_sha256"] = _digest(artifact)
+    artifact["validation_sha256"] = evidence_digest(artifact)
     return artifact
 
 
@@ -521,7 +507,6 @@ def validate_conditional_contract_prediction(
                     ),
                     keep_raw=False,
                 ),
-                backend=SyntheticVCOBackend(),
             )
             system_pass = bool(report["system_tb"]["passed"])
             block_pass = bool(report["block_tb"]["passed"])
@@ -682,7 +667,7 @@ def validate_conditional_contract_prediction(
             "random_seed": None,
         },
     }
-    artifact["prediction_sha256"] = _digest(artifact)
+    artifact["prediction_sha256"] = evidence_digest(artifact)
     return artifact
 
 

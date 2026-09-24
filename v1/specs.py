@@ -9,8 +9,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Mapping, Optional
+from typing import Any, Dict, Mapping, Optional
 import json
+import math
 
 
 def _as_float(value: Any) -> float:
@@ -40,13 +41,57 @@ class SystemSpec:
     lock_time_max_s: float
     power_max_w: Optional[float]
     vdd_v: float
-    temperature_points_c: List[float]
+    temperature_points_c: tuple[float, ...]
     vctrl_initial_v: float
     vctrl_min_v: float
     vctrl_max_v: float
     jitter_f_low_hz: float
     jitter_f_high_hz: float
     jitter_points: int
+
+    def __post_init__(self) -> None:
+        scalar_values = {
+            "f_ref_hz": self.f_ref_hz,
+            "target_frequency_hz": self.target_frequency_hz,
+            "output_frequency_tolerance_hz": self.output_frequency_tolerance_hz,
+            "integrated_jitter_max_s": self.integrated_jitter_max_s,
+            "lock_time_max_s": self.lock_time_max_s,
+            "vdd_v": self.vdd_v,
+            "vctrl_initial_v": self.vctrl_initial_v,
+            "vctrl_min_v": self.vctrl_min_v,
+            "vctrl_max_v": self.vctrl_max_v,
+            "jitter_f_low_hz": self.jitter_f_low_hz,
+            "jitter_f_high_hz": self.jitter_f_high_hz,
+        }
+        non_finite = sorted(
+            name for name, value in scalar_values.items() if not math.isfinite(value)
+        )
+        if non_finite:
+            raise ValueError(f"SystemSpec has non-finite values: {non_finite}")
+        if self.f_ref_hz <= 0.0 or self.divider_n <= 0 or self.target_frequency_hz <= 0.0:
+            raise ValueError("PLL frequencies and divider_n must be positive")
+        if self.output_frequency_tolerance_hz < 0.0:
+            raise ValueError("output_frequency_tolerance_hz must be nonnegative")
+        if self.integrated_jitter_max_s <= 0.0 or self.lock_time_max_s <= 0.0:
+            raise ValueError("jitter and lock-time limits must be positive")
+        if self.power_max_w is not None and (
+            not math.isfinite(self.power_max_w) or self.power_max_w <= 0.0
+        ):
+            raise ValueError("power_max_w must be finite and positive")
+        if self.vdd_v <= 0.0:
+            raise ValueError("vdd_v must be positive")
+        if not self.temperature_points_c or any(
+            not math.isfinite(value) for value in self.temperature_points_c
+        ):
+            raise ValueError("temperature_points_c must be non-empty and finite")
+        if self.vctrl_min_v >= self.vctrl_max_v:
+            raise ValueError("vctrl_min_v must be lower than vctrl_max_v")
+        if not self.vctrl_min_v <= self.vctrl_initial_v <= self.vctrl_max_v:
+            raise ValueError("vctrl_initial_v must be inside the Vctrl window")
+        if not 0.0 < self.jitter_f_low_hz < self.jitter_f_high_hz:
+            raise ValueError("jitter integration frequencies must satisfy 0 < low < high")
+        if self.jitter_points < 2:
+            raise ValueError("jitter_points must be at least 2")
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "SystemSpec":
@@ -75,7 +120,7 @@ class SystemSpec:
                 else _as_float(limits["power_max_w"])
             ),
             vdd_v=_as_float(context.get("vdd_v", pll.get("vdd_v", 1.8))),
-            temperature_points_c=[_as_float(item) for item in temperatures],
+            temperature_points_c=tuple(_as_float(item) for item in temperatures),
             vctrl_initial_v=_as_float(
                 context.get("vctrl_initial_v", pll.get("vctrl_initial_v", 0.30))
             ),
@@ -102,7 +147,7 @@ class SystemSpec:
             },
             "operating_context": {
                 "vdd_v": self.vdd_v,
-                "temperature_points_c": self.temperature_points_c,
+                "temperature_points_c": list(self.temperature_points_c),
                 "vctrl_initial_v": self.vctrl_initial_v,
                 "vctrl_min_v": self.vctrl_min_v,
                 "vctrl_max_v": self.vctrl_max_v,
@@ -125,6 +170,27 @@ class VCORequirement:
     kvco_max_hz_per_v: Optional[float] = None
     power_max_w: Optional[float] = None
     margin_db: float = 0.0
+
+    def __post_init__(self) -> None:
+        if not math.isfinite(self.phase_noise_1mhz_max_dbc_hz):
+            raise ValueError("phase_noise_1mhz_max_dbc_hz must be finite")
+        for name in (
+            "tuning_range_min_hz",
+            "kvco_min_hz_per_v",
+            "kvco_max_hz_per_v",
+            "power_max_w",
+        ):
+            value = getattr(self, name)
+            if value is not None and (not math.isfinite(value) or value <= 0.0):
+                raise ValueError(f"{name} must be finite and positive")
+        if (
+            self.kvco_min_hz_per_v is not None
+            and self.kvco_max_hz_per_v is not None
+            and self.kvco_min_hz_per_v > self.kvco_max_hz_per_v
+        ):
+            raise ValueError("kvco_min_hz_per_v cannot exceed kvco_max_hz_per_v")
+        if not math.isfinite(self.margin_db) or self.margin_db < 0.0:
+            raise ValueError("margin_db must be finite and nonnegative")
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "VCORequirement":
@@ -174,6 +240,12 @@ class CandidateDefinition:
     overrides: Dict[str, Any] = field(default_factory=dict)
     engineering_cost: float = 0.0
     description: str = ""
+
+    def __post_init__(self) -> None:
+        if not self.candidate_id:
+            raise ValueError("candidate_id must be non-empty")
+        if not math.isfinite(self.engineering_cost) or self.engineering_cost < 0.0:
+            raise ValueError("engineering_cost must be finite and nonnegative")
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "CandidateDefinition":

@@ -23,15 +23,11 @@ from v1.api.allocation import SpecAllocationRequest
 from v1.graph.compiler import build_v1_graph_artifact, build_v1_graph_v2_artifact
 from v1.graph.audit import audit_allocation_graph, build_agent_goal_context
 from v1.graph.queries import all_plane_views, factor_view
-from v1.pipeline import (
-    build_vco_instance,
-    characterize_vco,
-    evaluate_system,
-    run_sensitivity_suite,
-    strip_raw_results,
-    write_csv,
-    write_json,
-)
+from v1.model.instances import build_vco_instance
+from v1.evaluation.vco import characterize_vco
+from v1.evaluation.system import evaluate_system, strip_raw_results
+from v1.evaluation.sensitivity import run_sensitivity_suite
+from v1.io import write_csv, write_json
 from v1.schema.envelopes import make_envelope
 from v1.schema.block_schema import build_vco_block_meta_v1, validate_block_meta
 from v1.schema.validators import validate_envelope, validate_system_spec_payload
@@ -69,16 +65,6 @@ def _baseline_context_contract(system_spec: SystemSpec, initial_context: Mapping
         "source": "initial_SystemTB_plus_declared_guard; frozen_before_candidate_validation",
         "guard_v": guard_v,
     }
-
-
-def _context_coverage(contract: Mapping[str, Any], actual: Mapping[str, Any]) -> Dict[str, Any]:
-    checks = {
-        "vctrl_min": float(actual["vctrl_min_v"]) >= float(contract["vctrl_min_v"]) - 1e-12,
-        "vctrl_max": float(actual["vctrl_max_v"]) <= float(contract["vctrl_max_v"]) + 1e-12,
-        "temperature": set(actual["temperature_points_c"]).issubset(set(contract["temperature_points_c"])),
-        "vdd": float(actual["vdd_v"]) == float(contract["vdd_v"]),
-    }
-    return {"passed": all(checks.values()), "checks": checks, "actual_context": dict(actual)}
 
 
 def _validated_domain_from_context(context: Mapping[str, Any]) -> Dict[str, Any]:
@@ -583,8 +569,8 @@ def run(case_path: str | Path, output_dir: str | Path) -> Dict[str, Any]:
     report_cfg = case.get("report", {})
     plots = (
         _write_optional_plots(output_path, characterization, sensitivity)
-        if report_cfg.get("generate_plots", True)
-        else {"available": False, "reason": "disabled_by_case"}
+        if report_cfg.get("generate_plots", False)
+        else {"available": False, "reason": "disabled_unless_explicitly_enabled"}
     )
     simulation_count = len(system_spec.temperature_points_c) * (
         1

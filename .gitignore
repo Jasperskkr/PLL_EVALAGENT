@@ -1,12 +1,14 @@
 __pycache__/
 *.py[cod]
+*.egg-info/
 .pytest_cache/
 .mypy_cache/
 .venv/
 venv/
 tmp/
 
-# Generated verification evidence; never part of the source tree.
+# Historical baseline artifacts may already be tracked. Ignore newly generated
+# local evidence; reproducible regression assertions live under tests/.
 results/
 
 # Local editor and OS files

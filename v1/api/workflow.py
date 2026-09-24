@@ -2,20 +2,10 @@
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass, field, is_dataclass
+from dataclasses import dataclass, field
 from typing import Any, Mapping, Sequence
 
-
-def jsonable(value: Any) -> Any:
-    """Convert workflow payloads to deterministic JSON-compatible objects."""
-
-    if is_dataclass(value):
-        return {key: jsonable(item) for key, item in asdict(value).items()}
-    if isinstance(value, Mapping):
-        return {str(key): jsonable(item) for key, item in value.items()}
-    if isinstance(value, (list, tuple)):
-        return [jsonable(item) for item in value]
-    return value
+from ..io import jsonable
 
 
 @dataclass(frozen=True)

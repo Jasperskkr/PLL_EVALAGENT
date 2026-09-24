@@ -1,4 +1,4 @@
-"""Additive multi-parameter allocation interfaces."""
+"""Deterministic allocation design-space, boundary and selection APIs."""
 
 from .design_space import AxisDefinition, DesignPointDefinition, DesignSpaceDefinition
 from .design_vector import DesignVector, compile_design_vector_to_vco
@@ -10,29 +10,28 @@ from .conditional_allocation import (
     validate_conditional_contract_prediction,
 )
 from .evaluator import evaluate_design_vector
-from .multidim_evaluator import evaluate_context_coverage, evaluate_design_point
+from .multidim_evaluator import evaluate_design_point
 from .regions import build_capability_region, build_system_feasible_region
 from .selection import build_replay_evidence, select_candidate
-from .service import SyntheticVCOAllocationBackend, allocate_system_spec
+from .service import allocate_system_spec, register_allocation_backend
 
 __all__ = [
     "AxisDefinition",
     "DesignPointDefinition",
     "DesignSpaceDefinition",
     "DesignVector",
+    "compile_design_vector_to_vco",
     "build_system_boundary_map",
     "extract_boundary_block_contract",
     "build_conditional_block_spec_map",
     "validate_conditional_block_spec_map",
     "validate_conditional_contract_prediction",
-    "compile_design_vector_to_vco",
     "evaluate_design_vector",
-    "evaluate_context_coverage",
     "evaluate_design_point",
     "build_capability_region",
     "build_system_feasible_region",
     "build_replay_evidence",
     "select_candidate",
-    "SyntheticVCOAllocationBackend",
     "allocate_system_spec",
+    "register_allocation_backend",
 ]

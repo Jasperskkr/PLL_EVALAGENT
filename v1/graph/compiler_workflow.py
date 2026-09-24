@@ -278,7 +278,7 @@ def build_spec_closure_graph(
                 "context": block_tb.get("context", operating_context),
                 "worst_case": block_tb.get("worst_case", {}),
                 "measurement_method": block_tb.get(
-                    "measurement_method", "backend.validate_block"
+                    "measurement_method", "backend.measure_block"
                 ),
             },
             status=("validated" if block_tb.get("passed") else "rejected"),

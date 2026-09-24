@@ -3,27 +3,15 @@
 from __future__ import annotations
 
 from dataclasses import asdict
-from hashlib import sha256
-import json
 from math import prod
 from typing import Any, Dict, Mapping, Sequence
 
 from ..model.pll_behavioral import VCOParams
-from .design_space import DesignPointDefinition, DesignSpaceDefinition
+from ..io import evidence_digest
+from .design_space import DesignSpaceDefinition
 
 
 SELECTION_METHOD = "lexicographic_interior_min_cost_v1"
-
-
-def _digest(value: Mapping[str, Any]) -> str:
-    payload = json.dumps(
-        value,
-        ensure_ascii=False,
-        sort_keys=True,
-        separators=(",", ":"),
-        allow_nan=False,
-    )
-    return sha256(payload.encode("utf-8")).hexdigest()
 
 
 def _resolve_reference(case: Mapping[str, Any], reference: str) -> Any:
@@ -211,7 +199,7 @@ def select_candidate(
             "random_seed": None,
         },
     }
-    artifact["selection_sha256"] = _digest(artifact)
+    artifact["selection_sha256"] = evidence_digest(artifact)
     return artifact
 
 
@@ -260,8 +248,8 @@ def build_replay_evidence(
         "case_id": str(sampled_record["case_id"]),
         "selected_point_id": selected_id,
         "selection_sha256": selection_decision["selection_sha256"],
-        "sampled_record_sha256": _digest(sampled_record),
-        "replay_record_sha256": _digest(replay_record),
+        "sampled_record_sha256": evidence_digest(sampled_record),
+        "replay_record_sha256": evidence_digest(replay_record),
         "comparisons": comparisons,
         "identical_to_sampled_evaluation": all(comparisons.values()),
         "replay_jointly_feasible": bool(
@@ -274,7 +262,7 @@ def build_replay_evidence(
             "deterministic": True,
         },
     }
-    artifact["replay_sha256"] = _digest(artifact)
+    artifact["replay_sha256"] = evidence_digest(artifact)
     return artifact
 
 

@@ -19,18 +19,17 @@ from __future__ import annotations
 
 import argparse
 import csv
-import json
 from pathlib import Path
 from typing import Any, Dict, Mapping
 
 from v1.allocation.design_space import DesignPointDefinition, DesignSpaceDefinition
 from v1.allocation.multidim_evaluator import evaluate_design_point
 from v1.model.pll_behavioral import VCOParams
-from v1.pipeline import build_vco_instance
+from v1.model.instances import build_vco_instance
+from v1.io import evidence_digest, read_json, write_evidence_json
 from v1.specs import SystemSpec, load_case
 
 from run_v1_5_joint_contract import (
-    _digest,
     _evaluate_candidate,
     _interpolate,
     _known_contract_rows,
@@ -41,14 +40,6 @@ ROOT = Path(__file__).resolve().parent
 DEFAULT_CASE = ROOT / "v1" / "cases" / "vco_multidim_01.json"
 DEFAULT_SOURCE = ROOT / "results" / "v1_5_kvco_mapping_v1_5"
 DEFAULT_OUTPUT = ROOT / "results" / "v1_5_joint_boundary_validation_v1_5"
-
-
-def _write_json(value: Any, path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True),
-        encoding="utf-8",
-    )
 
 
 def _probe(
@@ -78,6 +69,8 @@ def run(
     source = Path(source_dir).resolve()
     output = Path(output_dir).resolve()
     output.mkdir(parents=True, exist_ok=True)
+    mapping_artifact = read_json(source / "measured_kvco_mapping.json")
+    axis_decision = read_json(source / "joint_contract_axis_decision.json")
     rows = _known_contract_rows(source)
     if len(rows) != 9:
         raise ValueError(f"expected nine mapped contract rows, got {len(rows)}")
@@ -178,7 +171,10 @@ def run(
         "source": {
             "canonical_row_count": len(rows),
             "kvco_axis": "kvco_max_hz_per_v",
-            "source_dir": str(source),
+            "mapping_artifact": "measured_kvco_mapping.json",
+            "mapping_sha256": mapping_artifact["mapping_sha256"],
+            "axis_decision_artifact": "joint_contract_axis_decision.json",
+            "decision_sha256": axis_decision["decision_sha256"],
         },
         "generation": {
             "k1_values_hz_per_v": k1_values,
@@ -195,8 +191,8 @@ def run(
             "margin, necessity, PVT or transistor-level signoff is claimed."
         ),
     }
-    artifact["validation_sha256"] = _digest(artifact)
-    _write_json(artifact, output / "joint_boundary_validation.json")
+    artifact["validation_sha256"] = evidence_digest(artifact)
+    write_evidence_json(artifact, output / "joint_boundary_validation.json")
 
     csv_path = output / "joint_boundary_validation.csv"
     fields = [
@@ -272,4 +268,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

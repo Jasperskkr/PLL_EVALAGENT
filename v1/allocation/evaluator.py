@@ -6,7 +6,7 @@ from dataclasses import asdict
 from typing import Any, Mapping
 
 from ..model.pll_behavioral import VCOParams
-from ..pipeline import evaluate_system
+from ..evaluation.system import evaluate_system
 from ..specs import SystemSpec, VCORequirement
 from ..api.verification import VerificationRequest
 from ..verification.service import verify_block_assignment
@@ -51,6 +51,6 @@ def evaluate_design_vector(
             )
         )
         output["block_evaluation"] = verification["block_tb"]
-        output["system_evaluation"] = verification["system_tb"]
+        output["verification_system_tb"] = verification["system_tb"]
         output["verification_report"] = verification
     return output

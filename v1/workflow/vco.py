@@ -10,7 +10,8 @@ from ..api.verification import VerificationRequest
 from ..api.workflow import SpecClosureRequest
 from ..backends.synthetic import SyntheticVCOBackend
 from ..model.pll_behavioral import VCOParams
-from ..pipeline import build_vco_instance, evaluate_system
+from ..evaluation.system import evaluate_system
+from ..model.instances import build_vco_instance
 from ..specs import VCORequirement
 from ..verification.service import verify_block_assignment
 
@@ -38,7 +39,7 @@ class VCOContextBuilder:
     ) -> Mapping[str, Any]:
         if request.declared_operating_context:
             return dict(request.declared_operating_context)
-        actual = baseline["context"]
+        actual = baseline.get("trajectory_envelope", baseline["context"])
         guard_v = float(request.policy.get("context_guard_v", 0.01))
         system_spec = request.system_spec
         return {

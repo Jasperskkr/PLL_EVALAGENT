@@ -15,17 +15,16 @@ limited to the deterministic synthetic model and frozen context.
 from __future__ import annotations
 
 import argparse
-from hashlib import sha256
-import json
 from pathlib import Path
 from typing import Any, Dict, Mapping, Sequence
 
 from v1.allocation.design_space import DesignPointDefinition, DesignSpaceDefinition
 from v1.allocation.multidim_evaluator import evaluate_design_point
 from v1.backends.synthetic import SyntheticVCOBackend
+from v1.io import evidence_digest, read_json, write_evidence_json
 from v1.api.verification import VerificationRequest
 from v1.model.pll_behavioral import VCOParams
-from v1.pipeline import build_vco_instance
+from v1.model.instances import build_vco_instance
 from v1.specs import SystemSpec, VCORequirement, load_case
 from v1.verification.service import verify_block_assignment
 
@@ -36,31 +35,8 @@ DEFAULT_SOURCE = ROOT / "results" / "v1_5_kvco_mapping_v1_5"
 DEFAULT_OUTPUT = ROOT / "results" / "v1_5_joint_contract_v1_5"
 
 
-def _read_json(path: Path) -> Dict[str, Any]:
-    return json.loads(path.read_text(encoding="utf-8"))
-
-
-def _write_json(value: Any, path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True),
-        encoding="utf-8",
-    )
-
-
-def _digest(value: Mapping[str, Any]) -> str:
-    payload = json.dumps(
-        value,
-        ensure_ascii=False,
-        sort_keys=True,
-        separators=(",", ":"),
-        allow_nan=False,
-    )
-    return sha256(payload.encode("utf-8")).hexdigest()
-
-
 def _known_contract_rows(source: Path) -> list[Dict[str, float]]:
-    mapping = _read_json(source / "measured_kvco_mapping.json")
+    mapping = read_json(source / "measured_kvco_mapping.json")
     rows = [row for row in mapping["rows"] if row["source"] == "mapped_boundary"]
     rows.sort(key=lambda row: float(row["kvco_max_hz_per_v"]))
     return [
@@ -205,10 +181,11 @@ def run(
     source = Path(source_dir).resolve()
     output = Path(output_dir).resolve()
     output.mkdir(parents=True, exist_ok=True)
+    mapping_artifact = read_json(source / "measured_kvco_mapping.json")
     rows = _known_contract_rows(source)
     if len(rows) != 9:
         raise ValueError(f"expected nine mapped contract rows, got {len(rows)}")
-    axis_decision = _read_json(
+    axis_decision = read_json(
         source / "joint_contract_axis_decision.json"
     )
     if axis_decision["selected_primary_block_axis"] != "kvco_max_hz_per_v":
@@ -251,13 +228,19 @@ def run(
             "rows": rows,
             "interpolation_promoted_to_canonical": False,
         },
+        "source_evidence": {
+            "measured_kvco_mapping": "measured_kvco_mapping.json",
+            "mapping_sha256": mapping_artifact["mapping_sha256"],
+            "axis_decision": "joint_contract_axis_decision.json",
+            "decision_sha256": axis_decision["decision_sha256"],
+        },
         "claim_boundary": (
             "Provisional measured PN--Kvco joint sufficiency contract in one frozen "
             "synthetic behavioral context; Kvco margin, necessity, PVT and transistor-level signoff remain pending."
         ),
     }
-    contract["contract_sha256"] = _digest(contract)
-    _write_json(contract, output / "provisional_joint_contract.json")
+    contract["contract_sha256"] = evidence_digest(contract)
+    write_evidence_json(contract, output / "provisional_joint_contract.json")
 
     candidates = [
         ("inside_joint_contract_080", "inside_joint_contract", 800_000_000.0, -120.63477630615234),
@@ -325,8 +308,8 @@ def run(
         "validation": validation,
         "claim_boundary": contract["claim_boundary"],
     }
-    artifact["validation_sha256"] = _digest(artifact)
-    _write_json(artifact, output / "joint_contract_candidate_validation.json")
+    artifact["validation_sha256"] = evidence_digest(artifact)
+    write_evidence_json(artifact, output / "joint_contract_candidate_validation.json")
 
     summary = {
         "schema_version": "v1.5-joint-contract-summary-1.0",
@@ -345,8 +328,8 @@ def run(
             "report": "joint_contract_report.md",
         },
     }
-    summary["summary_sha256"] = _digest(summary)
-    _write_json(summary, output / "joint_contract_summary.json")
+    summary["summary_sha256"] = evidence_digest(summary)
+    write_evidence_json(summary, output / "joint_contract_summary.json")
     (output / "joint_contract_report.md").write_text(
         "\n".join(
             [
