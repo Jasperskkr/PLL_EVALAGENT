@@ -39,3 +39,17 @@ P0 同时审计源码、正式记录、Git/worktree、模型及数据。P0 交�
 ## D008 · 2026-11-04 · Track A Physics-guided Allocation
 
 依据用户本轮 Track A Task A1–A5 授权推进逆向分配、确定性首次基线、工具型 Agent、独立首发比较与反馈接口。以 BLOCK_SPACE_MODEL_V1 内实验快照为本轮官方目标；保留 SystemSpec v0 draft 元数据及原阶段冻结边界，输入/公式/历史不改。实现与受控变体隔离，专用 track-a/physics-guided-allocation 分支，不修改 Track B 验证器、不合并分支。M1 与 M2 标签严格分离，真实 LLM 失败不由 mock 代替；mock 仅验证工作流。详细预先计划见 docs/track_a/A0_AUDIT_AND_PLAN.md。
+
+## D009 · 2026-11-04 · Stage 3A Unified Pipeline Integration
+
+依据用户本轮Stage3A授权整合既有能力。预先审计及方案见 `stage3a/INTEGRATION_AUDIT_AND_PLAN.md`。保留Stage1/1.5、Track A算法与原v1兼容入口，新增allocation薄接口、正式verification包与pipeline Runner；Track B原仓库和历史结果只读，不合并、不删除。正式唯一推荐入口为 `python -m pll_allocation pipeline`。配置绑定官方模型、同内容SystemSpec视图、方程注册表及原协议1.1，不扩大适用域，不改变测量/公式来争取PASS。
+
+本轮真实解析/优化/LLM首发完成M2与反馈接收，另复用已有确定性repair验证FAIL后的完整复验；不开发新优化或学习算法。M2_PARTIAL_PASS只是BW等部分必需指标通过、整体UNKNOWN的显式标签，不能称Verified JointBlockSpec。真实LLM反馈修复、PM独立认证及微Hz频率认证仍未验收。既有Proposal复验标记EXISTING_PROPOSAL_REVERIFICATION，不能算新LLM调用。新运行一律写experiments独立目录，原始轨迹在raw/与正式代码分开，禁止覆盖。
+
+## D010 · 2026-11-04 · Stage 3A.1 主线收敛与发布冻结
+
+依据用户Stage3A.1全文（docs/stage3a1/TASK_REQUEST.md），先保存结构审计、工作树备份和真实迁移前273项回归/M1基线，再将六个原算法模块逐字节迁至allocation；旧Track A只向正式实现兼容转发。正式Verification测试迁入统一套件，历史Track B/Git/outputs只读保留。唯一新研究入口pipeline，旧v1及Track A CLI标Legacy。
+
+模型/六参数域/SystemSpec/公式/策略/提示词/协议1.1/阈值不变；PM/UGF/微Hz认证继续UNKNOWN。仅修复构建工具覆盖风险并新增审计/回归/发布工具。因旧Git换行归一化破坏原字节SHA参考的可复现性，.gitattributes及暂存保留既有快照原字节，工作区历史数据不改。正式代码先提交，根RELEASE_MANIFEST及ZIP由该Commit生成外部资产避免自引用。两个原有ZIP删除和外部ZIP不进入提交。
+
+本轮283项正式测试+原Track B 28项通过；无历史目录独立重新编译282项通过。四组候选/M1/M2指标与迁移前一致；真实LLM一次JSON失败后同配置三次真实决策完成M2。7次完整验收M2/758次原生仿真，修复只复用确定性算法。细节见根架构/验收/归档报告。完成发布后停止等待Leader，不自动启动新研究。

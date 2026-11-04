@@ -29,3 +29,15 @@ P3部分完成：LLM首次/有限反馈接口、真实请求/原始响应日志�
 实际执行两轮`python -m pll_allocation.track_a benchmark --out outputs/track_a_benchmark_20261104_01`及`..._02`，每轮六目标×五策略、117次M1、3116次廉价预测（含后选诊断）；30组参数哈希/判决完全一致，不能算独立统计样本。解析/优化在官方及四个可行变体M1通过，对PM≥75°给出72.247°全域上界证书。随机seed23仅描述性对照；mock不计LLM成绩。七类模拟反馈与独立反馈Agent工具链分别保存，真实修复率未测。所有候选最多M1_VALIDATED，verified_joint_block_spec=false；M2/MATLAB/ngspice调用均0。
 
 最终实际`python -m pytest -q --junitxml=docs/track_a/tests_final_20261104_02.xml`：219项全通过（旧179+新增40）。保护核验5123份文件SHA不变，55份AllocationProposal合同核对通过。Proposal可直接供既有MetricRequest消费，最终副本位于`docs/track_a/delivery_final/`；不声称已与Track B未知后端联调。命令、预算、来源/源哈希、独立审查修复和完整运行记录见`docs/track_a/`与各新输出目录。下一轮先由Track B独立测BW/PM和捕获，再研究有限反馈下LLM增量；本轮在此收束。
+
+2026-11-04 · Stage3A：依据D009完成工程集成，等待技术Leader验收并停止。先保存集成审计与方案，修改前247项回归通过。Track A算法原位复用、Track B验证最小运行闭包提取到正式verification，统一allocation与pipeline入口；原Stage1/1.5模型、公式、参数域、SystemSpec及协议1.1不改。当前正式入口 `python -m pll_allocation pipeline`，详见 `stage3a/ARCHITECTURE_AND_INTERFACE.md`。
+
+真实五组主实验、六次完整M2验证共644次原生事件仿真：解析BW225000→226403.934472Hz，优化204356.651291→205385.567979Hz，均BW PASS、整体UNKNOWN；真实deepseek-v4-pro三次HTTP200自主选择解析→M1→提交，再由同一Runner执行106次原生仿真，M2_PARTIAL_PASS。随机首发BW713783.791701Hz FAIL，经原确定性repair/优化生成完整新候选并复验为205385.567979Hz PASS，整体仍UNKNOWN。另从项目外CWD复验原Track A正式Proposal，M1及M2全部数值/判决与原Track B逐字段相同；复验不算新LLM。
+
+最终完整回归273项通过（原247+新增26），命令 `python -m pytest -q tests track_b/tests -p no:cacheprovider --basetemp=experiments/stage3a_regression_final_20261104_02/tmp --junitxml=experiments/stage3a_regression_final_20261104_02/tests.xml`。一次final_01因basetemp父目录不存在产生47项夹具初始化错误，原记录保留，创建新的父目录后重跑通过。未执行安装/wheel验收（当前Python无setuptools）；源码入口及真实TB已执行。
+
+已正式整合：版本绑定、首次候选落盘、真实三类策略、M1/M2分离、偏差/调用/失败成本、M2反馈实际回传Agent层和已有确定性修复复验。尚未完成：独立PM/UGF、微Hz频率认证、噪声/抖动/功耗、真实LLM反馈修复、多seed统计比较、跨平台后端；不签发完整M2 PASS。历史目录不删除、不合并、不覆盖；本轮前已有两份历史ZIP删除保持并列入Git审计。最终保护审计与命令见 `stage3a/ACCEPTANCE_REPORT.md` 和 `stage3a/RUN_COMMANDS.md`，原P3/P4整体研究完成度不升级。
+
+2026-11-04 · Stage3A.1：依据D010完成正式实现所有权收敛、独立回归及发布准备。allocation拥有六个逐字节原算法模块，Track A仅向前兼容；verification/正式测试不依赖历史Track B，旧库及输出保留。最终283项正式测试和原Track B 28项通过；无track_b/outputs/DLL缓存的独立导出MSVC重编译282项通过。四策略候选/完整M1及M2指标逐字段不变。
+
+本轮真实LLM先HTTP200但JSON失败，保留成本；同配置新目录重试三次HTTP200完成解析→M1→提交，Runner真实106次仿真，整体UNKNOWN。主验收共7次完整M2/758次原生仿真，确定性repair复现BW FAIL→PASS，未实现真实LLM修复。PM/UGF/严格频率/噪声/功耗/统计/跨平台仍未完成。根MAINLINE_ARCHITECTURE、INTEGRATION_VALIDATION、ARCHIVE_PLAN为当前交付，Commit及包独立重现结果由RELEASE_MANIFEST绑定；保护历史与未授权Git改动。发布后停止等待Leader审查。

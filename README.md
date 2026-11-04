@@ -4,7 +4,13 @@
 
 用户原始任务全文保存在 [PROJECT_CHARTER.md](PROJECT_CHARTER.md)，后续推进由 [AGENTS.md](AGENTS.md) 和 [决策记录](docs/DECISIONS.md)约束；阶段状态以 [PROJECT_STATUS.md](docs/PROJECT_STATUS.md)为准。
 
-当前：P0审计和P1/P2最小可运行链已完成；确定性策略与多规格实验可执行；真实LLM服务两次读取超时，尚未完成LLM策略验收。所有PASS仅属于声明行为模型。
+当前正式入口为Stage3A.1统一pipeline：Stage1.5 SystemSpec → 正式allocation解析/优化/真实LLM → AllocationProposal → 原M1 → 正式verification真实事件M2 → 结构化反馈。最终283项正式回归及原Track B 28项通过；真实LLM本轮先有一次JSON失败，同配置重试三次响应并完成M2。BW通过、PM/UGF与微Hz频率精度仍UNKNOWN，没有完整Verified JointBlockSpec。
+
+```powershell
+python -m pll_allocation pipeline --strategy analytical --out experiments/my_unified_run
+```
+
+统一流程需要NumPy、SciPy及Windows原生事件核；新机器先构建`pll_allocation/verification/build_kernel.cmd`，构建目录必须不存在。当前架构/接口见[MAINLINE_ARCHITECTURE.md](MAINLINE_ARCHITECTURE.md)，本轮实测与失败见[INTEGRATION_VALIDATION.md](INTEGRATION_VALIDATION.md)，历史保留见[ARCHIVE_PLAN.md](ARCHIVE_PLAN.md)。Git冻结及轻量审查包由外部发布资产RELEASE_MANIFEST.json绑定。以下v1章节和P0/P1/P2报告保留原协议历史范围，不能与Stage1.5混用。
 
 针对完整 SystemSpec（动态、噪声、功耗）的后续缺口与推进顺序，见 [三个核心问题审查](docs/CORE_THREE_QUESTIONS_REVIEW.md)：模块公式/联合域、LLM与敏感度/BO、可信行为评估及反馈决策。
 
@@ -18,7 +24,7 @@
 
 审计清单覆盖11个实际工程、2425份源文件指纹；97/97历史来源引用SHA匹配。24份纠正后MATLAB记录原SHA匹配，96份小型参考数据字节继承。旧工程没有迁移、删除或改写。
 
-## 运行
+## 原v1兼容入口
 
 在本目录运行；Python≥3.11，生产流程不需要额外依赖。测试需pytest。
 
@@ -40,7 +46,7 @@ python -B -m pll_allocation run --problem examples/tight80.json --policy llm_fee
 
 llm_initial严格一次提议/一次评价；llm_feedback可读取真实违例后有限修复。配置缺失、网络失败、返回不合法会明确失败，不切换到规则候选。`replay --replay <proposal.json>`仅回放已有完整提议，标记不是新LLM调用。
 
-## 当前模型和结果
+## 原v1冻结模型和历史结果
 
 直接提取原Python周期电荷、精确两状态RC与线性VCO内核；不重写MATLAB模型。80MHz运行400周期，84MHz运行420周期，观察时长40µs，尾50周期测量。CP电流/q0、LF Rz、VCO f0/Kvco在声明域联合选择；PFD/Divider及其余参数显式固定。
 

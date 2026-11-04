@@ -142,9 +142,7 @@ def test_event_adapter_rejects_model_semantics_it_cannot_simulate(model):
 
 
 def test_reference_blockspec_is_complete_scoped_and_bound(model):
-    path=ROOT/'outputs/block_space_v1_20261104_01/REFERENCE_BLOCKSPEC.json'
-    if not path.exists():
-        pytest.skip('full domain validation output not available')
+    path=ROOT/'tests/fixtures/verification/REFERENCE_BLOCKSPEC.json'
     reference=json.loads(path.read_text(encoding='utf-8'))
     assert reference['validation_status']=='M1_VALIDATED'
     assert reference['M2_system_verdict']=='NOT_EVALUATED'
