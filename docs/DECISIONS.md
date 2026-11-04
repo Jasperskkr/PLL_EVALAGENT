@@ -35,3 +35,7 @@ P0 同时审计源码、正式记录、Git/worktree、模型及数据。P0 交�
 声明域、公式有效域、M1规格可行域三者分别处理。正值理想模型的 Routh 条件恒成立，不制造域内“不稳定”标签；低PM视为规格失败，调谐不可达/非理想条件分别明确状态。新增独立 `pll_allocation/block_space/` 层直接加载正式模型，旧Runner与Stage1模块不变；没有LLM/BO/逆向算法或GUI。
 
 按字节复用已审查的既有 Python 边沿插值/Euler事件函数作稀疏交叉验证，范围/协议与结果明确标注；频率/控制比较不能升级为BW/PM/完整M2通过。近轨冷启动与暖启动差异保留为独立证据，不修改公式或放宽SystemSpec。阶段完成后停止等待Leader审查，不自行开展Stage2。
+
+## D008 · 2026-11-04 · Track A Physics-guided Allocation
+
+依据用户本轮 Track A Task A1–A5 授权推进逆向分配、确定性首次基线、工具型 Agent、独立首发比较与反馈接口。以 BLOCK_SPACE_MODEL_V1 内实验快照为本轮官方目标；保留 SystemSpec v0 draft 元数据及原阶段冻结边界，输入/公式/历史不改。实现与受控变体隔离，专用 track-a/physics-guided-allocation 分支，不修改 Track B 验证器、不合并分支。M1 与 M2 标签严格分离，真实 LLM 失败不由 mock 代替；mock 仅验证工作流。详细预先计划见 docs/track_a/A0_AUDIT_AND_PLAN.md。
