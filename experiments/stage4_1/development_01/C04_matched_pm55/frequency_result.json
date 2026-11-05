@@ -1,0 +1,3848 @@
+{
+  "series": {
+    "points": [
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 25000,
+        "L_complex": [
+          -3.5872843888874417,
+          -6.100927196638877
+        ],
+        "magnitude": 7.0774233973560925,
+        "phase_deg": -120.45510385894639,
+        "phasors": {
+          "return_Y": [
+            -0.001389246984609838,
+            -0.010589152586084245
+          ],
+          "actual_feedback_X": [
+            -0.0013892469846088521,
+            -0.0005891525861129212
+          ],
+          "disturbance_D": [
+            4.242703329502065e-17,
+            0.010000000000000002
+          ]
+        },
+        "quality": {
+          "THD": 1.3757239779988233e-09,
+          "sideband_RSS_relative": 8.258118473954024e-05,
+          "residual_relative": 1.0543277323114948e-05,
+          "half_window_complex": 3.108150865950598e-08,
+          "loop_error_peak_rad": 0.0015108553707250394,
+          "mean_control_offset_V": 4.4875235694075144e-07,
+          "control_drift_V": 2.83498799219763e-09,
+          "frequency_error_ppm": 0.0005206195670336396,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 25000,
+          "amplitude_rad": 0.01,
+          "mode": "series",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 0.00082,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          0.00034,
+          0.00082
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            -4.4875235694075144e-07,
+            -4.48752340620473e-07
+          ],
+          "voltage_drift_V": [
+            2.83498799219763e-09,
+            2.612438054130697e-09
+          ],
+          "frequency_offset_ppm": [
+            0.0005203527379101689,
+            -0.0005206195670336396
+          ],
+          "CP_charge_C": [
+            1.3515971597121208e-15,
+            -2.8309926783877862e-21
+          ],
+          "phase_trend_rad": [
+            -4.075564009404153e-11,
+            -4.0754462752126165e-11,
+            -2.778268066994105e-18
+          ],
+          "edge_counts": [
+            {
+              "ref": 8200,
+              "feedback": 8200
+            },
+            {
+              "ref": 8200,
+              "feedback": 8199
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            -5.588738161988153e-07,
+            2.3018971839115823e-07
+          ],
+          [
+            -5.486642382565853e-07,
+            -2.3931957117600194e-07
+          ],
+          [
+            -1.5130716896858545e-07,
+            6.582872858242694e-08
+          ],
+          [
+            -1.5183901032633027e-07,
+            -6.272707594699756e-08
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9975000.0,
+          10025000.0,
+          19975000.0,
+          20025000.0
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "series",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 40000,
+        "L_complex": [
+          -1.779450072738914,
+          -3.7498335390808757
+        ],
+        "magnitude": 4.150625751882038,
+        "phase_deg": -115.38626079389876,
+        "phasors": {
+          "return_Y": [
+            -0.00922597379215559,
+            0.005685589134004721
+          ],
+          "actual_feedback_X": [
+            0.00028459137078746746,
+            0.0025954191902581706
+          ],
+          "disturbance_D": [
+            0.009510565162951557,
+            -0.003090169943749464
+          ]
+        },
+        "quality": {
+          "THD": 5.452309780920551e-09,
+          "sideband_RSS_relative": 0.00014081304445841505,
+          "residual_relative": 1.7975402784100838e-05,
+          "half_window_complex": 2.761027010125061e-08,
+          "loop_error_peak_rad": 0.002614230119434069,
+          "mean_control_offset_V": 7.760937222878184e-07,
+          "control_drift_V": 2.603529001071682e-09,
+          "frequency_error_ppm": 0.002811898237103188,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 40000,
+          "amplitude_rad": 0.01,
+          "mode": "series",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 0.00052,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          0.00022,
+          0.00052
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            -7.760902628328736e-07,
+            -7.760937222878184e-07
+          ],
+          "voltage_drift_V": [
+            2.603529001071682e-09,
+            1.9703586058068432e-09
+          ],
+          "frequency_offset_ppm": [
+            0.002811898237103188,
+            -0.00280532313103221
+          ],
+          "CP_charge_C": [
+            2.4870334707808112e-15,
+            -2.4870296969309546e-15
+          ],
+          "phase_trend_rad": [
+            -1.1312663588010363e-11,
+            -1.131871907398413e-11,
+            -2.257367170097819e-18
+          ],
+          "edge_counts": [
+            {
+              "ref": 5200,
+              "feedback": 5200
+            },
+            {
+              "ref": 5200,
+              "feedback": 5199
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            1.2518656902267165e-07,
+            -1.0413300451790858e-06
+          ],
+          [
+            1.0211031093770504e-07,
+            1.0276120000304759e-06
+          ],
+          [
+            2.8515601798093895e-08,
+            -2.8441660864924343e-07
+          ],
+          [
+            3.356651424506554e-08,
+            2.8185306309041515e-07
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9960000.0,
+          10040000.0,
+          19960000.0,
+          20040000.0
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "series",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 63000,
+        "L_complex": [
+          -1.067598442717684,
+          -2.288543553793246
+        ],
+        "magnitude": 2.5253114723736245,
+        "phase_deg": -115.00890489947444,
+        "phasors": {
+          "return_Y": [
+            0.009834838498733085,
+            -0.004993169744081512
+          ],
+          "actual_feedback_X": [
+            -0.00014542878556681913,
+            -0.004365264548787818
+          ],
+          "disturbance_D": [
+            -0.009980267284282704,
+            0.0006279051952931446
+          ]
+        },
+        "quality": {
+          "THD": 5.015754984492437e-06,
+          "sideband_RSS_relative": 0.00023059283926606298,
+          "residual_relative": 2.8953614383121108e-05,
+          "half_window_complex": 6.2940059216269424e-06,
+          "loop_error_peak_rad": 0.0043731521036534104,
+          "mean_control_offset_V": 1.2108784852582488e-07,
+          "control_drift_V": 4.3021981860826984e-07,
+          "frequency_error_ppm": 0.0017005179193986142,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 63000,
+          "amplitude_rad": 0.01,
+          "mode": "series",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 0.00033746031746031746,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          0.00014698412698412698,
+          0.00033746031746031746
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            -1.2096865276145508e-07,
+            -1.2108784852582488e-07
+          ],
+          "voltage_drift_V": [
+            4.3021981860826984e-07,
+            4.2822169212394453e-07
+          ],
+          "frequency_offset_ppm": [
+            0.0017005179193986142,
+            -0.0016718977738009785
+          ],
+          "CP_charge_C": [
+            -1.017006731303792e-15,
+            1.0107791073805057e-15
+          ],
+          "phase_trend_rad": [
+            -7.037344099331596e-09,
+            -7.037357688342155e-09,
+            -3.356368053495165e-19
+          ],
+          "edge_counts": [
+            {
+              "ref": 3374,
+              "feedback": 3374
+            },
+            {
+              "ref": 3374,
+              "feedback": 3374
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            -6.511070216081057e-08,
+            1.755636420787468e-06
+          ],
+          [
+            -5.1500870799523965e-08,
+            -1.7135158727346331e-06
+          ],
+          [
+            -6.683467711584472e-09,
+            4.7349189552975445e-07
+          ],
+          [
+            -2.4660486072350987e-08,
+            -4.676274496567465e-07
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9937000.0,
+          10063000.0,
+          19937000.0,
+          20063000.0
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "series",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 100000,
+        "L_complex": [
+          -0.733278727953098,
+          -1.3123840088192904
+        ],
+        "magnitude": 1.503346094375179,
+        "phase_deg": -119.1937486599839,
+        "phasors": {
+          "return_Y": [
+            0.007317478927033727,
+            0.008512838258910556
+          ],
+          "actual_feedback_X": [
+            0.007317478927033802,
+            -0.0014871617411360315
+          ],
+          "disturbance_D": [
+            2.3268497986888063e-17,
+            -0.009999999999999986
+          ]
+        },
+        "quality": {
+          "THD": 1.4882984578874084e-07,
+          "sideband_RSS_relative": 0.00038894079370196136,
+          "residual_relative": 4.971224579300368e-05,
+          "half_window_complex": 3.4005942044388614e-07,
+          "loop_error_peak_rad": 0.007476379064428329,
+          "mean_control_offset_V": 2.2206087636478244e-06,
+          "control_drift_V": 1.2505565127088033e-08,
+          "frequency_error_ppm": 0.006399378999439884,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 100000,
+          "amplitude_rad": 0.01,
+          "mode": "series",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 0.00022,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          0.0001,
+          0.00022
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            -2.2206087636478244e-06,
+            -2.220383580886498e-06
+          ],
+          "voltage_drift_V": [
+            1.2505565127088033e-08,
+            6.745113684914161e-09
+          ],
+          "frequency_offset_ppm": [
+            0.0063942290684843,
+            -0.006399378999439884
+          ],
+          "CP_charge_C": [
+            7.091996406238976e-15,
+            2.685073780136567e-17
+          ],
+          "phase_trend_rad": [
+            -1.0806852573633414e-07,
+            -1.0806852350922703e-07,
+            -3.4287893704854078e-18
+          ],
+          "edge_counts": [
+            {
+              "ref": 2200,
+              "feedback": 2200
+            },
+            {
+              "ref": 2200,
+              "feedback": 2199
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            2.96763016757067e-06,
+            6.360499314050515e-07
+          ],
+          [
+            2.8666646426859233e-06,
+            -5.529445383264031e-07
+          ],
+          [
+            8.069309299636344e-07,
+            1.5627052885533378e-07
+          ],
+          [
+            7.899123252640705e-07,
+            -1.6830216041295476e-07
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9900000.0,
+          10100000.0,
+          19900000.0,
+          20100000.0
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "series",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 126491.10640673517,
+        "L_complex": [
+          -0.6191918654703303,
+          -0.9524317714288526
+        ],
+        "magnitude": 1.1360126960081607,
+        "phase_deg": -123.02857053365224,
+        "phasors": {
+          "return_Y": [
+            -0.010082474944085274,
+            -0.004582653191738405
+          ],
+          "actual_feedback_X": [
+            -0.00821964102705491,
+            0.0052423073576768646
+          ],
+          "disturbance_D": [
+            0.001862833917029339,
+            0.009824960549415203
+          ]
+        },
+        "quality": {
+          "THD": 1.4664139700270858e-05,
+          "sideband_RSS_relative": 0.0005134022156830103,
+          "residual_relative": 6.494711246781768e-05,
+          "half_window_complex": 8.436630528297968e-06,
+          "loop_error_peak_rad": 0.009761056524439482,
+          "mean_control_offset_V": 8.748743456354902e-07,
+          "control_drift_V": 1.1436247561824195e-06,
+          "frequency_error_ppm": 0.008974784782234882,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 126491.10640673517,
+          "amplitude_rad": 0.01,
+          "mode": "series",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 0.00017811388300841897,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          8.324555320336759e-05,
+          0.00017811388300841897
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            -8.748743456354902e-07,
+            -8.550160430775833e-07
+          ],
+          "voltage_drift_V": [
+            1.1386222938230423e-06,
+            1.1436247561824195e-06
+          ],
+          "frequency_offset_ppm": [
+            0.008974784782234882,
+            -0.008902708072411298
+          ],
+          "CP_charge_C": [
+            -2.88743871984777e-15,
+            2.8826252391101997e-15
+          ],
+          "phase_trend_rad": [
+            -3.655670616436817e-07,
+            -3.655670720853076e-07,
+            2.5380349647740046e-18
+          ],
+          "edge_counts": [
+            {
+              "ref": 1781,
+              "feedback": 1781
+            },
+            {
+              "ref": 1781,
+              "feedback": 1781
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            -3.3325609114038868e-06,
+            -2.165057363309839e-06
+          ],
+          [
+            -3.204875198688456e-06,
+            2.0102585103230004e-06
+          ],
+          [
+            -9.055267005283715e-07,
+            -5.629756554532912e-07
+          ],
+          [
+            -8.725908953662617e-07,
+            5.709860932935303e-07
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9873508.893593265,
+          10126491.106406735,
+          19873508.893593267,
+          20126491.106406733
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "series",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 134145.15424006627,
+        "L_complex": [
+          -0.5930477061075072,
+          -0.8742520747858826
+        ],
+        "magnitude": 1.0564195530123421,
+        "phase_deg": -124.15095335252741,
+        "phasors": {
+          "return_Y": [
+            -0.008978473638792176,
+            0.006276849873465855
+          ],
+          "actual_feedback_X": [
+            0.00014595213129091824,
+            0.010368897571876987
+          ],
+          "disturbance_D": [
+            0.009124425770091548,
+            0.004092047698413252
+          ]
+        },
+        "quality": {
+          "THD": 9.025513318504101e-06,
+          "sideband_RSS_relative": 0.0005516462361901731,
+          "residual_relative": 6.960943072235759e-05,
+          "half_window_complex": 1.978646530800288e-06,
+          "loop_error_peak_rad": 0.010383063920016866,
+          "mean_control_offset_V": 4.2681536027711076e-07,
+          "control_drift_V": 1.1550444832514719e-06,
+          "frequency_error_ppm": 0.0063573362669155364,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 134145.15424006627,
+          "amplitude_rad": 0.01,
+          "mode": "series",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 0.00016909222858850335,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          7.963689143540135e-05,
+          0.00016909222858850335
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            -4.2681536027711076e-07,
+            -3.951490233911059e-07
+          ],
+          "voltage_drift_V": [
+            1.1550444832514719e-06,
+            1.1361026168621535e-06
+          ],
+          "frequency_offset_ppm": [
+            0.0063573362669155364,
+            -0.006323867860500959
+          ],
+          "CP_charge_C": [
+            4.9354071242290226e-15,
+            -4.939395636895533e-15
+          ],
+          "phase_trend_rad": [
+            -4.726992720263017e-07,
+            -4.726993033883674e-07,
+            2.2978415672233066e-18
+          ],
+          "edge_counts": [
+            {
+              "ref": 1690,
+              "feedback": 1690
+            },
+            {
+              "ref": 1690,
+              "feedback": 1690
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            9.656488310274408e-08,
+            -4.229381073421018e-06
+          ],
+          [
+            2.538358086174924e-08,
+            4.015047087339786e-06
+          ],
+          [
+            4.396773621535366e-09,
+            -1.1317948988870017e-06
+          ],
+          [
+            2.7256136919879322e-08,
+            1.1051113040489044e-06
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9865854.845759934,
+          10134145.154240066,
+          19865854.845759932,
+          20134145.154240068
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "series",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 138144.14667052828,
+        "L_complex": [
+          -0.5801909571189999,
+          -0.83682756539578
+        ],
+        "magnitude": 1.0182838115814714,
+        "phase_deg": -124.73442080358956,
+        "phasors": {
+          "return_Y": [
+            -0.004421482251906107,
+            0.009937206382065415
+          ],
+          "actual_feedback_X": [
+            0.0055457744728351155,
+            0.009128631473383051
+          ],
+          "disturbance_D": [
+            0.009967256724748895,
+            -0.0008085749086808055
+          ]
+        },
+        "quality": {
+          "THD": 1.4725464923109555e-05,
+          "sideband_RSS_relative": 0.0005732443305181105,
+          "residual_relative": 7.309419396060839e-05,
+          "half_window_complex": 7.179841949992966e-06,
+          "loop_error_peak_rad": 0.010694528612475551,
+          "mean_control_offset_V": 1.5190191186009727e-06,
+          "control_drift_V": 1.0231821345816952e-06,
+          "frequency_error_ppm": 0.012465806101653983,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 138144.14667052828,
+          "amplitude_rad": 0.01,
+          "mode": "series",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 0.00016477631142562774,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          7.79105245702511e-05,
+          0.00016477631142562774
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            -1.5190191186009727e-06,
+            -1.5039645043790628e-06
+          ],
+          "voltage_drift_V": [
+            1.008579894998236e-06,
+            1.0231821345816952e-06
+          ],
+          "frequency_offset_ppm": [
+            0.012465806101653983,
+            -0.0123934612741357
+          ],
+          "CP_charge_C": [
+            6.0189027351768046e-15,
+            -6.0259578403452144e-15
+          ],
+          "phase_trend_rad": [
+            -5.315200984330835e-07,
+            -5.315200666813555e-07,
+            -9.330067914006118e-19
+          ],
+          "edge_counts": [
+            {
+              "ref": 1647,
+              "feedback": 1647
+            },
+            {
+              "ref": 1647,
+              "feedback": 1647
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            2.3018495327900524e-06,
+            -3.7105889291304825e-06
+          ],
+          [
+            2.119164616895715e-06,
+            3.554516375346684e-06
+          ],
+          [
+            5.983426406236207e-07,
+            -1.0076167964309863e-06
+          ],
+          [
+            6.04191316815007e-07,
+            9.710180516104465e-07
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9861855.853329472,
+          10138144.146670528,
+          19861855.853329472,
+          20138144.146670528
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "series",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 139162.38487740656,
+        "L_complex": [
+          -0.5770010492763463,
+          -0.8276386826820419
+        ],
+        "magnitude": 1.008918232533078,
+        "phase_deg": -124.88287438236253,
+        "phasors": {
+          "return_Y": [
+            -0.0030059595393767094,
+            0.01043025889423459
+          ],
+          "actual_feedback_X": [
+            0.00677663375305698,
+            0.008356405361624545
+          ],
+          "disturbance_D": [
+            0.009782593292438635,
+            -0.0020738535326137735
+          ]
+        },
+        "quality": {
+          "THD": 5.972845263283009e-06,
+          "sideband_RSS_relative": 0.0005775709617462431,
+          "residual_relative": 7.340038371816826e-05,
+          "half_window_complex": 1.6286064777681584e-05,
+          "loop_error_peak_rad": 0.01077257006909349,
+          "mean_control_offset_V": 2.733531231369213e-07,
+          "control_drift_V": 9.526073927448144e-07,
+          "frequency_error_ppm": 0.008212572385238273,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 139162.38487740656,
+          "amplitude_rad": 0.01,
+          "mode": "series",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 0.00016371699664114527,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          7.74867986564581e-05,
+          0.00016371699664114527
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            -2.733531231369213e-07,
+            -2.4257939579275245e-07
+          ],
+          "voltage_drift_V": [
+            9.526073927448144e-07,
+            8.949690014782361e-07
+          ],
+          "frequency_offset_ppm": [
+            0.008190723112959864,
+            -0.008212572385238273
+          ],
+          "CP_charge_C": [
+            -6.611877911264892e-15,
+            6.61003432902035e-15
+          ],
+          "phase_trend_rad": [
+            -5.465831871142326e-07,
+            -5.465831977407692e-07,
+            -1.0107326522230346e-17
+          ],
+          "edge_counts": [
+            {
+              "ref": 1637,
+              "feedback": 1637
+            },
+            {
+              "ref": 1637,
+              "feedback": 1637
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            2.7989983896627785e-06,
+            -3.3857084244724543e-06
+          ],
+          [
+            2.593401174856457e-06,
+            3.2542000720971678e-06
+          ],
+          [
+            7.321901524596892e-07,
+            -9.184276433221961e-07
+          ],
+          [
+            7.289774230457009e-07,
+            8.839768888313717e-07
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9860837.615122594,
+          10139162.384877406,
+          19860837.615122594,
+          20139162.384877406
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "series",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 139674.31500890915,
+        "L_complex": [
+          -0.5754125538216699,
+          -0.8230659851224449
+        ],
+        "magnitude": 1.0042595396415992,
+        "phase_deg": -124.95773046955178,
+        "phasors": {
+          "return_Y": [
+            -0.002272985847867741,
+            0.010602741125024202
+          ],
+          "actual_feedback_X": [
+            0.007356050732328743,
+            0.007904287023635107
+          ],
+          "disturbance_D": [
+            0.009629036580191869,
+            -0.0026984541013933875
+          ]
+        },
+        "quality": {
+          "THD": 1.2988017090973608e-05,
+          "sideband_RSS_relative": 0.0005805974515416772,
+          "residual_relative": 7.350444455938095e-05,
+          "half_window_complex": 3.6992437485443567e-06,
+          "loop_error_peak_rad": 0.010811100362843717,
+          "mean_control_offset_V": 7.155362792277131e-07,
+          "control_drift_V": 1.286071747267772e-06,
+          "frequency_error_ppm": 0.004255125331888307,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 139674.31500890915,
+          "amplitude_rad": 0.01,
+          "mode": "series",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 0.00016319024939355742,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          7.727609975742297e-05,
+          0.00016319024939355742
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            -7.155362792277131e-07,
+            -6.800106802096195e-07
+          ],
+          "voltage_drift_V": [
+            1.286071747267772e-06,
+            1.2803028033397563e-06
+          ],
+          "frequency_offset_ppm": [
+            0.004255125331888307,
+            -0.004241515294128855
+          ],
+          "CP_charge_C": [
+            1.187514238748411e-15,
+            -1.1928509831119556e-15
+          ],
+          "phase_trend_rad": [
+            -5.574062575933094e-07,
+            -5.574062414723073e-07,
+            -1.8465318250143747e-19
+          ],
+          "edge_counts": [
+            {
+              "ref": 1631,
+              "feedback": 1631
+            },
+            {
+              "ref": 1631,
+              "feedback": 1631
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            3.0338640720528913e-06,
+            -3.2023618913395416e-06
+          ],
+          [
+            2.822132088255028e-06,
+            3.0808377883326634e-06
+          ],
+          [
+            7.956349733322099e-07,
+            -8.724575187418738e-07
+          ],
+          [
+            7.936043941630987e-07,
+            8.35175637155808e-07
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9860325.684991091,
+          10139674.315008909,
+          19860325.68499109,
+          20139674.31500891
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "series",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 139930.98584727838,
+        "L_complex": [
+          -0.5745724088907491,
+          -0.8208236665623292
+        ],
+        "magnitude": 1.0019405893801008,
+        "phase_deg": -124.99182542007611,
+        "phasors": {
+          "return_Y": [
+            -0.0019019452852223125,
+            0.010669196129598381
+          ],
+          "actual_feedback_X": [
+            0.007635061610525018,
+            0.007661622444622108
+          ],
+          "disturbance_D": [
+            0.009537006895741908,
+            -0.0030075736849778582
+          ]
+        },
+        "quality": {
+          "THD": 8.609069711943509e-06,
+          "sideband_RSS_relative": 0.0005805828318307402,
+          "residual_relative": 7.317873004371557e-05,
+          "half_window_complex": 1.728640224815156e-06,
+          "loop_error_peak_rad": 0.010830392451680382,
+          "mean_control_offset_V": 4.242127016329533e-08,
+          "control_drift_V": 1.4656063275269373e-07,
+          "frequency_error_ppm": 0.01359164560976067,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 139930.98584727838,
+          "amplitude_rad": 0.01,
+          "mode": "series",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 0.00016292760019448541,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          7.717104007779416e-05,
+          0.00016292760019448541
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            4.182282631326473e-08,
+            4.242127016329533e-08
+          ],
+          "voltage_drift_V": [
+            1.4656063275269373e-07,
+            1.280375945759198e-07
+          ],
+          "frequency_offset_ppm": [
+            0.013486919306019243,
+            -0.01359164560976067
+          ],
+          "CP_charge_C": [
+            -4.163794246507954e-15,
+            4.182333010269862e-15
+          ],
+          "phase_trend_rad": [
+            -5.595687612646675e-07,
+            -5.595687514758398e-07,
+            1.618679962202968e-18
+          ],
+          "edge_counts": [
+            {
+              "ref": 1629,
+              "feedback": 1629
+            },
+            {
+              "ref": 1629,
+              "feedback": 1629
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            3.154666931622725e-06,
+            -3.0827991564923466e-06
+          ],
+          [
+            2.9108965316391403e-06,
+            2.995045456822762e-06
+          ],
+          [
+            8.296719276440057e-07,
+            -8.309439716854211e-07
+          ],
+          [
+            8.073173387119239e-07,
+            8.121343242016538e-07
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9860069.014152722,
+          10139930.985847278,
+          19860069.01415272,
+          20139930.98584728
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "series",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 140188.1283537511,
+        "L_complex": [
+          -0.5738212033074509,
+          -0.818514414316755
+        ],
+        "magnitude": 0.9996182370332742,
+        "phase_deg": -125.03245503151227,
+        "phasors": {
+          "return_Y": [
+            -0.001527813011719937,
+            0.010723943567567094
+          ],
+          "actual_feedback_X": [
+            0.007907046970581802,
+            0.007409819684178004
+          ],
+          "disturbance_D": [
+            0.009434859982293452,
+            -0.0033141238833992973
+          ]
+        },
+        "quality": {
+          "THD": 1.0825648586058837e-05,
+          "sideband_RSS_relative": 0.0005831809500021256,
+          "residual_relative": 7.376502377969122e-05,
+          "half_window_complex": 7.651408777836489e-07,
+          "loop_error_peak_rad": 0.010850020613361266,
+          "mean_control_offset_V": 5.49980087249935e-07,
+          "control_drift_V": 1.2653538955015764e-06,
+          "frequency_error_ppm": 0.007033194426693532,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 140188.1283537511,
+          "amplitude_rad": 0.01,
+          "mode": "series",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 0.00016266543276426338,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          7.706617310570534e-05,
+          0.00016266543276426338
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            -5.49980087249935e-07,
+            -5.153507032229498e-07
+          ],
+          "voltage_drift_V": [
+            1.2653538955015764e-06,
+            1.2461906985738156e-06
+          ],
+          "frequency_offset_ppm": [
+            0.0070301302910941894,
+            -0.007033194426693532
+          ],
+          "CP_charge_C": [
+            -1.8316317428818696e-16,
+            1.7864162420720404e-16
+          ],
+          "phase_trend_rad": [
+            -5.653498527996223e-07,
+            -5.653498399999651e-07,
+            1.898200834796887e-18
+          ],
+          "edge_counts": [
+            {
+              "ref": 1626,
+              "feedback": 1626
+            },
+            {
+              "ref": 1626,
+              "feedback": 1626
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            3.2574318106073983e-06,
+            -2.997977507826282e-06
+          ],
+          [
+            3.0354570129172836e-06,
+            2.8908467335849206e-06
+          ],
+          [
+            8.563455611476016e-07,
+            -8.17979257741037e-07
+          ],
+          [
+            8.5055935102079e-07,
+            7.81525732013416e-07
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9859811.87164625,
+          10140188.12835375,
+          19859811.871646248,
+          20140188.128353752
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "series",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 142262.3528031138,
+        "L_complex": [
+          -0.5674501532656476,
+          -0.8004956791146074
+        ],
+        "magnitude": 0.9812201632265632,
+        "phase_deg": -125.33181620539143,
+        "phasors": {
+          "return_Y": [
+            0.0015018546839598496,
+            0.010678897489938506
+          ],
+          "actual_feedback_X": [
+            0.00976392525063523,
+            0.005045231724991256
+          ],
+          "disturbance_D": [
+            0.00826207056668257,
+            -0.005633665764948926
+          ]
+        },
+        "quality": {
+          "THD": 1.881639170390331e-06,
+          "sideband_RSS_relative": 0.0005936379134706372,
+          "residual_relative": 7.760389602856841e-05,
+          "half_window_complex": 4.896339123052796e-05,
+          "loop_error_peak_rad": 0.011004809711266716,
+          "mean_control_offset_V": 7.270402935244391e-08,
+          "control_drift_V": 3.6076657848058415e-07,
+          "frequency_error_ppm": 0.009912515195135934,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 142262.3528031138,
+          "amplitude_rad": 0.01,
+          "mode": "series",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 0.00016058533129758727,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          7.623413251903492e-05,
+          0.00016058533129758727
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            -7.270402935244391e-08,
+            -5.228040766969144e-08
+          ],
+          "voltage_drift_V": [
+            3.6076657848058415e-07,
+            2.7750477096376895e-07
+          ],
+          "frequency_offset_ppm": [
+            0.009904876903422418,
+            -0.009912515195135934
+          ],
+          "CP_charge_C": [
+            4.675693113241593e-15,
+            -4.6767762362230146e-15
+          ],
+          "phase_trend_rad": [
+            -5.99256674274119e-07,
+            -5.992566974717629e-07,
+            -1.6360639899563824e-18
+          ],
+          "edge_counts": [
+            {
+              "ref": 1605,
+              "feedback": 1605
+            },
+            {
+              "ref": 1605,
+              "feedback": 1605
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            4.01136185761632e-06,
+            -2.0146165062733846e-06
+          ],
+          [
+            3.7516803002850437e-06,
+            1.9891092404889936e-06
+          ],
+          [
+            1.0624859880393968e-06,
+            -5.54446891733602e-07
+          ],
+          [
+            1.0402206961083378e-06,
+            5.321058551262215e-07
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9857737.647196887,
+          10142262.352803113,
+          19857737.647196885,
+          20142262.352803115
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "series",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 160000,
+        "L_complex": [
+          -0.5175298849683203,
+          -0.6656464215886023
+        ],
+        "magnitude": 0.8431621080249243,
+        "phase_deg": -127.86451812591652,
+        "phasors": {
+          "return_Y": [
+            0.005764828953207814,
+            -0.008482579691967106
+          ],
+          "actual_feedback_X": [
+            -0.0037457362097387975,
+            -0.011572749635716676
+          ],
+          "disturbance_D": [
+            -0.009510565162951533,
+            -0.0030901699437495098
+          ]
+        },
+        "quality": {
+          "THD": 6.620986841793344e-07,
+          "sideband_RSS_relative": 0.0006939721752653899,
+          "residual_relative": 9.023835196121198e-05,
+          "half_window_complex": 6.980680982300874e-07,
+          "loop_error_peak_rad": 0.012179085559182568,
+          "mean_control_offset_V": 3.6185088408968724e-06,
+          "control_drift_V": 2.9993104672931786e-08,
+          "frequency_error_ppm": 0.004333035283994465,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 160000,
+          "amplitude_rad": 0.01,
+          "mode": "series",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 0.000145,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          7.000000000000001e-05,
+          0.000145
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            -3.6185088408968724e-06,
+            -3.616224175995164e-06
+          ],
+          "voltage_drift_V": [
+            2.9993104672931786e-08,
+            1.0680847366337345e-08
+          ],
+          "frequency_offset_ppm": [
+            0.0043244425160145665,
+            -0.004333035283994465
+          ],
+          "CP_charge_C": [
+            9.411719799873183e-15,
+            1.704015327779858e-16
+          ],
+          "phase_trend_rad": [
+            -9.212808962710058e-07,
+            -9.212808956294427e-07,
+            -1.3552527156068805e-18
+          ],
+          "edge_counts": [
+            {
+              "ref": 1450,
+              "feedback": 1450
+            },
+            {
+              "ref": 1450,
+              "feedback": 1449
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            -1.5919125690119935e-06,
+            4.742665569151343e-06
+          ],
+          [
+            -1.40419897035132e-06,
+            -4.4871140390253165e-06
+          ],
+          [
+            -4.026964178467911e-07,
+            1.2843744837778276e-06
+          ],
+          [
+            -4.148639648165103e-07,
+            -1.241393487167695e-06
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9840000.0,
+          10160000.0,
+          19840000.0,
+          20160000.0
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "series",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 250000,
+        "L_complex": [
+          -0.337681269617624,
+          -0.29462762644397883
+        ],
+        "magnitude": 0.4481451529522362,
+        "phase_deg": -138.89523294546672,
+        "phasors": {
+          "return_Y": [
+            0.005606918827103006,
+            -0.0026042740924713485
+          ],
+          "actual_feedback_X": [
+            0.0056069188271039485,
+            -0.012604274092503306
+          ],
+          "disturbance_D": [
+            5.740696097990895e-17,
+            -0.010000000000000004
+          ]
+        },
+        "quality": {
+          "THD": 8.192813521922372e-07,
+          "sideband_RSS_relative": 0.0013077598454439294,
+          "residual_relative": 0.00016958288806798974,
+          "half_window_complex": 5.148422546390522e-07,
+          "loop_error_peak_rad": 0.01379563437831166,
+          "mean_control_offset_V": 4.102368084790697e-06,
+          "control_drift_V": 3.3600904631708576e-08,
+          "frequency_error_ppm": 0.027620557914470874,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 250000,
+          "amplitude_rad": 0.01,
+          "mode": "series",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 0.00010800000000000001,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          6.000000000000001e-05,
+          0.00010800000000000001
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            -4.102368084790697e-06,
+            -4.097699097926899e-06
+          ],
+          "voltage_drift_V": [
+            3.3600904631708576e-08,
+            1.0104588499354971e-08
+          ],
+          "frequency_offset_ppm": [
+            -0.02752775191738445,
+            0.027620557914470874
+          ],
+          "CP_charge_C": [
+            5.2241203098446135e-15,
+            -5.227077158639596e-15
+          ],
+          "phase_trend_rad": [
+            -1.5065026363982915e-06,
+            -1.5065026356632025e-06,
+            4.0306020582761315e-18
+          ],
+          "edge_counts": [
+            {
+              "ref": 1080,
+              "feedback": 1080
+            },
+            {
+              "ref": 1080,
+              "feedback": 1079
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            2.2877736636627705e-06,
+            5.30295244287577e-06
+          ],
+          [
+            2.174977553853481e-06,
+            -4.769054998553523e-06
+          ],
+          [
+            6.373617833814113e-07,
+            1.4001630102114396e-06
+          ],
+          [
+            5.849688303494758e-07,
+            -1.35142129662574e-06
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9750000.0,
+          10250000.0,
+          19750000.0,
+          20250000.0
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "series",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 400000,
+        "L_complex": [
+          -0.18137091100372119,
+          -0.10142771198063184
+        ],
+        "magnitude": 0.20780516864588752,
+        "phase_deg": -150.78485250436768,
+        "phasors": {
+          "return_Y": [
+            0.0014906169266680226,
+            -0.0020308577694915795
+          ],
+          "actual_feedback_X": [
+            0.0014906169266678646,
+            -0.012030857769459695
+          ],
+          "disturbance_D": [
+            1.1303118171450748e-16,
+            -0.009999999999999985
+          ]
+        },
+        "quality": {
+          "THD": 5.385074742114221e-07,
+          "sideband_RSS_relative": 0.0028328900420227284,
+          "residual_relative": 0.0003607493716395711,
+          "half_window_complex": 2.511328665356685e-07,
+          "loop_error_peak_rad": 0.012123963366320822,
+          "mean_control_offset_V": 3.6010229894634094e-06,
+          "control_drift_V": 1.8250929855519876e-08,
+          "frequency_error_ppm": 0.05434761004551153,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 400000,
+          "amplitude_rad": 0.01,
+          "mode": "series",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 9e-05,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          6.000000000000001e-05,
+          9e-05
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            -3.6010229894634094e-06,
+            -3.596903386582362e-06
+          ],
+          "voltage_drift_V": [
+            1.8250929855519876e-08,
+            5.0553720920136795e-09
+          ],
+          "frequency_offset_ppm": [
+            -0.05432946407835243,
+            0.05434761004551153
+          ],
+          "CP_charge_C": [
+            1.3174646600120663e-15,
+            -1.3187496110170851e-15
+          ],
+          "phase_trend_rad": [
+            -9.669135468952806e-07,
+            -9.669135473707033e-07,
+            3.251931774492182e-18
+          ],
+          "edge_counts": [
+            {
+              "ref": 900,
+              "feedback": 900
+            },
+            {
+              "ref": 900,
+              "feedback": 899
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            5.821001952002291e-07,
+            5.198436170948968e-06
+          ],
+          [
+            5.902391621596058e-07,
+            -4.4395119071489005e-06
+          ],
+          [
+            1.8021099874569887e-07,
+            1.3585580825563022e-06
+          ],
+          [
+            1.4441412227525355e-07,
+            -1.2695211374223332e-06
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9600000.0,
+          10400000.0,
+          19600000.0,
+          20400000.0
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "series",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 630000,
+        "L_complex": [
+          -0.08588672604781503,
+          -0.03077162466035671
+        ],
+        "magnitude": 0.09123279342128192,
+        "phase_deg": -160.2883376409232,
+        "phasors": {
+          "return_Y": [
+            0.00024739464853724996,
+            0.0009663157091380693
+          ],
+          "actual_feedback_X": [
+            0.006125247171456294,
+            0.009056485652894354
+          ],
+          "disturbance_D": [
+            0.005877852522924701,
+            0.008090169943749512
+          ]
+        },
+        "quality": {
+          "THD": 3.339606044878223e-05,
+          "sideband_RSS_relative": 0.006478077428757941,
+          "residual_relative": 0.000779796610283543,
+          "half_window_complex": 6.197988711428863e-05,
+          "loop_error_peak_rad": 0.010946402509944164,
+          "mean_control_offset_V": 7.538108814930666e-08,
+          "control_drift_V": 1.3790646126658458e-07,
+          "frequency_error_ppm": 0.006896753989652645,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 630000,
+          "amplitude_rad": 0.01,
+          "mode": "series",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 7.904761904761905e-05,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          6.000000000000001e-05,
+          7.904761904761905e-05
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            5.656010770849207e-08,
+            7.538108814930666e-08
+          ],
+          "voltage_drift_V": [
+            1.3790646126658458e-07,
+            3.0315230907405145e-08
+          ],
+          "frequency_offset_ppm": [
+            -0.006896753989652645,
+            0.006830814193085046
+          ],
+          "CP_charge_C": [
+            4.948348969419497e-15,
+            -4.93316005287238e-15
+          ],
+          "phase_trend_rad": [
+            -5.427211175706276e-07,
+            -5.427211128082154e-07,
+            -1.0408340855860843e-17
+          ],
+          "edge_counts": [
+            {
+              "ref": 790,
+              "feedback": 790
+            },
+            {
+              "ref": 790,
+              "feedback": 790
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            2.8179633092808106e-06,
+            -4.0331461097238615e-06
+          ],
+          [
+            2.1189927230355935e-06,
+            3.2104240417940977e-06
+          ],
+          [
+            6.972506909460568e-07,
+            -1.0220890182662874e-06
+          ],
+          [
+            6.149405861533937e-07,
+            9.172206439407316e-07
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9370000.0,
+          10630000.0,
+          19370000.0,
+          20630000.0
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "series",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 1000000,
+        "L_complex": [
+          -0.036745408248716575,
+          -0.00830052701455538
+        ],
+        "magnitude": 0.03767125928455554,
+        "phase_deg": -167.2709313023147,
+        "phasors": {
+          "return_Y": [
+            8.945224484973766e-05,
+            -0.0003807005799423763
+          ],
+          "actual_feedback_X": [
+            8.945224485593995e-05,
+            -0.01038070057993269
+          ],
+          "disturbance_D": [
+            1.7336392738043216e-16,
+            -0.010000000000000002
+          ]
+        },
+        "quality": {
+          "THD": 2.5306914177953187e-05,
+          "sideband_RSS_relative": 0.01611419238349268,
+          "residual_relative": 0.0018793291142566427,
+          "half_window_complex": 0.00010056769989920646,
+          "loop_error_peak_rad": 0.01037442612596351,
+          "mean_control_offset_V": 9.147736024228692e-08,
+          "control_drift_V": 6.741091327934604e-08,
+          "frequency_error_ppm": 0.03108183580385702,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 1000000,
+          "amplitude_rad": 0.01,
+          "mode": "series",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 7.200000000000002e-05,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          6.000000000000001e-05,
+          7.200000000000002e-05
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            9.057942307322264e-08,
+            9.147736024228692e-08
+          ],
+          "voltage_drift_V": [
+            6.741091327934604e-08,
+            6.23370916121992e-08
+          ],
+          "frequency_offset_ppm": [
+            -0.03108183580385702,
+            0.030987901332384826
+          ],
+          "CP_charge_C": [
+            5.925467715500497e-17,
+            -4.61895787480132e-17
+          ],
+          "phase_trend_rad": [
+            -2.692389453644241e-07,
+            -2.692389641592314e-07,
+            1.737433981408021e-17
+          ],
+          "edge_counts": [
+            {
+              "ref": 720,
+              "feedback": 720
+            },
+            {
+              "ref": 720,
+              "feedback": 719
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            -3.644177083610695e-08,
+            5.05388029727934e-06
+          ],
+          [
+            6.335282487347824e-08,
+            -3.4150793119567273e-06
+          ],
+          [
+            8.389724695834379e-09,
+            1.2138572120377054e-06
+          ],
+          [
+            1.1198440551343327e-08,
+            -1.0142231366247821e-06
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9000000.0,
+          11000000.0,
+          19000000.0,
+          21000000.0
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "series",
+        "M1_used_for_measurement": false
+      }
+    ],
+    "crossing": {
+      "status": "MEASURED_BRACKETED",
+      "UGF_Hz": 140145.78418116004,
+      "PM_deg": 54.97423039985232,
+      "phase_deg": -125.02576960014768,
+      "bracket_Hz": [
+        139930.98584727838,
+        140188.1283537511
+      ],
+      "bracket_relative_width": 0.0018376380679070436,
+      "direction": "downward",
+      "crossings_found": 1,
+      "interpretation": "fundamental phase-port ratio; not a Floquet stability certificate"
+    },
+    "M1_used_for_measurement": false
+  },
+  "clamp": {
+    "points": [
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 25000,
+        "L_complex": [
+          -3.5828148217270157,
+          -6.09332725423497
+        ],
+        "magnitude": 7.06860658644895,
+        "phase_deg": -120.45509773269649,
+        "phasors": {
+          "return_Y": [
+            -0.06093327254217142,
+            0.035828148217173415
+          ],
+          "actual_feedback_X": [
+            9.85684617423304e-16,
+            0.009999999999971322
+          ],
+          "disturbance_D": [
+            4.242703329502065e-17,
+            0.010000000000000002
+          ]
+        },
+        "quality": {
+          "THD": 5.672451897565039e-10,
+          "sideband_RSS_relative": 8.258120549185936e-05,
+          "residual_relative": 1.054328185494702e-05,
+          "half_window_complex": 1.190126092473495e-09,
+          "loop_error_peak_rad": 0.010000000002037268,
+          "mean_control_offset_V": 1.1102230246251565e-16,
+          "control_drift_V": 2.702808252002479e-10,
+          "frequency_error_ppm": 0.744373357616845,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 25000,
+          "amplitude_rad": 0.01,
+          "mode": "clamp",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 0.00082,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6002975350192603,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          0.00034,
+          0.00082
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            1.1102230246251565e-16,
+            0.0
+          ],
+          "voltage_drift_V": [
+            2.702808252002479e-10,
+            2.6434211296058325e-10
+          ],
+          "frequency_offset_ppm": [
+            0.7406374835416437,
+            0.744373357616845
+          ],
+          "CP_charge_C": [
+            1.856973360661198e-21,
+            1.8095735628912668e-21
+          ],
+          "phase_trend_rad": [
+            -4.0245422836329703e-10,
+            1.178256710948622e-15,
+            -2.778268066994105e-18
+          ],
+          "edge_counts": [
+            {
+              "ref": 8200,
+              "feedback": 8200
+            },
+            {
+              "ref": 8200,
+              "feedback": 8200
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            4.1543158631239877e-08,
+            -4.000224853042424e-06
+          ],
+          [
+            -4.047300038168e-08,
+            3.96160955430094e-06
+          ],
+          [
+            -1.0129799846077822e-08,
+            -1.09207053594889e-06
+          ],
+          [
+            1.0143773471584308e-08,
+            1.0872938295191856e-06
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9975000.0,
+          10025000.0,
+          19975000.0,
+          20025000.0
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "clamp",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 40000,
+        "L_complex": [
+          -1.7772326447843718,
+          -3.7451623449114333
+        ],
+        "magnitude": 4.145454964588297,
+        "phase_deg": -115.38625137378902,
+        "phasors": {
+          "return_Y": [
+            0.02847567499062807,
+            0.03012665962512298
+          ],
+          "actual_feedback_X": [
+            0.009510565162943064,
+            -0.003090169943746549
+          ],
+          "disturbance_D": [
+            0.009510565162951557,
+            -0.003090169943749464
+          ]
+        },
+        "quality": {
+          "THD": 6.884667659226827e-10,
+          "sideband_RSS_relative": 0.00014081924750251087,
+          "residual_relative": 1.7978184040924996e-05,
+          "half_window_complex": 9.925382202323458e-10,
+          "loop_error_peak_rad": 0.010000000000218279,
+          "mean_control_offset_V": 0.0,
+          "control_drift_V": 4.5907196892915145e-10,
+          "frequency_error_ppm": 0.7472262818719184,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 40000,
+          "amplitude_rad": 0.01,
+          "mode": "clamp",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 0.00052,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6001870686957472,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          0.00022,
+          0.00052
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            0.0,
+            0.0
+          ],
+          "voltage_drift_V": [
+            4.588723886273221e-10,
+            4.5907196892915145e-10
+          ],
+          "frequency_offset_ppm": [
+            0.73775313026951,
+            0.7472262818719184
+          ],
+          "CP_charge_C": [
+            1.9300050862276372e-21,
+            1.8530654300676985e-21
+          ],
+          "phase_trend_rad": [
+            -6.115679521828676e-09,
+            -6.059244194586703e-15,
+            -2.257367170097819e-18
+          ],
+          "edge_counts": [
+            {
+              "ref": 5200,
+              "feedback": 5200
+            },
+            {
+              "ref": 5200,
+              "feedback": 5200
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            3.802627270109568e-06,
+            1.279572096989437e-06
+          ],
+          [
+            3.7692130087090166e-06,
+            -1.1824682056866404e-06
+          ],
+          [
+            1.0431193130178498e-06,
+            3.2828300840226365e-07
+          ],
+          [
+            1.0295858464024702e-06,
+            -3.4520250949930664e-07
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9960000.0,
+          10040000.0,
+          19960000.0,
+          20040000.0
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "clamp",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 63000,
+        "L_complex": [
+          -1.0661995191350364,
+          -2.285746355833105
+        ],
+        "magnitude": 2.5221851275844327,
+        "phase_deg": -115.00696892355774,
+        "phasors": {
+          "return_Y": [
+            -0.012076188191310917,
+            -0.02214288735804433
+          ],
+          "actual_feedback_X": [
+            -0.009980267284299899,
+            0.000627905195293691
+          ],
+          "disturbance_D": [
+            -0.009980267284282704,
+            0.0006279051952931446
+          ]
+        },
+        "quality": {
+          "THD": 7.676631689995909e-06,
+          "sideband_RSS_relative": 0.00023101418493790286,
+          "residual_relative": 2.9228884060502974e-05,
+          "half_window_complex": 4.34123554876016e-06,
+          "loop_error_peak_rad": 0.00999999999839929,
+          "mean_control_offset_V": 2.220446049250313e-16,
+          "control_drift_V": 1.0349152702948273e-06,
+          "frequency_error_ppm": 0.36646418555727095,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 63000,
+          "amplitude_rad": 0.01,
+          "mode": "clamp",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 0.00033746031746031746,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6001183520814888,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          0.00014698412698412698,
+          0.00033746031746031746
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            -2.220446049250313e-16,
+            2.220446049250313e-16
+          ],
+          "voltage_drift_V": [
+            1.032414290323672e-06,
+            1.0349152702948273e-06
+          ],
+          "frequency_offset_ppm": [
+            0.36646418555727095,
+            0.3601060709327494
+          ],
+          "CP_charge_C": [
+            2.0343013182372228e-17,
+            -2.0360790241032806e-17
+          ],
+          "phase_trend_rad": [
+            6.44152198838433e-05,
+            -1.3585963146386958e-14,
+            -3.356368053495165e-19
+          ],
+          "edge_counts": [
+            {
+              "ref": 3374,
+              "feedback": 3374
+            },
+            {
+              "ref": 3374,
+              "feedback": 3374
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            -4.013236921140235e-06,
+            -2.8797188325245754e-07
+          ],
+          [
+            -3.9203119479806064e-06,
+            2.1366227525535398e-07
+          ],
+          [
+            -1.0875550686978582e-06,
+            -5.6602254872072447e-08
+          ],
+          [
+            -1.0740401243402757e-06,
+            7.932782652270674e-08
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9937000.0,
+          10063000.0,
+          19937000.0,
+          20063000.0
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "clamp",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 100000,
+        "L_complex": [
+          -0.7323649272740849,
+          -1.31074941007929
+        ],
+        "magnitude": 1.5014734105952001,
+        "phase_deg": -119.19373239155914,
+        "phasors": {
+          "return_Y": [
+            0.013107494100854026,
+            -0.007323649272774881
+          ],
+          "actual_feedback_X": [
+            7.069847844530703e-17,
+            -0.010000000000046595
+          ],
+          "disturbance_D": [
+            2.3268497986888063e-17,
+            -0.009999999999999986
+          ]
+        },
+        "quality": {
+          "THD": 5.117160103458564e-10,
+          "sideband_RSS_relative": 0.00038893940927316634,
+          "residual_relative": 4.963673281937106e-05,
+          "half_window_complex": 1.0522497534340588e-09,
+          "loop_error_peak_rad": 0.010000000000218279,
+          "mean_control_offset_V": 2.220446049250313e-16,
+          "control_drift_V": 1.7936866474058057e-10,
+          "frequency_error_ppm": 0.7484025877334838,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 100000,
+          "amplitude_rad": 0.01,
+          "mode": "clamp",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 0.00022,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6000765906787208,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          0.0001,
+          0.00022
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            -2.220446049250313e-16,
+            1.1102230246251565e-16
+          ],
+          "voltage_drift_V": [
+            -8.356234568059312e-11,
+            -1.7936866474058057e-10
+          ],
+          "frequency_offset_ppm": [
+            0.736148015664358,
+            0.7484025877334838
+          ],
+          "CP_charge_C": [
+            3.424706037677659e-23,
+            3.310584086554981e-23
+          ],
+          "phase_trend_rad": [
+            2.5811885194884122e-11,
+            2.226537910206966e-15,
+            -3.4287893704854078e-18
+          ],
+          "edge_counts": [
+            {
+              "ref": 2200,
+              "feedback": 2200
+            },
+            {
+              "ref": 2200,
+              "feedback": 2200
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            -4.319414648696391e-08,
+            4.059249182475424e-06
+          ],
+          [
+            3.891290194441025e-08,
+            -3.904758032114966e-06
+          ],
+          [
+            1.0108059697754219e-08,
+            1.0993040266136896e-06
+          ],
+          [
+            -1.0163473393593213e-08,
+            -1.080196667031625e-06
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9900000.0,
+          10100000.0,
+          19900000.0,
+          20100000.0
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "clamp",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 126491.10640673517,
+        "L_complex": [
+          -0.6184200221663725,
+          -0.9512493772387024
+        ],
+        "magnitude": 1.1346006793199428,
+        "phase_deg": -123.02843721071694,
+        "phasors": {
+          "return_Y": [
+            -0.008193973811763889,
+            0.007847971924227391
+          ],
+          "actual_feedback_X": [
+            0.0018628339170303715,
+            0.009824960549415257
+          ],
+          "disturbance_D": [
+            0.001862833917029339,
+            0.009824960549415203
+          ]
+        },
+        "quality": {
+          "THD": 1.209055310096306e-05,
+          "sideband_RSS_relative": 0.0005134116781402204,
+          "residual_relative": 6.447124685589026e-05,
+          "half_window_complex": 8.15199524550176e-06,
+          "loop_error_peak_rad": 0.009999999281717464,
+          "mean_control_offset_V": 1.1102230246251565e-16,
+          "control_drift_V": 1.1705766000121593e-06,
+          "frequency_error_ppm": 0.23096648069584821,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 126491.10640673517,
+          "amplitude_rad": 0.01,
+          "mode": "clamp",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 0.00017811388300841897,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6000591322746521,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          8.324555320336759e-05,
+          0.00017811388300841897
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            -1.1102230246251565e-16,
+            -1.1102230246251565e-16
+          ],
+          "voltage_drift_V": [
+            1.1705766000121593e-06,
+            1.149705475112429e-06
+          ],
+          "frequency_offset_ppm": [
+            0.22908690694585188,
+            0.23096648069584821
+          ],
+          "CP_charge_C": [
+            -4.962790110792041e-17,
+            4.959997304087603e-17
+          ],
+          "phase_trend_rad": [
+            3.5811863063819535e-05,
+            -1.0437186986396061e-14,
+            2.5380349647740046e-18
+          ],
+          "edge_counts": [
+            {
+              "ref": 1781,
+              "feedback": 1781
+            },
+            {
+              "ref": 1781,
+              "feedback": 1781
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            7.92445991901215e-07,
+            -3.993470039100131e-06
+          ],
+          [
+            6.929002913789491e-07,
+            3.8133944289667275e-06
+          ],
+          [
+            1.9157113361715095e-07,
+            -1.0755337921744692e-06
+          ],
+          [
+            2.108022211349663e-07,
+            1.047311723835335e-06
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9873508.893593265,
+          10126491.106406735,
+          19873508.893593267,
+          20126491.106406733
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "clamp",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 134145.15424006627,
+        "L_complex": [
+          -0.5923124647522242,
+          -0.8731634161397005
+        ],
+        "magnitude": 1.0551058748701982,
+        "phase_deg": -124.15109934956956,
+        "phasors": {
+          "return_Y": [
+            0.0018314847699753042,
+            0.010390885633848337
+          ],
+          "actual_feedback_X": [
+            0.009124425770082985,
+            0.004092047698411129
+          ],
+          "disturbance_D": [
+            0.009124425770091548,
+            0.004092047698413252
+          ]
+        },
+        "quality": {
+          "THD": 6.927541661035279e-06,
+          "sideband_RSS_relative": 0.0005516332030599626,
+          "residual_relative": 6.891371072838163e-05,
+          "half_window_complex": 3.6737475756340283e-06,
+          "loop_error_peak_rad": 0.00999999993473466,
+          "mean_control_offset_V": 2.220446049250313e-16,
+          "control_drift_V": 1.082257692070408e-06,
+          "frequency_error_ppm": 0.08569670621836196,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 134145.15424006627,
+          "amplitude_rad": 0.01,
+          "mode": "clamp",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 0.00016909222858850335,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.600055225087878,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          7.963689143540135e-05,
+          0.00016909222858850335
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            0.0,
+            2.220446049250313e-16
+          ],
+          "voltage_drift_V": [
+            1.082257692070408e-06,
+            9.990434114041051e-07
+          ],
+          "frequency_offset_ppm": [
+            0.08569670621836196,
+            0.08492000910952172
+          ],
+          "CP_charge_C": [
+            -6.601248879210832e-17,
+            6.598431491097552e-17
+          ],
+          "phase_trend_rad": [
+            2.883238341435106e-05,
+            -3.134096200218297e-14,
+            2.2978415672233066e-18
+          ],
+          "edge_counts": [
+            {
+              "ref": 1690,
+              "feedback": 1690
+            },
+            {
+              "ref": 1690,
+              "feedback": 1690
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            3.7316188782636137e-06,
+            -1.6356058362481057e-06
+          ],
+          [
+            3.5164517729590066e-06,
+            1.609083075223964e-06
+          ],
+          [
+            9.899245771373313e-07,
+            -4.563119344872706e-07
+          ],
+          [
+            9.758114820482343e-07,
+            4.2533788951464334e-07
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9865854.845759934,
+          10134145.154240066,
+          19865854.845759932,
+          20134145.154240068
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "clamp",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 138144.14667052828,
+        "L_complex": [
+          -0.5794732863818466,
+          -0.8357837496873751
+        ],
+        "magnitude": 1.0170170922219874,
+        "phase_deg": -124.73469996397041,
+        "phasors": {
+          "return_Y": [
+            0.006451552779579029,
+            0.007861923639880863
+          ],
+          "actual_feedback_X": [
+            0.00996725672474123,
+            -0.0008085749086823584
+          ],
+          "disturbance_D": [
+            0.009967256724748895,
+            -0.0008085749086808055
+          ]
+        },
+        "quality": {
+          "THD": 1.263596039097819e-05,
+          "sideband_RSS_relative": 0.0005731974242320191,
+          "residual_relative": 7.225937469736674e-05,
+          "half_window_complex": 9.03917551235197e-06,
+          "loop_error_peak_rad": 0.009999999789215508,
+          "mean_control_offset_V": 2.220446049250313e-16,
+          "control_drift_V": 1.0008321985512718e-06,
+          "frequency_error_ppm": 0.34000808594554377,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 138144.14667052828,
+          "amplitude_rad": 0.01,
+          "mode": "clamp",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 0.00016477631142562774,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6000546188188508,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          7.79105245702511e-05,
+          0.00016477631142562774
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            2.220446049250313e-16,
+            1.1102230246251565e-16
+          ],
+          "voltage_drift_V": [
+            1.0008321985512718e-06,
+            1.0006442512502388e-06
+          ],
+          "frequency_offset_ppm": [
+            0.321429608337373,
+            0.34000808594554377
+          ],
+          "CP_charge_C": [
+            3.650365864740982e-17,
+            -3.65496611540981e-17
+          ],
+          "phase_trend_rad": [
+            2.847531540253246e-05,
+            3.1751006946179636e-14,
+            -9.330067914006118e-19
+          ],
+          "edge_counts": [
+            {
+              "ref": 1647,
+              "feedback": 1647
+            },
+            {
+              "ref": 1647,
+              "feedback": 1647
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            4.06626173688016e-06,
+            3.664355183120773e-07
+          ],
+          [
+            3.858900453321067e-06,
+            -2.820564031924414e-07
+          ],
+          [
+            1.0929887702211994e-06,
+            7.671923818425947e-08
+          ],
+          [
+            1.0647354584091006e-06,
+            -9.825616983729388e-08
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9861855.853329472,
+          10138144.146670528,
+          19861855.853329472,
+          20138144.146670528
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "clamp",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 139162.38487740656,
+        "L_complex": [
+          -0.5762856535307737,
+          -0.8266067743765281
+        ],
+        "magnitude": 1.00766259924171,
+        "phase_deg": -124.88306165726807,
+        "phasors": {
+          "return_Y": [
+            0.007351829547875962,
+            0.006891225848128782
+          ],
+          "actual_feedback_X": [
+            0.009782593292433623,
+            -0.002073853532609962
+          ],
+          "disturbance_D": [
+            0.009782593292438635,
+            -0.0020738535326137735
+          ]
+        },
+        "quality": {
+          "THD": 4.054748501624583e-06,
+          "sideband_RSS_relative": 0.0005774730596974669,
+          "residual_relative": 7.269414402929845e-05,
+          "half_window_complex": 2.409886210077135e-05,
+          "loop_error_peak_rad": 0.009999999798310455,
+          "mean_control_offset_V": 1.1102230246251565e-16,
+          "control_drift_V": 7.109475900708927e-07,
+          "frequency_error_ppm": 0.04745616156532928,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 139162.38487740656,
+          "amplitude_rad": 0.01,
+          "mode": "clamp",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 0.00016371699664114527,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6000530629033616,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          7.74867986564581e-05,
+          0.00016371699664114527
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            1.1102230246251565e-16,
+            -1.1102230246251565e-16
+          ],
+          "voltage_drift_V": [
+            7.109475900708927e-07,
+            6.12996952611489e-07
+          ],
+          "frequency_offset_ppm": [
+            0.03545684741934609,
+            0.04745616156532928
+          ],
+          "CP_charge_C": [
+            1.123565854113557e-17,
+            -1.1276386646989757e-17
+          ],
+          "phase_trend_rad": [
+            1.9586196998469287e-05,
+            -1.0708685768765213e-14,
+            -1.0107326522230346e-17
+          ],
+          "edge_counts": [
+            {
+              "ref": 1637,
+              "feedback": 1637
+            },
+            {
+              "ref": 1637,
+              "feedback": 1637
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            3.9808214459661095e-06,
+            8.821332502981104e-07
+          ],
+          [
+            3.784929293675986e-06,
+            -7.698458983434762e-07
+          ],
+          [
+            1.0677347607671017e-06,
+            2.1658653586904028e-07
+          ],
+          [
+            1.0379577087017892e-06,
+            -2.296831964304157e-07
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9860837.615122594,
+          10139162.384877406,
+          19860837.615122594,
+          20139162.384877406
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "clamp",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 139674.31500890915,
+        "L_complex": [
+          -0.5747031451143838,
+          -0.8220380465418056
+        ],
+        "magnitude": 1.0030105956402615,
+        "phase_deg": -124.9581626887023,
+        "phasors": {
+          "return_Y": [
+            0.0077520695452488846,
+            0.006364624361449226
+          ],
+          "actual_feedback_X": [
+            0.00962903658019646,
+            -0.0026984541013889895
+          ],
+          "disturbance_D": [
+            0.009629036580191869,
+            -0.0026984541013933875
+          ]
+        },
+        "quality": {
+          "THD": 9.65512424322336e-06,
+          "sideband_RSS_relative": 0.00058049250426688,
+          "residual_relative": 7.255664371016232e-05,
+          "half_window_complex": 3.976060479547123e-06,
+          "loop_error_peak_rad": 0.00999999895793735,
+          "mean_control_offset_V": 2.220446049250313e-16,
+          "control_drift_V": 1.187498738107576e-06,
+          "frequency_error_ppm": 0.1314898704801452,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 139674.31500890915,
+          "amplitude_rad": 0.01,
+          "mode": "clamp",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 0.00016319024939355742,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.600053230857396,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          7.727609975742297e-05,
+          0.00016319024939355742
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            2.220446049250313e-16,
+            0.0
+          ],
+          "voltage_drift_V": [
+            1.187498738107576e-06,
+            1.139060377054041e-06
+          ],
+          "frequency_offset_ppm": [
+            0.1314898704801452,
+            0.12752720476882778
+          ],
+          "CP_charge_C": [
+            -4.0054338939689333e-17,
+            4.001608064464197e-17
+          ],
+          "phase_trend_rad": [
+            3.1956128784673766e-05,
+            1.6039331185912706e-14,
+            -1.8465318250143747e-19
+          ],
+          "edge_counts": [
+            {
+              "ref": 1631,
+              "feedback": 1631
+            },
+            {
+              "ref": 1631,
+              "feedback": 1631
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            3.9190718655008694e-06,
+            1.1337661140892728e-06
+          ],
+          [
+            3.728235288333673e-06,
+            -1.0151132552501654e-06
+          ],
+          [
+            1.0542264307460678e-06,
+            2.8309053398402036e-07
+          ],
+          [
+            1.0221830422897041e-06,
+            -2.9870088983075164e-07
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9860325.684991091,
+          10139674.315008909,
+          19860325.68499109,
+          20139674.31500891
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "clamp",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 139930.98584727838,
+        "L_complex": [
+          -0.5738505685202147,
+          -0.8198025642299305
+        ],
+        "magnitude": 1.0006901215206148,
+        "phase_deg": -124.9914936093272,
+        "phasors": {
+          "return_Y": [
+            0.007938433448159832,
+            0.006092564839222129
+          ],
+          "actual_feedback_X": [
+            0.009537006895747343,
+            -0.003007573684976275
+          ],
+          "disturbance_D": [
+            0.009537006895741908,
+            -0.0030075736849778582
+          ]
+        },
+        "quality": {
+          "THD": 6.427048232854471e-06,
+          "sideband_RSS_relative": 0.0005805643209810781,
+          "residual_relative": 7.237442115434578e-05,
+          "half_window_complex": 3.570414742061524e-06,
+          "loop_error_peak_rad": 0.009999999870160536,
+          "mean_control_offset_V": 3.3306690738754696e-16,
+          "control_drift_V": 1.2120623188839955e-07,
+          "frequency_error_ppm": 0.02552221517783588,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 139930.98584727838,
+          "amplitude_rad": 0.01,
+          "mode": "clamp",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 0.00016292760019448541,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6000525549691673,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          7.717104007779416e-05,
+          0.00016292760019448541
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            2.220446049250313e-16,
+            3.3306690738754696e-16
+          ],
+          "voltage_drift_V": [
+            1.2120623188839955e-07,
+            1.130700548864901e-07
+          ],
+          "frequency_offset_ppm": [
+            -0.02552221517783588,
+            0.0073194377786942955
+          ],
+          "CP_charge_C": [
+            -2.5081471481109953e-18,
+            2.5401571764931807e-18
+          ],
+          "phase_trend_rad": [
+            -3.5664768311184127e-06,
+            9.79429077937506e-15,
+            1.618679962202968e-18
+          ],
+          "edge_counts": [
+            {
+              "ref": 1629,
+              "feedback": 1629
+            },
+            {
+              "ref": 1629,
+              "feedback": 1629
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            3.867017951424915e-06,
+            1.277730180103279e-06
+          ],
+          [
+            3.6924152445086096e-06,
+            -1.1127666301749767e-06
+          ],
+          [
+            1.0333991308722474e-06,
+            3.275858530841674e-07
+          ],
+          [
+            1.0090325078062651e-06,
+            -3.1631611914070696e-07
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9860069.014152722,
+          10139930.985847278,
+          19860069.01415272,
+          20139930.98584728
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "clamp",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 140188.1283537511,
+        "L_complex": [
+          -0.5731132912172264,
+          -0.8174922922018768
+        ],
+        "magnitude": 0.9983749257565117,
+        "phase_deg": -125.03286144896641,
+        "phasors": {
+          "return_Y": [
+            0.008116514386703372,
+            0.005813556867224869
+          ],
+          "actual_feedback_X": [
+            0.009434859982301732,
+            -0.003314123883389081
+          ],
+          "disturbance_D": [
+            0.009434859982293452,
+            -0.0033141238833992973
+          ]
+        },
+        "quality": {
+          "THD": 7.528025433015988e-06,
+          "sideband_RSS_relative": 0.000583049121808012,
+          "residual_relative": 7.281263664462417e-05,
+          "half_window_complex": 1.8622050560977894e-06,
+          "loop_error_peak_rad": 0.009999999289902917,
+          "mean_control_offset_V": 3.3306690738754696e-16,
+          "control_drift_V": 1.1090092618411913e-06,
+          "frequency_error_ppm": 0.09570905289500632,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 140188.1283537511,
+          "amplitude_rad": 0.01,
+          "mode": "clamp",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 0.00016266543276426338,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6000528857387815,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          7.706617310570534e-05,
+          0.00016266543276426338
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            3.3306690738754696e-16,
+            -1.1102230246251565e-16
+          ],
+          "voltage_drift_V": [
+            1.1090092618411913e-06,
+            1.0330692295622973e-06
+          ],
+          "frequency_offset_ppm": [
+            0.08879520568738966,
+            0.09570905289500632
+          ],
+          "CP_charge_C": [
+            9.77385127005566e-19,
+            -1.0264267189660654e-18
+          ],
+          "phase_trend_rad": [
+            2.8532403119222415e-05,
+            1.2805019733083938e-14,
+            1.898200834796887e-18
+          ],
+          "edge_counts": [
+            {
+              "ref": 1626,
+              "feedback": 1626
+            },
+            {
+              "ref": 1626,
+              "feedback": 1626
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            3.837148968599145e-06,
+            1.384493727337767e-06
+          ],
+          [
+            3.654023699486671e-06,
+            -1.2529016946805451e-06
+          ],
+          [
+            1.0328649038523e-06,
+            3.5063742909912976e-07
+          ],
+          [
+            1.0001472414829737e-06,
+            -3.6330712766151547e-07
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9859811.87164625,
+          10140188.12835375,
+          19859811.871646248,
+          20140188.128353752
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "clamp",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 142262.3528031138,
+        "L_complex": [
+          -0.5667410803273806,
+          -0.7994986381234191
+        ],
+        "magnitude": 0.9799966961637414,
+        "phase_deg": -125.33170664423595,
+        "phasors": {
+          "return_Y": [
+            0.009186562905416515,
+            0.003412684344306972
+          ],
+          "actual_feedback_X": [
+            0.008262070566675382,
+            -0.005633665764947247
+          ],
+          "disturbance_D": [
+            0.00826207056668257,
+            -0.005633665764948926
+          ]
+        },
+        "quality": {
+          "THD": 1.2237394802439646e-06,
+          "sideband_RSS_relative": 0.0005936350551692744,
+          "residual_relative": 7.715369115839882e-05,
+          "half_window_complex": 5.750982964686855e-05,
+          "loop_error_peak_rad": 0.009999999925639713,
+          "mean_control_offset_V": 0.0,
+          "control_drift_V": 1.4574777281463077e-07,
+          "frequency_error_ppm": 0.01488368809977868,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 142262.3528031138,
+          "amplitude_rad": 0.01,
+          "mode": "clamp",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 0.00016058533129758727,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6000517548143313,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          7.623413251903492e-05,
+          0.00016058533129758727
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            0.0,
+            0.0
+          ],
+          "voltage_drift_V": [
+            1.4574777281463077e-07,
+            9.139019857170394e-08
+          ],
+          "frequency_offset_ppm": [
+            -0.004114108690252251,
+            0.01488368809977868
+          ],
+          "CP_charge_C": [
+            -4.328098472169821e-17,
+            4.329187005902836e-17
+          ],
+          "phase_trend_rad": [
+            6.145792280677008e-06,
+            -2.3200783512871704e-14,
+            -1.6360639899563824e-18
+          ],
+          "edge_counts": [
+            {
+              "ref": 1605,
+              "feedback": 1605
+            },
+            {
+              "ref": 1605,
+              "feedback": 1605
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            3.343457036588587e-06,
+            2.336231383353503e-06
+          ],
+          [
+            3.2113508928201782e-06,
+            -2.140553601027267e-06
+          ],
+          [
+            9.019263750962135e-07,
+            6.098705882381984e-07
+          ],
+          [
+            8.748616896287845e-07,
+            -6.019076822612548e-07
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9857737.647196887,
+          10142262.352803113,
+          19857737.647196885,
+          20142262.352803115
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "clamp",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 160000,
+        "L_complex": [
+          -0.5168844654440139,
+          -0.6648178892588134
+        ],
+        "magnitude": 0.8421118550975801,
+        "phase_deg": -127.86445107271621,
+        "phasors": {
+          "return_Y": [
+            -0.0028614631308655054,
+            -0.007920054696794724
+          ],
+          "actual_feedback_X": [
+            -0.009510565162946611,
+            -0.00309016994374957
+          ],
+          "disturbance_D": [
+            -0.009510565162951533,
+            -0.0030901699437495098
+          ]
+        },
+        "quality": {
+          "THD": 2.0352199680841463e-09,
+          "sideband_RSS_relative": 0.0006939638775044132,
+          "residual_relative": 8.850538191639487e-05,
+          "half_window_complex": 6.879612501424516e-10,
+          "loop_error_peak_rad": 0.009999968417105265,
+          "mean_control_offset_V": 1.1102230246251565e-16,
+          "control_drift_V": 6.507446311851243e-10,
+          "frequency_error_ppm": 0.753551873754868,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 160000,
+          "amplitude_rad": 0.01,
+          "mode": "clamp",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 0.000145,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6000489613067455,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          7.000000000000001e-05,
+          0.000145
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            1.1102230246251565e-16,
+            -1.1102230246251565e-16
+          ],
+          "voltage_drift_V": [
+            -4.0538037926711316e-10,
+            -6.507446311851243e-10
+          ],
+          "frequency_offset_ppm": [
+            0.7314069558176182,
+            0.753551873754868
+          ],
+          "CP_charge_C": [
+            1.3785748040960748e-23,
+            2.7573110812228523e-23
+          ],
+          "phase_trend_rad": [
+            1.7255544391904694e-11,
+            6.418476861114186e-16,
+            -1.3552527156068805e-18
+          ],
+          "edge_counts": [
+            {
+              "ref": 1450,
+              "feedback": 1450
+            },
+            {
+              "ref": 1450,
+              "feedback": 1450
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            -3.920179217336209e-06,
+            1.2268953831693786e-06
+          ],
+          [
+            -3.6595999745861593e-06,
+            -1.2287173654340256e-06
+          ],
+          [
+            -1.0479434762085373e-06,
+            3.511065176530799e-07
+          ],
+          [
+            -1.0251286806705939e-06,
+            -3.223819161068597e-07
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9840000.0,
+          10160000.0,
+          19840000.0,
+          20160000.0
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "clamp",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 250000,
+        "L_complex": [
+          -0.33725942098500034,
+          -0.2942607536655134
+        ],
+        "magnitude": 0.4475860902563144,
+        "phase_deg": -138.89511806007718,
+        "phasors": {
+          "return_Y": [
+            0.002942607536664858,
+            -0.003372594209860507
+          ],
+          "actual_feedback_X": [
+            9.41531765678527e-16,
+            -0.010000000000031966
+          ],
+          "disturbance_D": [
+            5.740696097990895e-17,
+            -0.010000000000000004
+          ]
+        },
+        "quality": {
+          "THD": 4.758459297250438e-09,
+          "sideband_RSS_relative": 0.0013078438907203195,
+          "residual_relative": 0.0001665529091753123,
+          "half_window_complex": 7.166092828016829e-11,
+          "loop_error_peak_rad": 0.010000000000218279,
+          "mean_control_offset_V": 5.551115123125783e-16,
+          "control_drift_V": 2.02463822806696e-10,
+          "frequency_error_ppm": 0.7760643454809393,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 250000,
+          "amplitude_rad": 0.01,
+          "mode": "clamp",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 0.00010800000000000001,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6000323642942644,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          6.000000000000001e-05,
+          0.00010800000000000001
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            3.3306690738754696e-16,
+            -5.551115123125783e-16
+          ],
+          "voltage_drift_V": [
+            1.9447112076611574e-10,
+            2.02463822806696e-10
+          ],
+          "frequency_offset_ppm": [
+            0.7060123819375836,
+            0.7760643454809393
+          ],
+          "CP_charge_C": [
+            1.4885050408800853e-23,
+            1.1036933185997375e-23
+          ],
+          "phase_trend_rad": [
+            -3.8110035695130065e-08,
+            7.390605059857373e-16,
+            4.0306020582761315e-18
+          ],
+          "edge_counts": [
+            {
+              "ref": 1080,
+              "feedback": 1080
+            },
+            {
+              "ref": 1080,
+              "feedback": 1080
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            -4.666812994131176e-08,
+            4.181410343754064e-06
+          ],
+          [
+            3.594280402040989e-08,
+            -3.7947773312086417e-06
+          ],
+          [
+            1.0060580692529755e-08,
+            1.114023725912373e-06
+          ],
+          [
+            -1.0200081698654058e-08,
+            -1.066242169034686e-06
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9750000.0,
+          10250000.0,
+          19750000.0,
+          20250000.0
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "clamp",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 400000,
+        "L_complex": [
+          -0.1811439218543687,
+          -0.10130125852162063
+        ],
+        "magnitude": 0.20754533336802794,
+        "phase_deg": -150.78473558397005,
+        "phasors": {
+          "return_Y": [
+            0.0010130125852129486,
+            -0.0018114392185379282
+          ],
+          "actual_feedback_X": [
+            -1.5621468094455495e-16,
+            -0.009999999999968121
+          ],
+          "disturbance_D": [
+            1.1303118171450748e-16,
+            -0.009999999999999985
+          ]
+        },
+        "quality": {
+          "THD": 9.069658554312859e-09,
+          "sideband_RSS_relative": 0.00283292174680973,
+          "residual_relative": 0.0003593018462552787,
+          "half_window_complex": 1.2645965250265325e-09,
+          "loop_error_peak_rad": 0.009999210442401818,
+          "mean_control_offset_V": 6.661338147750939e-16,
+          "control_drift_V": 1.449346634867883e-10,
+          "frequency_error_ppm": 0.7896301087103086,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 400000,
+          "amplitude_rad": 0.01,
+          "mode": "clamp",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 9e-05,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6000212838471922,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          6.000000000000001e-05,
+          9e-05
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            6.661338147750939e-16,
+            2.220446049250313e-16
+          ],
+          "voltage_drift_V": [
+            1.2447458444834678e-10,
+            1.449346634867883e-10
+          ],
+          "frequency_offset_ppm": [
+            0.6935750693638806,
+            0.7896301087103086
+          ],
+          "CP_charge_C": [
+            7.277820213069805e-24,
+            7.195480284519244e-24
+          ],
+          "phase_trend_rad": [
+            -5.8536635527618903e-08,
+            -4.76719613944499e-16,
+            3.251931774492182e-18
+          ],
+          "edge_counts": [
+            {
+              "ref": 900,
+              "feedback": 900
+            },
+            {
+              "ref": 900,
+              "feedback": 900
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            -5.0388307226055746e-08,
+            4.309342585760878e-06
+          ],
+          [
+            3.3162361877744776e-08,
+            -3.6895225051021566e-06
+          ],
+          [
+            1.0007835881840552e-08,
+            1.1290879556180075e-06
+          ],
+          [
+            -1.0232472035106525e-08,
+            -1.052599866647392e-06
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9600000.0,
+          10400000.0,
+          19600000.0,
+          20400000.0
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "clamp",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 630000,
+        "L_complex": [
+          -0.0857776505349491,
+          -0.030735830609307995
+        ],
+        "magnitude": 0.09111803671359435,
+        "phase_deg": -160.2863926412986,
+        "phasors": {
+          "return_Y": [
+            0.0002555302866151103,
+            0.0008746164496948104
+          ],
+          "actual_feedback_X": [
+            0.005877852522919046,
+            0.008090169943756302
+          ],
+          "disturbance_D": [
+            0.005877852522924701,
+            0.008090169943749512
+          ]
+        },
+        "quality": {
+          "THD": 3.324761377334033e-05,
+          "sideband_RSS_relative": 0.006479197904447518,
+          "residual_relative": 0.000780582576125649,
+          "half_window_complex": 7.849128338422518e-05,
+          "loop_error_peak_rad": 0.009999999751926225,
+          "mean_control_offset_V": 2.220446049250313e-16,
+          "control_drift_V": 1.2138885623066362e-07,
+          "frequency_error_ppm": 0.019720986741293828,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 630000,
+          "amplitude_rad": 0.01,
+          "mode": "clamp",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 7.904761904761905e-05,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.600011492083601,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          6.000000000000001e-05,
+          7.904761904761905e-05
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            2.220446049250313e-16,
+            0.0
+          ],
+          "voltage_drift_V": [
+            1.2138885623066362e-07,
+            2.8775259774525846e-08
+          ],
+          "frequency_offset_ppm": [
+            -0.019720986741293828,
+            -0.008139224239465068
+          ],
+          "CP_charge_C": [
+            4.547333164012258e-15,
+            -4.548388997268632e-15
+          ],
+          "phase_trend_rad": [
+            2.0743473348493527e-06,
+            4.763116984163318e-15,
+            -1.0408340855860843e-17
+          ],
+          "edge_counts": [
+            {
+              "ref": 790,
+              "feedback": 790
+            },
+            {
+              "ref": 790,
+              "feedback": 790
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            2.6987906804063416e-06,
+            -3.5947196802183192e-06
+          ],
+          [
+            2.031981524031019e-06,
+            2.8673716415305804e-06
+          ],
+          [
+            6.690746469261643e-07,
+            -9.117529631273023e-07
+          ],
+          [
+            5.892942310316989e-07,
+            8.193982801169217e-07
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9370000.0,
+          10630000.0,
+          19370000.0,
+          20630000.0
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "clamp",
+        "M1_used_for_measurement": false
+      },
+      {
+        "status": "MEASURED",
+        "reasons": [],
+        "frequency_Hz": 1000000,
+        "L_complex": [
+          -0.036698558612650714,
+          -0.008290578959937333
+        ],
+        "magnitude": 0.03762336911730681,
+        "phase_deg": -167.26998812244594,
+        "phasors": {
+          "return_Y": [
+            8.290578959952063e-05,
+            -0.0003669855861261006
+          ],
+          "actual_feedback_X": [
+            6.199922031931843e-15,
+            -0.009999999999990322
+          ],
+          "disturbance_D": [
+            1.7336392738043216e-16,
+            -0.010000000000000002
+          ]
+        },
+        "quality": {
+          "THD": 2.6303398197785995e-05,
+          "sideband_RSS_relative": 0.016114689555725443,
+          "residual_relative": 0.0018798686757894138,
+          "half_window_complex": 0.00011274375814173315,
+          "loop_error_peak_rad": 0.009999977884490363,
+          "mean_control_offset_V": 2.220446049250313e-16,
+          "control_drift_V": 6.161885422955817e-08,
+          "frequency_error_ppm": 0.05151258063270737,
+          "clamp_events": 0
+        },
+        "settings": {
+          "frequency_Hz": 1000000,
+          "amplitude_rad": 0.01,
+          "mode": "clamp",
+          "dt_s": 4e-10,
+          "onset_s": 2e-05,
+          "duration_s": 7.200000000000002e-05,
+          "record_interval_s": 1e-08,
+          "initial_control_V": 0.6000070410752605,
+          "linearization_control_V": 0.6,
+          "phase_normalization": "divided_reference_rate_rad"
+        },
+        "measurement_window_s": [
+          6.000000000000001e-05,
+          7.200000000000002e-05
+        ],
+        "raw_DC_diagnostics": {
+          "voltage_offset_V": [
+            2.220446049250313e-16,
+            0.0
+          ],
+          "voltage_drift_V": [
+            6.151303804537411e-08,
+            6.161885422955817e-08
+          ],
+          "frequency_offset_ppm": [
+            -0.05151258063270737,
+            0.008234035663454592
+          ],
+          "CP_charge_C": [
+            6.54963414189572e-20,
+            6.810422175239426e-20
+          ],
+          "phase_trend_rad": [
+            -1.6110318864536642e-07,
+            -1.8792245862729595e-14,
+            1.737433981408021e-17
+          ],
+          "edge_counts": [
+            {
+              "ref": 720,
+              "feedback": 720
+            },
+            {
+              "ref": 720,
+              "feedback": 720
+            }
+          ]
+        },
+        "return_sidebands": [
+          [
+            -7.746764064781676e-08,
+            4.861728719481103e-06
+          ],
+          [
+            3.305382274437016e-08,
+            -3.2861095469478526e-06
+          ],
+          [
+            -2.230382842505606e-09,
+            1.1679409254857221e-06
+          ],
+          [
+            2.5525565816999167e-09,
+            -9.759668357445993e-07
+          ]
+        ],
+        "sideband_frequencies_Hz": [
+          9000000.0,
+          11000000.0,
+          19000000.0,
+          21000000.0
+        ],
+        "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+        "method": "clamp",
+        "M1_used_for_measurement": false
+      }
+    ],
+    "crossing": {
+      "status": "MEASURED_BRACKETED",
+      "UGF_Hz": 140007.52412029673,
+      "PM_deg": 54.99618534368898,
+      "phase_deg": -125.00381465631102,
+      "bracket_Hz": [
+        139930.98584727838,
+        140188.1283537511
+      ],
+      "bracket_relative_width": 0.0018376380679070436,
+      "direction": "downward",
+      "crossings_found": 1,
+      "interpretation": "fundamental phase-port ratio; not a Floquet stability certificate"
+    },
+    "M1_used_for_measurement": false
+  }
+}

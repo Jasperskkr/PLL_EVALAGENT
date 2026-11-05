@@ -1,0 +1,4080 @@
+{
+  "schema_version": "pll-engineering-mapping-confidence-0.1",
+  "status": "RESEARCH_REVIEW_ONLY",
+  "source_bindings": {
+    "configs/verification/closed_loop_stage4_1_v0_1.json": "ba3d09c8774ac02cce98340d5e0199a6567670915a67bc9836e307c858cfdece",
+    "docs/stage4_1/CLOSED_LOOP_PERTURBATION_PROTOCOL.md": "225b5e4e37693428f84581ec58bb4889daee816c51d774e7a82a6cdc3a44cb2c",
+    "docs/stage4_1/ENGINEERING_VALIDATION_PLAN.md": "d92a2625b3a2252170fd88b84800a97ba16924bc5f96c6a2ef68698e95e68212",
+    "docs/stage4_2/M2_VALIDATION_CANDIDATES.json": "c6d779f110adbf1f8230ecec839e480f4bc4d699a64a4cab0fb9e5126ab93533",
+    "docs/stage4_2/PHYSICS_MAPPING_REGISTRY.json": "bd87ed12e2b31fed4833557b3e6b63935b07c9e6a4e77cfbf56932b465e9fa44",
+    "pll_allocation/physics_mapping/model.py": "412dbbbec9a499c56fe10781f2ff1debb525ead8fb411a2f72f056d36e8a2e34",
+    "pll_allocation/verification/__init__.py": "9d89d55fdbde528b2b4194f7047ae7fd87c8095eb1c4aed7addc268477a1dd10",
+    "pll_allocation/verification/build_identity.py": "5affd1170528382a8c29e6ebdc584208e098022a0cf8b3bb91fefef9643ef881",
+    "pll_allocation/verification/closed_loop.py": "165ac676b5e32955f1e4b8bcfcf2bcfdd1af0d267f059c902c7ea556e1a93287",
+    "pll_allocation/verification/closed_loop_kernel.cpp": "744b3e42b7ff84eafa0860bdd8317e34848f4d2f84c5b8ce4c180a644dff9595",
+    "pll_allocation/verification/closed_loop_native.py": "73dbbf4d755103d5faa376a89978fbf3881b60a80c81c70975836ee68ff76a3f",
+    "pll_allocation/verification/experiments.py": "a791c6ffc893c67a3c34a9b45c3344788df43b5b883e3e6309887816f5803f16",
+    "pll_allocation/verification/kernel.cpp": "befdd779cd69c73f1a2fb8667e895f77efff979cb3186d80a83113c0321c9f54",
+    "pll_allocation/verification/measure.py": "c59b734e0d58dd877fdbb1cc4335bc8dd2c8024a6a368fc2e58eab6bed962edb",
+    "pll_allocation/verification/resources.py": "b3c275b462393968c4b3e375cbc3a41a695adee9f7bae80076054164da8eead6",
+    "pll_allocation/verification/return_ratio.py": "41ce7a78f64815c532f89c3cefa6f0197b5d77b2b3e626f84817eed659c0672a",
+    "pll_allocation/verification/return_ratio_kernel.cpp": "907e800a96f18c229c2e93edcfe78c8fb7614d8dd9291df4825a0c156e713caa",
+    "pll_allocation/verification/return_ratio_native.py": "6bcf5a3ec84ffa6f4a6e99d4ca0dbcf57d4453ce8ce6df3e2bc9596341f02cdd",
+    "pll_allocation/verification/return_ratio_validity.py": "7176b645ebbd8f8d800224934c0737eb833202d252d6b126f8f324cd98416f3a",
+    "pll_allocation/verification/run_suite.py": "6ab0d1ce08e4266c5de12e391208226d77909232ffb34cef607d914ac4496b0f",
+    "pll_allocation/verification/simulator.py": "3c350efbb64cad3c7afb43b0f6946c819c52914d9a19893a749dffd48ee97750",
+    "pll_allocation/verification/verify.py": "8c7a653d395fedb0552df073871afd08b59500afce80fde56ad92d6afa1048b3",
+    "tools/refine_stage41_frequency.py": "574d636b3000dd5cc733ef41b19a074d4c4b58e84473501ba97da7135a3b21c4",
+    "tools/run_stage41.py": "a90a3cb56a1c72d14bb425e31f6473979ed886e77503aafdd0c17fa07e03a046",
+    "tools/summarize_stage41.py": "98d0b0ff3970cee12ab8bec2a1cbc61890c163aa53e38ab3bac79ef8c013fe39"
+  },
+  "model_versions": {
+    "formula_version": "stage1_m1_1.0.0",
+    "parameter_domain_version": "stage1_declared_domain_1.0.0",
+    "behavioral_model_version": "reference_python_edge_euler_sha256_f6f550276228"
+  },
+  "block_space_sha256": "879c2748c1d74d5d05c651f905af6fa818e3f994e97206d93b295ca4b62097c0",
+  "system_spec_sha256": "9acdbf00d9b095e3cc23400024628f2301220549a45e8301aa42a08490fa598c",
+  "protocol": {
+    "schema_version": "pll-closed-loop-perturbation-0.1",
+    "protocol_id": "stage4_1_phase_step_0.1",
+    "status": "RESEARCH_EXTENSION_NOT_REPLACEMENT",
+    "base_protocol_id": "track_b_metrics_1.1",
+    "phase_units": "divided_reference_rate_rad",
+    "onset_s": 4e-05,
+    "rise_s": 5e-07,
+    "observation_s": 8e-05,
+    "long_observation_s": 0.00016,
+    "amplitudes_rad": [
+      0.01,
+      -0.01,
+      0.02,
+      -0.02
+    ],
+    "dt_s": 4e-10,
+    "fine_dt_s": 2e-10,
+    "record_interval_s": 1e-08,
+    "cycle_s": 1e-07,
+    "steady_start_s": 2e-05,
+    "tail_window_s": 2e-05,
+    "limits": {
+      "mean_control_offset_V": 0.001,
+      "control_drift_V": 0.0001,
+      "frequency_error_ppm": 100,
+      "baseline_phase_peak_rad": 0.03,
+      "phase_peak_rad": 0.3,
+      "settling_relative": 0.02,
+      "absolute_phase_floor_rad": 1e-06,
+      "refinement_RMSE": 0.02,
+      "refinement_max_error": 0.05,
+      "refinement_overshoot": 0.02,
+      "refinement_settling_relative": 0.1,
+      "refinement_settling_floor_s": 3e-07,
+      "M1_BW_relative": 0.03,
+      "M1_UGF_relative": 0.02,
+      "M1_PM_absolute_deg": 1.5,
+      "M1_frequency_complex_relative": 0.05,
+      "M1_frequency_phase_deg": 3,
+      "M1_time_RMSE": 0.05,
+      "M1_time_max_error": 0.12,
+      "M1_overshoot_absolute": 0.05,
+      "M1_settling_relative": 0.2,
+      "M1_settling_floor_s": 5e-07,
+      "decay_peak_floor": 0.0001,
+      "decay_min_peaks": 4,
+      "decay_min_amplitude_ratio": 3,
+      "decay_min_R2": 0.95,
+      "decay_refinement_relative": 0.25,
+      "period_max_CV": 0.2
+    },
+    "formal_UGF_PM_certification": false,
+    "new_SystemSpec_constraints": false,
+    "M1_used_for_M2_measurement": false
+  },
+  "validated_scope": "exact enumerated SI candidates only; fixed 10MHz x8 ideal CP/PFD linear VCO C1-shunt/Rz-series-C2; local phase steps +/-0.01/0.02rad, rise0.5us, dt0.4/0.2ns, post windows80/160us",
+  "not_validated": [
+    "whole declared six-dimensional domain",
+    "arbitrary carrier/operating phase",
+    "nonideal/noisy/transistor/PVT behavior",
+    "large-signal global capture",
+    "full periodic scalar PM",
+    "microHz frequency certification"
+  ],
+  "may_issue_behavioral_PASS": false,
+  "changes_formal_pipeline": false,
+  "candidates": [
+    {
+      "candidate_id": "C01_nominal",
+      "parameter_sha256": "9b116a350e5009606dde3a27a04d85b4a74f32f0d6ae67cc908a6546ea947e7c",
+      "joint_block_spec": {
+        "schema_version": "pll-physics-mapping-2.0",
+        "conventions": {
+          "vco_f0": "frequency_at_zero_volts",
+          "phase_error": "reference_minus_feedback_rad",
+          "lf_topology": "C1_shunt_Rz_series_C2",
+          "cp_leakage": "positive_injected_into_lf"
+        },
+        "values": {
+          "f_ref": {
+            "value": 10000000,
+            "unit": "Hz"
+          },
+          "N": {
+            "value": 8,
+            "unit": "1"
+          },
+          "Icp": {
+            "value": 0.0001,
+            "unit": "A"
+          },
+          "Rz": {
+            "value": 3820,
+            "unit": "Ohm"
+          },
+          "C1": {
+            "value": 1e-10,
+            "unit": "F"
+          },
+          "C2": {
+            "value": 1e-09,
+            "unit": "F"
+          },
+          "f0": {
+            "value": 72000000,
+            "unit": "Hz"
+          },
+          "Kvco": {
+            "value": 20000000,
+            "unit": "Hz/V"
+          },
+          "Vctrl_min": {
+            "value": 0,
+            "unit": "V"
+          },
+          "Vctrl_max": {
+            "value": 1.2,
+            "unit": "V"
+          },
+          "Kvco2": {
+            "value": 0,
+            "unit": "Hz/V^2"
+          },
+          "CP_mismatch": {
+            "value": 0,
+            "unit": "1"
+          },
+          "CP_leakage": {
+            "value": 0,
+            "unit": "A"
+          },
+          "q0": {
+            "value": 0,
+            "unit": "C"
+          },
+          "PFD_reset_delay": {
+            "value": 0,
+            "unit": "s"
+          },
+          "Cload": {
+            "value": 0,
+            "unit": "F"
+          },
+          "Gload": {
+            "value": 0,
+            "unit": "S"
+          }
+        }
+      },
+      "contract": {
+        "tags": [
+          "FULL_PERIODIC_PM_NOT_CERTIFIED",
+          "LOCAL_MAPPING_SUPPORTED",
+          "CLOSED_LOOP_STABLE_OBSERVED"
+        ],
+        "errors": {
+          "BW_relative": 0.0021310855211533752,
+          "max_frequency_complex_relative": 0.002938978487752134,
+          "max_frequency_phase_deg": 0.06025131810637703,
+          "base_UGF_relative": 0.0017597882315132374,
+          "base_PM_difference_deg": -0.00337057745954894,
+          "independent_clamp_UGF_relative": 8.164350474126891e-06,
+          "independent_clamp_PM_difference_deg": -0.0041698439401614
+        },
+        "frequency_gate": {
+          "passed": true,
+          "reasons": [],
+          "comparisons": {
+            "amplitude_half": {
+              "shared_points": 17,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 1.1600069387173494e-08,
+                  "phase_deg": 6.611649188289066e-07
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 8.761150993428834e-09,
+                  "phase_deg": 1.973045153136875e-07
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 1.2280368019366096e-05,
+                  "phase_deg": 0.0006875633137401721
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 2.0507479580048095e-09,
+                  "phase_deg": 2.0286869788325924e-08
+                },
+                {
+                  "f_Hz": 126491.10640673517,
+                  "complex_relative": 5.114852930168932e-05,
+                  "phase_deg": 0.002900568233221235
+                },
+                {
+                  "f_Hz": 134145.15424006627,
+                  "complex_relative": 2.7128358262850608e-05,
+                  "phase_deg": 0.0015394443187244139
+                },
+                {
+                  "f_Hz": 138144.14667052828,
+                  "complex_relative": 6.430565183932223e-05,
+                  "phase_deg": 0.0036525184389041695
+                },
+                {
+                  "f_Hz": 138398.00561330857,
+                  "complex_relative": 4.223854260174331e-05,
+                  "phase_deg": 0.0023992571634771833
+                },
+                {
+                  "f_Hz": 138652.33105694602,
+                  "complex_relative": 1.3687314413452647e-05,
+                  "phase_deg": 0.0007680239178928973
+                },
+                {
+                  "f_Hz": 139162.38487740656,
+                  "complex_relative": 1.6335374307303172e-05,
+                  "phase_deg": 0.0009273034609324567
+                },
+                {
+                  "f_Hz": 140188.1283537511,
+                  "complex_relative": 3.2890323288646076e-05,
+                  "phase_deg": 0.0018677032421638273
+                },
+                {
+                  "f_Hz": 142262.3528031138,
+                  "complex_relative": 1.595191631571065e-06,
+                  "phase_deg": 9.132852767869163e-05
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 1.6848524495738837e-09,
+                  "phase_deg": 6.375509925638411e-08
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 2.156427186496932e-09,
+                  "phase_deg": 2.52500810105523e-08
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 7.385735782459237e-09,
+                  "phase_deg": 1.3605063746196853e-07
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 0.0002511795616808829,
+                  "phase_deg": 0.014374424954273077
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 0.00028713341370530457,
+                  "phase_deg": 0.016387838661477843
+                }
+              ],
+              "max_complex_relative": 0.00028713341370530457,
+              "max_phase_deg": 0.016387838661477843,
+              "UGF_relative": 4.160167965561179e-06,
+              "PM_absolute_deg": 0.00214096092724958
+            },
+            "step_half": {
+              "shared_points": 17,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 2.001754381865394e-05,
+                  "phase_deg": 0.0006590279721332236
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 2.4552895105211758e-05,
+                  "phase_deg": 0.0007487104443886193
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 5.6304622908264244e-05,
+                  "phase_deg": 0.00260682599896961
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 2.291206416553881e-05,
+                  "phase_deg": 0.0006502087121996412
+                },
+                {
+                  "f_Hz": 126491.10640673517,
+                  "complex_relative": 5.1637287670283516e-05,
+                  "phase_deg": 0.002793692900182608
+                },
+                {
+                  "f_Hz": 134145.15424006627,
+                  "complex_relative": 4.691191882512974e-05,
+                  "phase_deg": 0.002586820508608584
+                },
+                {
+                  "f_Hz": 138144.14667052828,
+                  "complex_relative": 4.679719497889571e-05,
+                  "phase_deg": 0.0025692048377364512
+                },
+                {
+                  "f_Hz": 138398.00561330857,
+                  "complex_relative": 3.723853715734483e-05,
+                  "phase_deg": 0.001988627882351064
+                },
+                {
+                  "f_Hz": 138652.33105694602,
+                  "complex_relative": 6.66055892457317e-06,
+                  "phase_deg": 4.589407105949527e-06
+                },
+                {
+                  "f_Hz": 139162.38487740656,
+                  "complex_relative": 4.31210173717125e-05,
+                  "phase_deg": 0.002343232114451582
+                },
+                {
+                  "f_Hz": 140188.1283537511,
+                  "complex_relative": 4.6665970959569245e-05,
+                  "phase_deg": 0.002602763309152402
+                },
+                {
+                  "f_Hz": 142262.3528031138,
+                  "complex_relative": 2.3058319489195413e-05,
+                  "phase_deg": 0.0012065096127402695
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 1.6472881356585462e-05,
+                  "phase_deg": 0.0009119714324188759
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 4.771374900026395e-05,
+                  "phase_deg": 0.0021780930128273567
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 0.00013721397135996711,
+                  "phase_deg": 0.00617076151008827
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 0.0001869899809036627,
+                  "phase_deg": 0.006966422842464647
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 0.000406930455211423,
+                  "phase_deg": 0.021435365592241393
+                }
+              ],
+              "max_complex_relative": 0.000406930455211423,
+              "max_phase_deg": 0.021435365592241393,
+              "UGF_relative": 1.105197851769546e-05,
+              "PM_absolute_deg": 0.0018179234806581235
+            },
+            "window_double": {
+              "shared_points": 17,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 1.3729925587091227e-08,
+                  "phase_deg": 7.293472312879564e-07
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 8.998158821656068e-09,
+                  "phase_deg": 2.842860000985409e-07
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 4.032911803841606e-05,
+                  "phase_deg": 0.002185626051225043
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 3.010095246227793e-09,
+                  "phase_deg": 1.517371550639495e-07
+                },
+                {
+                  "f_Hz": 126491.10640673517,
+                  "complex_relative": 1.315889299555969e-06,
+                  "phase_deg": 7.24864476815469e-05
+                },
+                {
+                  "f_Hz": 134145.15424006627,
+                  "complex_relative": 2.4828171950971453e-05,
+                  "phase_deg": 0.0014126777281592083
+                },
+                {
+                  "f_Hz": 138144.14667052828,
+                  "complex_relative": 2.6350611767564324e-05,
+                  "phase_deg": 0.0014972034342183365
+                },
+                {
+                  "f_Hz": 138398.00561330857,
+                  "complex_relative": 2.7145637769806725e-05,
+                  "phase_deg": 0.001546821979029175
+                },
+                {
+                  "f_Hz": 138652.33105694602,
+                  "complex_relative": 4.3486917057167065e-05,
+                  "phase_deg": 0.002473564306610168
+                },
+                {
+                  "f_Hz": 139162.38487740656,
+                  "complex_relative": 2.5609984885431804e-05,
+                  "phase_deg": 0.001458504192151666
+                },
+                {
+                  "f_Hz": 140188.1283537511,
+                  "complex_relative": 7.658311009308314e-06,
+                  "phase_deg": 0.0004364718750478601
+                },
+                {
+                  "f_Hz": 142262.3528031138,
+                  "complex_relative": 7.558997852115742e-06,
+                  "phase_deg": 0.00042946372461678887
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 4.263218822820587e-08,
+                  "phase_deg": 2.181503281847574e-06
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 6.30874480732629e-08,
+                  "phase_deg": 1.199090841272725e-06
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 5.4766470047842226e-05,
+                  "phase_deg": 0.0031169920331342656
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 2.032195922143969e-05,
+                  "phase_deg": 0.0011635617846599666
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 6.311224878174731e-05,
+                  "phase_deg": 0.003583439238172814
+                }
+              ],
+              "max_complex_relative": 6.311224878174731e-05,
+              "max_phase_deg": 0.003583439238172814,
+              "UGF_relative": 1.839324715424695e-06,
+              "PM_absolute_deg": 0.0012027454757088663
+            },
+            "offset_grid": {
+              "shared_points": 0,
+              "points": [],
+              "max_complex_relative": null,
+              "max_phase_deg": null,
+              "UGF_relative": 1.7860570595829017e-06,
+              "PM_absolute_deg": 0.0009225702241337785
+            },
+            "independent_clamp": {
+              "shared_points": 17,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 0.0020395375968386906,
+                  "phase_deg": 2.0658306787831637e-05
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 0.0020395996742113695,
+                  "phase_deg": 3.364435645093259e-05
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 0.002028077472673148,
+                  "phase_deg": 0.001781364794119843
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 0.0020399326264283783,
+                  "phase_deg": 8.358837119748508e-05
+                },
+                {
+                  "f_Hz": 126491.10640673517,
+                  "complex_relative": 0.002036546275397472,
+                  "phase_deg": 7.907336242237154e-05
+                },
+                {
+                  "f_Hz": 134145.15424006627,
+                  "complex_relative": 0.002037068159376613,
+                  "phase_deg": 8.033011161403637e-05
+                },
+                {
+                  "f_Hz": 138144.14667052828,
+                  "complex_relative": 0.0020378962130086628,
+                  "phase_deg": 0.00015868023646898544
+                },
+                {
+                  "f_Hz": 138398.00561330857,
+                  "complex_relative": 0.002038963653874724,
+                  "phase_deg": 4.7443872260579446e-05
+                },
+                {
+                  "f_Hz": 138652.33105694602,
+                  "complex_relative": 0.0020435742427143146,
+                  "phase_deg": 0.00034038694069369316
+                },
+                {
+                  "f_Hz": 139162.38487740656,
+                  "complex_relative": 0.0020384028682365806,
+                  "phase_deg": 6.057679358387778e-05
+                },
+                {
+                  "f_Hz": 140188.1283537511,
+                  "complex_relative": 0.0020373975659451634,
+                  "phase_deg": 0.00023889036727285057
+                },
+                {
+                  "f_Hz": 142262.3528031138,
+                  "complex_relative": 0.0020420220342967058,
+                  "phase_deg": 0.0001939512957816573
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 0.0020405756973240017,
+                  "phase_deg": 0.00013330119001031966
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 0.0020419648481735803,
+                  "phase_deg": 0.0002061779414482887
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 0.002045926924712091,
+                  "phase_deg": 0.0003388435895280114
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 0.0020570372641662777,
+                  "phase_deg": 0.0028142678215302996
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 0.0020793641943192193,
+                  "phase_deg": 0.0018691784344922286
+                }
+              ],
+              "max_complex_relative": 0.0020793641943192193,
+              "max_phase_deg": 0.0028142678215302996,
+              "UGF_relative": 0.0017485468089423195,
+              "PM_absolute_deg": 0.0007992664806124594
+            }
+          },
+          "scope": "local fundamental phase-port measurements; not global periodic stability certification"
+        },
+        "time_comparison_supported": true,
+        "frequency_comparison_supported": true,
+        "formal_PM": {
+          "value": null,
+          "status": "UNKNOWN"
+        },
+        "formal_UGF": {
+          "value": null,
+          "status": "UNKNOWN"
+        },
+        "formal_overall_status": "UNKNOWN",
+        "verified_joint_block_spec": false
+      }
+    },
+    {
+      "candidate_id": "C02_real_agent",
+      "parameter_sha256": "74864b2e3b6a8cbb9aac7610632ae0d8c5428be38c8a7e1d1c85038526ff050b",
+      "joint_block_spec": {
+        "schema_version": "pll-physics-mapping-2.0",
+        "conventions": {
+          "vco_f0": "frequency_at_zero_volts",
+          "phase_error": "reference_minus_feedback_rad",
+          "lf_topology": "C1_shunt_Rz_series_C2",
+          "cp_leakage": "positive_injected_into_lf"
+        },
+        "values": {
+          "f_ref": {
+            "value": 10000000,
+            "unit": "Hz"
+          },
+          "N": {
+            "value": 8,
+            "unit": "1"
+          },
+          "Icp": {
+            "value": 0.00010440430018626411,
+            "unit": "A"
+          },
+          "Rz": {
+            "value": 3048.124920669113,
+            "unit": "Ohm"
+          },
+          "C1": {
+            "value": 5e-11,
+            "unit": "F"
+          },
+          "C2": {
+            "value": 2e-09,
+            "unit": "F"
+          },
+          "f0": {
+            "value": 63761604.09970568,
+            "unit": "Hz"
+          },
+          "Kvco": {
+            "value": 27063993.167157203,
+            "unit": "Hz/V"
+          },
+          "Vctrl_min": {
+            "value": 0,
+            "unit": "V"
+          },
+          "Vctrl_max": {
+            "value": 1.2,
+            "unit": "V"
+          },
+          "Kvco2": {
+            "value": 0,
+            "unit": "Hz/V^2"
+          },
+          "CP_mismatch": {
+            "value": 0,
+            "unit": "1"
+          },
+          "CP_leakage": {
+            "value": 0,
+            "unit": "A"
+          },
+          "q0": {
+            "value": 0,
+            "unit": "C"
+          },
+          "PFD_reset_delay": {
+            "value": 0,
+            "unit": "s"
+          },
+          "Cload": {
+            "value": 0,
+            "unit": "F"
+          },
+          "Gload": {
+            "value": 0,
+            "unit": "S"
+          }
+        }
+      },
+      "contract": {
+        "tags": [
+          "FULL_PERIODIC_PM_NOT_CERTIFIED",
+          "LOCAL_MAPPING_SUPPORTED",
+          "CLOSED_LOOP_STABLE_OBSERVED"
+        ],
+        "errors": {
+          "BW_relative": 0.006239708764161689,
+          "max_frequency_complex_relative": 0.006768365829961048,
+          "max_frequency_phase_deg": 0.048648562465372726,
+          "base_UGF_relative": 0.005525839822379863,
+          "base_PM_difference_deg": -0.005021861797430915,
+          "independent_clamp_UGF_relative": 1.4630865606379828e-05,
+          "independent_clamp_PM_difference_deg": -0.004295825903085415
+        },
+        "frequency_gate": {
+          "passed": true,
+          "reasons": [],
+          "comparisons": {
+            "amplitude_half": {
+              "shared_points": 17,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 4.467743273834737e-09,
+                  "phase_deg": 2.1240588159019328e-07
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 5.240632038248962e-09,
+                  "phase_deg": 1.1441488995208857e-07
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 6.1375549983201665e-06,
+                  "phase_deg": 0.00029060824187891884
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 3.132110751342839e-09,
+                  "phase_deg": 3.833013826633101e-08
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 2.6065396405972604e-09,
+                  "phase_deg": 1.4262596540876762e-07
+                },
+                {
+                  "f_Hz": 164525.69508766235,
+                  "complex_relative": 5.527978054017707e-05,
+                  "phase_deg": 0.0030391333195051253
+                },
+                {
+                  "f_Hz": 166836.3231833061,
+                  "complex_relative": 4.0304696050239885e-05,
+                  "phase_deg": 0.002219036656439249
+                },
+                {
+                  "f_Hz": 168003.7779728114,
+                  "complex_relative": 2.5363738054963863e-07,
+                  "phase_deg": 1.3844219323871144e-05
+                },
+                {
+                  "f_Hz": 168296.91591084705,
+                  "complex_relative": 1.3707020106713377e-05,
+                  "phase_deg": 0.0007550936515094595
+                },
+                {
+                  "f_Hz": 168590.56532458728,
+                  "complex_relative": 6.321990984426822e-06,
+                  "phase_deg": 0.0003483510754431685
+                },
+                {
+                  "f_Hz": 169179.40215049026,
+                  "complex_relative": 2.6858797957758674e-06,
+                  "phase_deg": 0.0001391469126911019
+                },
+                {
+                  "f_Hz": 178885.43819998318,
+                  "complex_relative": 7.397059694569643e-06,
+                  "phase_deg": 0.00040928876203771006
+                },
+                {
+                  "f_Hz": 200000.0,
+                  "complex_relative": 4.009357520314856e-05,
+                  "phase_deg": 0.00217379219132542
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 5.2931605588859635e-09,
+                  "phase_deg": 2.104239871431912e-07
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 6.385074488954705e-09,
+                  "phase_deg": 1.946828049548896e-07
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 0.0002493760418148042,
+                  "phase_deg": 0.014148737124000318
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 0.0002739204559115682,
+                  "phase_deg": 0.015562171141956689
+                }
+              ],
+              "max_complex_relative": 0.0002739204559115682,
+              "max_phase_deg": 0.015562171141956689,
+              "UGF_relative": 1.1094949693424283e-06,
+              "PM_absolute_deg": 0.0002319733545022018
+            },
+            "step_half": {
+              "shared_points": 17,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 3.316235547608349e-05,
+                  "phase_deg": 0.0004519426519269072
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 3.609407903506865e-05,
+                  "phase_deg": 0.0003934226859400702
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 7.548137558800813e-05,
+                  "phase_deg": 0.002318190480394214
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 3.476728473836819e-05,
+                  "phase_deg": 0.00013677571471010092
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 2.6772899956775034e-05,
+                  "phase_deg": 6.985282533537693e-05
+                },
+                {
+                  "f_Hz": 164525.69508766235,
+                  "complex_relative": 4.526687513363908e-05,
+                  "phase_deg": 0.001694560912692162
+                },
+                {
+                  "f_Hz": 166836.3231833061,
+                  "complex_relative": 3.784625617130722e-05,
+                  "phase_deg": 0.001214266375419453
+                },
+                {
+                  "f_Hz": 168003.7779728114,
+                  "complex_relative": 2.729027774246107e-05,
+                  "phase_deg": 0.0005376537415393084
+                },
+                {
+                  "f_Hz": 168296.91591084705,
+                  "complex_relative": 2.83204462012809e-05,
+                  "phase_deg": 0.0004508970183325065
+                },
+                {
+                  "f_Hz": 168590.56532458728,
+                  "complex_relative": 5.521378806343004e-05,
+                  "phase_deg": 0.0026294522827597596
+                },
+                {
+                  "f_Hz": 169179.40215049026,
+                  "complex_relative": 2.407213631082664e-05,
+                  "phase_deg": 0.0009982341553426974
+                },
+                {
+                  "f_Hz": 178885.43819998318,
+                  "complex_relative": 5.5533177818110095e-05,
+                  "phase_deg": 0.0025561466133052777
+                },
+                {
+                  "f_Hz": 200000.0,
+                  "complex_relative": 5.409583344057709e-05,
+                  "phase_deg": 0.0030994110777390143
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 8.656147751418291e-06,
+                  "phase_deg": 0.00023723786368411666
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 4.432785175334232e-05,
+                  "phase_deg": 0.0012999211180374816
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 0.00013631052480859228,
+                  "phase_deg": 0.0030247586314241996
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 0.0002613873577840497,
+                  "phase_deg": 0.006993181634379554
+                }
+              ],
+              "max_complex_relative": 0.0002613873577840497,
+              "max_phase_deg": 0.006993181634379554,
+              "UGF_relative": 2.4883713838130816e-05,
+              "PM_absolute_deg": 0.0005061496957381451
+            },
+            "window_double": {
+              "shared_points": 17,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 1.321972970660314e-08,
+                  "phase_deg": 7.563010624026856e-07
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 4.8159699970168306e-08,
+                  "phase_deg": 1.0050410087840705e-06
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 5.8392395395372665e-05,
+                  "phase_deg": 0.002586117286972849
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 9.83089546972908e-09,
+                  "phase_deg": 3.971166129089981e-07
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 1.467549454009254e-07,
+                  "phase_deg": 8.39255459851801e-06
+                },
+                {
+                  "f_Hz": 164525.69508766235,
+                  "complex_relative": 3.459907403211336e-05,
+                  "phase_deg": 0.00186962113985943
+                },
+                {
+                  "f_Hz": 166836.3231833061,
+                  "complex_relative": 7.494107840806703e-06,
+                  "phase_deg": 0.00041561250746392504
+                },
+                {
+                  "f_Hz": 168003.7779728114,
+                  "complex_relative": 4.616513186669857e-05,
+                  "phase_deg": 0.002513213120277283
+                },
+                {
+                  "f_Hz": 168296.91591084705,
+                  "complex_relative": 1.4007692387780016e-05,
+                  "phase_deg": 0.0007967555617755497
+                },
+                {
+                  "f_Hz": 168590.56532458728,
+                  "complex_relative": 1.52282169947131e-05,
+                  "phase_deg": 0.0008358176296415137
+                },
+                {
+                  "f_Hz": 169179.40215049026,
+                  "complex_relative": 7.028406079777791e-05,
+                  "phase_deg": 0.0038429012063113705
+                },
+                {
+                  "f_Hz": 178885.43819998318,
+                  "complex_relative": 1.5841353627848788e-05,
+                  "phase_deg": 0.0008673758564697728
+                },
+                {
+                  "f_Hz": 200000.0,
+                  "complex_relative": 5.735489251936507e-05,
+                  "phase_deg": 0.0032065125415870993
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 1.9703724832935846e-07,
+                  "phase_deg": 6.921406521416752e-06
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 8.434458200038618e-05,
+                  "phase_deg": 0.004831142415779839
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 2.223555819363863e-05,
+                  "phase_deg": 0.0011525690904432573
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 5.2089444018843905e-05,
+                  "phase_deg": 0.0028340507251240037
+                }
+              ],
+              "max_complex_relative": 8.434458200038618e-05,
+              "max_phase_deg": 0.004831142415779839,
+              "UGF_relative": 1.0212221631444862e-05,
+              "PM_absolute_deg": 0.0020146782482868275
+            },
+            "offset_grid": {
+              "shared_points": 1,
+              "points": [
+                {
+                  "f_Hz": 200000,
+                  "complex_relative": 0.0,
+                  "phase_deg": 0.0
+                }
+              ],
+              "max_complex_relative": 0.0,
+              "max_phase_deg": 0.0,
+              "UGF_relative": 1.1883134505619175e-05,
+              "PM_absolute_deg": 0.0024903083830452033
+            },
+            "independent_clamp": {
+              "shared_points": 15,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 0.005736418054778579,
+                  "phase_deg": 0.00016226085109032716
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 0.00573657208187667,
+                  "phase_deg": 0.0002598246794201361
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 0.005702568725220819,
+                  "phase_deg": 0.002471363204874961
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 0.005737479985017325,
+                  "phase_deg": 0.0006479915116607369
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 0.005739207810302897,
+                  "phase_deg": 0.0010373189940051653
+                },
+                {
+                  "f_Hz": 164525.69508766235,
+                  "complex_relative": 0.0057330148503743844,
+                  "phase_deg": 0.0015595345655172355
+                },
+                {
+                  "f_Hz": 166836.3231833061,
+                  "complex_relative": 0.005735039878530377,
+                  "phase_deg": 0.0014222312636702102
+                },
+                {
+                  "f_Hz": 168003.7779728114,
+                  "complex_relative": 0.005742548889611244,
+                  "phase_deg": 0.0012875022474790117
+                },
+                {
+                  "f_Hz": 169179.40215049026,
+                  "complex_relative": 0.0057508895216731104,
+                  "phase_deg": 0.0009179110357414857
+                },
+                {
+                  "f_Hz": 178885.43819998318,
+                  "complex_relative": 0.005731799397907666,
+                  "phase_deg": 0.0016186449993588557
+                },
+                {
+                  "f_Hz": 200000.0,
+                  "complex_relative": 0.005756341528813457,
+                  "phase_deg": 0.0010125386977210286
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 0.0057430435741174825,
+                  "phase_deg": 0.0016106049412886612
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 0.005753912166842973,
+                  "phase_deg": 0.002595793394881195
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 0.005782830636012165,
+                  "phase_deg": 0.0064842304758356535
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 0.005845608518590466,
+                  "phase_deg": 0.0080794858233864
+                }
+              ],
+              "max_complex_relative": 0.005845608518590466,
+              "max_phase_deg": 0.0080794858233864,
+              "UGF_relative": 0.005480922258295329,
+              "PM_absolute_deg": 0.0007260358943455003
+            }
+          },
+          "scope": "local fundamental phase-port measurements; not global periodic stability certification"
+        },
+        "time_comparison_supported": true,
+        "frequency_comparison_supported": true,
+        "formal_PM": {
+          "value": null,
+          "status": "UNKNOWN"
+        },
+        "formal_UGF": {
+          "value": null,
+          "status": "UNKNOWN"
+        },
+        "formal_overall_status": "UNKNOWN",
+        "verified_joint_block_spec": false
+      }
+    },
+    {
+      "candidate_id": "C03_pm_boundary",
+      "parameter_sha256": "c099898e9d7a0d56f3a8890ad5b09ebc07cedf3644dba56534fb5ef95b2b7ff1",
+      "joint_block_spec": {
+        "schema_version": "pll-physics-mapping-2.0",
+        "conventions": {
+          "vco_f0": "frequency_at_zero_volts",
+          "phase_error": "reference_minus_feedback_rad",
+          "lf_topology": "C1_shunt_Rz_series_C2",
+          "cp_leakage": "positive_injected_into_lf"
+        },
+        "values": {
+          "f_ref": {
+            "value": 10000000,
+            "unit": "Hz"
+          },
+          "N": {
+            "value": 8,
+            "unit": "1"
+          },
+          "Icp": {
+            "value": 0.0001,
+            "unit": "A"
+          },
+          "Rz": {
+            "value": 2482.028124785117,
+            "unit": "Ohm"
+          },
+          "C1": {
+            "value": 1e-10,
+            "unit": "F"
+          },
+          "C2": {
+            "value": 1e-09,
+            "unit": "F"
+          },
+          "f0": {
+            "value": 72000000,
+            "unit": "Hz"
+          },
+          "Kvco": {
+            "value": 20000000,
+            "unit": "Hz/V"
+          },
+          "Vctrl_min": {
+            "value": 0,
+            "unit": "V"
+          },
+          "Vctrl_max": {
+            "value": 1.2,
+            "unit": "V"
+          },
+          "Kvco2": {
+            "value": 0,
+            "unit": "Hz/V^2"
+          },
+          "CP_mismatch": {
+            "value": 0,
+            "unit": "1"
+          },
+          "CP_leakage": {
+            "value": 0,
+            "unit": "A"
+          },
+          "q0": {
+            "value": 0,
+            "unit": "C"
+          },
+          "PFD_reset_delay": {
+            "value": 0,
+            "unit": "s"
+          },
+          "Cload": {
+            "value": 0,
+            "unit": "F"
+          },
+          "Gload": {
+            "value": 0,
+            "unit": "S"
+          }
+        }
+      },
+      "contract": {
+        "tags": [
+          "FULL_PERIODIC_PM_NOT_CERTIFIED",
+          "LOCAL_MAPPING_SUPPORTED",
+          "CLOSED_LOOP_STABLE_OBSERVED"
+        ],
+        "errors": {
+          "BW_relative": 0.0017089480490211084,
+          "max_frequency_complex_relative": 0.0029777667274373367,
+          "max_frequency_phase_deg": 0.0522696537322203,
+          "base_UGF_relative": 0.0015540412606460663,
+          "base_PM_difference_deg": 0.023714539285037972,
+          "independent_clamp_UGF_relative": -2.2321803245239913e-05,
+          "independent_clamp_PM_difference_deg": -0.002664602404507832
+        },
+        "frequency_gate": {
+          "passed": true,
+          "reasons": [],
+          "comparisons": {
+            "independent_clamp": {
+              "shared_points": 17,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 0.0020371450679960183,
+                  "phase_deg": 3.4323323290668816e-05
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 0.0020371819787700887,
+                  "phase_deg": 5.5087759776348975e-05
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 0.0020306072699095316,
+                  "phase_deg": 0.0008167159810644351
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 0.002037515133996854,
+                  "phase_deg": 0.000135549843338734
+                },
+                {
+                  "f_Hz": 102981.09346783068,
+                  "complex_relative": 0.002040076321091661,
+                  "phase_deg": 0.0005805761315573309
+                },
+                {
+                  "f_Hz": 103740.1504853179,
+                  "complex_relative": 0.0020370976496353397,
+                  "phase_deg": 0.00026321025678262565
+                },
+                {
+                  "f_Hz": 104121.77450625454,
+                  "complex_relative": 0.0020372575118554684,
+                  "phase_deg": 9.553667485728856e-06
+                },
+                {
+                  "f_Hz": 104313.11264278527,
+                  "complex_relative": 0.0020396781796302122,
+                  "phase_deg": 0.0005938202911386737
+                },
+                {
+                  "f_Hz": 104504.80238955954,
+                  "complex_relative": 0.0020370417866754143,
+                  "phase_deg": 9.937667758274567e-05
+                },
+                {
+                  "f_Hz": 106051.05611830078,
+                  "complex_relative": 0.0020399351095905186,
+                  "phase_deg": 0.0006292505412837524
+                },
+                {
+                  "f_Hz": 112468.26503806982,
+                  "complex_relative": 0.0020369115562815076,
+                  "phase_deg": 0.00031654430337662307
+                },
+                {
+                  "f_Hz": 126491.10640673517,
+                  "complex_relative": 0.0020366831831183014,
+                  "phase_deg": 0.0008043280381955649
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 0.0020381439977168563,
+                  "phase_deg": 0.0002172491130326526
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 0.0020395800087251027,
+                  "phase_deg": 0.00034789779605755376
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 0.00204355876649604,
+                  "phase_deg": 0.0005587970493050423
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 0.002053962861624899,
+                  "phase_deg": 0.0025381946965776906
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 0.0020763905531818263,
+                  "phase_deg": 0.0022325294452751887
+                }
+              ],
+              "max_complex_relative": 0.0020763905531818263,
+              "max_phase_deg": 0.0025381946965776906,
+              "UGF_relative": 0.001573917131727831,
+              "PM_absolute_deg": 0.026379141689545804
+            },
+            "amplitude_half": {
+              "shared_points": 17,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 4.436397084434306e-08,
+                  "phase_deg": 2.6688328579082114e-08
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 9.326778571982382e-09,
+                  "phase_deg": 4.926846326001633e-07
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 2.6660339522017027e-05,
+                  "phase_deg": 0.0014740161920661428
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 1.8301492329831678e-09,
+                  "phase_deg": 9.155373914725596e-08
+                },
+                {
+                  "f_Hz": 102981.09346783068,
+                  "complex_relative": 2.4195036366226773e-05,
+                  "phase_deg": 0.0013433726874363106
+                },
+                {
+                  "f_Hz": 103740.1504853179,
+                  "complex_relative": 1.6541691780831447e-05,
+                  "phase_deg": 0.0009304225041752687
+                },
+                {
+                  "f_Hz": 104121.77450625454,
+                  "complex_relative": 1.206023452029551e-05,
+                  "phase_deg": 0.0006814489897650702
+                },
+                {
+                  "f_Hz": 104313.11264278527,
+                  "complex_relative": 2.1020954415238565e-05,
+                  "phase_deg": 0.0011673335407678255
+                },
+                {
+                  "f_Hz": 104504.80238955954,
+                  "complex_relative": 2.186882080352929e-05,
+                  "phase_deg": 0.0012353925328979802
+                },
+                {
+                  "f_Hz": 106051.05611830078,
+                  "complex_relative": 2.5206799258429994e-05,
+                  "phase_deg": 0.0014017855342495142
+                },
+                {
+                  "f_Hz": 112468.26503806982,
+                  "complex_relative": 3.693656120478015e-05,
+                  "phase_deg": 0.002090251980127119
+                },
+                {
+                  "f_Hz": 126491.10640673517,
+                  "complex_relative": 5.830536933618498e-05,
+                  "phase_deg": 0.00330545114358766
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 1.37980361548118e-09,
+                  "phase_deg": 7.735248549468882e-08
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 2.6366330055179555e-09,
+                  "phase_deg": 1.0281948251868567e-07
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 6.132000229919909e-09,
+                  "phase_deg": 4.1949483648880295e-08
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 0.0002488162580263443,
+                  "phase_deg": 0.01423677664454085
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 0.00028703681652344533,
+                  "phase_deg": 0.0163903307439787
+                }
+              ],
+              "max_complex_relative": 0.00028703681652344533,
+              "max_phase_deg": 0.0163903307439787,
+              "UGF_relative": 6.844743205558501e-08,
+              "PM_absolute_deg": 0.00026655748095549825
+            },
+            "step_half": {
+              "shared_points": 17,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 1.9869216119779102e-05,
+                  "phase_deg": 0.0007783505946733778
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 2.6710624366158635e-05,
+                  "phase_deg": 0.0010307031063698886
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 5.5623744499434107e-05,
+                  "phase_deg": 0.0025424286363226623
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 3.545135132320966e-05,
+                  "phase_deg": 0.0010636060426285113
+                },
+                {
+                  "f_Hz": 102981.09346783068,
+                  "complex_relative": 2.6265231157558603e-05,
+                  "phase_deg": 0.0002042963171063914
+                },
+                {
+                  "f_Hz": 103740.1504853179,
+                  "complex_relative": 4.5999499865267266e-05,
+                  "phase_deg": 0.0018693264051609917
+                },
+                {
+                  "f_Hz": 104121.77450625454,
+                  "complex_relative": 3.9387167502630345e-05,
+                  "phase_deg": 0.0013844404228544698
+                },
+                {
+                  "f_Hz": 104313.11264278527,
+                  "complex_relative": 2.6785943067597605e-05,
+                  "phase_deg": 0.0003876471665744064
+                },
+                {
+                  "f_Hz": 104504.80238955954,
+                  "complex_relative": 4.175426303938514e-05,
+                  "phase_deg": 0.0015887009629071995
+                },
+                {
+                  "f_Hz": 106051.05611830078,
+                  "complex_relative": 2.6267291779006295e-05,
+                  "phase_deg": 0.0001994550378776636
+                },
+                {
+                  "f_Hz": 112468.26503806982,
+                  "complex_relative": 4.325715834473898e-05,
+                  "phase_deg": 0.0017756760343693686
+                },
+                {
+                  "f_Hz": 126491.10640673517,
+                  "complex_relative": 4.504855103678532e-05,
+                  "phase_deg": 0.002050261579030252
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 2.925034149415283e-05,
+                  "phase_deg": 0.0009721003572310785
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 2.4069898985163752e-05,
+                  "phase_deg": 0.0013790925871191538
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 8.310798608486071e-05,
+                  "phase_deg": 0.0035635128531534815
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 0.00013716845751387313,
+                  "phase_deg": 0.0012311385197847915
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 0.0003322769529165523,
+                  "phase_deg": 0.015078335906799545
+                }
+              ],
+              "max_complex_relative": 0.0003322769529165523,
+              "max_phase_deg": 0.015078335906799545,
+              "UGF_relative": 2.248794463577397e-05,
+              "PM_absolute_deg": 0.0014943541912657565
+            },
+            "window_double": {
+              "shared_points": 17,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 4.493415560944198e-09,
+                  "phase_deg": 2.4589696722373974e-07
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 8.042271541628234e-09,
+                  "phase_deg": 3.3238107298129655e-07
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 2.281051139491031e-05,
+                  "phase_deg": 0.0012286362076054072
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 2.4806486188172498e-09,
+                  "phase_deg": 3.4471638753838655e-09
+                },
+                {
+                  "f_Hz": 102981.09346783068,
+                  "complex_relative": 2.9802803461164147e-05,
+                  "phase_deg": 0.001698739927471908
+                },
+                {
+                  "f_Hz": 103740.1504853179,
+                  "complex_relative": 3.606590866544865e-06,
+                  "phase_deg": 0.00020413874362302316
+                },
+                {
+                  "f_Hz": 104121.77450625454,
+                  "complex_relative": 8.245732270020204e-06,
+                  "phase_deg": 0.0004723510923931289
+                },
+                {
+                  "f_Hz": 104313.11264278527,
+                  "complex_relative": 2.246925956269267e-05,
+                  "phase_deg": 0.0012824776986409953
+                },
+                {
+                  "f_Hz": 104504.80238955954,
+                  "complex_relative": 1.1989363963121145e-05,
+                  "phase_deg": 0.0006861724240825904
+                },
+                {
+                  "f_Hz": 106051.05611830078,
+                  "complex_relative": 2.9427286077484663e-05,
+                  "phase_deg": 0.001678825100835417
+                },
+                {
+                  "f_Hz": 112468.26503806982,
+                  "complex_relative": 3.084100767265392e-06,
+                  "phase_deg": 0.0001747403733456909
+                },
+                {
+                  "f_Hz": 126491.10640673517,
+                  "complex_relative": 1.3203084543401698e-07,
+                  "phase_deg": 7.53357377845664e-06
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 4.1235383046094605e-08,
+                  "phase_deg": 1.2692720082642971e-06
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 8.018194473477748e-08,
+                  "phase_deg": 4.1203183375873e-06
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 7.326897933818428e-05,
+                  "phase_deg": 0.004182387248130713
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 2.2059706660793324e-05,
+                  "phase_deg": 0.0012544839928633545
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 6.345966949547245e-05,
+                  "phase_deg": 0.0035975864453558653
+                }
+              ],
+              "max_complex_relative": 7.326897933818428e-05,
+              "max_phase_deg": 0.004182387248130713,
+              "UGF_relative": 3.5080363203210396e-07,
+              "PM_absolute_deg": 0.000114734790656712
+            },
+            "offset_grid": {
+              "shared_points": 1,
+              "points": [
+                {
+                  "f_Hz": 100000.0,
+                  "complex_relative": 0.0,
+                  "phase_deg": 0.0
+                }
+              ],
+              "max_complex_relative": 0.0,
+              "max_phase_deg": 0.0,
+              "UGF_relative": 1.5440648942766089e-06,
+              "PM_absolute_deg": 0.0009605870002076244
+            }
+          },
+          "scope": "local fundamental phase-port measurements; not global periodic stability certification"
+        },
+        "time_comparison_supported": true,
+        "frequency_comparison_supported": true,
+        "formal_PM": {
+          "value": null,
+          "status": "UNKNOWN"
+        },
+        "formal_UGF": {
+          "value": null,
+          "status": "UNKNOWN"
+        },
+        "formal_overall_status": "UNKNOWN",
+        "verified_joint_block_spec": false
+      }
+    },
+    {
+      "candidate_id": "C04_matched_pm55",
+      "parameter_sha256": "5ce04f7a77ddb8da61bbe3faf46cfa7286a20c1ca080249c6e8ba94827521f4c",
+      "joint_block_spec": {
+        "schema_version": "pll-physics-mapping-2.0",
+        "conventions": {
+          "vco_f0": "frequency_at_zero_volts",
+          "phase_error": "reference_minus_feedback_rad",
+          "lf_topology": "C1_shunt_Rz_series_C2",
+          "cp_leakage": "positive_injected_into_lf"
+        },
+        "values": {
+          "f_ref": {
+            "value": 10000000,
+            "unit": "Hz"
+          },
+          "N": {
+            "value": 8,
+            "unit": "1"
+          },
+          "Icp": {
+            "value": 6.105245572955655e-05,
+            "unit": "A"
+          },
+          "Rz": {
+            "value": 6989.359337908063,
+            "unit": "Ohm"
+          },
+          "C1": {
+            "value": 1e-10,
+            "unit": "F"
+          },
+          "C2": {
+            "value": 2e-09,
+            "unit": "F"
+          },
+          "f0": {
+            "value": 68000000.0,
+            "unit": "Hz"
+          },
+          "Kvco": {
+            "value": 20000000.0,
+            "unit": "Hz/V"
+          },
+          "Vctrl_min": {
+            "value": 0,
+            "unit": "V"
+          },
+          "Vctrl_max": {
+            "value": 1.2,
+            "unit": "V"
+          },
+          "Kvco2": {
+            "value": 0,
+            "unit": "Hz/V^2"
+          },
+          "CP_mismatch": {
+            "value": 0,
+            "unit": "1"
+          },
+          "CP_leakage": {
+            "value": 0,
+            "unit": "A"
+          },
+          "q0": {
+            "value": 0,
+            "unit": "C"
+          },
+          "PFD_reset_delay": {
+            "value": 0,
+            "unit": "s"
+          },
+          "Cload": {
+            "value": 0,
+            "unit": "F"
+          },
+          "Gload": {
+            "value": 0,
+            "unit": "S"
+          }
+        }
+      },
+      "contract": {
+        "tags": [
+          "FULL_PERIODIC_PM_NOT_CERTIFIED",
+          "LOCAL_MAPPING_SUPPORTED",
+          "CLOSED_LOOP_STABLE_OBSERVED"
+        ],
+        "errors": {
+          "BW_relative": 0.001272834677382928,
+          "max_frequency_complex_relative": 0.002110799540536793,
+          "max_frequency_phase_deg": 0.06535876074286076,
+          "base_UGF_relative": 0.001041315579808355,
+          "base_PM_difference_deg": -0.02576960014958729,
+          "independent_clamp_UGF_relative": 5.374371649891074e-05,
+          "independent_clamp_PM_difference_deg": -0.0038146563129259903
+        },
+        "frequency_gate": {
+          "passed": true,
+          "reasons": [],
+          "comparisons": {
+            "independent_clamp": {
+              "shared_points": 17,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 0.0012457656472652943,
+                  "phase_deg": 6.126249886104252e-06
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 0.001245785008771414,
+                  "phase_deg": 9.420109733873746e-06
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 0.0012384640893116678,
+                  "phase_deg": 0.001935975916706833
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 0.0012456771169150867,
+                  "phase_deg": 1.6268424753867533e-05
+                },
+                {
+                  "f_Hz": 126491.10640673517,
+                  "complex_relative": 0.0012429607208187324,
+                  "phase_deg": 0.00013332293531429578
+                },
+                {
+                  "f_Hz": 134145.15424006627,
+                  "complex_relative": 0.0012435219444595768,
+                  "phase_deg": 0.00014599704215083816
+                },
+                {
+                  "f_Hz": 138144.14667052828,
+                  "complex_relative": 0.001243984289055186,
+                  "phase_deg": 0.000279160380835997
+                },
+                {
+                  "f_Hz": 139162.38487740656,
+                  "complex_relative": 0.0012445385323929183,
+                  "phase_deg": 0.00018727490554041834
+                },
+                {
+                  "f_Hz": 139674.31500890915,
+                  "complex_relative": 0.0012436694894468934,
+                  "phase_deg": 0.0004322191505172807
+                },
+                {
+                  "f_Hz": 139930.98584727838,
+                  "complex_relative": 0.0012480593341540366,
+                  "phase_deg": 0.00033181074890717817
+                },
+                {
+                  "f_Hz": 140188.1283537511,
+                  "complex_relative": 0.0012438063095553972,
+                  "phase_deg": 0.0004064174541232194
+                },
+                {
+                  "f_Hz": 142262.3528031138,
+                  "complex_relative": 0.0012468847926358022,
+                  "phase_deg": 0.00010956115551162416
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 0.0012456126530306112,
+                  "phase_deg": 6.70532002987734e-05
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 0.0012475052189985182,
+                  "phase_deg": 0.00011488538951376656
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 0.0012503809465122231,
+                  "phase_deg": 0.00011692039765135908
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 0.0012583023570542696,
+                  "phase_deg": 0.0019449996246412966
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 0.0012713718072147019,
+                  "phase_deg": 0.0009431798687430611
+                }
+              ],
+              "max_complex_relative": 0.0012713718072147019,
+              "max_phase_deg": 0.0019449996246412966,
+              "UGF_relative": 0.0009865445590898636,
+              "PM_absolute_deg": 0.0219549438366613
+            },
+            "amplitude_half": {
+              "shared_points": 17,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 4.8555591232241e-08,
+                  "phase_deg": 1.8139871764609223e-06
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 2.3768319966238786e-08,
+                  "phase_deg": 3.652702039535208e-07
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 8.79902845927929e-06,
+                  "phase_deg": 0.0005011292154484581
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 5.840453112230435e-09,
+                  "phase_deg": 3.3416667994673376e-07
+                },
+                {
+                  "f_Hz": 126491.10640673517,
+                  "complex_relative": 4.9827887933948776e-05,
+                  "phase_deg": 0.0028445694487069413
+                },
+                {
+                  "f_Hz": 134145.15424006627,
+                  "complex_relative": 2.7121981336119e-05,
+                  "phase_deg": 0.001549403378600086
+                },
+                {
+                  "f_Hz": 138144.14667052828,
+                  "complex_relative": 6.42331257822295e-05,
+                  "phase_deg": 0.003667776936173724
+                },
+                {
+                  "f_Hz": 139162.38487740656,
+                  "complex_relative": 1.7387685777620432e-05,
+                  "phase_deg": 0.000993561115164168
+                },
+                {
+                  "f_Hz": 139674.31500890915,
+                  "complex_relative": 4.3707224732950294e-05,
+                  "phase_deg": 0.0024967068731985283
+                },
+                {
+                  "f_Hz": 139930.98584727838,
+                  "complex_relative": 3.045427472342916e-05,
+                  "phase_deg": 0.0017332315572316742
+                },
+                {
+                  "f_Hz": 140188.1283537511,
+                  "complex_relative": 3.465148554583322e-05,
+                  "phase_deg": 0.0019796662858245317
+                },
+                {
+                  "f_Hz": 142262.3528031138,
+                  "complex_relative": 1.913929300311215e-06,
+                  "phase_deg": 0.0001094589377308849
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 1.8133167046770393e-09,
+                  "phase_deg": 8.404647656061163e-08
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 2.7690969151443193e-09,
+                  "phase_deg": 6.104961518693009e-08
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 5.072143139622879e-09,
+                  "phase_deg": 3.6379880461568185e-08
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 0.00024995494110337805,
+                  "phase_deg": 0.014317443247896532
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 0.0002924451043630714,
+                  "phase_deg": 0.01670503576726752
+                }
+              ],
+              "max_complex_relative": 0.0002924451043630714,
+              "max_phase_deg": 0.01670503576726752,
+              "UGF_relative": 1.2763228409706784e-06,
+              "PM_absolute_deg": 0.0013378984013883155
+            },
+            "step_half": {
+              "shared_points": 17,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 1.1208917934994986e-05,
+                  "phase_deg": 0.00015943510238532307
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 9.42916578092555e-06,
+                  "phase_deg": 0.00013548580373058683
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 3.9732282304309485e-05,
+                  "phase_deg": 0.0022006753871317906
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 1.2887723593428496e-05,
+                  "phase_deg": 0.0005529883207236579
+                },
+                {
+                  "f_Hz": 126491.10640673517,
+                  "complex_relative": 5.863959889672268e-05,
+                  "phase_deg": 0.0032218532858447214
+                },
+                {
+                  "f_Hz": 134145.15424006627,
+                  "complex_relative": 5.6916106522790685e-05,
+                  "phase_deg": 0.003019591915805194
+                },
+                {
+                  "f_Hz": 138144.14667052828,
+                  "complex_relative": 5.680109174783816e-05,
+                  "phase_deg": 0.0029988496265890697
+                },
+                {
+                  "f_Hz": 139162.38487740656,
+                  "complex_relative": 5.4334643508675605e-05,
+                  "phase_deg": 0.0028407047227364704
+                },
+                {
+                  "f_Hz": 139674.31500890915,
+                  "complex_relative": 5.9571185004333795e-05,
+                  "phase_deg": 0.0031276557325657503
+                },
+                {
+                  "f_Hz": 139930.98584727838,
+                  "complex_relative": 2.7981796009851626e-05,
+                  "phase_deg": 0.00025799744310705326
+                },
+                {
+                  "f_Hz": 140188.1283537511,
+                  "complex_relative": 5.836786833988312e-05,
+                  "phase_deg": 0.0030406595946230763
+                },
+                {
+                  "f_Hz": 142262.3528031138,
+                  "complex_relative": 4.039360292811648e-05,
+                  "phase_deg": 0.0017834644038740956
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 4.460645414751781e-05,
+                  "phase_deg": 0.0017637075367500743
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 0.00010339168014511971,
+                  "phase_deg": 0.004649477591220808
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 0.00020595580976837403,
+                  "phase_deg": 0.010503328579625028
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 0.00022897214984948433,
+                  "phase_deg": 0.011549066628945446
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 0.0004617342501880012,
+                  "phase_deg": 0.025976490366262546
+                }
+              ],
+              "max_complex_relative": 0.0004617342501880012,
+              "max_phase_deg": 0.025976490366262546,
+              "UGF_relative": 1.9685691781123893e-05,
+              "PM_absolute_deg": 0.0028981584752614253
+            },
+            "window_double": {
+              "shared_points": 17,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 7.020786514315197e-09,
+                  "phase_deg": 3.650466949471618e-07
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 4.2951210978761115e-09,
+                  "phase_deg": 9.006676709175434e-08
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 4.254283053027539e-05,
+                  "phase_deg": 0.0023835760509803333
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 9.425934084168288e-08,
+                  "phase_deg": 1.1978750569592986e-06
+                },
+                {
+                  "f_Hz": 126491.10640673517,
+                  "complex_relative": 1.7477915925946152e-06,
+                  "phase_deg": 9.545397746677562e-05
+                },
+                {
+                  "f_Hz": 134145.15424006627,
+                  "complex_relative": 2.555331515891035e-05,
+                  "phase_deg": 0.0014601113186995013
+                },
+                {
+                  "f_Hz": 138144.14667052828,
+                  "complex_relative": 2.4899342931095948e-05,
+                  "phase_deg": 0.0014203419178207596
+                },
+                {
+                  "f_Hz": 139162.38487740656,
+                  "complex_relative": 2.5705093167169792e-05,
+                  "phase_deg": 0.001469667201066284
+                },
+                {
+                  "f_Hz": 139674.31500890915,
+                  "complex_relative": 3.302266185566296e-05,
+                  "phase_deg": 0.0018866264376859421
+                },
+                {
+                  "f_Hz": 139930.98584727838,
+                  "complex_relative": 4.067108936711559e-05,
+                  "phase_deg": 0.0023269611413226647
+                },
+                {
+                  "f_Hz": 140188.1283537511,
+                  "complex_relative": 7.780543640872741e-06,
+                  "phase_deg": 0.00044470727190853797
+                },
+                {
+                  "f_Hz": 142262.3528031138,
+                  "complex_relative": 6.702569771506076e-06,
+                  "phase_deg": 0.0003825522812576181
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 1.6087412261025577e-07,
+                  "phase_deg": 9.149011120916445e-06
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 2.285873158567515e-07,
+                  "phase_deg": 1.193442243333397e-05
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 5.0167762971694215e-05,
+                  "phase_deg": 0.0028499903983518673
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 2.1572367199169914e-05,
+                  "phase_deg": 0.001226018975376666
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 6.709243782448156e-05,
+                  "phase_deg": 0.0038245811936061403
+                }
+              ],
+              "max_complex_relative": 6.709243782448156e-05,
+              "max_phase_deg": 0.0038245811936061403,
+              "UGF_relative": 7.600245321981447e-08,
+              "PM_absolute_deg": 1.2926282934699884e-05
+            },
+            "offset_grid": {
+              "shared_points": 0,
+              "points": [],
+              "max_complex_relative": null,
+              "max_phase_deg": null,
+              "UGF_relative": 1.7880751179699672e-06,
+              "PM_absolute_deg": 0.001502570369027012
+            }
+          },
+          "scope": "local fundamental phase-port measurements; not global periodic stability certification"
+        },
+        "time_comparison_supported": true,
+        "frequency_comparison_supported": true,
+        "formal_PM": {
+          "value": null,
+          "status": "UNKNOWN"
+        },
+        "formal_UGF": {
+          "value": null,
+          "status": "UNKNOWN"
+        },
+        "formal_overall_status": "UNKNOWN",
+        "verified_joint_block_spec": false
+      }
+    },
+    {
+      "candidate_id": "C05_matched_pm60",
+      "parameter_sha256": "a7c564087a68d9f6431eef030f6abd824b3e157f8623397c941f567e9663a3a8",
+      "joint_block_spec": {
+        "schema_version": "pll-physics-mapping-2.0",
+        "conventions": {
+          "vco_f0": "frequency_at_zero_volts",
+          "phase_error": "reference_minus_feedback_rad",
+          "lf_topology": "C1_shunt_Rz_series_C2",
+          "cp_leakage": "positive_injected_into_lf"
+        },
+        "values": {
+          "f_ref": {
+            "value": 10000000,
+            "unit": "Hz"
+          },
+          "N": {
+            "value": 8,
+            "unit": "1"
+          },
+          "Icp": {
+            "value": 7.609690368116284e-05,
+            "unit": "A"
+          },
+          "Rz": {
+            "value": 5277.911726881135,
+            "unit": "Ohm"
+          },
+          "C1": {
+            "value": 1e-10,
+            "unit": "F"
+          },
+          "C2": {
+            "value": 2e-09,
+            "unit": "F"
+          },
+          "f0": {
+            "value": 68000000.0,
+            "unit": "Hz"
+          },
+          "Kvco": {
+            "value": 20000000.0,
+            "unit": "Hz/V"
+          },
+          "Vctrl_min": {
+            "value": 0,
+            "unit": "V"
+          },
+          "Vctrl_max": {
+            "value": 1.2,
+            "unit": "V"
+          },
+          "Kvco2": {
+            "value": 0,
+            "unit": "Hz/V^2"
+          },
+          "CP_mismatch": {
+            "value": 0,
+            "unit": "1"
+          },
+          "CP_leakage": {
+            "value": 0,
+            "unit": "A"
+          },
+          "q0": {
+            "value": 0,
+            "unit": "C"
+          },
+          "PFD_reset_delay": {
+            "value": 0,
+            "unit": "s"
+          },
+          "Cload": {
+            "value": 0,
+            "unit": "F"
+          },
+          "Gload": {
+            "value": 0,
+            "unit": "S"
+          }
+        }
+      },
+      "contract": {
+        "tags": [
+          "FULL_PERIODIC_PM_NOT_CERTIFIED",
+          "LOCAL_MAPPING_SUPPORTED",
+          "CLOSED_LOOP_STABLE_OBSERVED"
+        ],
+        "errors": {
+          "BW_relative": 0.001677017612601972,
+          "max_frequency_complex_relative": 0.0024343064052296565,
+          "max_frequency_phase_deg": 0.06399859501712842,
+          "base_UGF_relative": 0.0013657820362085182,
+          "base_PM_difference_deg": -0.025429710274138984,
+          "independent_clamp_UGF_relative": 4.44324568906751e-05,
+          "independent_clamp_PM_difference_deg": -0.002637765923637403
+        },
+        "frequency_gate": {
+          "passed": true,
+          "reasons": [],
+          "comparisons": {
+            "independent_clamp": {
+              "shared_points": 14,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 0.0015525710128865763,
+                  "phase_deg": 1.1631301980276447e-05
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 0.0015526235488599715,
+                  "phase_deg": 1.736870686254885e-05
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 0.0015436463884846174,
+                  "phase_deg": 0.001884371068645423
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 0.0015527862193776614,
+                  "phase_deg": 4.1264174650894614e-05
+                },
+                {
+                  "f_Hz": 126491.10640673517,
+                  "complex_relative": 0.0015490770092091795,
+                  "phase_deg": 0.00047581102989139126
+                },
+                {
+                  "f_Hz": 134145.15424006627,
+                  "complex_relative": 0.0015496575242830212,
+                  "phase_deg": 0.00021147655312808047
+                },
+                {
+                  "f_Hz": 138144.14667052828,
+                  "complex_relative": 0.001550282685428184,
+                  "phase_deg": 9.328590130186807e-05
+                },
+                {
+                  "f_Hz": 140188.1283537511,
+                  "complex_relative": 0.0015498329137465978,
+                  "phase_deg": 5.1461451200623e-05
+                },
+                {
+                  "f_Hz": 142262.3528031138,
+                  "complex_relative": 0.0015541991422226827,
+                  "phase_deg": 0.00015406230880054175
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 0.0015526997625097193,
+                  "phase_deg": 9.060447065197468e-05
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 0.0015544145846684266,
+                  "phase_deg": 0.00017089949676881382
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 0.001558083559070139,
+                  "phase_deg": 0.00020598389909443353
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 0.0015670309223358419,
+                  "phase_deg": 0.002342632641306326
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 0.0015838880329480732,
+                  "phase_deg": 0.0012802391317788147
+                }
+              ],
+              "max_complex_relative": 0.0015838880329480732,
+              "max_phase_deg": 0.002342632641306326,
+              "UGF_relative": 0.0013195473652304335,
+              "PM_absolute_deg": 0.02279194435050158
+            },
+            "amplitude_half": {
+              "shared_points": 17,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 2.5392489780445077e-08,
+                  "phase_deg": 1.305114266627279e-06
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 1.7643767245307128e-08,
+                  "phase_deg": 9.45851548023156e-07
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 9.883404417228059e-06,
+                  "phase_deg": 0.0005591604569517597
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 4.076629644238651e-09,
+                  "phase_deg": 2.061689591339039e-07
+                },
+                {
+                  "f_Hz": 126491.10640673517,
+                  "complex_relative": 4.587021642959862e-05,
+                  "phase_deg": 0.0026133406239364364
+                },
+                {
+                  "f_Hz": 134145.15424006627,
+                  "complex_relative": 2.108335716722773e-05,
+                  "phase_deg": 0.0012021198221130907
+                },
+                {
+                  "f_Hz": 138144.14667052828,
+                  "complex_relative": 6.454087119397476e-05,
+                  "phase_deg": 0.0036791592298823753
+                },
+                {
+                  "f_Hz": 140188.1283537511,
+                  "complex_relative": 2.7055483396862738e-05,
+                  "phase_deg": 0.0015430563602901893
+                },
+                {
+                  "f_Hz": 140445.7433950826,
+                  "complex_relative": 3.33224911209577e-06,
+                  "phase_deg": 0.00019018353170641167
+                },
+                {
+                  "f_Hz": 140703.83183962092,
+                  "complex_relative": 2.4344492538533313e-06,
+                  "phase_deg": 0.0001390820478208827
+                },
+                {
+                  "f_Hz": 141221.43241969167,
+                  "complex_relative": 3.625971516211419e-05,
+                  "phase_deg": 0.002067032412303657
+                },
+                {
+                  "f_Hz": 142262.3528031138,
+                  "complex_relative": 1.1761329779467644e-06,
+                  "phase_deg": 6.738551588208323e-05
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 1.5550846697072923e-09,
+                  "phase_deg": 5.55781649000437e-08
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 2.5664131666576306e-09,
+                  "phase_deg": 4.706671178111088e-08
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 3.1163504295180907e-09,
+                  "phase_deg": 5.2853475785419525e-08
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 0.00025069335735810277,
+                  "phase_deg": 0.014355824562080876
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 0.0002902277769975215,
+                  "phase_deg": 0.016572905455704938
+                }
+              ],
+              "max_complex_relative": 0.0002902277769975215,
+              "max_phase_deg": 0.016572905455704938,
+              "UGF_relative": 2.1846470861230927e-06,
+              "PM_absolute_deg": 0.001497558805581889
+            },
+            "step_half": {
+              "shared_points": 17,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 1.4387738326905309e-05,
+                  "phase_deg": 0.00023871905898775137
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 1.3663013231625166e-05,
+                  "phase_deg": 0.00018819901709050114
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 4.130836597751102e-05,
+                  "phase_deg": 0.0021519513577086063
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 6.458977660035428e-06,
+                  "phase_deg": 0.00036888606300369944
+                },
+                {
+                  "f_Hz": 126491.10640673517,
+                  "complex_relative": 5.58907882166931e-05,
+                  "phase_deg": 0.0031841579761154974
+                },
+                {
+                  "f_Hz": 134145.15424006627,
+                  "complex_relative": 5.2585967022566405e-05,
+                  "phase_deg": 0.00294554197424471
+                },
+                {
+                  "f_Hz": 138144.14667052828,
+                  "complex_relative": 5.252688564610575e-05,
+                  "phase_deg": 0.0029428778705257474
+                },
+                {
+                  "f_Hz": 140188.1283537511,
+                  "complex_relative": 5.41185552644382e-05,
+                  "phase_deg": 0.0030000238651660856
+                },
+                {
+                  "f_Hz": 140445.7433950826,
+                  "complex_relative": 3.319715658381363e-05,
+                  "phase_deg": 0.0017208148942910858
+                },
+                {
+                  "f_Hz": 140703.83183962092,
+                  "complex_relative": 3.0890775336761534e-05,
+                  "phase_deg": 0.001559063131267729
+                },
+                {
+                  "f_Hz": 141221.43241969167,
+                  "complex_relative": 3.6003137804169545e-05,
+                  "phase_deg": 0.001917015879338688
+                },
+                {
+                  "f_Hz": 142262.3528031138,
+                  "complex_relative": 2.8483881377676434e-05,
+                  "phase_deg": 0.0013586895176052396
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 3.028932853628938e-05,
+                  "phase_deg": 0.0011612529107409223
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 8.279212804075304e-05,
+                  "phase_deg": 0.0033939569954647367
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 0.00018302909489568075,
+                  "phase_deg": 0.008718875153495969
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 0.00021948986350003614,
+                  "phase_deg": 0.01003857062170349
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 0.00044549555123816673,
+                  "phase_deg": 0.02454319394729743
+                }
+              ],
+              "max_complex_relative": 0.00044549555123816673,
+              "max_phase_deg": 0.02454319394729743,
+              "UGF_relative": 1.1663124591221319e-05,
+              "PM_absolute_deg": 0.0031578669316445485
+            },
+            "window_double": {
+              "shared_points": 17,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 1.2568990633856665e-08,
+                  "phase_deg": 9.649298892858266e-08
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 1.5224720651427502e-08,
+                  "phase_deg": 1.905869452283931e-07
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 4.1924164393145486e-05,
+                  "phase_deg": 0.0023255388533416034
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 3.0459371977085675e-08,
+                  "phase_deg": 2.5463525907177346e-07
+                },
+                {
+                  "f_Hz": 126491.10640673517,
+                  "complex_relative": 3.557922000870487e-06,
+                  "phase_deg": 0.00019940188168801525
+                },
+                {
+                  "f_Hz": 134145.15424006627,
+                  "complex_relative": 2.899060631737428e-05,
+                  "phase_deg": 0.0016543192094190127
+                },
+                {
+                  "f_Hz": 138144.14667052828,
+                  "complex_relative": 3.1071537078537495e-05,
+                  "phase_deg": 0.0017681699924803848
+                },
+                {
+                  "f_Hz": 140188.1283537511,
+                  "complex_relative": 8.6552627748059e-06,
+                  "phase_deg": 0.0004941976462129053
+                },
+                {
+                  "f_Hz": 140445.7433950826,
+                  "complex_relative": 6.428148088392765e-06,
+                  "phase_deg": 0.0003682435984169525
+                },
+                {
+                  "f_Hz": 140703.83183962092,
+                  "complex_relative": 1.306787200527097e-05,
+                  "phase_deg": 0.0007475770106658203
+                },
+                {
+                  "f_Hz": 141221.43241969167,
+                  "complex_relative": 1.311608976279844e-05,
+                  "phase_deg": 0.0007439604891350724
+                },
+                {
+                  "f_Hz": 142262.3528031138,
+                  "complex_relative": 8.68526936678995e-06,
+                  "phase_deg": 0.0004949241303671973
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 2.0790522726812866e-07,
+                  "phase_deg": 9.785480476179802e-06
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 8.77165955893265e-08,
+                  "phase_deg": 1.967761531110029e-06
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 5.072844042908155e-05,
+                  "phase_deg": 0.002883032900611977
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 2.0663671851046363e-05,
+                  "phase_deg": 0.00118063695136955
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 6.532401418366329e-05,
+                  "phase_deg": 0.0037183021642067967
+                }
+              ],
+              "max_complex_relative": 6.532401418366329e-05,
+              "max_phase_deg": 0.0037183021642067967,
+              "UGF_relative": 6.035974091656016e-07,
+              "PM_absolute_deg": 0.00048410773850093847
+            },
+            "offset_grid": {
+              "shared_points": 0,
+              "points": [],
+              "max_complex_relative": null,
+              "max_phase_deg": null,
+              "UGF_relative": 3.1736854957387095e-06,
+              "PM_absolute_deg": 0.0020725577788169858
+            }
+          },
+          "scope": "local fundamental phase-port measurements; not global periodic stability certification"
+        },
+        "time_comparison_supported": true,
+        "frequency_comparison_supported": true,
+        "formal_PM": {
+          "value": null,
+          "status": "UNKNOWN"
+        },
+        "formal_UGF": {
+          "value": null,
+          "status": "UNKNOWN"
+        },
+        "formal_overall_status": "UNKNOWN",
+        "verified_joint_block_spec": false
+      }
+    },
+    {
+      "candidate_id": "C06_matched_pm65",
+      "parameter_sha256": "98040ad328352d4d373e3f1e30b51fd194f2c857368871f62b740b1e2b4a058f",
+      "joint_block_spec": {
+        "schema_version": "pll-physics-mapping-2.0",
+        "conventions": {
+          "vco_f0": "frequency_at_zero_volts",
+          "phase_error": "reference_minus_feedback_rad",
+          "lf_topology": "C1_shunt_Rz_series_C2",
+          "cp_leakage": "positive_injected_into_lf"
+        },
+        "values": {
+          "f_ref": {
+            "value": 10000000,
+            "unit": "Hz"
+          },
+          "N": {
+            "value": 8,
+            "unit": "1"
+          },
+          "Icp": {
+            "value": 0.00011968511233363707,
+            "unit": "A"
+          },
+          "Rz": {
+            "value": 3140.920004624654,
+            "unit": "Ohm"
+          },
+          "C1": {
+            "value": 1e-10,
+            "unit": "F"
+          },
+          "C2": {
+            "value": 2e-09,
+            "unit": "F"
+          },
+          "f0": {
+            "value": 68000000.0,
+            "unit": "Hz"
+          },
+          "Kvco": {
+            "value": 20000000.0,
+            "unit": "Hz/V"
+          },
+          "Vctrl_min": {
+            "value": 0,
+            "unit": "V"
+          },
+          "Vctrl_max": {
+            "value": 1.2,
+            "unit": "V"
+          },
+          "Kvco2": {
+            "value": 0,
+            "unit": "Hz/V^2"
+          },
+          "CP_mismatch": {
+            "value": 0,
+            "unit": "1"
+          },
+          "CP_leakage": {
+            "value": 0,
+            "unit": "A"
+          },
+          "q0": {
+            "value": 0,
+            "unit": "C"
+          },
+          "PFD_reset_delay": {
+            "value": 0,
+            "unit": "s"
+          },
+          "Cload": {
+            "value": 0,
+            "unit": "F"
+          },
+          "Gload": {
+            "value": 0,
+            "unit": "S"
+          }
+        }
+      },
+      "contract": {
+        "tags": [
+          "FULL_PERIODIC_PM_NOT_CERTIFIED",
+          "LOCAL_MAPPING_SUPPORTED",
+          "CLOSED_LOOP_STABLE_OBSERVED"
+        ],
+        "errors": {
+          "BW_relative": 0.0027677505119649837,
+          "max_frequency_complex_relative": 0.003377169995301663,
+          "max_frequency_phase_deg": 0.05850659061252874,
+          "base_UGF_relative": 0.0022486750400336764,
+          "base_PM_difference_deg": -0.013036191727593405,
+          "independent_clamp_UGF_relative": 1.8608393461683193e-05,
+          "independent_clamp_PM_difference_deg": -0.0015750888621681725
+        },
+        "frequency_gate": {
+          "passed": true,
+          "reasons": [],
+          "comparisons": {
+            "independent_clamp": {
+              "shared_points": 14,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 0.002440307698124195,
+                  "phase_deg": 3.127155633509367e-05
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 0.0024403802756303586,
+                  "phase_deg": 5.0569031507360194e-05
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 0.0024267492867097763,
+                  "phase_deg": 0.0018489539795162949
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 0.002440762293521709,
+                  "phase_deg": 0.00012538066369326172
+                },
+                {
+                  "f_Hz": 126491.10640673517,
+                  "complex_relative": 0.0024347696283589957,
+                  "phase_deg": 0.0008300820858019109
+                },
+                {
+                  "f_Hz": 134145.15424006627,
+                  "complex_relative": 0.0024357346233329466,
+                  "phase_deg": 0.0005592279868957484
+                },
+                {
+                  "f_Hz": 138144.14667052828,
+                  "complex_relative": 0.0024367008456068406,
+                  "phase_deg": 0.000525819597674064
+                },
+                {
+                  "f_Hz": 140188.1283537511,
+                  "complex_relative": 0.002435924044247929,
+                  "phase_deg": 0.0004930735041885905
+                },
+                {
+                  "f_Hz": 142262.3528031138,
+                  "complex_relative": 0.002443273742370794,
+                  "phase_deg": 0.0002787362636742891
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 0.0024414800190737697,
+                  "phase_deg": 0.0002017844074853252
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 0.002443106604560235,
+                  "phase_deg": 0.0003230229965169243
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 0.0024479635371717273,
+                  "phase_deg": 0.0005156157446083456
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 0.0024601843006091437,
+                  "phase_deg": 0.0032051573309670803
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 0.0024873161732883488,
+                  "phase_deg": 0.002409269123684931
+                }
+              ],
+              "max_complex_relative": 0.0024873161732883488,
+              "max_phase_deg": 0.0032051573309670803,
+              "UGF_relative": 0.002225063202486055,
+              "PM_absolute_deg": 0.011461102865425232
+            },
+            "amplitude_half": {
+              "shared_points": 17,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 1.6498308854176494e-08,
+                  "phase_deg": 8.088978690387534e-07
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 1.2672276138163277e-08,
+                  "phase_deg": 2.8497575980740898e-08
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 1.1439636292162134e-05,
+                  "phase_deg": 0.00063026899638152
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 8.609098936511661e-09,
+                  "phase_deg": 4.7515578547794484e-07
+                },
+                {
+                  "f_Hz": 126491.10640673517,
+                  "complex_relative": 4.2359802564747555e-05,
+                  "phase_deg": 0.0023932617646984598
+                },
+                {
+                  "f_Hz": 134145.15424006627,
+                  "complex_relative": 1.658324899576417e-05,
+                  "phase_deg": 0.0009381503512056168
+                },
+                {
+                  "f_Hz": 138144.14667052828,
+                  "complex_relative": 6.364897014042272e-05,
+                  "phase_deg": 0.003603189297913265
+                },
+                {
+                  "f_Hz": 140188.1283537511,
+                  "complex_relative": 2.0922378985707546e-05,
+                  "phase_deg": 0.0011847667931870279
+                },
+                {
+                  "f_Hz": 140445.7433950826,
+                  "complex_relative": 1.7595592420571593e-06,
+                  "phase_deg": 9.954020115867549e-05
+                },
+                {
+                  "f_Hz": 140703.83183962092,
+                  "complex_relative": 1.2976713569159013e-06,
+                  "phase_deg": 7.338748629224284e-05
+                },
+                {
+                  "f_Hz": 141221.43241969167,
+                  "complex_relative": 3.884091740337548e-05,
+                  "phase_deg": 0.0021997843428153353
+                },
+                {
+                  "f_Hz": 142262.3528031138,
+                  "complex_relative": 6.257104670695685e-07,
+                  "phase_deg": 3.557247436072769e-05
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 1.1902010793573815e-09,
+                  "phase_deg": 6.817719364406695e-08
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 9.757768160416103e-10,
+                  "phase_deg": 1.5159573982585517e-08
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 5.367928214919534e-09,
+                  "phase_deg": 1.0126250993688802e-07
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 0.00025142902322049335,
+                  "phase_deg": 0.014378071713638179
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 0.0002849631816517354,
+                  "phase_deg": 0.01625721276624358
+                }
+              ],
+              "max_complex_relative": 0.0002849631816517354,
+              "max_phase_deg": 0.01625721276624358,
+              "UGF_relative": 1.6093707273512337e-06,
+              "PM_absolute_deg": 0.0006470101018862806
+            },
+            "step_half": {
+              "shared_points": 17,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 2.0726014379754834e-05,
+                  "phase_deg": 0.0004481398633824425
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 2.273078125785775e-05,
+                  "phase_deg": 0.0004015712745721327
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 5.087421147772578e-05,
+                  "phase_deg": 0.0022294222767886744
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 1.665182129268449e-05,
+                  "phase_deg": 0.00027995570311769734
+                },
+                {
+                  "f_Hz": 126491.10640673517,
+                  "complex_relative": 5.678112893357704e-05,
+                  "phase_deg": 0.0031107779785155207
+                },
+                {
+                  "f_Hz": 134145.15424006627,
+                  "complex_relative": 5.067306323128876e-05,
+                  "phase_deg": 0.0028311043777573255
+                },
+                {
+                  "f_Hz": 138144.14667052828,
+                  "complex_relative": 5.09695911814061e-05,
+                  "phase_deg": 0.002827607325607956
+                },
+                {
+                  "f_Hz": 140188.1283537511,
+                  "complex_relative": 5.1537913385630224e-05,
+                  "phase_deg": 0.0029045124402166667
+                },
+                {
+                  "f_Hz": 140445.7433950826,
+                  "complex_relative": 2.2506301109520792e-05,
+                  "phase_deg": 0.0012170217367483535
+                },
+                {
+                  "f_Hz": 140703.83183962092,
+                  "complex_relative": 1.94861975426362e-05,
+                  "phase_deg": 0.0010447775283004967
+                },
+                {
+                  "f_Hz": 141221.43241969167,
+                  "complex_relative": 2.856406502350289e-05,
+                  "phase_deg": 0.001552261968491374
+                },
+                {
+                  "f_Hz": 142262.3528031138,
+                  "complex_relative": 1.5425816487894804e-05,
+                  "phase_deg": 0.0008215795749768422
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 9.071923445536587e-06,
+                  "phase_deg": 0.0005190444972933236
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 4.151199388027017e-05,
+                  "phase_deg": 0.001561259637568007
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 0.00012511472940529637,
+                  "phase_deg": 0.005002016579457582
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 0.00018239440341708324,
+                  "phase_deg": 0.00530322442404147
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 0.0003909158402551758,
+                  "phase_deg": 0.019532350440203197
+                }
+              ],
+              "max_complex_relative": 0.0003909158402551758,
+              "max_phase_deg": 0.019532350440203197,
+              "UGF_relative": 7.658473033522739e-06,
+              "PM_absolute_deg": 0.002044480007072025
+            },
+            "window_double": {
+              "shared_points": 17,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 8.745209892072834e-09,
+                  "phase_deg": 4.640562898872944e-07
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 3.140970290862504e-08,
+                  "phase_deg": 4.7683009303450053e-07
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 4.21240358917567e-05,
+                  "phase_deg": 0.0022504573464796713
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 4.607873070379135e-09,
+                  "phase_deg": 8.909263274210266e-08
+                },
+                {
+                  "f_Hz": 126491.10640673517,
+                  "complex_relative": 5.488806649249479e-06,
+                  "phase_deg": 0.0003069688456551027
+                },
+                {
+                  "f_Hz": 134145.15424006627,
+                  "complex_relative": 3.06656552040267e-05,
+                  "phase_deg": 0.0017407130321668923
+                },
+                {
+                  "f_Hz": 138144.14667052828,
+                  "complex_relative": 3.745008595431095e-05,
+                  "phase_deg": 0.002115119574931312
+                },
+                {
+                  "f_Hz": 140188.1283537511,
+                  "complex_relative": 7.911265508646884e-06,
+                  "phase_deg": 0.00045055108729016727
+                },
+                {
+                  "f_Hz": 140445.7433950826,
+                  "complex_relative": 6.144714497649246e-06,
+                  "phase_deg": 0.00035181370434785264
+                },
+                {
+                  "f_Hz": 140703.83183962092,
+                  "complex_relative": 1.5212818239545592e-05,
+                  "phase_deg": 0.0008668727789491637
+                },
+                {
+                  "f_Hz": 141221.43241969167,
+                  "complex_relative": 1.666803724835521e-05,
+                  "phase_deg": 0.0009364749169205315
+                },
+                {
+                  "f_Hz": 142262.3528031138,
+                  "complex_relative": 1.0738131139553338e-05,
+                  "phase_deg": 0.0006070535109758478
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 6.431059867535624e-08,
+                  "phase_deg": 3.679262869626905e-06
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 9.027290824665087e-08,
+                  "phase_deg": 2.1664922793854156e-06
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 6.001135029640898e-05,
+                  "phase_deg": 0.003425733530588896
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 2.0194421405657104e-05,
+                  "phase_deg": 0.0011476677409515519
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 6.128240639042159e-05,
+                  "phase_deg": 0.00346748520870546
+                }
+              ],
+              "max_complex_relative": 6.128240639042159e-05,
+              "max_phase_deg": 0.00346748520870546,
+              "UGF_relative": 2.9804303136593546e-07,
+              "PM_absolute_deg": 0.00040107116242893426
+            },
+            "offset_grid": {
+              "shared_points": 0,
+              "points": [],
+              "max_complex_relative": null,
+              "max_phase_deg": null,
+              "UGF_relative": 5.135395595434744e-07,
+              "PM_absolute_deg": 0.00019604202049094965
+            }
+          },
+          "scope": "local fundamental phase-port measurements; not global periodic stability certification"
+        },
+        "time_comparison_supported": true,
+        "frequency_comparison_supported": true,
+        "formal_PM": {
+          "value": null,
+          "status": "UNKNOWN"
+        },
+        "formal_UGF": {
+          "value": null,
+          "status": "UNKNOWN"
+        },
+        "formal_overall_status": "UNKNOWN",
+        "verified_joint_block_spec": false
+      }
+    },
+    {
+      "candidate_id": "C07_low_pm",
+      "parameter_sha256": "9aec5abf6716bbc1b6526da04c840cd084375f79b466c74b51402a51d10dcfd7",
+      "joint_block_spec": {
+        "schema_version": "pll-physics-mapping-2.0",
+        "conventions": {
+          "vco_f0": "frequency_at_zero_volts",
+          "phase_error": "reference_minus_feedback_rad",
+          "lf_topology": "C1_shunt_Rz_series_C2",
+          "cp_leakage": "positive_injected_into_lf"
+        },
+        "values": {
+          "f_ref": {
+            "value": 10000000,
+            "unit": "Hz"
+          },
+          "N": {
+            "value": 8,
+            "unit": "1"
+          },
+          "Icp": {
+            "value": 0.0001348524943677193,
+            "unit": "A"
+          },
+          "Rz": {
+            "value": 2211.723677255692,
+            "unit": "Ohm"
+          },
+          "C1": {
+            "value": 1e-10,
+            "unit": "F"
+          },
+          "C2": {
+            "value": 5e-10,
+            "unit": "F"
+          },
+          "f0": {
+            "value": 68000000.0,
+            "unit": "Hz"
+          },
+          "Kvco": {
+            "value": 20000000.0,
+            "unit": "Hz/V"
+          },
+          "Vctrl_min": {
+            "value": 0,
+            "unit": "V"
+          },
+          "Vctrl_max": {
+            "value": 1.2,
+            "unit": "V"
+          },
+          "Kvco2": {
+            "value": 0,
+            "unit": "Hz/V^2"
+          },
+          "CP_mismatch": {
+            "value": 0,
+            "unit": "1"
+          },
+          "CP_leakage": {
+            "value": 0,
+            "unit": "A"
+          },
+          "q0": {
+            "value": 0,
+            "unit": "C"
+          },
+          "PFD_reset_delay": {
+            "value": 0,
+            "unit": "s"
+          },
+          "Cload": {
+            "value": 0,
+            "unit": "F"
+          },
+          "Gload": {
+            "value": 0,
+            "unit": "S"
+          }
+        }
+      },
+      "contract": {
+        "tags": [
+          "FULL_PERIODIC_PM_NOT_CERTIFIED",
+          "LOCAL_MAPPING_SUPPORTED",
+          "CLOSED_LOOP_STABLE_OBSERVED"
+        ],
+        "errors": {
+          "BW_relative": 0.0019855295530135653,
+          "max_frequency_complex_relative": 0.0036063644541978637,
+          "max_frequency_phase_deg": 0.04840945474143927,
+          "base_UGF_relative": 0.0017625564465386656,
+          "base_PM_difference_deg": 0.028348760085265212,
+          "independent_clamp_UGF_relative": -2.782936801937197e-05,
+          "independent_clamp_PM_difference_deg": -0.006123585698759371
+        },
+        "frequency_gate": {
+          "passed": true,
+          "reasons": [],
+          "comparisons": {
+            "independent_clamp": {
+              "shared_points": 14,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 0.002744563763498382,
+                  "phase_deg": 5.122127029456024e-05
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 0.0027446119787330105,
+                  "phase_deg": 8.332762222674356e-05
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 0.002726710308651776,
+                  "phase_deg": 0.0024133047292870277
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 0.002745067706756978,
+                  "phase_deg": 0.0002074934884032405
+                },
+                {
+                  "f_Hz": 126491.10640673517,
+                  "complex_relative": 0.0027472771141011315,
+                  "phase_deg": 0.0017128616070626642
+                },
+                {
+                  "f_Hz": 134145.15424006627,
+                  "complex_relative": 0.002749253048303073,
+                  "phase_deg": 0.002286592083953113
+                },
+                {
+                  "f_Hz": 138144.14667052828,
+                  "complex_relative": 0.0027474989985378667,
+                  "phase_deg": 0.0016250816354753204
+                },
+                {
+                  "f_Hz": 140188.1283537511,
+                  "complex_relative": 0.0027494961037107094,
+                  "phase_deg": 0.0024829124854393756
+                },
+                {
+                  "f_Hz": 142262.3528031138,
+                  "complex_relative": 0.0027457447357774967,
+                  "phase_deg": 0.00023719576397867586
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 0.002745944035996139,
+                  "phase_deg": 0.00033091392300378094
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 0.002747962398876286,
+                  "phase_deg": 0.0005325429441073083
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 0.002753302416788389,
+                  "phase_deg": 0.000854868697168733
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 0.0027672183473792166,
+                  "phase_deg": 0.0033984793213438415
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 0.0027976977522454903,
+                  "phase_deg": 0.0031706394821512376
+                }
+              ],
+              "max_complex_relative": 0.0027976977522454903,
+              "max_phase_deg": 0.0033984793213438415,
+              "UGF_relative": 0.0017872357107344694,
+              "PM_absolute_deg": 0.03447234578402458
+            },
+            "amplitude_half": {
+              "shared_points": 17,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 3.6903228209235326e-08,
+                  "phase_deg": 5.4095359982973914e-08
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 4.457517535883396e-09,
+                  "phase_deg": 2.4139558980265056e-07
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 2.7838783271942077e-06,
+                  "phase_deg": 0.000156378664378283
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 7.697040891547929e-10,
+                  "phase_deg": 4.4042649025443106e-08
+                },
+                {
+                  "f_Hz": 126491.10640673517,
+                  "complex_relative": 5.6808272135670656e-05,
+                  "phase_deg": 0.0031960354207931996
+                },
+                {
+                  "f_Hz": 134145.15424006627,
+                  "complex_relative": 5.9164534456073187e-05,
+                  "phase_deg": 0.0033351546520218587
+                },
+                {
+                  "f_Hz": 138144.14667052828,
+                  "complex_relative": 4.913330078358541e-05,
+                  "phase_deg": 0.0027744789383014903
+                },
+                {
+                  "f_Hz": 140188.1283537511,
+                  "complex_relative": 6.307801727790622e-05,
+                  "phase_deg": 0.003559793186337559
+                },
+                {
+                  "f_Hz": 140445.7433950826,
+                  "complex_relative": 1.6482854482511544e-05,
+                  "phase_deg": 0.0009434387466289499
+                },
+                {
+                  "f_Hz": 140703.83183962092,
+                  "complex_relative": 1.188882084889847e-05,
+                  "phase_deg": 0.0006809807590000608
+                },
+                {
+                  "f_Hz": 141221.43241969167,
+                  "complex_relative": 2.2403575637402506e-05,
+                  "phase_deg": 0.001266083805964255
+                },
+                {
+                  "f_Hz": 142262.3528031138,
+                  "complex_relative": 6.122137565340306e-06,
+                  "phase_deg": 0.00033853845256006477
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 4.273193460119283e-09,
+                  "phase_deg": 8.66795554720166e-08
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 5.146572868539256e-09,
+                  "phase_deg": 1.0385613986668881e-07
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 3.097805698309299e-09,
+                  "phase_deg": 1.2442301697094276e-07
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 0.000249586231654842,
+                  "phase_deg": 0.014265738877832636
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 0.00028367041474454196,
+                  "phase_deg": 0.016183361433256743
+                }
+              ],
+              "max_complex_relative": 0.00028367041474454196,
+              "max_phase_deg": 0.016183361433256743,
+              "UGF_relative": 5.592437875678868e-06,
+              "PM_absolute_deg": 0.003080562954380639
+            },
+            "step_half": {
+              "shared_points": 17,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 2.1355103638437474e-05,
+                  "phase_deg": 0.0008716159496890861
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 2.958261353221822e-05,
+                  "phase_deg": 0.0013344196531443564
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 8.110584562641354e-05,
+                  "phase_deg": 0.004077110286390433
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 5.56692577154063e-05,
+                  "phase_deg": 0.002440701508352674
+                },
+                {
+                  "f_Hz": 126491.10640673517,
+                  "complex_relative": 5.575191712237469e-05,
+                  "phase_deg": 0.0025532051548058502
+                },
+                {
+                  "f_Hz": 134145.15424006627,
+                  "complex_relative": 5.431499611607096e-05,
+                  "phase_deg": 0.0023894830906509815
+                },
+                {
+                  "f_Hz": 138144.14667052828,
+                  "complex_relative": 5.332971296249221e-05,
+                  "phase_deg": 0.0023347976151081116
+                },
+                {
+                  "f_Hz": 140188.1283537511,
+                  "complex_relative": 5.3844470013563065e-05,
+                  "phase_deg": 0.0023301817351195748
+                },
+                {
+                  "f_Hz": 140445.7433950826,
+                  "complex_relative": 5.525303311347016e-05,
+                  "phase_deg": 0.002261862788281855
+                },
+                {
+                  "f_Hz": 140703.83183962092,
+                  "complex_relative": 5.567950028134068e-05,
+                  "phase_deg": 0.0022874548921854067
+                },
+                {
+                  "f_Hz": 141221.43241969167,
+                  "complex_relative": 5.67797317641415e-05,
+                  "phase_deg": 0.002468221733073112
+                },
+                {
+                  "f_Hz": 142262.3528031138,
+                  "complex_relative": 5.64833386178743e-05,
+                  "phase_deg": 0.0023268096178952094
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 6.303519835161059e-05,
+                  "phase_deg": 0.0027015377474289594
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 6.32264087242094e-05,
+                  "phase_deg": 0.0027718366946669795
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 6.770955700236193e-05,
+                  "phase_deg": 0.0038782032090907068
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 7.69956131702999e-05,
+                  "phase_deg": 0.00034650240724317614
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 0.0002685663373257512,
+                  "phase_deg": 0.012200445203078971
+                }
+              ],
+              "max_complex_relative": 0.0002685663373257512,
+              "max_phase_deg": 0.012200445203078971,
+              "UGF_relative": 2.3433332093425463e-05,
+              "PM_absolute_deg": 0.002769081746350821
+            },
+            "window_double": {
+              "shared_points": 17,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 1.444336880140809e-08,
+                  "phase_deg": 7.223392490780519e-07
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 6.782823603854283e-09,
+                  "phase_deg": 3.8507657026235506e-07
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 5.1194576618778995e-05,
+                  "phase_deg": 0.0027065563402574612
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 3.2689441996579072e-09,
+                  "phase_deg": 1.7256219724619487e-07
+                },
+                {
+                  "f_Hz": 126491.10640673517,
+                  "complex_relative": 2.344631686698573e-06,
+                  "phase_deg": 0.00013314726922928233
+                },
+                {
+                  "f_Hz": 134145.15424006627,
+                  "complex_relative": 6.455651582686288e-06,
+                  "phase_deg": 0.0003639648855767475
+                },
+                {
+                  "f_Hz": 138144.14667052828,
+                  "complex_relative": 4.289986891672571e-06,
+                  "phase_deg": 5.9670991439750355e-05
+                },
+                {
+                  "f_Hz": 140188.1283537511,
+                  "complex_relative": 4.5072153900602e-06,
+                  "phase_deg": 0.00025601782594123894
+                },
+                {
+                  "f_Hz": 140445.7433950826,
+                  "complex_relative": 4.563924414932347e-06,
+                  "phase_deg": 0.00022282314730900967
+                },
+                {
+                  "f_Hz": 140703.83183962092,
+                  "complex_relative": 2.7127051764470636e-06,
+                  "phase_deg": 0.00011675406055686672
+                },
+                {
+                  "f_Hz": 141221.43241969167,
+                  "complex_relative": 3.926392426201882e-06,
+                  "phase_deg": 5.543359816939247e-05
+                },
+                {
+                  "f_Hz": 142262.3528031138,
+                  "complex_relative": 1.1982742436103381e-06,
+                  "phase_deg": 4.557548249374593e-05
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 4.266151750885003e-08,
+                  "phase_deg": 1.489757506903182e-06
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 1.215423766832162e-07,
+                  "phase_deg": 6.952067856780405e-06
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 6.479740497646998e-05,
+                  "phase_deg": 0.0036786898655754865
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 2.145451636753643e-05,
+                  "phase_deg": 0.0012086515931860244
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 6.119683778067991e-05,
+                  "phase_deg": 0.00345334046066748
+                }
+              ],
+              "max_complex_relative": 6.479740497646998e-05,
+              "max_phase_deg": 0.0036786898655754865,
+              "UGF_relative": 5.7111379625496284e-08,
+              "PM_absolute_deg": 0.0002473470540849121
+            },
+            "offset_grid": {
+              "shared_points": 0,
+              "points": [],
+              "max_complex_relative": null,
+              "max_phase_deg": null,
+              "UGF_relative": 1.6392509519791432e-06,
+              "PM_absolute_deg": 0.00018248059595293853
+            }
+          },
+          "scope": "local fundamental phase-port measurements; not global periodic stability certification"
+        },
+        "time_comparison_supported": true,
+        "frequency_comparison_supported": true,
+        "formal_PM": {
+          "value": null,
+          "status": "UNKNOWN"
+        },
+        "formal_UGF": {
+          "value": null,
+          "status": "UNKNOWN"
+        },
+        "formal_overall_status": "UNKNOWN",
+        "verified_joint_block_spec": false
+      }
+    },
+    {
+      "candidate_id": "C08_gain_split",
+      "parameter_sha256": "dba7b1c79f62a888b2fdfb2fb3bcf4f2d2873aaf875321160985424824dc4e41",
+      "joint_block_spec": {
+        "schema_version": "pll-physics-mapping-2.0",
+        "conventions": {
+          "vco_f0": "frequency_at_zero_volts",
+          "phase_error": "reference_minus_feedback_rad",
+          "lf_topology": "C1_shunt_Rz_series_C2",
+          "cp_leakage": "positive_injected_into_lf"
+        },
+        "values": {
+          "f_ref": {
+            "value": 10000000,
+            "unit": "Hz"
+          },
+          "N": {
+            "value": 8,
+            "unit": "1"
+          },
+          "Icp": {
+            "value": 0.00016,
+            "unit": "A"
+          },
+          "Rz": {
+            "value": 3820,
+            "unit": "Ohm"
+          },
+          "C1": {
+            "value": 1e-10,
+            "unit": "F"
+          },
+          "C2": {
+            "value": 1e-09,
+            "unit": "F"
+          },
+          "f0": {
+            "value": 72000000,
+            "unit": "Hz"
+          },
+          "Kvco": {
+            "value": 12500000.0,
+            "unit": "Hz/V"
+          },
+          "Vctrl_min": {
+            "value": 0,
+            "unit": "V"
+          },
+          "Vctrl_max": {
+            "value": 1.2,
+            "unit": "V"
+          },
+          "Kvco2": {
+            "value": 0,
+            "unit": "Hz/V^2"
+          },
+          "CP_mismatch": {
+            "value": 0,
+            "unit": "1"
+          },
+          "CP_leakage": {
+            "value": 0,
+            "unit": "A"
+          },
+          "q0": {
+            "value": 0,
+            "unit": "C"
+          },
+          "PFD_reset_delay": {
+            "value": 0,
+            "unit": "s"
+          },
+          "Cload": {
+            "value": 0,
+            "unit": "F"
+          },
+          "Gload": {
+            "value": 0,
+            "unit": "S"
+          }
+        }
+      },
+      "contract": {
+        "tags": [
+          "FULL_PERIODIC_PM_NOT_CERTIFIED",
+          "LOCAL_MAPPING_SUPPORTED",
+          "CLOSED_LOOP_STABLE_OBSERVED"
+        ],
+        "errors": {
+          "BW_relative": 0.0021310855253457994,
+          "max_frequency_complex_relative": 0.002938978487752134,
+          "max_frequency_phase_deg": 0.06025131810637703,
+          "base_UGF_relative": 0.00175978823849543,
+          "base_PM_difference_deg": -0.003370577401284436,
+          "independent_clamp_UGF_relative": 8.164351738448872e-06,
+          "independent_clamp_PM_difference_deg": -0.004169843939848761
+        },
+        "frequency_gate": {
+          "passed": true,
+          "reasons": [],
+          "comparisons": {
+            "independent_clamp": {
+              "shared_points": 17,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 0.0020395376076350834,
+                  "phase_deg": 2.0659387092834833e-05
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 0.0020395996163235786,
+                  "phase_deg": 3.365240458523011e-05
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 0.002028077468401136,
+                  "phase_deg": 0.0017813655394450288
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 0.0020399326261674455,
+                  "phase_deg": 8.358650724000488e-05
+                },
+                {
+                  "f_Hz": 126491.10640673517,
+                  "complex_relative": 0.002036546287872316,
+                  "phase_deg": 7.907298778843955e-05
+                },
+                {
+                  "f_Hz": 134145.15424006627,
+                  "complex_relative": 0.0020370681618360853,
+                  "phase_deg": 8.0329491108265e-05
+                },
+                {
+                  "f_Hz": 138144.14667052828,
+                  "complex_relative": 0.002037896214617544,
+                  "phase_deg": 0.00015868075689647726
+                },
+                {
+                  "f_Hz": 138398.00561330857,
+                  "complex_relative": 0.002038963666582965,
+                  "phase_deg": 4.7444109972778e-05
+                },
+                {
+                  "f_Hz": 138652.33105694602,
+                  "complex_relative": 0.0020435742482653985,
+                  "phase_deg": 0.0003403874718589857
+                },
+                {
+                  "f_Hz": 139162.38487740656,
+                  "complex_relative": 0.0020384028671143807,
+                  "phase_deg": 6.057697042470759e-05
+                },
+                {
+                  "f_Hz": 140188.1283537511,
+                  "complex_relative": 0.002037397561412001,
+                  "phase_deg": 0.00023889009468816135
+                },
+                {
+                  "f_Hz": 142262.3528031138,
+                  "complex_relative": 0.002042022031565271,
+                  "phase_deg": 0.00019395104498600753
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 0.0020405756917840578,
+                  "phase_deg": 0.0001333015312312723
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 0.0020419648419412496,
+                  "phase_deg": 0.0002061779730695221
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 0.002045926927806724,
+                  "phase_deg": 0.00033884411662925425
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 0.0020570372609323507,
+                  "phase_deg": 0.002814267947780248
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 0.002079364208117424,
+                  "phase_deg": 0.0018691778637834214
+                }
+              ],
+              "max_complex_relative": 0.002079364208117424,
+              "max_phase_deg": 0.002814267947780248,
+              "UGF_relative": 0.0017485468146382077,
+              "PM_absolute_deg": 0.000799266538564325
+            },
+            "amplitude_half": {
+              "shared_points": 17,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 1.1605358150754079e-08,
+                  "phase_deg": 6.619846180636526e-07
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 8.729705753662705e-09,
+                  "phase_deg": 1.9103230282671794e-07
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 1.2280338363624767e-05,
+                  "phase_deg": 0.0006875610514730942
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 2.03382989782061e-09,
+                  "phase_deg": 1.9698752152191916e-08
+                },
+                {
+                  "f_Hz": 126491.10640673517,
+                  "complex_relative": 5.114854033208395e-05,
+                  "phase_deg": 0.002900568804785991
+                },
+                {
+                  "f_Hz": 134145.15424006627,
+                  "complex_relative": 2.7128355545701857e-05,
+                  "phase_deg": 0.0015394440869286108
+                },
+                {
+                  "f_Hz": 138144.14667052828,
+                  "complex_relative": 6.430568227829696e-05,
+                  "phase_deg": 0.003652520142704854
+                },
+                {
+                  "f_Hz": 138398.00561330857,
+                  "complex_relative": 4.2238568447785734e-05,
+                  "phase_deg": 0.0023992586725141603
+                },
+                {
+                  "f_Hz": 138652.33105694602,
+                  "complex_relative": 1.3687341453755715e-05,
+                  "phase_deg": 0.0007680253726936812
+                },
+                {
+                  "f_Hz": 139162.38487740656,
+                  "complex_relative": 1.6335375720418528e-05,
+                  "phase_deg": 0.0009273035933546968
+                },
+                {
+                  "f_Hz": 140188.1283537511,
+                  "complex_relative": 3.289028978447103e-05,
+                  "phase_deg": 0.0018677014308119233
+                },
+                {
+                  "f_Hz": 142262.3528031138,
+                  "complex_relative": 1.595168981114333e-06,
+                  "phase_deg": 9.13272211136387e-05
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 1.6947297853358295e-09,
+                  "phase_deg": 6.357701452072598e-08
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 2.1725346633366917e-09,
+                  "phase_deg": 2.5453019710162765e-08
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 7.3606230650116286e-09,
+                  "phase_deg": 1.3484446152545384e-07
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 0.00025117958273935864,
+                  "phase_deg": 0.014374426165017396
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 0.00028713337522098895,
+                  "phase_deg": 0.01638783656954489
+                }
+              ],
+              "max_complex_relative": 0.00028713337522098895,
+              "max_phase_deg": 0.01638783656954489,
+              "UGF_relative": 4.16016556770149e-06,
+              "PM_absolute_deg": 0.002140962170443572
+            },
+            "step_half": {
+              "shared_points": 17,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 2.001752491215188e-05,
+                  "phase_deg": 0.0006590315282207835
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 2.4553015743528436e-05,
+                  "phase_deg": 0.0007487197210386363
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 5.630463457952948e-05,
+                  "phase_deg": 0.002606826157146494
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 2.29120402103209e-05,
+                  "phase_deg": 0.00065020772090871
+                },
+                {
+                  "f_Hz": 126491.10640673517,
+                  "complex_relative": 5.163729245275941e-05,
+                  "phase_deg": 0.002793693216213988
+                },
+                {
+                  "f_Hz": 134145.15424006627,
+                  "complex_relative": 4.691192439187463e-05,
+                  "phase_deg": 0.002586820806132074
+                },
+                {
+                  "f_Hz": 138144.14667052828,
+                  "complex_relative": 4.6797185843561236e-05,
+                  "phase_deg": 0.0025692042340468633
+                },
+                {
+                  "f_Hz": 138398.00561330857,
+                  "complex_relative": 3.723853983958206e-05,
+                  "phase_deg": 0.0019886280397214107
+                },
+                {
+                  "f_Hz": 138652.33105694602,
+                  "complex_relative": 6.660560651043786e-06,
+                  "phase_deg": 4.59056523496704e-06
+                },
+                {
+                  "f_Hz": 139162.38487740656,
+                  "complex_relative": 4.3121024787648e-05,
+                  "phase_deg": 0.002343232619543067
+                },
+                {
+                  "f_Hz": 140188.1283537511,
+                  "complex_relative": 4.6665982582969465e-05,
+                  "phase_deg": 0.0026027637085600723
+                },
+                {
+                  "f_Hz": 142262.3528031138,
+                  "complex_relative": 2.3058313964618113e-05,
+                  "phase_deg": 0.0012065091093119184
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 1.6472882239024888e-05,
+                  "phase_deg": 0.0009119713400735174
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 4.77137497477337e-05,
+                  "phase_deg": 0.002178092890213537
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 0.00013721396005146816,
+                  "phase_deg": 0.006170760983744174
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 0.0001869899905105862,
+                  "phase_deg": 0.006966425135769235
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 0.0004069304654337034,
+                  "phase_deg": 0.021435366273514226
+                }
+              ],
+              "max_complex_relative": 0.0004069304654337034,
+              "max_phase_deg": 0.021435366273514226,
+              "UGF_relative": 1.105197885764575e-05,
+              "PM_absolute_deg": 0.0018179237152793348
+            },
+            "window_double": {
+              "shared_points": 17,
+              "points": [
+                {
+                  "f_Hz": 25000,
+                  "complex_relative": 1.3721638597612084e-08,
+                  "phase_deg": 7.27847613869296e-07
+                },
+                {
+                  "f_Hz": 40000,
+                  "complex_relative": 9.053875674708234e-09,
+                  "phase_deg": 2.939678215613113e-07
+                },
+                {
+                  "f_Hz": 63000,
+                  "complex_relative": 4.032912798098782e-05,
+                  "phase_deg": 0.002185626611189358
+                },
+                {
+                  "f_Hz": 100000,
+                  "complex_relative": 3.0018781877800433e-09,
+                  "phase_deg": 1.5091406155129924e-07
+                },
+                {
+                  "f_Hz": 126491.10640673517,
+                  "complex_relative": 1.3158787024968204e-06,
+                  "phase_deg": 7.248603935457649e-05
+                },
+                {
+                  "f_Hz": 134145.15424006627,
+                  "complex_relative": 2.4828185381881555e-05,
+                  "phase_deg": 0.001412678561242698
+                },
+                {
+                  "f_Hz": 138144.14667052828,
+                  "complex_relative": 2.6350602014537647e-05,
+                  "phase_deg": 0.0014972029199861805
+                },
+                {
+                  "f_Hz": 138398.00561330857,
+                  "complex_relative": 2.7145639575922695e-05,
+                  "phase_deg": 0.0015468221107665695
+                },
+                {
+                  "f_Hz": 138652.33105694602,
+                  "complex_relative": 4.348689885034876e-05,
+                  "phase_deg": 0.002473563230994693
+                },
+                {
+                  "f_Hz": 139162.38487740656,
+                  "complex_relative": 2.560996790541858e-05,
+                  "phase_deg": 0.0014585031905618778
+                },
+                {
+                  "f_Hz": 140188.1283537511,
+                  "complex_relative": 7.658314660232988e-06,
+                  "phase_deg": 0.0004364721014278105
+                },
+                {
+                  "f_Hz": 142262.3528031138,
+                  "complex_relative": 7.558988834972034e-06,
+                  "phase_deg": 0.00042946322882066824
+                },
+                {
+                  "f_Hz": 160000,
+                  "complex_relative": 4.2628835021822204e-08,
+                  "phase_deg": 2.181407387174691e-06
+                },
+                {
+                  "f_Hz": 250000,
+                  "complex_relative": 6.308799731885163e-08,
+                  "phase_deg": 1.1986719015434492e-06
+                },
+                {
+                  "f_Hz": 400000,
+                  "complex_relative": 5.476647670968452e-05,
+                  "phase_deg": 0.003116992350727674
+                },
+                {
+                  "f_Hz": 630000,
+                  "complex_relative": 2.0321997534777217e-05,
+                  "phase_deg": 0.0011635639202708184
+                },
+                {
+                  "f_Hz": 1000000,
+                  "complex_relative": 6.311223316057636e-05,
+                  "phase_deg": 0.0035834383917438413
+                }
+              ],
+              "max_complex_relative": 6.311223316057636e-05,
+              "max_phase_deg": 0.0035834383917438413,
+              "UGF_relative": 1.8393208247591275e-06,
+              "PM_absolute_deg": 0.0012027456773608947
+            },
+            "offset_grid": {
+              "shared_points": 0,
+              "points": [],
+              "max_complex_relative": null,
+              "max_phase_deg": null,
+              "UGF_relative": 1.7860456085205811e-06,
+              "PM_absolute_deg": 0.0009225696281731643
+            }
+          },
+          "scope": "local fundamental phase-port measurements; not global periodic stability certification"
+        },
+        "time_comparison_supported": true,
+        "frequency_comparison_supported": true,
+        "formal_PM": {
+          "value": null,
+          "status": "UNKNOWN"
+        },
+        "formal_UGF": {
+          "value": null,
+          "status": "UNKNOWN"
+        },
+        "formal_overall_status": "UNKNOWN",
+        "verified_joint_block_spec": false
+      }
+    }
+  ]
+}

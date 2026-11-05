@@ -1,0 +1,107 @@
+{
+  "parameters": {
+    "schema_version": "pll-physics-mapping-2.0",
+    "conventions": {
+      "vco_f0": "frequency_at_zero_volts",
+      "phase_error": "reference_minus_feedback_rad",
+      "lf_topology": "C1_shunt_Rz_series_C2",
+      "cp_leakage": "positive_injected_into_lf"
+    },
+    "values": {
+      "f_ref": {
+        "value": 10000000,
+        "unit": "Hz"
+      },
+      "N": {
+        "value": 8,
+        "unit": "1"
+      },
+      "Icp": {
+        "value": 7.609690368116284e-05,
+        "unit": "A"
+      },
+      "Rz": {
+        "value": 5277.911726881135,
+        "unit": "Ohm"
+      },
+      "C1": {
+        "value": 1e-10,
+        "unit": "F"
+      },
+      "C2": {
+        "value": 2e-09,
+        "unit": "F"
+      },
+      "f0": {
+        "value": 68000000.0,
+        "unit": "Hz"
+      },
+      "Kvco": {
+        "value": 20000000.0,
+        "unit": "Hz/V"
+      },
+      "Vctrl_min": {
+        "value": 0,
+        "unit": "V"
+      },
+      "Vctrl_max": {
+        "value": 1.2,
+        "unit": "V"
+      },
+      "Kvco2": {
+        "value": 0,
+        "unit": "Hz/V^2"
+      },
+      "CP_mismatch": {
+        "value": 0,
+        "unit": "1"
+      },
+      "CP_leakage": {
+        "value": 0,
+        "unit": "A"
+      },
+      "q0": {
+        "value": 0,
+        "unit": "C"
+      },
+      "PFD_reset_delay": {
+        "value": 0,
+        "unit": "s"
+      },
+      "Cload": {
+        "value": 0,
+        "unit": "F"
+      },
+      "Gload": {
+        "value": 0,
+        "unit": "S"
+      }
+    }
+  },
+  "amplitude_rad": 0.01,
+  "dt_s": 2e-10,
+  "cycles": 12,
+  "grid_Hz": [
+    10000,
+    25000,
+    50000,
+    75000,
+    100000,
+    125000,
+    150000,
+    175000,
+    200000,
+    225000,
+    250000,
+    275000,
+    300000,
+    350000,
+    450000,
+    600000,
+    800000,
+    1000000
+  ],
+  "refinement": "geometric midpoint of measured BW bracket; no M1 query",
+  "frequency_bracket_relative_width_limit": 0.0005,
+  "posthoc_low_frequency_anchor": "if first measured gain >1.03, add 5kHz then 2kHz; no model query"
+}

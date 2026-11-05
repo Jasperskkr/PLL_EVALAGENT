@@ -1,0 +1,494 @@
+{
+  "status": "DEVELOPMENT_EXECUTION_COMPLETE",
+  "scope": "C01-C08 only; C09/C10 M2 not run/read",
+  "commands": [
+    "python tools/run_stage41.py --mode development --anchors experiments/stage4_1/anchors_01 --out experiments/stage4_1/development_01",
+    "python -m pytest -q tests -p no:cacheprovider --junitxml=experiments/stage4_1/tests_development/tests.xml"
+  ],
+  "tests": {
+    "passed": 326,
+    "failed": 0,
+    "errors": 0,
+    "duration_s": 27.41,
+    "JUnit": "experiments/stage4_1/tests_development/tests.xml"
+  },
+  "costs": {
+    "anchors_01": {
+      "native_runs": 680,
+      "integration_points": 488182266,
+      "native_elapsed_s": 19.936555100197438,
+      "DC_pilots": 68,
+      "failure_files": 0
+    },
+    "development_01": {
+      "native_runs": 1348,
+      "integration_points": 1068380349,
+      "native_elapsed_s": 39.55769890040392,
+      "DC_pilots": 204,
+      "failure_files": 0
+    }
+  },
+  "anchors": [
+    {
+      "candidate_id": "C01_nominal",
+      "measurement_gate_passed": true,
+      "crossings": {
+        "base": {
+          "UGF_Hz": 138419.60240658576,
+          "PM_deg": 56.43931963507268,
+          "historical_numeric_delta_Hz": 0.0,
+          "historical_numeric_delta_deg": 0.0,
+          "dict_difference_note": "direction=downward explicit in current crossing; all numeric crossing fields identical"
+        },
+        "independent_clamp": {
+          "UGF_Hz": 138177.56925250267,
+          "PM_deg": 56.438520368592066,
+          "historical_numeric_delta_Hz": 0.0,
+          "historical_numeric_delta_deg": 0.0,
+          "dict_difference_note": "direction=downward explicit in current crossing; all numeric crossing fields identical"
+        }
+      }
+    },
+    {
+      "candidate_id": "C02_real_agent",
+      "measurement_gate_passed": true,
+      "crossings": {
+        "base": {
+          "UGF_Hz": 168090.25584054468,
+          "PM_deg": 72.24218797625588,
+          "historical_numeric_delta_Hz": 0.0,
+          "historical_numeric_delta_deg": 0.0,
+          "dict_difference_note": "direction=downward explicit in current crossing; all numeric crossing fields identical"
+        },
+        "independent_clamp": {
+          "UGF_Hz": 167168.96621590568,
+          "PM_deg": 72.24291401215022,
+          "historical_numeric_delta_Hz": 0.0,
+          "historical_numeric_delta_deg": 0.0,
+          "dict_difference_note": "direction=downward explicit in current crossing; all numeric crossing fields identical"
+        }
+      }
+    }
+  ],
+  "candidates": [
+    {
+      "candidate_id": "C01_nominal",
+      "step_status": "MEASURED",
+      "refinement_converged": true,
+      "base_M2": {
+        "overshoot_relative": 0.2172043945319153,
+        "undershoot_relative": 0.0,
+        "ringing_amplitude_relative": 0.21720442069957102,
+        "settling_s": 9.85e-06,
+        "decay": {
+          "status": "UNKNOWN",
+          "rate_per_s": null,
+          "period_s": null,
+          "peak_count": 1,
+          "reason": "insufficient stable ringing envelope"
+        }
+      },
+      "M1_time_comparison": {
+        "normalized_RMSE": 0.00018759247443825557,
+        "max_normalized_error": 0.0011653034406073903,
+        "overshoot_absolute_difference": 0.00014422084117260425,
+        "settling_absolute_difference_s": 0.0,
+        "supported": true
+      },
+      "all_variant_M1_supported": true,
+      "raw_validity_all": true,
+      "series_crossing": null,
+      "clamp_crossing": null,
+      "BW_Hz": null,
+      "formal_overall": null
+    },
+    {
+      "candidate_id": "C02_real_agent",
+      "step_status": "MEASURED",
+      "refinement_converged": true,
+      "base_M2": {
+        "overshoot_relative": 0.10692899175943271,
+        "undershoot_relative": 0.0,
+        "ringing_amplitude_relative": 0.10692895031787142,
+        "settling_s": 1.3049999999999997e-05,
+        "decay": {
+          "status": "UNKNOWN",
+          "rate_per_s": null,
+          "period_s": null,
+          "peak_count": 1,
+          "reason": "insufficient stable ringing envelope"
+        }
+      },
+      "M1_time_comparison": {
+        "normalized_RMSE": 0.00037757516552191345,
+        "max_normalized_error": 0.0026648743207642323,
+        "overshoot_absolute_difference": 0.0003988070608746952,
+        "settling_absolute_difference_s": 1.0000000000000243e-07,
+        "supported": true
+      },
+      "all_variant_M1_supported": true,
+      "raw_validity_all": true,
+      "series_crossing": null,
+      "clamp_crossing": null,
+      "BW_Hz": null,
+      "formal_overall": null
+    },
+    {
+      "candidate_id": "C03_pm_boundary",
+      "step_status": "MEASURED",
+      "refinement_converged": true,
+      "base_M2": {
+        "overshoot_relative": 0.30139828057168083,
+        "undershoot_relative": 0.0,
+        "ringing_amplitude_relative": 0.3357022789873505,
+        "settling_s": 1.4149999999999997e-05,
+        "decay": {
+          "status": "MEASURED",
+          "rate_per_s": 291310.529448396,
+          "period_s": null,
+          "peak_count": 4,
+          "reason": "log envelope and trim stability passed",
+          "R2": 0.9999925606929682,
+          "trim_rates_per_s": [
+            291693.9091016716,
+            291718.05354666105
+          ],
+          "trim_relative_spread": 0.001398933636338917
+        }
+      },
+      "M1_time_comparison": {
+        "normalized_RMSE": 0.00023718848760153144,
+        "max_normalized_error": 0.0010623554830579973,
+        "overshoot_absolute_difference": 0.00022429858410855097,
+        "settling_absolute_difference_s": 1.0000000000000243e-07,
+        "supported": true
+      },
+      "all_variant_M1_supported": true,
+      "raw_validity_all": true,
+      "series_crossing": {
+        "status": "MEASURED_BRACKETED",
+        "UGF_Hz": 104427.38216234972,
+        "PM_deg": 50.02371453929308,
+        "phase_deg": -129.97628546070692,
+        "bracket_Hz": [
+          104313.11264278527,
+          104504.80238955954
+        ],
+        "bracket_relative_width": 0.0018376380679070436,
+        "direction": "downward",
+        "crossings_found": 1,
+        "interpretation": "fundamental phase-port ratio; not a Floquet stability certificate"
+      },
+      "clamp_crossing": {
+        "status": "MEASURED_BRACKETED",
+        "UGF_Hz": 104263.02211654291,
+        "PM_deg": 49.997335397603536,
+        "phase_deg": -130.00266460239646,
+        "bracket_Hz": [
+          104121.77450625454,
+          104313.11264278527
+        ],
+        "bracket_relative_width": 0.0018376380679070436,
+        "direction": "downward",
+        "crossings_found": 1,
+        "interpretation": "fundamental phase-port ratio; not a Floquet stability certificate"
+      },
+      "BW_Hz": 161895.66390013217,
+      "formal_overall": "UNKNOWN"
+    },
+    {
+      "candidate_id": "C04_matched_pm55",
+      "step_status": "MEASURED",
+      "refinement_converged": true,
+      "base_M2": {
+        "overshoot_relative": 0.16764710053583487,
+        "undershoot_relative": 0.0,
+        "ringing_amplitude_relative": 0.1674661972219733,
+        "settling_s": 1.8350000000000006e-05,
+        "decay": {
+          "status": "UNKNOWN",
+          "rate_per_s": null,
+          "period_s": null,
+          "peak_count": 2,
+          "reason": "insufficient stable ringing envelope"
+        }
+      },
+      "M1_time_comparison": {
+        "normalized_RMSE": 0.00011808028152047901,
+        "max_normalized_error": 0.0008043510606878801,
+        "overshoot_absolute_difference": 0.00016361130056341544,
+        "settling_absolute_difference_s": 0.0,
+        "supported": true
+      },
+      "all_variant_M1_supported": true,
+      "raw_validity_all": true,
+      "series_crossing": {
+        "status": "MEASURED_BRACKETED",
+        "UGF_Hz": 140145.78418116004,
+        "PM_deg": 54.97423039985232,
+        "phase_deg": -125.02576960014768,
+        "bracket_Hz": [
+          139930.98584727838,
+          140188.1283537511
+        ],
+        "bracket_relative_width": 0.0018376380679070436,
+        "direction": "downward",
+        "crossings_found": 1,
+        "interpretation": "fundamental phase-port ratio; not a Floquet stability certificate"
+      },
+      "clamp_crossing": {
+        "status": "MEASURED_BRACKETED",
+        "UGF_Hz": 140007.52412029673,
+        "PM_deg": 54.99618534368898,
+        "phase_deg": -125.00381465631102,
+        "bracket_Hz": [
+          139930.98584727838,
+          140188.1283537511
+        ],
+        "bracket_relative_width": 0.0018376380679070436,
+        "direction": "downward",
+        "crossings_found": 1,
+        "interpretation": "fundamental phase-port ratio; not a Floquet stability certificate"
+      },
+      "BW_Hz": 229700.84437049433,
+      "formal_overall": "UNKNOWN"
+    },
+    {
+      "candidate_id": "C05_matched_pm60",
+      "step_status": "MEASURED",
+      "refinement_converged": true,
+      "base_M2": {
+        "overshoot_relative": 0.1339708162035036,
+        "undershoot_relative": 0.0,
+        "ringing_amplitude_relative": 0.13394194340212007,
+        "settling_s": 1.755e-05,
+        "decay": {
+          "status": "UNKNOWN",
+          "rate_per_s": null,
+          "period_s": null,
+          "peak_count": 1,
+          "reason": "insufficient stable ringing envelope"
+        }
+      },
+      "M1_time_comparison": {
+        "normalized_RMSE": 0.00013465334523424144,
+        "max_normalized_error": 0.0009300541536803042,
+        "overshoot_absolute_difference": 8.116081420705967e-05,
+        "settling_absolute_difference_s": 1.0000000000000243e-07,
+        "supported": true
+      },
+      "all_variant_M1_supported": true,
+      "raw_validity_all": true,
+      "series_crossing": {
+        "status": "MEASURED_BRACKETED",
+        "UGF_Hz": 140191.20948505693,
+        "PM_deg": 59.97457028972717,
+        "phase_deg": -120.02542971027283,
+        "bracket_Hz": [
+          140188.1283537511,
+          140445.7433950826
+        ],
+        "bracket_relative_width": 0.0018376380679070436,
+        "direction": "downward",
+        "crossings_found": 1,
+        "interpretation": "fundamental phase-port ratio; not a Floquet stability certificate"
+      },
+      "clamp_crossing": {
+        "status": "MEASURED_BRACKETED",
+        "UGF_Hz": 140006.22054395246,
+        "PM_deg": 59.99736223407767,
+        "phase_deg": -120.00263776592233,
+        "bracket_Hz": [
+          139930.98584727838,
+          140188.1283537511
+        ],
+        "bracket_relative_width": 0.0018376380679070436,
+        "direction": "downward",
+        "crossings_found": 1,
+        "interpretation": "fundamental phase-port ratio; not a Floquet stability certificate"
+      },
+      "BW_Hz": 226085.4814591651,
+      "formal_overall": "UNKNOWN"
+    },
+    {
+      "candidate_id": "C06_matched_pm65",
+      "step_status": "MEASURED",
+      "refinement_converged": true,
+      "base_M2": {
+        "overshoot_relative": 0.13459951271719883,
+        "undershoot_relative": 0.0,
+        "ringing_amplitude_relative": 0.1345994641188446,
+        "settling_s": 1.4049999999999994e-05,
+        "decay": {
+          "status": "UNKNOWN",
+          "rate_per_s": null,
+          "period_s": null,
+          "peak_count": 1,
+          "reason": "insufficient stable ringing envelope"
+        }
+      },
+      "M1_time_comparison": {
+        "normalized_RMSE": 0.00019463810808474898,
+        "max_normalized_error": 0.0012934705927493129,
+        "overshoot_absolute_difference": 0.0001511550502133474,
+        "settling_absolute_difference_s": 1.0000000000000243e-07,
+        "supported": true
+      },
+      "all_variant_M1_supported": true,
+      "raw_validity_all": true,
+      "series_crossing": {
+        "status": "MEASURED_BRACKETED",
+        "UGF_Hz": 140314.8145055755,
+        "PM_deg": 64.98696380827325,
+        "phase_deg": -115.01303619172675,
+        "bracket_Hz": [
+          140188.1283537511,
+          140445.7433950826
+        ],
+        "bracket_relative_width": 0.0018376380679070436,
+        "direction": "downward",
+        "crossings_found": 1,
+        "interpretation": "fundamental phase-port ratio; not a Floquet stability certificate"
+      },
+      "clamp_crossing": {
+        "status": "MEASURED_BRACKETED",
+        "UGF_Hz": 140002.60517505548,
+        "PM_deg": 64.99842491113867,
+        "phase_deg": -115.00157508886133,
+        "bracket_Hz": [
+          139930.98584727838,
+          140188.1283537511
+        ],
+        "bracket_relative_width": 0.0018376380679070436,
+        "direction": "downward",
+        "crossings_found": 1,
+        "interpretation": "fundamental phase-port ratio; not a Floquet stability certificate"
+      },
+      "BW_Hz": 211947.88219558616,
+      "formal_overall": "UNKNOWN"
+    },
+    {
+      "candidate_id": "C07_low_pm",
+      "step_status": "MEASURED",
+      "refinement_converged": true,
+      "base_M2": {
+        "overshoot_relative": 0.44124477800479367,
+        "undershoot_relative": 0.0,
+        "ringing_amplitude_relative": 0.5741130186055231,
+        "settling_s": 1.3049999999999997e-05,
+        "decay": {
+          "status": "MEASURED",
+          "rate_per_s": 283301.5570696558,
+          "period_s": 8.466666666666665e-06,
+          "peak_count": 7,
+          "reason": "log envelope and trim stability passed",
+          "R2": 0.9999913497989094,
+          "trim_rates_per_s": [
+            283195.47119733103,
+            283208.4514695266
+          ],
+          "trim_relative_spread": 0.00037446272241514755,
+          "period_CV": 0.005567769930602496
+        }
+      },
+      "M1_time_comparison": {
+        "normalized_RMSE": 0.0004096593612024307,
+        "max_normalized_error": 0.001872554143089955,
+        "overshoot_absolute_difference": 0.00032252861834369817,
+        "settling_absolute_difference_s": 1.0000000000000243e-07,
+        "supported": true
+      },
+      "all_variant_M1_supported": true,
+      "raw_validity_all": true,
+      "series_crossing": {
+        "status": "MEASURED_BRACKETED",
+        "UGF_Hz": 140246.75790263593,
+        "PM_deg": 35.02834876010209,
+        "phase_deg": -144.9716512398979,
+        "bracket_Hz": [
+          140188.1283537511,
+          140445.7433950826
+        ],
+        "bracket_relative_width": 0.0018376380679070436,
+        "direction": "downward",
+        "crossings_found": 1,
+        "interpretation": "fundamental phase-port ratio; not a Floquet stability certificate"
+      },
+      "clamp_crossing": {
+        "status": "MEASURED_BRACKETED",
+        "UGF_Hz": 139996.1038885976,
+        "PM_deg": 34.993876414318066,
+        "phase_deg": -145.00612358568193,
+        "bracket_Hz": [
+          139930.98584727838,
+          140188.1283537511
+        ],
+        "bracket_relative_width": 0.0018376380679070436,
+        "direction": "downward",
+        "crossings_found": 1,
+        "interpretation": "fundamental phase-port ratio; not a Floquet stability certificate"
+      },
+      "BW_Hz": 224950.0458256113,
+      "formal_overall": "UNKNOWN"
+    },
+    {
+      "candidate_id": "C08_gain_split",
+      "step_status": "MEASURED",
+      "refinement_converged": true,
+      "base_M2": {
+        "overshoot_relative": 0.21720439544718073,
+        "undershoot_relative": 0.0,
+        "ringing_amplitude_relative": 0.2172044218834518,
+        "settling_s": 9.85e-06,
+        "decay": {
+          "status": "UNKNOWN",
+          "rate_per_s": null,
+          "period_s": null,
+          "peak_count": 1,
+          "reason": "insufficient stable ringing envelope"
+        }
+      },
+      "M1_time_comparison": {
+        "normalized_RMSE": 0.00018759247313647503,
+        "max_normalized_error": 0.0011653034108577431,
+        "overshoot_absolute_difference": 0.00014421992590718524,
+        "settling_absolute_difference_s": 0.0,
+        "supported": true
+      },
+      "all_variant_M1_supported": true,
+      "raw_validity_all": true,
+      "series_crossing": {
+        "status": "MEASURED_BRACKETED",
+        "UGF_Hz": 138419.60240755056,
+        "PM_deg": 56.43931963513094,
+        "phase_deg": -123.56068036486906,
+        "bracket_Hz": [
+          138398.00561330857,
+          138652.33105694602
+        ],
+        "bracket_relative_width": 0.0018376380679070436,
+        "direction": "downward",
+        "crossings_found": 1,
+        "interpretation": "fundamental phase-port ratio; not a Floquet stability certificate"
+      },
+      "clamp_crossing": {
+        "status": "MEASURED_BRACKETED",
+        "UGF_Hz": 138177.56925267735,
+        "PM_deg": 56.43852036859238,
+        "phase_deg": -123.56147963140762,
+        "bracket_Hz": [
+          138144.14667052828,
+          138398.00561330857
+        ],
+        "bracket_relative_width": 0.0018376380679070436,
+        "direction": "downward",
+        "crossings_found": 1,
+        "interpretation": "fundamental phase-port ratio; not a Floquet stability certificate"
+      },
+      "BW_Hz": 222853.09255204315,
+      "formal_overall": "UNKNOWN"
+    }
+  ],
+  "C01_C08_M2_normalized_max_difference": 4.727936742110472e-08,
+  "C01_C08_M2_normalized_RMSE": 1.0944321185772823e-08
+}

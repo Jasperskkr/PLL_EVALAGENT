@@ -1,0 +1,172 @@
+{
+  "parameters": {
+    "schema_version": "pll-physics-mapping-2.0",
+    "conventions": {
+      "vco_f0": "frequency_at_zero_volts",
+      "phase_error": "reference_minus_feedback_rad",
+      "lf_topology": "C1_shunt_Rz_series_C2",
+      "cp_leakage": "positive_injected_into_lf"
+    },
+    "values": {
+      "f_ref": {
+        "value": 10000000,
+        "unit": "Hz"
+      },
+      "N": {
+        "value": 8,
+        "unit": "1"
+      },
+      "Icp": {
+        "value": 0.00016,
+        "unit": "A"
+      },
+      "Rz": {
+        "value": 3820,
+        "unit": "Ohm"
+      },
+      "C1": {
+        "value": 1e-10,
+        "unit": "F"
+      },
+      "C2": {
+        "value": 1e-09,
+        "unit": "F"
+      },
+      "f0": {
+        "value": 72000000,
+        "unit": "Hz"
+      },
+      "Kvco": {
+        "value": 12500000.0,
+        "unit": "Hz/V"
+      },
+      "Vctrl_min": {
+        "value": 0,
+        "unit": "V"
+      },
+      "Vctrl_max": {
+        "value": 1.2,
+        "unit": "V"
+      },
+      "Kvco2": {
+        "value": 0,
+        "unit": "Hz/V^2"
+      },
+      "CP_mismatch": {
+        "value": 0,
+        "unit": "1"
+      },
+      "CP_leakage": {
+        "value": 0,
+        "unit": "A"
+      },
+      "q0": {
+        "value": 0,
+        "unit": "C"
+      },
+      "PFD_reset_delay": {
+        "value": 0,
+        "unit": "s"
+      },
+      "Cload": {
+        "value": 0,
+        "unit": "F"
+      },
+      "Gload": {
+        "value": 0,
+        "unit": "S"
+      }
+    }
+  },
+  "settings": {
+    "duration_s": 0.000138,
+    "dt_s": 2e-10,
+    "initial_control_V": 0.64,
+    "phase_amplitude_rad": 0.01,
+    "modulation_Hz": 250000,
+    "onset_s": 5e-05,
+    "record_interval_s": 2e-08
+  },
+  "kind": "response",
+  "protocol_sha256": "250f8e4d3f186bfd286028c71a3515d6010876f57fa4a219567c99aa71f69280",
+  "protocol_document": {
+    "schema_version": "behavioral-metric-protocol-1.1",
+    "protocol_id": "track_b_metrics_1.1",
+    "frozen_baseline": "Stage1.5 BLOCK_SPACE_MODEL_V1 unchanged",
+    "phase_convention": "reference_minus_divided_output_rad",
+    "capture": {
+      "duration_s": 0.00016,
+      "dt_pair_s": [
+        4e-10,
+        2e-10
+      ],
+      "record_interval_s": 2e-08,
+      "block_reference_cycles": 10,
+      "hold_blocks": 10,
+      "block_frequency_error_limit_ppm": 100,
+      "peak_phase_error_limit_deg": 5,
+      "block_control_range_limit_V": 0.005,
+      "step_frequency_difference_limit_ppm": 1,
+      "step_control_difference_limit_V": 0.0001,
+      "step_lock_time_difference_limit_s": 2e-06,
+      "near_rail_warning_margin_V": 0.01,
+      "not_captured_label": "NOT_CAPTURED_WITHIN_WINDOW",
+      "lock_time_definition": "earliest beginning of a terminal sustained sequence of at least hold_blocks valid blocks; initial-condition and window conditional",
+      "no_absolute_nonlockability_claim": true,
+      "phase_lock_reference": "nearest_integer_cycle_with_no_terminal_slips",
+      "change_evidence": "outputs/capture_02/02_nominal_high/fine: terminal -8 integer cycles, zero wrapped phase error, zero tail clamps and nominal frequency; v1.0 false negative"
+    },
+    "frequency_response": {
+      "onset_s": 5e-05,
+      "discard_cycles": 8,
+      "minimum_discard_s": 4e-05,
+      "measurement_cycles": 12,
+      "amplitude_rad": 0.01,
+      "dt_s": 4e-10,
+      "record_interval_s": 2e-08,
+      "grid_Hz": [
+        10000,
+        25000,
+        50000,
+        75000,
+        100000,
+        125000,
+        150000,
+        175000,
+        200000,
+        225000,
+        250000,
+        275000,
+        300000,
+        350000,
+        450000,
+        600000,
+        800000,
+        1000000
+      ],
+      "fit": "least squares offset + trend + sin/cos at f,2f,3f; complex output divided-phase / input reference-phase",
+      "minimum_samples_per_period": 20,
+      "max_harmonic_distortion": 0.03,
+      "max_half_window_transfer_relative_difference": 0.02,
+      "max_residual_to_fundamental_ratio": 0.05,
+      "max_unwrapped_error_peak_rad": 0.3,
+      "max_transfer_refinement_relative_difference": 0.03,
+      "max_transfer_refinement_phase_deg": 1.5,
+      "max_BW_refinement_relative_difference": 0.02,
+      "frequency_bracket_relative_width_limit": 0.0005,
+      "BW_definition": "unique downward |T|=1/sqrt(2) crossing normalized to ideal DC divided-phase tracking gain; require low-frequency measured gain within 3 percent of unity",
+      "PM_status": "PM_M2_UNKNOWN",
+      "PM_prototype": "conditional L_ident=T/(1-T) from measured complex fundamental T; no direct return-ratio injection, sampled harmonic coupling not validated; diagnostic estimate only",
+      "reuse_rule": "existing raw waveforms and unchanged response extraction may be reused with provenance; new points only from measured brackets"
+    },
+    "judgment": {
+      "BW": "only compare converged M2 bandwidth interval to frozen 150-300kHz bounds",
+      "frequency": "retain frozen 1e-6 Hz equality tolerance; incorporate empirical step uncertainty; never replace by capture ppm threshold",
+      "PM": "UNKNOWN until independently validated phase-margin protocol",
+      "overall": "FAIL if any reliably measured required constraint fails; otherwise UNKNOWN while any required constraint is unsupported/unresolved; PASS only if all required independent metrics pass",
+      "capture_thresholds_are_not_replacements_for_SystemSpec": true
+    },
+    "supersedes": "track_b_metrics_1.0; old outputs retained, only capture lock phase definition and BW bracket refinement changed"
+  },
+  "protocol_hash_encoding": "sorted_compact_json_utf8"
+}
