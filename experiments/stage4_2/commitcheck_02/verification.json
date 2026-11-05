@@ -1,0 +1,33 @@
+{
+  "scope": "same Windows/MSVC host; Stage3A.1 plus only Stage4.2 overlay; original kernel freshly compiled",
+  "checks": {
+    "domain_scan_CSV_byte_identical": true,
+    "candidate_parameter_hashes_identical": true,
+    "candidate_M1_metrics_identical": true,
+    "candidate_judgments_identical": true,
+    "no_stage4_runtime": true,
+    "no_nested_git": true,
+    "no_historical_outputs": true
+  },
+  "passed": true,
+  "test_counts": {
+    "passed": 296,
+    "failed": 0,
+    "skipped": 0,
+    "errors": 0
+  },
+  "reproduction_cost": {
+    "domain_checks": 1738,
+    "cheap_prediction_calls": 1512,
+    "polynomial_reference_calls": 1512,
+    "formal_M1_calls": 94
+  },
+  "M2_research_calls": 0,
+  "LLM_calls": 0,
+  "baseline_archive_eol_policy": "explicit git -c core.autocrlf=false archive; old byte fixture preserved; prior failure retained",
+  "not_claimed": [
+    "different-machine acceptance",
+    "cross-platform support",
+    "wheel install"
+  ]
+}

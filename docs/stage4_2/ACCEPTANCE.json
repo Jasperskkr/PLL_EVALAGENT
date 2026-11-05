@@ -1,0 +1,146 @@
+{
+  "schema_version": "pll-stage4.2-acceptance-0.1",
+  "status": "ENGINEERING_AUDIT_COMPLETE_PENDING_LEADER_REVIEW",
+  "baseline_commit": "47afcb72011636e838b03d81cf91bcec49744a77",
+  "branch": "codex/stage4-2-readiness",
+  "authoritative_experiment": "experiments/stage4_2/readiness_05",
+  "registry": "docs/stage4_2/PHYSICS_MAPPING_REGISTRY.json",
+  "current_worktree_tests": {
+    "tests": 313,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "isolated_baseline_plus_stage4_2_tests": {
+    "tests": 296,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "current_vs_isolated_test_difference": "17 uncommitted Stage4 tests; new Stage4.2 cases=13",
+  "finite_scan": {
+    "scan_points": 1728,
+    "domain_counts": {
+      "OUT_OF_DOMAIN": 216,
+      "VALID": 1512
+    },
+    "M1_spec_counts": {
+      "UNKNOWN": 216,
+      "M1_SPEC_FAIL": 1300,
+      "M1_SPEC_PASS": 212
+    },
+    "formal_scan_crosschecks": 67,
+    "maximum_numerical_errors": {
+      "cheap_vs_polynomial_BW_Hz": 1.0050128450213283e-15,
+      "cheap_vs_polynomial_UGF_Hz": 6.315106627694089e-16,
+      "cheap_vs_polynomial_PM_deg": 2.4868995751603507e-14,
+      "cheap_vs_formal_BW_Hz": 1.1087021081342493e-12,
+      "cheap_vs_formal_UGF_Hz": 1.094621359237047e-12,
+      "cheap_vs_formal_PM_deg": 2.4378721263929037e-11
+    },
+    "candidate_count": 10,
+    "holdouts": 2,
+    "numerical_consistency_passed": true,
+    "cost": {
+      "domain_checks": 1738,
+      "cheap_prediction_calls": 1512,
+      "polynomial_reference_calls": 1512,
+      "formal_M1_calls": 94
+    },
+    "research_M2_calls": 0,
+    "research_LLM_calls": 0,
+    "elapsed_s": 3.724751500005368,
+    "claim": "finite numerical equation consistency only; not behavioral accuracy or feasible-volume estimate"
+  },
+  "source_export_reproduction": {
+    "scope": "same Windows/MSVC host; Stage3A.1 plus only Stage4.2 overlay; original kernel freshly compiled",
+    "checks": {
+      "domain_scan_CSV_byte_identical": true,
+      "candidate_parameter_hashes_identical": true,
+      "candidate_M1_metrics_identical": true,
+      "candidate_judgments_identical": true,
+      "no_stage4_runtime": true,
+      "no_nested_git": true,
+      "no_historical_outputs": true
+    },
+    "passed": true,
+    "test_counts": {
+      "passed": 296,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0
+    },
+    "reproduction_cost": {
+      "domain_checks": 1738,
+      "cheap_prediction_calls": 1512,
+      "polynomial_reference_calls": 1512,
+      "formal_M1_calls": 94
+    },
+    "M2_research_calls": 0,
+    "LLM_calls": 0,
+    "baseline_archive_eol_policy": "explicit git -c core.autocrlf=false archive; old byte fixture preserved; prior failure retained",
+    "not_claimed": [
+      "different-machine acceptance",
+      "cross-platform support",
+      "wheel install"
+    ]
+  },
+  "existing_worktree_protection": {
+    "protected_files": 31163,
+    "unchanged_files": 31161,
+    "changes": [
+      {
+        "path": "docs/DECISIONS.md",
+        "bytes": 8317,
+        "sha256": "ada54a780451cb52667c9446cb4a9f4719ec2d1661cea06bccf088548a53061e",
+        "actual_sha256": "e96e07981a191c7e6358fdde91c619e0ca40901d7a849858b436c85aa67c583d",
+        "authorized_append": true
+      },
+      {
+        "path": "docs/PROJECT_STATUS.md",
+        "bytes": 11180,
+        "sha256": "b0784e716ffc3d143c0fde3566f2748585865766938a9e8b3a571b9fc74272d5",
+        "actual_sha256": "d1bc22fdd083395e93796d961222ac6cecb7d54e4e82601da9fc18cdd655bde6",
+        "authorized_append": true
+      }
+    ],
+    "stage4_dirty_sources_preserved": true,
+    "existing_stage_records_retained_as_prefix": true,
+    "nested_track_b_unchanged": true,
+    "passed": true
+  },
+  "research_cost_total_including_repeated_and_reproduction": {
+    "formal_M1_calls": 564,
+    "cheap_prediction_calls": 9072,
+    "polynomial_reference_calls": 9072,
+    "explicit_domain_checks": 10428,
+    "research_M2_calls": 0,
+    "new_LLM_calls": 0
+  },
+  "regression_TB_calls": "executed in existing suites; exact unsaved internal call count not asserted; separate from research",
+  "candidate_plan": {
+    "legal_complete_candidates": 10,
+    "M1_PASS": 7,
+    "M1_FAIL": 3,
+    "holdouts": 2,
+    "new_M2_evaluations": 0
+  },
+  "capability_boundary": {
+    "full_behavioral_pass": false,
+    "periodic_PM_UGF": "UNKNOWN",
+    "RUR": "UNDEFINED",
+    "jitter_power": "UNSUPPORTED",
+    "declared_range_evidence": "manually declared behavioral study, no transistor capability claim"
+  },
+  "known_failures_retained": [
+    "readiness_01 candidate judgment metadata loss correctly UNKNOWN",
+    "commitcheck_01 inherited CRLF caused legacy hash fixture failure"
+  ],
+  "environment": {
+    "Python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "compiler": "MSVC2022 x64"
+  },
+  "commit_policy": "only Stage4.2 additions and stage-log increments; unrelated dirty Stage4 files remain unstaged",
+  "next_stage_4_1_started": false
+}

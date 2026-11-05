@@ -1,0 +1,34 @@
+{
+  "scan_points": 1728,
+  "domain_counts": {
+    "OUT_OF_DOMAIN": 216,
+    "VALID": 1512
+  },
+  "M1_spec_counts": {
+    "UNKNOWN": 216,
+    "M1_SPEC_FAIL": 1300,
+    "M1_SPEC_PASS": 212
+  },
+  "formal_scan_crosschecks": 67,
+  "maximum_numerical_errors": {
+    "cheap_vs_polynomial_BW_Hz": 1.0050128450213283e-15,
+    "cheap_vs_polynomial_UGF_Hz": 6.315106627694089e-16,
+    "cheap_vs_polynomial_PM_deg": 2.4868995751603507e-14,
+    "cheap_vs_formal_BW_Hz": 1.1087021081342493e-12,
+    "cheap_vs_formal_UGF_Hz": 1.094621359237047e-12,
+    "cheap_vs_formal_PM_deg": 2.4378721263929037e-11
+  },
+  "candidate_count": 10,
+  "holdouts": 2,
+  "numerical_consistency_passed": true,
+  "cost": {
+    "domain_checks": 1738,
+    "cheap_prediction_calls": 1512,
+    "polynomial_reference_calls": 1512,
+    "formal_M1_calls": 94
+  },
+  "research_M2_calls": 0,
+  "research_LLM_calls": 0,
+  "elapsed_s": 3.9239477000082843,
+  "claim": "finite numerical equation consistency only; not behavioral accuracy or feasible-volume estimate"
+}
