@@ -1,0 +1,73 @@
+{
+  "cases": {
+    "nominal": {
+      "bindings_verified": true,
+      "original_M2_exact_fixture_match": true,
+      "formal_UGF_PM_null_UNKNOWN": true,
+      "overall_status": "UNKNOWN",
+      "numerical_gate": "NUMERICALLY_CONVERGED_PHASE_PORT_DIAGNOSTIC",
+      "structured_feedback": [
+        {
+          "category": "UNSUPPORTED_METRIC",
+          "metrics": [
+            "UGF_Hz",
+            "PM_deg"
+          ],
+          "reason": "periodic scalar interpretation not established by current measurement evidence",
+          "required_action": "measure a bounded harmonic return matrix and compare periodic stability criterion before promoting scalar PM"
+        }
+      ]
+    },
+    "real_agent": {
+      "bindings_verified": true,
+      "original_M2_exact_fixture_match": true,
+      "formal_UGF_PM_null_UNKNOWN": true,
+      "overall_status": "UNKNOWN",
+      "numerical_gate": "NUMERICALLY_CONVERGED_PHASE_PORT_DIAGNOSTIC",
+      "structured_feedback": [
+        {
+          "category": "UNSUPPORTED_METRIC",
+          "metrics": [
+            "UGF_Hz",
+            "PM_deg"
+          ],
+          "reason": "periodic scalar interpretation not established by current measurement evidence",
+          "required_action": "measure a bounded harmonic return matrix and compare periodic stability criterion before promoting scalar PM"
+        }
+      ]
+    },
+    "pm_boundary": {
+      "bindings_verified": true,
+      "original_M2_exact_fixture_match": null,
+      "formal_UGF_PM_null_UNKNOWN": true,
+      "overall_status": "UNKNOWN",
+      "numerical_gate": "NUMERICALLY_CONVERGED_PHASE_PORT_DIAGNOSTIC",
+      "structured_feedback": [
+        {
+          "category": "UNSUPPORTED_METRIC",
+          "metrics": [
+            "UGF_Hz",
+            "PM_deg"
+          ],
+          "reason": "periodic scalar interpretation not established by current measurement evidence",
+          "required_action": "measure a bounded harmonic return matrix and compare periodic stability criterion before promoting scalar PM"
+        }
+      ]
+    }
+  },
+  "agent_receipt": {
+    "status": "RECEIVED_BY_ALLOCATION_AGENT",
+    "interpretation": {
+      "kind": "UNRELIABLE_MEASUREMENT",
+      "source": "M2",
+      "real_repair_success": "NOT_MEASURED",
+      "remaining_M2_required": true
+    },
+    "strategy": "analytical",
+    "automatic_learning": false
+  },
+  "root_CSV_exact_final_copy": true,
+  "original_M2_status": "M2_PARTIAL_PASS",
+  "new_LLM_calls": 0,
+  "passed": true
+}

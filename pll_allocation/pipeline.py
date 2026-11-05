@@ -34,7 +34,9 @@ def source_identity():
 
 
 def run_pipeline(out, strategy='analytical', *, config_path=None, proposal_path=None,
-                 m2_budget=None, repair_budget=None, llm_config=None, policy=None):
+                 m2_budget=None, repair_budget=None, llm_config=None, policy=None, measurement_extension=None):
+    if measurement_extension and not proposal_path:
+        raise ValueError('Stage4 measured evidence requires explicit existing-proposal reverification; cannot contaminate a new first shot')
     config, model, spec, protocol = load_inputs(config_path)
     budget = deepcopy(config['budgets'])
     if m2_budget is not None:
@@ -120,6 +122,20 @@ def run_pipeline(out, strategy='analytical', *, config_path=None, proposal_path=
             item = proposal(model, spec, candidate, strategy, assessment, metadata,
                             root.name+f'-{index+1:03d}-'+fingerprint(candidate)[:12])
             write_new(folder/'AllocationProposal.json', item)
+            if measurement_extension:
+                # Explicit, version-bound research evidence; original M2 verdict stays independent.
+                from .verification.return_ratio_validity import load_extension
+                extension = load_extension(measurement_extension, item)
+                write_new(folder/'measurement_extension.json', extension)
+                diagnostic = {'schema_version': 'allocation-feedback-1.0',
+                    'parameter_sha256': fingerprint(candidate), 'source': 'M2',
+                    'kind': 'UNRELIABLE_MEASUREMENT', 'verdict': 'UNKNOWN',
+                    'evidence_source': 'M2_STAGE4_RESEARCH_EXTENSION',
+                    'structured_feedback': extension['structured_feedback'],
+                    'metrics': extension['metrics'], 'prediction_errors': extension['prediction_errors'],
+                    'reason': extension['scientific_status']}
+                receipt = policy.receive_feedback(deepcopy(candidate), deepcopy(diagnostic))
+                write_new(folder/'measurement_extension_agent_receipt.json', receipt)
             if index == 0:
                 write_new(root/'AllocationProposal.json', item)
             attempt = {'stage': stage, 'parameter_sha256': fingerprint(candidate),
@@ -226,11 +242,13 @@ def main(argv=None):
     parser.add_argument('--m2-budget', type=int)
     parser.add_argument('--repair-budget', type=int)
     parser.add_argument('--llm-config', help='Existing Messages transport configuration JSON; environment names only')
+    parser.add_argument('--measurement-extension', help='Explicit Stage4 research evidence; no M2 certification upgrade')
     args = parser.parse_args(argv)
     try:
         result = run_pipeline(args.out, args.strategy, config_path=args.config, proposal_path=args.proposal,
                               m2_budget=args.m2_budget, repair_budget=args.repair_budget,
-                              llm_config=read(args.llm_config) if args.llm_config else None)
+                              llm_config=read(args.llm_config) if args.llm_config else None,
+                              measurement_extension=args.measurement_extension)
         print(json.dumps({k: result[k] for k in ('status', 'strategy', 'cost', 'failure')}, ensure_ascii=False))
         return 2 if result['status'] in ('PIPELINE_ERROR', 'NO_CANDIDATE', 'POLICY_OR_TOOL_FAILED') else 0
     except (ValueError, KeyError, FileExistsError) as error:

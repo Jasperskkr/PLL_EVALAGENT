@@ -43,6 +43,11 @@ P3部分完成：LLM首次/有限反馈接口、真实请求/原始响应日志�
 本轮真实LLM先HTTP200但JSON失败，保留成本；同配置新目录重试三次HTTP200完成解析→M1→提交，Runner真实106次仿真，整体UNKNOWN。主验收共7次完整M2/758次原生仿真，确定性repair复现BW FAIL→PASS，未实现真实LLM修复。PM/UGF/严格频率/噪声/功耗/统计/跨平台仍未完成。根MAINLINE_ARCHITECTURE、INTEGRATION_VALIDATION、ARCHIVE_PLAN为当前交付，Commit及包独立重现结果由RELEASE_MANIFEST绑定；保护历史与未授权Git改动。发布后停止等待Leader审查。
 
 
+2026-11-05 · Stage4：已完成独立相位端口Series/Clamp注入、原事件方程保留、三例局部复数返回比/交越及幅度/步长/窗口/网格诊断。原Protocol1.1/BW/Capture不改；Nominal/Agent实测逐字段重现历史值。v0.1开放端口低频DC偏移失败保留；v0.2用实测pilot恢复初始DC状态，门限不改。三例局部交越数值收敛，但反向fref±f→f转换近1，尚无完整谐波返回矩阵/Floquet认证，所以正式UGF/PM=null/UNKNOWN。
+
+最终300项正式回归+原Track B 28项通过，无DLL源码副本重编译后新增17项通过；一次同名测试收集2错误、后处理bool序列化失败及初图碰撞均保留并修正。Pipeline显式读取Stage4附件、核验版本并实际交Agent，原M2仍PARTIAL_PASS/整体UNKNOWN。未新调用LLM/改策略/M1/规格/域。方法与验收报告见根UGF_PM_*，最终结构化证据在stage4_summary_20261105_05，轻量包不含raw/DLL/密钥；本阶段工作树供Leader审核，不覆盖Stage3A.1已冻结发布资产。完成后停止。
+
+
 2026-11-05 · Stage4.2：完成Physics Mapping与Block Space Readiness审计，待技术Leader验收。SystemSpec仅频率/BW/PM三项；条件调谐解析可用，BW/PM需既有公式与数值交集，UGF仅诊断、RUR未定义、静态偏置仅电荷初筛、capture/lock为窗口条件、jitter/power未支持。六轴为人工声明行为域，原范围/方程/算法/协议不改。
 
 最终有限网格1728点、1512数学有效、212 M1规格通过；不是全域成功率。10个合法未来M2候选含同UGF不同PM配对及2个保留点，7 M1通过/3失败均保留，未新测M2或调用LLM。五轮数值/适配检查及首次判决元数据遗漏均留档；研究代码/数据/版本SHA与工作树保护记录在docs/stage4_2和experiments/stage4_2。Registry可只读查询，拒绝错误绑定和隐式约束升级，不自动接入Agent策略。独立Commit与最终回归/导出验收见RUN_AND_RELEASE和最终回执。Stage4未提交成果及已有删除保持，本阶段结束后不推进Stage4.1。

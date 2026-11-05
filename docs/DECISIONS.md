@@ -55,6 +55,14 @@ P0 同时审计源码、正式记录、Git/worktree、模型及数据。P0 交�
 本轮283项正式测试+原Track B 28项通过；无历史目录独立重新编译282项通过。四组候选/M1/M2指标与迁移前一致；真实LLM一次JSON失败后同配置三次真实决策完成M2。7次完整验收M2/758次原生仿真，修复只复用确定性算法。细节见根架构/验收/归档报告。完成发布后停止等待Leader，不自动启动新研究。
 
 
+## D011 · 2026-11-05 · Stage 4 独立UGF/PM研究
+
+依据用户Stage4全文与docs/stage4/AUDIT_AND_METHOD_PLAN.md，在verification新增隔离相位端口注入/观测、返回比和数值诊断；冻结SystemSpec、域、M1、allocation、原kernel.cpp/DLL、协议1.1及历史测试不改。新扩展协议0.1只作显式可选研究结果，收敛不等于周期系统标量稳定性证明；不可信测量继续UNKNOWN。先Nominal，方法成立才扩展两例；不开发新修复策略。
+
+
+D011补充：0.1实际发现开放端口低频DC频差超预设门限；原记录保留，新扩展0.2只用pilot测得DC恢复初始v/u，不改门限。Series/Clamp局部返回比数值收敛后，谐波探针显示反向混频近1，有限侧带不足以认证完整周期PM。最终extension把UGF/PM保持null/UNKNOWN，数值只存diagnostic；Pipeline仅在显式既有Proposal复验中读取，防止污染新FIRST_SHOT。
+
+
 ## D012 · 2026-11-05 · Stage4.2 Physics Mapping / Block Space Readiness Audit
 
 依据用户Stage4.2任务，新增研究只读Mapping Registry、逐指标/逐式域审查、有限数值扫描与10个后续M2候选（含两个保留点）；不替换SystemSpec/Block Space/M1/M2协议/正式搜索策略。范围均保留人工声明性质，正向一致、条件逆解、行为支持、已覆盖点与未验证推广分层。UGF/PM周期认证、RUR定义、非理想静态偏置、噪声/功耗缺口不冒充已解决。
