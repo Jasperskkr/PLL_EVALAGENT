@@ -51,3 +51,7 @@ P3部分完成：LLM首次/有限反馈接口、真实请求/原始响应日志�
 2026-11-05 · Stage4.2：完成Physics Mapping与Block Space Readiness审计，待技术Leader验收。SystemSpec仅频率/BW/PM三项；条件调谐解析可用，BW/PM需既有公式与数值交集，UGF仅诊断、RUR未定义、静态偏置仅电荷初筛、capture/lock为窗口条件、jitter/power未支持。六轴为人工声明行为域，原范围/方程/算法/协议不改。
 
 最终有限网格1728点、1512数学有效、212 M1规格通过；不是全域成功率。10个合法未来M2候选含同UGF不同PM配对及2个保留点，7 M1通过/3失败均保留，未新测M2或调用LLM。五轮数值/适配检查及首次判决元数据遗漏均留档；研究代码/数据/版本SHA与工作树保护记录在docs/stage4_2和experiments/stage4_2。Registry可只读查询，拒绝错误绑定和隐式约束升级，不自动接入Agent策略。独立Commit与最终回归/导出验收见RUN_AND_RELEASE和最终回执。Stage4未提交成果及已有删除保持，本阶段结束后不推进Stage4.1。
+
+2026-11-05 · 用户另行授权Stage4.1后：先保护45,167份既有文件及Stage4未提交源码，7270f31明确范围checkpoint，与66c4ddb Registry同版本。新增隔离平滑参考相位阶跃入口与观测，预声明协议不改M1/M2更新/正式SystemSpec/draft/域/Stage4方法/Agent。C01–C08开发后锁定分析，6f93a5f下C09/C10单次固定套件，结束源码绑定一致。
+
+10点局部频响与时域均支持映射、均局部恢复，C07振铃更明显仍稳定，PM配对形状受LF零极点影响；C01/C08理想增益拆分近似等价。BW最大误差0.624%、Series/Clamp UGF最大0.553%/0.00792%、局部PM最大差0.0487°/0.0101°；未外推全域或认证周期PM。正式9 UNKNOWN、1 BW FAIL，无完整PASS。主实验3632native（含340pilot）/111.751原生秒，新LLM0；测试328、原TrackB单独28、无DLL副本重编译328通过。编译/后处理/导出范围问题均留记录，原始波形本地保留、审查包排除。详见docs/stage4_1；完成后停止等待Leader，不推进Stage4.3。

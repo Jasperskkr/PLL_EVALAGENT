@@ -1,0 +1,83 @@
+{
+  "status": "MEASURED",
+  "raw_validity": {
+    "valid": true,
+    "reasons": [],
+    "pre": {
+      "mean_control_offset_V": -2.5277557824665564e-12,
+      "control_drift_V": -1.4509036631630446e-11,
+      "frequency_error_ppm": -1.0490497359683104e-06,
+      "residual_phase_rad": -2.3597863219038116e-11,
+      "phase_peak_rad": 2.751221472863108e-10
+    },
+    "tail": {
+      "mean_control_offset_V": 1.1824541346072692e-11,
+      "control_drift_V": 4.990562377523618e-13,
+      "frequency_error_ppm": 4.907185768843192e-06,
+      "residual_phase_rad": 1.0908482180185046e-13,
+      "phase_peak_rad": 5.20230969414115e-10
+    },
+    "clamps": 0,
+    "near_rail_samples": 0,
+    "cycle_slips": 0,
+    "residual_limit_rad": 0.0002
+  },
+  "baseline_validity": {
+    "valid": true,
+    "reasons": [],
+    "pre": {
+      "mean_control_offset_V": -2.5277557824665564e-12,
+      "control_drift_V": -1.4509036631630446e-11,
+      "frequency_error_ppm": -1.0490497359683104e-06,
+      "residual_phase_rad": -2.3597863219038116e-11,
+      "phase_peak_rad": 2.751221472863108e-10
+    },
+    "tail": {
+      "mean_control_offset_V": 1.1267653476920714e-11,
+      "control_drift_V": -4.4966191567572683e-13,
+      "frequency_error_ppm": 4.676037335116234e-06,
+      "residual_phase_rad": -7.226869444372593e-13,
+      "phase_peak_rad": 5.220499588176608e-10
+    },
+    "clamps": 0,
+    "near_rail_samples": 0,
+    "cycle_slips": 0,
+    "residual_limit_rad": 1e-06
+  },
+  "peak_phase_deviation_rad": 0.009073938040273788,
+  "M2": {
+    "overshoot_relative": 0.2493406506246192,
+    "undershoot_relative": 0.0,
+    "ringing_amplitude_relative": 0.24934071554053816,
+    "settling_s": 9.149999999999997e-06,
+    "decay": {
+      "status": "UNKNOWN",
+      "rate_per_s": null,
+      "period_s": null,
+      "peak_count": 2,
+      "reason": "insufficient stable ringing envelope"
+    }
+  },
+  "M1_posthoc": {
+    "overshoot_relative": 0.2488901247386952,
+    "undershoot_relative": 0.0,
+    "ringing_amplitude_relative": 0.24889012471704497,
+    "settling_s": 9.25e-06,
+    "decay": {
+      "status": "UNKNOWN",
+      "rate_per_s": null,
+      "period_s": null,
+      "peak_count": 2,
+      "reason": "insufficient stable ringing envelope"
+    }
+  },
+  "comparison": {
+    "normalized_RMSE": 0.00016438300891581312,
+    "max_normalized_error": 0.0017827242427843615,
+    "overshoot_absolute_difference": 0.00045052588592398024,
+    "settling_absolute_difference_s": 1.0000000000000243e-07,
+    "supported": true
+  },
+  "lock_retention_recovery": "RECOVERED_WITHIN_LOCAL_WINDOW",
+  "scope": "local phase-step recovery, not cold-start lock time or independent PM measurement"
+}

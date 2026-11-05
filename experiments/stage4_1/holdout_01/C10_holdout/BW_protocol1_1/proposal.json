@@ -1,0 +1,248 @@
+{
+  "schema_version": "allocation-proposal-1.0",
+  "candidate_id": "C10_holdout",
+  "parameter_sha256": "20f60e33ede25859faf6ecbbfdb7d6f9df679463b3d36205031780e8face7ed6",
+  "joint_block_spec": {
+    "schema_version": "pll-physics-mapping-2.0",
+    "conventions": {
+      "vco_f0": "frequency_at_zero_volts",
+      "phase_error": "reference_minus_feedback_rad",
+      "lf_topology": "C1_shunt_Rz_series_C2",
+      "cp_leakage": "positive_injected_into_lf"
+    },
+    "values": {
+      "f_ref": {
+        "value": 10000000,
+        "unit": "Hz"
+      },
+      "N": {
+        "value": 8,
+        "unit": "1"
+      },
+      "Icp": {
+        "value": 0.000163,
+        "unit": "A"
+      },
+      "Rz": {
+        "value": 2670,
+        "unit": "Ohm"
+      },
+      "C1": {
+        "value": 2e-10,
+        "unit": "F"
+      },
+      "C2": {
+        "value": 2e-09,
+        "unit": "F"
+      },
+      "f0": {
+        "value": 61900000.0,
+        "unit": "Hz"
+      },
+      "Kvco": {
+        "value": 33200000.0,
+        "unit": "Hz/V"
+      },
+      "Vctrl_min": {
+        "value": 0,
+        "unit": "V"
+      },
+      "Vctrl_max": {
+        "value": 1.2,
+        "unit": "V"
+      },
+      "Kvco2": {
+        "value": 0,
+        "unit": "Hz/V^2"
+      },
+      "CP_mismatch": {
+        "value": 0,
+        "unit": "1"
+      },
+      "CP_leakage": {
+        "value": 0,
+        "unit": "A"
+      },
+      "q0": {
+        "value": 0,
+        "unit": "C"
+      },
+      "PFD_reset_delay": {
+        "value": 0,
+        "unit": "s"
+      },
+      "Cload": {
+        "value": 0,
+        "unit": "F"
+      },
+      "Gload": {
+        "value": 0,
+        "unit": "S"
+      }
+    }
+  },
+  "block_space_sha256": "879c2748c1d74d5d05c651f905af6fa818e3f994e97206d93b295ca4b62097c0",
+  "system_spec_sha256": "9acdbf00d9b095e3cc23400024628f2301220549a45e8301aa42a08490fa598c",
+  "system_spec": {
+    "version": "0",
+    "draft": true,
+    "source": "User Stage 1 research targets, 2026-11-04; not frozen",
+    "metrics": [
+      {
+        "metric": "output_frequency_Hz",
+        "unit": "Hz",
+        "min": 80000000,
+        "max": 80000000,
+        "tolerance": 1e-06,
+        "evaluator": "M1",
+        "protocol": "conditional_locked_tuning_frequency",
+        "source": "User: 10 MHz x 8; conditional static frequency, not a transient measurement"
+      },
+      {
+        "metric": "BW_Hz",
+        "unit": "Hz",
+        "min": 150000,
+        "max": 300000,
+        "tolerance": 0,
+        "evaluator": "M1",
+        "protocol": "continuous_normalized_T_first_downward_minus3dB",
+        "source": "User: experimental BW target"
+      },
+      {
+        "metric": "PM_deg",
+        "unit": "deg",
+        "min": 50,
+        "tolerance": 0,
+        "evaluator": "M1",
+        "protocol": "180_plus_continuous_L_phase_at_UGF",
+        "source": "User: experimental PM target"
+      }
+    ]
+  },
+  "topology": {
+    "id": "integer_n_cppll",
+    "blocks": [
+      "PFD",
+      "CP",
+      "LF",
+      "VCO",
+      "Divider"
+    ],
+    "connections": [
+      [
+        "PFD",
+        "CP"
+      ],
+      [
+        "CP",
+        "LF"
+      ],
+      [
+        "LF",
+        "VCO"
+      ],
+      [
+        "VCO",
+        "Divider"
+      ],
+      [
+        "Divider",
+        "PFD"
+      ]
+    ]
+  },
+  "versions": {
+    "formula_version": "stage1_m1_1.0.0",
+    "parameter_domain_version": "stage1_declared_domain_1.0.0",
+    "behavioral_model_version": "reference_python_edge_euler_sha256_f6f550276228",
+    "baseline": "track-b-interface-reference-1.0",
+    "block_space_schema": "behavioral-block-space-1.0",
+    "system_spec": "0"
+  },
+  "operating_conditions": {
+    "f_ref": {
+      "value": 10000000,
+      "unit": "Hz"
+    },
+    "N": {
+      "value": 8,
+      "unit": "1"
+    },
+    "Vctrl_min": {
+      "value": 0,
+      "unit": "V"
+    },
+    "Vctrl_max": {
+      "value": 1.2,
+      "unit": "V"
+    },
+    "Kvco2": {
+      "value": 0,
+      "unit": "Hz/V^2"
+    },
+    "CP_mismatch": {
+      "value": 0,
+      "unit": "1"
+    },
+    "CP_leakage": {
+      "value": 0,
+      "unit": "A"
+    },
+    "q0": {
+      "value": 0,
+      "unit": "C"
+    },
+    "PFD_reset_delay": {
+      "value": 0,
+      "unit": "s"
+    },
+    "Cload": {
+      "value": 0,
+      "unit": "F"
+    },
+    "Gload": {
+      "value": 0,
+      "unit": "S"
+    }
+  },
+  "allocation_strategy": "STAGE1_5_REFERENCE_NO_AGENT",
+  "blocks": {
+    "PFD": [
+      "PFD_reset_delay"
+    ],
+    "CP": [
+      "Icp",
+      "CP_mismatch",
+      "CP_leakage",
+      "q0"
+    ],
+    "LF": [
+      "Rz",
+      "C1",
+      "C2",
+      "Cload",
+      "Gload"
+    ],
+    "VCO": [
+      "f0",
+      "Kvco",
+      "Vctrl_min",
+      "Vctrl_max",
+      "Kvco2"
+    ],
+    "Divider": [
+      "N"
+    ]
+  },
+  "M1": null,
+  "constraint_margins": null,
+  "allocation_metadata": {
+    "purpose": "verification integration test"
+  },
+  "validation_level": "NOT_VALIDATED",
+  "verified_joint_block_spec": false,
+  "M2_status": "NOT_EVALUATED",
+  "prediction_confidence": {
+    "status": "NOT_USED_BY_VERIFIER"
+  }
+}

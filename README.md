@@ -8,6 +8,8 @@
 
 Stage4新增独立相位端口与谐波探针研究，三例局部返回比数值收敛，但完整周期UGF/PM认证仍UNKNOWN；未改原协议1.1、M1、域或分配算法。当前新增后300项正式回归通过，研究证据、版本化可选Pipeline附件和限制见[测量方法](UGF_PM_MEASUREMENT_METHOD.md)、[验收报告](UGF_PM_VALIDATION_REPORT.md)。旧Stage3A.1冻结版本和发布包保留。
 
+Stage4.1已完成10个冻结候选的局部频响与独立平滑参考相位阶跃验证，研究映射获得有限点支持；C10 BW正式FAIL，其余整体UNKNOWN，完整周期PM仍未认证。最终328项回归、原TrackB独立28项及无DLL源码重建328项通过，未改正式Agent/规格/方程。报告、可信度JSON、80条时域结果、holdout锁及复现入口见[Stage4.1报告](docs/stage4_1/M1_M2_MAPPING_VALIDATION_REPORT.md)和[运行说明](docs/stage4_1/RUN_AND_REPRODUCE.md)。
+
 ```powershell
 python -m pll_allocation pipeline --strategy analytical --out experiments/my_unified_run
 ```

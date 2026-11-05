@@ -29,8 +29,9 @@ def main(summary, out, qa_scripts):
         if len(fig.axes) > 1:
             require_matplotlib_panel_alignment(fig, json_out=out/(name+'.alignment.json'),
                 overlay_svg=out/(name+'.alignment.svg'), tolerance_pt=1.5, gutter_tolerance_pt=1.5, strict=True)
-        for suffix in ('pdf', 'svg', 'png'):
-            fig.savefig(out/(name+'.'+suffix), dpi=300)
+        fig.savefig(out/(name+'.pdf'))
+        fig.savefig(out/(name+'.svg'))
+        fig.savefig(out/(name+'.png'), dpi=300)
         plt.close(fig)
     for page in range(2):
         group = records[page*5:(page+1)*5]

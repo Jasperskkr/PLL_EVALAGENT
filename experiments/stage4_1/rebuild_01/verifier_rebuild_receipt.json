@@ -1,0 +1,74 @@
+{
+  "scope": "same-host exact-byte source export rebuild verification; no nested Git, no new framework, no holdout rerun",
+  "commands": [
+    "build_kernel.cmd",
+    "build_return_ratio.cmd",
+    "build_closed_loop.cmd",
+    "python -m pytest -q tests -p no:cacheprovider --junitxml=../tests.xml"
+  ],
+  "all_build_exit_codes": 0,
+  "console_test_summary": "328 passed in 25.93s",
+  "JUnit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "328",
+    "time": "25.905",
+    "timestamp": "2026-11-05T15:52:29.019106+08:00",
+    "hostname": "LAPTOP-VNAQOC78"
+  },
+  "fresh_binaries": [
+    {
+      "path": "pll_allocation/verification/build/kernel.dll",
+      "sha256": "e4cce5b53b1971ecbb54440bc016a89bd3770a1bbd11f26f041d2cc1aaea4696",
+      "bytes": 115200,
+      "mtime_ns": 1793865133741926200,
+      "identity_manifest": {
+        "sha256": {
+          "kernel.cpp": "befdd779cd69c73f1a2fb8667e895f77efff979cb3186d80a83113c0321c9f54",
+          "build/kernel.dll": "e4cce5b53b1971ecbb54440bc016a89bd3770a1bbd11f26f041d2cc1aaea4696"
+        },
+        "compiler": "MSVC C++17 /O2 /EHsc /LD",
+        "origin": "explicit build or audited byte-identical Track B DLL"
+      }
+    },
+    {
+      "path": "pll_allocation/verification/build_stage4/return_ratio.dll",
+      "sha256": "5fac694586db29f937fe6f37ad7a6fe9d28daa29bd3aff7d641577a4738f2e56",
+      "bytes": 119808,
+      "mtime_ns": 1793865138472022100,
+      "identity_manifest": {
+        "sha256": {
+          "kernel.cpp": "befdd779cd69c73f1a2fb8667e895f77efff979cb3186d80a83113c0321c9f54",
+          "return_ratio_kernel.cpp": "f632fbceba29b6c07fc9e2370c44737bdaf5e3e86871e1def26fc9d3d0cf7dfc",
+          "return_ratio.dll": "5fac694586db29f937fe6f37ad7a6fe9d28daa29bd3aff7d641577a4738f2e56"
+        },
+        "compiler": "MSVC2022 x64 C++17 /O2 /EHsc /LD",
+        "model_version": "edge_euler_phase_port_stage4_0.1"
+      }
+    },
+    {
+      "path": "pll_allocation/verification/build_stage4_1_r2/closed_loop.dll",
+      "sha256": "36bf7ad3a6332f5a4c320aad55533dc654413001a9093ac2ce6ca0479e304ec8",
+      "bytes": 121344,
+      "mtime_ns": 1793865143477753800,
+      "identity_manifest": {
+        "sha256": {
+          "kernel.cpp": "befdd779cd69c73f1a2fb8667e895f77efff979cb3186d80a83113c0321c9f54",
+          "closed_loop_kernel.cpp": "744b3e42b7ff84eafa0860bdd8317e34848f4d2f84c5b8ce4c180a644dff9595",
+          "closed_loop.dll": "36bf7ad3a6332f5a4c320aad55533dc654413001a9093ac2ce6ca0479e304ec8"
+        },
+        "model_version": "edge_euler_reference_phase_step_stage4_1_0.1",
+        "compiler": "MSVC2022 x64 C++17 /O2 /EHsc /LD"
+      }
+    }
+  ],
+  "source_edits": false,
+  "fallbacks": false,
+  "receipt_creation_failure": {
+    "error": "Initial receipt script used unresolved Path(.) parent, looked for tests.xml inside source, raised FileNotFoundError. No artifacts overwritten. Resolved absolute root before writing receipt.",
+    "native_runs": 0,
+    "tests_rerun": false
+  }
+}
