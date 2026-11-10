@@ -102,3 +102,5 @@ Stage6C最终验收补充：候选01全文件校验/4构建通过但缺examples�
 
 
 F盘归并验收补充：Stage6B/C实现、版本配置/测试/工具/报告已集中，原默认理想链与修复链归并前后科学结果精确一致。F盘478tests通过；Git无.git干净导出四后端重建、478tests和真实Analytical全部通过，5939原文件不变、外部工程输入读取违规0。本次CLI共11M2/1196native，测试另计、LLM0；扩展B1 C/J0 A与历史科学结果一致。原失败审计与首次导出换行问题均保留。最终报告docs/mainline_integration_20261110_01/FINAL_REPORT.md；最终master提交由FINAL_RECEIPT.json绑定。Agent策略与真实反馈修复仍为下一阶段任务。
+
+F盘Git收束：源码与必要材料已提交eb8cd11e4986554ed49085f8756841ea01fed9c3，并由master快进接收，当前开发分支master。最终回执mainline_integration_20261110_01/FINAL_RECEIPT.json；之后仅补交验收文档。旧两份ZIP删除仍为原有未暂存状态。
