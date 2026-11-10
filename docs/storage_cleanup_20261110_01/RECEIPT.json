@@ -34,12 +34,28 @@
   "ideal_native_identity": "PASS",
   "stage6c_native_identity": "PASS",
   "pipeline_cli_help": "PASS",
-  "new_M2_calls": 0,
-  "new_LLM_calls": 0,
   "cleanup_scope": "Two complete bundlecheck copies; experiments/delivery of three protected managed worktrees",
   "application_archive_results": {
     "stage6a": "Another active task still uses this worktree.",
     "stage6b": "Another active task still uses this worktree.",
     "stage7": "The task's primary checkout cannot be removed."
-  }
+  },
+  "new_research_M2_calls": 0,
+  "new_real_LLM_calls": 0,
+  "postmerge_tests": {
+    "source_integration_commit": "fe3c247731ba9be86794f78a8c0686b1bee5851d",
+    "tests": 478,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "reported_pytest_wall_s": 44.88,
+    "junit_sha256": "11f9c55cdaa8fa516ada6324e843ba7dec3e01aed4c632b13d7059d240a89997",
+    "junit_local_path": "experiments/storage_cleanup_20261110_01/tests.xml",
+    "command": "python -B -m pytest tests -q -p no:cacheprovider --basetemp=experiments/storage_cleanup_20261110_01/test_tmp --junitxml=experiments/storage_cleanup_20261110_01/tests.xml",
+    "temp_location": "F drive; TEMP/TMP explicitly redirected to local experiments/system_temp",
+    "new_research_M2_calls": 0,
+    "new_real_LLM_calls": 0,
+    "test_native_calls": "Test-only backend activity was not individually counted and is not included in research cost."
+  },
+  "retired_C_AGENTS_redirects": 3
 }

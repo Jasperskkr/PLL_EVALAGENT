@@ -111,3 +111,6 @@ F盘Git收束：源码与必要材料已提交eb8cd11e4986554ed49085f8756841ea01
 经用户授权，C盘两个bundlecheck副本及Stage6A/B/C的experiments/delivery已清理，C盘可用空间增加约11.897GiB。F盘340个受保护源码/配置/数据/DLL身份文件逐字节不变；理想和Stage6C的Native Build Identity均通过，pipeline帮助入口可正常加载。本轮清理不新增M2/LLM调用，不把此前478项回归当成本轮重跑。
 
 应用拒绝归档仍被任务占用/主checkout的三处旧工作树，约132MiB目录壳保留。后续研究、构建、导出及新实验只在F:/LJP/概伦AI/PLL_allocation进行，不再创建C盘工作区。旧C盘原始实验路径已失效，不应再据此声称原始波形仍在本地。GitHub主干同步另见docs/github_sync/MAINLINE_SYNC_20261110.md及最终回执。
+
+
+F盘与GitHub主干同步验收补充：fe3c247731ba9be86794f78a8c0686b1bee5851d整合实现已原子快进发布到远端main/master，14,867文件Git身份全量一致。正式代码/配置/测试/工具与原F盘已验收子树相同，Stage6A/B不再仅存在独立远端分支；Stage6C继续显式可选。合并后本次实跑478项测试全通过（44.88s），340保护指纹零差异。此后只补交验收文档，最终精确远端SHA见独立运行回执；原两份ZIP未暂存删除保留。研究重心仍是固定spec/模型下Agent策略与反馈增量，不新增LLM成绩。

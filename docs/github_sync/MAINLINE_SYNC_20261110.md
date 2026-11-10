@@ -10,4 +10,14 @@
 
 发布前检查：清理保护340文件零差异；理想/Stage6C Build Identity与pipeline --help通过。此前F盘/干净导出478项测试及真实默认/修复/扩展链验收见docs/mainline_integration_20261110_01/FINAL_REPORT.md，本轮不冒充重跑。合并后必须核对全部正式源码/配置/测试Git blob身份，确认默认pipeline和冻结资产不变，并检查待传输文件没有凭据或超限对象。
 
-状态：已完成远端与本地预审、清理及同步计划；尚待发布和远端SHA核验。最终结果将在本文件追加，精确远端SHA回执保存在F盘experiments/storage_cleanup_20261110_01/github_audit。
+状态：实现归并与首次发布已完成，以下为实际验收；其后仅补交本验收记录。最终远端SHA由本地独立回执绑定，避免文档自引用。
+
+## 实际发布与核验
+
+- 整合实现提交：fe3c247731ba9be86794f78a8c0686b1bee5851d；父历史保留F盘与原GitHub main，原远端master亦是其祖先。旧Stage6A/B分支和Release未删除。
+- 远端main/master已原子快进到该实现提交，未强推；传输251对象/175blob，Git pack为666,192字节，TLS证书校验保持，凭据只在内存中从Git Credential Manager获取。扫描未发现实际令牌/私钥形态或100MiB超限对象。
+- GitHub API重新读取全量递归树，14,867个文件的mode/blob身份与本地提交逐项相同，差异0；332个正式源码/配置/测试/工具/必要数据文件在其中。Stage6A文档、Stage6B配置/搜索、Stage6C可选实现均存在默认主干。
+- 合并后全tests：478 passed in 44.88s。清理前保护的340个源码/配置/DLL身份文件SHA仍无差异；理想/Stage6C Build Identity和冻结pipeline输入加载通过。历史实验不是本轮重跑；无新研究M2/真实LLM调用，测试内后端活动另列。
+- 远端独有的历史文档/记录保留。8,892个F盘同名既存文件在导入前与远端原blob字节一致；41个非忽略文件按原blob身份接入索引，避免换行规范化覆盖。保留原两份ZIP未暂存删除，未reset/clean/stash。
+
+原始合并/冲突预览、预审、完整远端树核验和发布回执在F盘experiments/storage_cleanup_20261110_01/github_audit。轻量测试证据见../storage_cleanup_20261110_01/TEST_SUMMARY.json。后续以F盘master开发，并沿用唯一pipeline入口。

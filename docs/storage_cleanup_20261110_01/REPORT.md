@@ -6,8 +6,10 @@
 
 三处managed worktree的归档被应用保护拒绝，两处因其他任务占用、一处为当前任务主checkout。未绕过保护，仍分别留44,536,632 / 44,982,109 / 48,929,868字节，总约132MiB。不得称全部工作树已移除，也不得继续在此运行研究。
 
-F:/LJP/概伦AI/PLL_allocation的master起点e11a4b028ba052c6ce55eb227c4bb18397576c91。清理前后340个受保护文件SHA256相同，理想和Stage6C原生构建身份校验通过，pipeline --help通过。源码/模型/协议未修改；此次无新M2/LLM调用。原有两份ZIP未暂存删除与其他未跟踪文件保持。
+F:/LJP/概伦AI/PLL_allocation的master起点e11a4b028ba052c6ce55eb227c4bb18397576c91。清理前后340个受保护文件SHA256相同，理想和Stage6C原生构建身份校验通过，pipeline --help通过。源码/模型/协议未修改；此次无新研究M2/真实LLM调用；测试内后端活动单列。原有两份ZIP未暂存删除与其他未跟踪文件保持。
 
 机器回执见RECEIPT.json；完整before/after/deletion_receipt/deletion_events/validated_deletion_plan保存在F盘experiments/storage_cleanup_20261110_01，不随主线重新打包大数据。开发约束写入AGENTS.md与D023，后续实验、临时索引、构建与导出均在F盘。
 
-实际执行方式：先运行protect_mainline.py生成指纹，再运行cleanup.ps1，完成后逐文件重新SHA256核对；调用verification.build_identity.check_build与stage6c_identity.check_build，执行python -B -m pll_allocation pipeline --help。此次不重复此前已完成的478项物理回归。
+实际执行方式：先运行protect_mainline.py生成指纹，再运行cleanup.ps1，完成后逐文件重新SHA256核对；调用verification.build_identity.check_build与stage6c_identity.check_build，执行python -B -m pll_allocation pipeline --help。合并远端历史文件后额外执行一次完整tests回归：478 passed in 44.88s，原始JUnit保存在F盘新实验目录，TEST_SUMMARY.json记录其SHA。测试内原生调用未逐次计数，不混作新研究实验或方法收益。
+
+三处残留C盘AGENTS.md已添加退役提示并指向F盘，未新建C盘工作区。所有临时索引、Git对象缓存、传输pack和测试临时目录均写F盘。
