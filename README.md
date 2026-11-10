@@ -54,6 +54,6 @@ python -m pll_allocation pipeline --multispec configs/stage6b/B1.json --method C
 | `experiments/<new>/` | 不覆盖的新运行及本地原始结果；与源码提交分开 |
 | `docs/mainline_integration_20261110_01/` | 此次F盘归并计划、最终验收和证据索引 |
 
-大型历史结果、完整波形和已验收压缩包保留原位置，见[证据索引](docs/mainline_integration_20261110_01/EVIDENCE_INDEX.md)。不递归搬走旧目录；`handoff_exports/`、`outputs/`、旧`track_b/`和`run/suite`只作历史/兼容，不作为当前策略研究入口。旧README及架构说明原字节保存在[prior_guides](docs/mainline_integration_20261110_01/prior_guides/README.md)。
+历史结果位置及本次清理后的可用性见[证据索引](docs/mainline_integration_20261110_01/EVIDENCE_INDEX.md)；用户已授权清理C盘旧数据。后续只在上述F盘目录开发，实验、构建和临时导出均写F盘，不创建C盘工作区。清理实录见[存储清理报告](docs/storage_cleanup_20261110_01/REPORT.md)。不递归搬走旧目录；`handoff_exports/`、`outputs/`、旧`track_b/`和`run/suite`只作历史/兼容，不作为当前策略研究入口。旧README及架构说明原字节保存在[prior_guides](docs/mainline_integration_20261110_01/prior_guides/README.md)。
 
 原始任务保留在[PROJECT_CHARTER.md](PROJECT_CHARTER.md)，授权与范围更新见[docs/DECISIONS.md](docs/DECISIONS.md)，当前状态见[docs/PROJECT_STATUS.md](docs/PROJECT_STATUS.md)。本次验收以[FINAL_REPORT.md](docs/mainline_integration_20261110_01/FINAL_REPORT.md)为准；旧报告中的“待合并/停止”是当时阶段状态。

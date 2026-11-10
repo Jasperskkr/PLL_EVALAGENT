@@ -120,3 +120,12 @@ PhaseE扩展problem1.1通过原pipeline.run_multispec/run_pipeline、原SearchCo
 用户明确授权将未进入F盘的Stage6B/6C及必要Stage6A研究成果归并、整理F盘项目。F:/LJP/概伦AI/PLL_allocation恢复为统一开发运行工作区；旧隔离工作区、冻结输入及历史实验只读保留。先保存原字节/状态和真实解析、随机失败修复基线，再在codex/f-mainline-consolidation归并；验收后提交并收敛master。原理想pipeline默认语义/预算不变，扩展显式启用；不引入另一正式入口。
 
 用户将研究重心转向现有可测、可分配spec下的Agent首次联合分配与验证反馈。固定模型、规格域与测量协议；核心研究约束采用M2 BW/条件捕获和M1名义PM/调谐，Stage6C噪声/非理想作为可选固定环境。后续优先接入真实LLM反馈修复、等预算策略对照与反馈信息消融；不以M1/M2或SystemSpec进一步完善作为策略研究前置条件。详细范围见research/ALLOCATION_STRATEGY_SCOPE.md。完整认证缺口保持UNKNOWN，历史A/B/C和实验不改。
+
+
+## D023 · 2026-11-10 · 清理C盘旧PLL数据、固定F盘与同步GitHub主干
+
+用户明确授权“全部清理，只要保证F盘主线代码没被破坏，数据无所谓”，并要求后续不得在C盘建立工作区；随后授权将F盘含Stage6A/6B的主干同步到Jasperskkr/PLL_EVALAGENT。此授权覆盖此前保留五个C盘PLL工作副本/数据的要求，其他项目、Codex会话/凭据/插件不在清理范围。
+
+清理前记录F盘master/e11a4b0及340个源码/配置/数据/构建身份指纹。删除两个bundlecheck完整副本及Stage6A/B/C的大型experiments/delivery，共增加C盘可用空间约11.897GiB；340指纹无变化，原两份ZIP未暂存删除保留。应用archive_worktree对两处返回“Another active task still uses this worktree.”、当前工作树返回“The task's primary checkout cannot be removed.”，故未绕过保护删除三处合计约132MiB工作树壳。后续开发和输出只用F盘。
+
+GitHub已有main/master和Stage6A/B独立分支；本轮以F盘已验收实现为正式源码，保留远端历史与独立研究分支，使用普通可追溯合并同步main/master，不强推，不重跑或捏造历史实验。已有快照/Release继续是历史证据，当前能力以F盘README和研究边界为准。同步是否完成以远端SHA和源码树核验回执为准，不提前宣称成功。

@@ -104,3 +104,10 @@ Stage6C最终验收补充：候选01全文件校验/4构建通过但缺examples�
 F盘归并验收补充：Stage6B/C实现、版本配置/测试/工具/报告已集中，原默认理想链与修复链归并前后科学结果精确一致。F盘478tests通过；Git无.git干净导出四后端重建、478tests和真实Analytical全部通过，5939原文件不变、外部工程输入读取违规0。本次CLI共11M2/1196native，测试另计、LLM0；扩展B1 C/J0 A与历史科学结果一致。原失败审计与首次导出换行问题均保留。最终报告docs/mainline_integration_20261110_01/FINAL_REPORT.md；最终master提交由FINAL_RECEIPT.json绑定。Agent策略与真实反馈修复仍为下一阶段任务。
 
 F盘Git收束：源码与必要材料已提交eb8cd11e4986554ed49085f8756841ea01fed9c3，并由master快进接收，当前开发分支master。最终回执mainline_integration_20261110_01/FINAL_RECEIPT.json；之后仅补交验收文档。旧两份ZIP删除仍为原有未暂存状态。
+
+
+## 2026-11-10 · C盘存储清理与F盘固定
+
+经用户授权，C盘两个bundlecheck副本及Stage6A/B/C的experiments/delivery已清理，C盘可用空间增加约11.897GiB。F盘340个受保护源码/配置/数据/DLL身份文件逐字节不变；理想和Stage6C的Native Build Identity均通过，pipeline帮助入口可正常加载。本轮清理不新增M2/LLM调用，不把此前478项回归当成本轮重跑。
+
+应用拒绝归档仍被任务占用/主checkout的三处旧工作树，约132MiB目录壳保留。后续研究、构建、导出及新实验只在F:/LJP/概伦AI/PLL_allocation进行，不再创建C盘工作区。旧C盘原始实验路径已失效，不应再据此声称原始波形仍在本地。GitHub主干同步另见docs/github_sync/MAINLINE_SYNC_20261110.md及最终回执。

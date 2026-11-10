@@ -18,3 +18,10 @@
 F盘新继承的`experiments/stage6a`是已恢复的测试/代表点子集；`experiments/stage6b`与`stage6c`是筛除native二进制、NPZ/NPY数组、raw/tmp/build/cache后的记录副本，**不是完整原始波形镜像**。需要完整PSD/波形/历史哈希树时使用上述原始位置或已验收ZIP，不能仅对轻量副本宣称全文件完整性。
 
 当前测试依赖的少量历史JSON和Stage6A判决辅助脚本会随源码提交；其余本地实验、导出和构建通过.gitignore与源码分开。忽略文件不代表删除，既有已跟踪历史文件仍保留。
+
+
+## 2026-11-10 清理后的可用性更正
+
+以上表格记录归并验收时的位置，不再表示文件当前仍存在。用户随后明确授权丢弃旧数据：两个C盘bundlecheck副本及Stage6A/B/C的experiments/delivery已删除；三处应用保护的工作树仅保留约132MiB目录壳。F:/LJP/PLL_Stage6C_results在本轮核对时亦已不存在，不能再把其ZIP/波形列为当前可取证文件。
+
+F盘主线源码、版本配置、测试、必要文档与已经归并的轻量研究记录保留；历史SHA和报告是当时验收记录，本轮未重新生成缺失原始数据。GitHub此前同步的历史分支及Release保留其历史身份；后续研究以F盘新运行建立新证据，禁止把旧记录当成新实验。清理证据见docs/storage_cleanup_20261110_01/REPORT.md。
