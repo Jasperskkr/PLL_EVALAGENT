@@ -535,9 +535,20 @@ def main(argv=None):
     parser.add_argument('--multispec', help='Versioned Stage6B research joint allocation problem')
     parser.add_argument('--method', choices=['A','B','C'])
     parser.add_argument('--evaluation-cache', help='Shared source/settings-bound complete M2 evidence cache')
+    parser.add_argument('--explore-problem', help='ResearchProblemV2 continuous M1 exploration; no LLM/M2')
+    parser.add_argument('--exploration-budget', type=int, help='Override total formal M1 calls, including sensitivity')
     args = parser.parse_args(argv)
     try:
-        if args.multispec:
+        if args.explore_problem:
+            if any(x is not None for x in (args.config, args.proposal, args.m2_budget, args.repair_budget,
+                    args.llm_config, args.measurement_extension, args.scenario, args.feedback_from,
+                    args.multispec, args.method, args.evaluation_cache)) or args.strategy != 'analytical':
+                raise ValueError('Stage7 exploration owns its configuration; cannot mix allocation/M2 modes')
+            from .exploration import run_exploration
+            result = run_exploration(args.explore_problem, args.out, seed=args.seed, budget=args.exploration_budget)
+        elif args.exploration_budget is not None:
+            raise ValueError('--exploration-budget requires --explore-problem')
+        elif args.multispec:
             if any((args.proposal,args.m2_budget,args.repair_budget,args.llm_config,args.measurement_extension,
                     args.scenario,args.seed,args.feedback_from,args.strategy!='analytical')):
                 raise ValueError('multispec problem alone owns methods, budgets, protocol and candidates')

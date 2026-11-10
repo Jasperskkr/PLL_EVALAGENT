@@ -20,6 +20,8 @@
 
 Stage6B在同一pipeline提供统一研究硬约束、A/B/C和确定性反馈搜索。Stage6C提供显式可选的固定噪声/非理想环境、独立多seed统计及复验。研究联合可行只针对已声明的支持指标，不升级完整认证。
 
+Stage7新增显式的[可配置连续域M1探索](docs/stage7_exploration/INTERFACE_AND_REPRODUCE.md)：用户设置SystemSpec和六轴范围，复用原M1做物理初筛、Sobol/物理种子探索、区域建议和六轴敏感度，导出PhysicsContext供下一阶段使用。连续研究域独立于Stage6B冻结域；本阶段不调用LLM/M2、不认证整个区域。实际验收见[Stage7报告](docs/stage7_exploration/PHYSICS_EXPLORATION_REPORT.md)。
+
 ## 运行
 
 Windows x64、Python 3.12、NumPy/SciPy，原生后端需MSVC2022 C++17。已有构建加载前检查源与DLL身份；从源码新导出需按[复现说明](docs/stage6c/REPRODUCE.md)独立重建，禁止覆盖已有构建目录或手改identity。
@@ -33,6 +35,9 @@ python -m pll_allocation pipeline --strategy random --seed 23 --m2-budget 2 --re
 
 # 原Stage6B研究问题和方法：A解析，B敏感度/SLSQP，C加确定性反馈
 python -m pll_allocation pipeline --multispec configs/stage6b/B1.json --method C --out experiments/my_joint_01
+
+# Stage7：用户配置的六轴连续M1探索，输出目录必须全新
+python -m pll_allocation pipeline --explore-problem configs/stage7/continuous_global_v2.json --out experiments/my_stage7_01
 ```
 
 可选Stage6C通过`--multispec configs/stage6c/joint_frozen_01/J0_ideal.json --method A`等启用。F盘新建的默认可选后端为`pll_allocation/verification/build_stage6c`；使用另一个新构建时显式设置`PLL_STAGE6C_BUILD_DIR`，不使用C盘旧DLL。Stage6C观察时长/频带/seed固定，不可用短捕获RMS代替噪声jitter。
@@ -45,6 +50,7 @@ python -m pll_allocation pipeline --multispec configs/stage6b/B1.json --method C
 |---|---|
 | `pll_allocation/physics_mapping/` | 唯一正式M1，噪声为独立可选模块 |
 | `pll_allocation/allocation/` | 解析/敏感度/SLSQP、Agent工具、确定性修复与联合约束 |
+| `pll_allocation/exploration/` | Stage7版本化连续研究域、原M1探索、区域/敏感度/PhysicsContext |
 | `pll_allocation/verification/` | 唯一正式M2、测量/判决/构建身份及可选扩展 |
 | `pll_allocation/pipeline.py` | Runner独立控制检查、预算、真实TB、复验及trace |
 | `configs/` | 原冻结输入与版本化研究问题，Stage6B发布副本在`configs/stage6b/` |

@@ -1,0 +1,43 @@
+{
+  "schema_version": "pll-research-problem-2.0",
+  "problem_id": "stage7_continuous_global_BW_PM",
+  "topology": "integer_n_cppll",
+  "parameters": {
+    "Icp": {"min": 0.00002, "max": 0.0004, "default": 0.0001, "unit": "A", "scale": "log"},
+    "Rz": {"min": 500, "max": 15000, "default": 3820, "unit": "Ohm", "scale": "log"},
+    "C1": {"min": 2e-11, "max": 3e-10, "default": 1e-10, "unit": "F", "scale": "log"},
+    "C2": {"min": 2e-10, "max": 4e-9, "default": 1e-9, "unit": "F", "scale": "log"},
+    "f0": {"min": 40000000, "max": 79000000, "default": 72000000, "unit": "Hz", "scale": "linear"},
+    "Kvco": {"min": 5000000, "max": 80000000, "default": 20000000, "unit": "Hz/V", "scale": "log"}
+  },
+  "fixed_parameters": {
+    "f_ref": {"value": 10000000, "unit": "Hz"},
+    "N": {"value": 8, "unit": "1"},
+    "Vctrl_min": {"value": 0, "unit": "V"},
+    "Vctrl_max": {"value": 1.2, "unit": "V"},
+    "Kvco2": {"value": 0, "unit": "Hz/V^2"},
+    "CP_mismatch": {"value": 0, "unit": "1"},
+    "CP_leakage": {"value": 0, "unit": "A"},
+    "q0": {"value": 0, "unit": "C"},
+    "PFD_reset_delay": {"value": 0, "unit": "s"},
+    "Cload": {"value": 0, "unit": "F"},
+    "Gload": {"value": 0, "unit": "S"}
+  },
+  "specs": [
+    {"metric": "BW_Hz", "unit": "Hz", "enabled": true, "min": 150000, "max": 300000, "evaluation_source": "M1"},
+    {"metric": "PM_deg", "unit": "deg", "enabled": true, "min": 50, "evaluation_source": "M1"},
+    {"metric": "lock_time_s", "unit": "s", "enabled": true, "max": 0.00004, "evaluation_source": "M2"},
+    {"metric": "jitter_s", "unit": "s", "enabled": true, "max": 1e-11, "evaluation_source": "UNSUPPORTED"}
+  ],
+  "exploration": {
+    "seed": 20261110,
+    "sobol_samples": 256,
+    "physics_seed_count": 16,
+    "max_m1_evaluations": 320,
+    "max_analytic_calls": 512,
+    "region_count": 3,
+    "region_radius": 0.05,
+    "sensitivity_step": 0.005,
+    "sensitivity_representatives": 3
+  }
+}

@@ -1,0 +1,2670 @@
+{
+  "origin_directory": "experiments/stage7_exploration_20261110_03/global",
+  "source_file_sha256": "962ff83dd293decf3ff5eb768f9a029998948e1f0689eb821447d4c91176a6d1",
+  "representatives": [
+    {
+      "problem_schema_version": "pll-research-problem-2.0",
+      "problem_sha256": "f6d7ef53e29ee0ef56950fcf7d77e388ed8cb15487d42260fde46fef1726c7e5",
+      "problem_id": "stage7_continuous_global_BW_PM",
+      "model_fingerprint": "9d9efbdb455680f3117b9c6e76dc695481e358aae283cb0c89c7dab112d527d8",
+      "source_fingerprint": "8ee0be2a2621b0bdf1b1bb2c010971662f1714ff0d259f074740c6486dc35a79",
+      "seed": 20261110,
+      "scope": "STAGE7_CONTINUOUS_M1_EXPLORATION_ONLY",
+      "evidence_id": "S000003",
+      "origin": "PHYSICS_SEED:INVERSE_SHAPE:002",
+      "parameters": {
+        "schema_version": "pll-physics-mapping-2.0",
+        "conventions": {
+          "vco_f0": "frequency_at_zero_volts",
+          "phase_error": "reference_minus_feedback_rad",
+          "lf_topology": "C1_shunt_Rz_series_C2",
+          "cp_leakage": "positive_injected_into_lf"
+        },
+        "values": {
+          "Icp": {
+            "value": 9.442030184751138e-05,
+            "unit": "A"
+          },
+          "Rz": {
+            "value": 2304.686210698951,
+            "unit": "Ohm"
+          },
+          "C1": {
+            "value": 2e-11,
+            "unit": "F"
+          },
+          "C2": {
+            "value": 4e-09,
+            "unit": "F"
+          },
+          "f0": {
+            "value": 52788332.69965978,
+            "unit": "Hz"
+          },
+          "Kvco": {
+            "value": 45352778.83390038,
+            "unit": "Hz/V"
+          },
+          "f_ref": {
+            "value": 10000000,
+            "unit": "Hz"
+          },
+          "N": {
+            "value": 8,
+            "unit": "1"
+          },
+          "Vctrl_min": {
+            "value": 0,
+            "unit": "V"
+          },
+          "Vctrl_max": {
+            "value": 1.2,
+            "unit": "V"
+          },
+          "Kvco2": {
+            "value": 0,
+            "unit": "Hz/V^2"
+          },
+          "CP_mismatch": {
+            "value": 0,
+            "unit": "1"
+          },
+          "CP_leakage": {
+            "value": 0,
+            "unit": "A"
+          },
+          "q0": {
+            "value": 0,
+            "unit": "C"
+          },
+          "PFD_reset_delay": {
+            "value": 0,
+            "unit": "s"
+          },
+          "Cload": {
+            "value": 0,
+            "unit": "F"
+          },
+          "Gload": {
+            "value": 0,
+            "unit": "S"
+          }
+        }
+      },
+      "parameter_sha256": "062720a05c64edd1bdc5c09dee8b906a1206289f1be58a3abc04e1d33190674a",
+      "screening": {
+        "status": "NECESSARY_CONDITIONS_SATISFIED",
+        "reason": "formal M1 still required",
+        "derived": {
+          "output_frequency_Hz": 80000000,
+          "Vctrl_required_V": 0.5999999999999999,
+          "tuning_margin_V": 0.5999999999999999,
+          "Icp_Kvco_product": 4282.223067120299,
+          "loop_gain_Icp_Kvco_over_N": 535.2778833900373,
+          "q": 201.00000000000003,
+          "LF_zero_rad_s": 108474.63695466878,
+          "LF_pole_rad_s": 21803402.02788843,
+          "PM_ceiling_deg": 81.93069884060621
+        },
+        "formal_M1_evaluated": false
+      },
+      "cheap_prediction": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.5999999999999999,
+        "Kvco_local_Hz_per_V": 45352778.83390038,
+        "UGF_Hz": 195810.6696436354,
+        "BW_Hz": 225000.0000000001,
+        "PM_deg": 81.73172210753603
+      },
+      "formal_M1_result": {
+        "status": "OK",
+        "reason": "",
+        "model_level": "M1",
+        "model_id": "ideal_cppll_locked_continuous_m1_v1",
+        "parameter_sha256": "062720a05c64edd1bdc5c09dee8b906a1206289f1be58a3abc04e1d33190674a",
+        "metrics": {
+          "output_frequency_Hz": 80000000,
+          "Vctrl_required_V": 0.5999999999999999,
+          "Kvco_local_Hz_per_V": 45352778.83390038,
+          "UGF_Hz": 195810.6696435914,
+          "BW_Hz": 224999.999999915,
+          "PM_deg": 81.73172210753562
+        },
+        "units": {
+          "output_frequency_Hz": "Hz",
+          "Vctrl_required_V": "V",
+          "Kvco_local_Hz_per_V": "Hz/V",
+          "UGF_Hz": "Hz",
+          "BW_Hz": "Hz",
+          "PM_deg": "deg"
+        },
+        "protocols": {
+          "output_frequency_Hz": "conditional_locked_tuning_frequency",
+          "Vctrl_required_V": "linear_vco_static_tuning_solution",
+          "Kvco_local_Hz_per_V": "vco_derivative_at_tuning_point",
+          "UGF_Hz": "continuous_L_first_downward_unity_crossing",
+          "BW_Hz": "continuous_normalized_T_first_downward_minus3dB",
+          "PM_deg": "180_plus_continuous_L_phase_at_UGF"
+        },
+        "factors": {
+          "F_FREQ_PLAN": {
+            "f_target_Hz": 80000000,
+            "source": "model/solve_tuning_point.m"
+          },
+          "F_TUNING": {
+            "Vctrl_required_V": 0.5999999999999999,
+            "Kvco_local_Hz_per_V": 45352778.83390038,
+            "feasible": true,
+            "voltage_margin_V": 0.5999999999999999,
+            "tuning_frequency_min_Hz": 52788332.69965978,
+            "tuning_frequency_max_Hz": 107211667.30034024,
+            "source": "model/solve_tuning_point.m; model/vco_model.m"
+          },
+          "F_KPFD": {
+            "Kpfd_A_per_rad": 1.5027457767260254e-05,
+            "Iup_A": 9.442030184751138e-05,
+            "Idown_A": 9.442030184751138e-05,
+            "source": "model/pll_linear_kernel.m"
+          },
+          "F_LF_TF": {
+            "zero_Hz": 17264.27467143432,
+            "poles_rad_per_s": [
+              0,
+              -21803402.02788843
+            ],
+            "nonzero_pole_Hz": 3470119.2089582984,
+            "source": "model/pll_linear_kernel.m"
+          },
+          "F_LOOP": {
+            "UGF_Hz": 195810.6696435914,
+            "BW_Hz": 224999.999999915,
+            "PM_deg": 81.73172210753562,
+            "characteristic_descending": [
+              1.8437489685591608e-16,
+              4.020000000000001e-09,
+              0.004934590226964561,
+              535.2778833900373
+            ],
+            "routh_stable": true,
+            "T_definition": "L/(1+L); normalized reference phase response; H_ref=N*T",
+            "source": "model/pll_linear_kernel.m; characterization/characterize_loop.m"
+          }
+        },
+        "diagnostics": {
+          "scan": {
+            "minimum_Hz": 1.726427467143432,
+            "maximum_Hz": 1000000000,
+            "points": 8000
+          },
+          "UGF_over_fref": 0.01958106696435914,
+          "BW_over_fref": 0.0224999999999915,
+          "sampling_equivalence": "NOT_ESTABLISHED",
+          "transient_lock": "NOT_EVALUATED",
+          "MATLAB_runtime_calls": 0,
+          "behavioral_TB_calls": 0
+        },
+        "response": [],
+        "scope": "CONDITIONAL_LOCKED_CONTINUOUS_SMALL_SIGNAL_ONLY",
+        "verified_joint_block_spec": false
+      },
+      "M1_status": "OK",
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.5999999999999999,
+        "Kvco_local_Hz_per_V": 45352778.83390038,
+        "UGF_Hz": 195810.6696435914,
+        "BW_Hz": 224999.999999915,
+        "PM_deg": 81.73172210753562
+      },
+      "judgment": {
+        "m1_feasibility": "FEASIBLE",
+        "all_enabled_specs_status": "UNKNOWN",
+        "constraints": [
+          {
+            "metric": "BW_Hz",
+            "unit": "Hz",
+            "enabled": true,
+            "min": 150000,
+            "max": 300000,
+            "evaluation_source": "M1",
+            "tolerance": 0.0,
+            "normalization_scale": 75000.0,
+            "support_status": "M1_SUPPORTED",
+            "protocol": "continuous_normalized_T_first_downward_minus3dB",
+            "value": 224999.999999915,
+            "margin": 74999.99999991499,
+            "normalized_margin": 0.9999999999988665,
+            "bound_margins": {
+              "min": 74999.99999991499,
+              "max": 75000.00000008501
+            },
+            "tightest_bound": "min",
+            "status": "SATISFIED"
+          },
+          {
+            "metric": "PM_deg",
+            "unit": "deg",
+            "enabled": true,
+            "min": 50,
+            "evaluation_source": "M1",
+            "tolerance": 0.0,
+            "normalization_scale": 50,
+            "support_status": "M1_SUPPORTED",
+            "protocol": "180_plus_continuous_L_phase_at_UGF",
+            "value": 81.73172210753562,
+            "margin": 31.731722107535617,
+            "normalized_margin": 0.6346344421507123,
+            "bound_margins": {
+              "min": 31.731722107535617
+            },
+            "tightest_bound": "min",
+            "status": "SATISFIED"
+          },
+          {
+            "metric": "lock_time_s",
+            "unit": "s",
+            "enabled": true,
+            "max": 4e-05,
+            "evaluation_source": "M2",
+            "tolerance": 0.0,
+            "normalization_scale": 4e-05,
+            "support_status": "PENDING_M2",
+            "protocol": "NOT_EVALUATED_IN_STAGE7",
+            "value": null,
+            "margin": null,
+            "normalized_margin": null,
+            "bound_margins": {},
+            "tightest_bound": null,
+            "status": "UNKNOWN"
+          },
+          {
+            "metric": "jitter_s",
+            "unit": "s",
+            "enabled": true,
+            "max": 1e-11,
+            "evaluation_source": "UNSUPPORTED",
+            "tolerance": 0.0,
+            "normalization_scale": 1e-11,
+            "support_status": "UNSUPPORTED",
+            "protocol": "NOT_EVALUATED_IN_STAGE7",
+            "value": null,
+            "margin": null,
+            "normalized_margin": null,
+            "bound_margins": {},
+            "tightest_bound": null,
+            "status": "UNKNOWN"
+          }
+        ],
+        "minimum_normalized_margin": 0.6346344421507123,
+        "verified_joint_block_spec": false,
+        "M2_status": "NOT_EVALUATED"
+      },
+      "quick_minus_formal": {
+        "output_frequency_Hz": 0,
+        "Vctrl_required_V": 0.0,
+        "Kvco_local_Hz_per_V": 0.0,
+        "UGF_Hz": 4.400499165058136e-08,
+        "BW_Hz": 8.509960025548935e-08,
+        "PM_deg": 4.121147867408581e-13
+      },
+      "cost": {
+        "analytic_calls": 5,
+        "M1_calls": 3,
+        "candidate_generations": 3,
+        "M2_calls": 0,
+        "LLM_calls": 0,
+        "proposals": 3,
+        "duplicates": 0,
+        "screen_rejections": 0,
+        "seed_failures": 0,
+        "analytic_failures": 0,
+        "M1_failures": 0,
+        "M1_budget_skips": 0,
+        "sobol_samples": 0
+      }
+    },
+    {
+      "problem_schema_version": "pll-research-problem-2.0",
+      "problem_sha256": "f6d7ef53e29ee0ef56950fcf7d77e388ed8cb15487d42260fde46fef1726c7e5",
+      "problem_id": "stage7_continuous_global_BW_PM",
+      "model_fingerprint": "9d9efbdb455680f3117b9c6e76dc695481e358aae283cb0c89c7dab112d527d8",
+      "source_fingerprint": "8ee0be2a2621b0bdf1b1bb2c010971662f1714ff0d259f074740c6486dc35a79",
+      "seed": 20261110,
+      "scope": "STAGE7_CONTINUOUS_M1_EXPLORATION_ONLY",
+      "evidence_id": "S000229",
+      "origin": "SOBOL:000213",
+      "parameters": {
+        "schema_version": "pll-physics-mapping-2.0",
+        "conventions": {
+          "vco_f0": "frequency_at_zero_volts",
+          "phase_error": "reference_minus_feedback_rad",
+          "lf_topology": "C1_shunt_Rz_series_C2",
+          "cp_leakage": "positive_injected_into_lf"
+        },
+        "values": {
+          "Icp": {
+            "value": 0.0001931183345777089,
+            "unit": "A"
+          },
+          "Rz": {
+            "value": 5791.992998480771,
+            "unit": "Ohm"
+          },
+          "C1": {
+            "value": 7.613295686002012e-11,
+            "unit": "F"
+          },
+          "C2": {
+            "value": 9.61346961915235e-10,
+            "unit": "F"
+          },
+          "f0": {
+            "value": 73167870.02142519,
+            "unit": "Hz"
+          },
+          "Kvco": {
+            "value": 6541191.815267658,
+            "unit": "Hz/V"
+          },
+          "f_ref": {
+            "value": 10000000,
+            "unit": "Hz"
+          },
+          "N": {
+            "value": 8,
+            "unit": "1"
+          },
+          "Vctrl_min": {
+            "value": 0,
+            "unit": "V"
+          },
+          "Vctrl_max": {
+            "value": 1.2,
+            "unit": "V"
+          },
+          "Kvco2": {
+            "value": 0,
+            "unit": "Hz/V^2"
+          },
+          "CP_mismatch": {
+            "value": 0,
+            "unit": "1"
+          },
+          "CP_leakage": {
+            "value": 0,
+            "unit": "A"
+          },
+          "q0": {
+            "value": 0,
+            "unit": "C"
+          },
+          "PFD_reset_delay": {
+            "value": 0,
+            "unit": "s"
+          },
+          "Cload": {
+            "value": 0,
+            "unit": "F"
+          },
+          "Gload": {
+            "value": 0,
+            "unit": "S"
+          }
+        }
+      },
+      "parameter_sha256": "105dc1ddd1eb6d16991209c111bd6600dd40ef7c11afbf10daf7451f437c7709",
+      "screening": {
+        "status": "NECESSARY_CONDITIONS_SATISFIED",
+        "reason": "formal M1 still required",
+        "derived": {
+          "output_frequency_Hz": 80000000,
+          "Vctrl_required_V": 1.0444778522819163,
+          "tuning_margin_V": 0.1555221477180837,
+          "Icp_Kvco_product": 1263.2240695178305,
+          "loop_gain_Icp_Kvco_over_N": 157.9030086897288,
+          "q": 13.627211677628528,
+          "LF_zero_rad_s": 179593.99597421385,
+          "LF_pole_rad_s": 2447365.399171778,
+          "PM_ceiling_deg": 59.685579437718175
+        },
+        "formal_M1_evaluated": false
+      },
+      "cheap_prediction": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 1.0444778522819163,
+        "Kvco_local_Hz_per_V": 6541191.815267658,
+        "UGF_Hz": 130868.03403534884,
+        "BW_Hz": 209633.31997816902,
+        "PM_deg": 59.10797732385992
+      },
+      "formal_M1_result": {
+        "status": "OK",
+        "reason": "",
+        "model_level": "M1",
+        "model_id": "ideal_cppll_locked_continuous_m1_v1",
+        "parameter_sha256": "105dc1ddd1eb6d16991209c111bd6600dd40ef7c11afbf10daf7451f437c7709",
+        "metrics": {
+          "output_frequency_Hz": 80000000,
+          "Vctrl_required_V": 1.0444778522819163,
+          "Kvco_local_Hz_per_V": 6541191.815267658,
+          "UGF_Hz": 130868.03403531743,
+          "BW_Hz": 209633.31997809457,
+          "PM_deg": 59.107977323861206
+        },
+        "units": {
+          "output_frequency_Hz": "Hz",
+          "Vctrl_required_V": "V",
+          "Kvco_local_Hz_per_V": "Hz/V",
+          "UGF_Hz": "Hz",
+          "BW_Hz": "Hz",
+          "PM_deg": "deg"
+        },
+        "protocols": {
+          "output_frequency_Hz": "conditional_locked_tuning_frequency",
+          "Vctrl_required_V": "linear_vco_static_tuning_solution",
+          "Kvco_local_Hz_per_V": "vco_derivative_at_tuning_point",
+          "UGF_Hz": "continuous_L_first_downward_unity_crossing",
+          "BW_Hz": "continuous_normalized_T_first_downward_minus3dB",
+          "PM_deg": "180_plus_continuous_L_phase_at_UGF"
+        },
+        "factors": {
+          "F_FREQ_PLAN": {
+            "f_target_Hz": 80000000,
+            "source": "model/solve_tuning_point.m"
+          },
+          "F_TUNING": {
+            "Vctrl_required_V": 1.0444778522819163,
+            "Kvco_local_Hz_per_V": 6541191.815267658,
+            "feasible": true,
+            "voltage_margin_V": 0.1555221477180837,
+            "tuning_frequency_min_Hz": 73167870.02142519,
+            "tuning_frequency_max_Hz": 81017300.19974637,
+            "source": "model/solve_tuning_point.m; model/vco_model.m"
+          },
+          "F_KPFD": {
+            "Kpfd_A_per_rad": 3.073573754971687e-05,
+            "Iup_A": 0.0001931183345777089,
+            "Idown_A": 0.0001931183345777089,
+            "source": "model/pll_linear_kernel.m"
+          },
+          "F_LF_TF": {
+            "zero_Hz": 28583.272208922088,
+            "poles_rad_per_s": [
+              0,
+              -2447365.3991717775
+            ],
+            "nonzero_pole_Hz": 389510.300830258,
+            "source": "model/pll_linear_kernel.m"
+          },
+          "F_LOOP": {
+            "UGF_Hz": 130868.03403531743,
+            "BW_Hz": 209633.31997809457,
+            "PM_deg": 59.107977323861206,
+            "characteristic_descending": [
+              4.2391704938149108e-16,
+              1.0374799187752552e-09,
+              0.0008792220911015341,
+              157.9030086897288
+            ],
+            "routh_stable": true,
+            "T_definition": "L/(1+L); normalized reference phase response; H_ref=N*T",
+            "source": "model/pll_linear_kernel.m; characterization/characterize_loop.m"
+          }
+        },
+        "diagnostics": {
+          "scan": {
+            "minimum_Hz": 2.858327220892209,
+            "maximum_Hz": 1000000000,
+            "points": 8000
+          },
+          "UGF_over_fref": 0.013086803403531742,
+          "BW_over_fref": 0.02096333199780946,
+          "sampling_equivalence": "NOT_ESTABLISHED",
+          "transient_lock": "NOT_EVALUATED",
+          "MATLAB_runtime_calls": 0,
+          "behavioral_TB_calls": 0
+        },
+        "response": [],
+        "scope": "CONDITIONAL_LOCKED_CONTINUOUS_SMALL_SIGNAL_ONLY",
+        "verified_joint_block_spec": false
+      },
+      "M1_status": "OK",
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 1.0444778522819163,
+        "Kvco_local_Hz_per_V": 6541191.815267658,
+        "UGF_Hz": 130868.03403531743,
+        "BW_Hz": 209633.31997809457,
+        "PM_deg": 59.107977323861206
+      },
+      "judgment": {
+        "m1_feasibility": "FEASIBLE",
+        "all_enabled_specs_status": "UNKNOWN",
+        "constraints": [
+          {
+            "metric": "BW_Hz",
+            "unit": "Hz",
+            "enabled": true,
+            "min": 150000,
+            "max": 300000,
+            "evaluation_source": "M1",
+            "tolerance": 0.0,
+            "normalization_scale": 75000.0,
+            "support_status": "M1_SUPPORTED",
+            "protocol": "continuous_normalized_T_first_downward_minus3dB",
+            "value": 209633.31997809457,
+            "margin": 59633.31997809457,
+            "normalized_margin": 0.795110933041261,
+            "bound_margins": {
+              "min": 59633.31997809457,
+              "max": 90366.68002190543
+            },
+            "tightest_bound": "min",
+            "status": "SATISFIED"
+          },
+          {
+            "metric": "PM_deg",
+            "unit": "deg",
+            "enabled": true,
+            "min": 50,
+            "evaluation_source": "M1",
+            "tolerance": 0.0,
+            "normalization_scale": 50,
+            "support_status": "M1_SUPPORTED",
+            "protocol": "180_plus_continuous_L_phase_at_UGF",
+            "value": 59.107977323861206,
+            "margin": 9.107977323861206,
+            "normalized_margin": 0.18215954647722413,
+            "bound_margins": {
+              "min": 9.107977323861206
+            },
+            "tightest_bound": "min",
+            "status": "SATISFIED"
+          },
+          {
+            "metric": "lock_time_s",
+            "unit": "s",
+            "enabled": true,
+            "max": 4e-05,
+            "evaluation_source": "M2",
+            "tolerance": 0.0,
+            "normalization_scale": 4e-05,
+            "support_status": "PENDING_M2",
+            "protocol": "NOT_EVALUATED_IN_STAGE7",
+            "value": null,
+            "margin": null,
+            "normalized_margin": null,
+            "bound_margins": {},
+            "tightest_bound": null,
+            "status": "UNKNOWN"
+          },
+          {
+            "metric": "jitter_s",
+            "unit": "s",
+            "enabled": true,
+            "max": 1e-11,
+            "evaluation_source": "UNSUPPORTED",
+            "tolerance": 0.0,
+            "normalization_scale": 1e-11,
+            "support_status": "UNSUPPORTED",
+            "protocol": "NOT_EVALUATED_IN_STAGE7",
+            "value": null,
+            "margin": null,
+            "normalized_margin": null,
+            "bound_margins": {},
+            "tightest_bound": null,
+            "status": "UNKNOWN"
+          }
+        ],
+        "minimum_normalized_margin": 0.18215954647722413,
+        "verified_joint_block_spec": false,
+        "M2_status": "NOT_EVALUATED"
+      },
+      "quick_minus_formal": {
+        "output_frequency_Hz": 0,
+        "Vctrl_required_V": 0.0,
+        "Kvco_local_Hz_per_V": 0.0,
+        "UGF_Hz": 3.141758497804403e-08,
+        "BW_Hz": 7.444759830832481e-08,
+        "PM_deg": -1.2860823517257813e-12
+      },
+      "cost": {
+        "analytic_calls": 114,
+        "M1_calls": 99,
+        "candidate_generations": 229,
+        "M2_calls": 0,
+        "LLM_calls": 0,
+        "proposals": 229,
+        "duplicates": 0,
+        "screen_rejections": 130,
+        "seed_failures": 0,
+        "analytic_failures": 0,
+        "M1_failures": 0,
+        "M1_budget_skips": 0,
+        "sobol_samples": 213
+      }
+    },
+    {
+      "problem_schema_version": "pll-research-problem-2.0",
+      "problem_sha256": "f6d7ef53e29ee0ef56950fcf7d77e388ed8cb15487d42260fde46fef1726c7e5",
+      "problem_id": "stage7_continuous_global_BW_PM",
+      "model_fingerprint": "9d9efbdb455680f3117b9c6e76dc695481e358aae283cb0c89c7dab112d527d8",
+      "source_fingerprint": "8ee0be2a2621b0bdf1b1bb2c010971662f1714ff0d259f074740c6486dc35a79",
+      "seed": 20261110,
+      "scope": "STAGE7_CONTINUOUS_M1_EXPLORATION_ONLY",
+      "evidence_id": "S000235",
+      "origin": "SOBOL:000219",
+      "parameters": {
+        "schema_version": "pll-physics-mapping-2.0",
+        "conventions": {
+          "vco_f0": "frequency_at_zero_volts",
+          "phase_error": "reference_minus_feedback_rad",
+          "lf_topology": "C1_shunt_Rz_series_C2",
+          "cp_leakage": "positive_injected_into_lf"
+        },
+        "values": {
+          "Icp": {
+            "value": 2.164637581134512e-05,
+            "unit": "A"
+          },
+          "Rz": {
+            "value": 9432.399941845724,
+            "unit": "Ohm"
+          },
+          "C1": {
+            "value": 6.035933612809032e-11,
+            "unit": "F"
+          },
+          "C2": {
+            "value": 6.999198486073647e-10,
+            "unit": "F"
+          },
+          "f0": {
+            "value": 74431249.21899289,
+            "unit": "Hz"
+          },
+          "Kvco": {
+            "value": 40968302.0710172,
+            "unit": "Hz/V"
+          },
+          "f_ref": {
+            "value": 10000000,
+            "unit": "Hz"
+          },
+          "N": {
+            "value": 8,
+            "unit": "1"
+          },
+          "Vctrl_min": {
+            "value": 0,
+            "unit": "V"
+          },
+          "Vctrl_max": {
+            "value": 1.2,
+            "unit": "V"
+          },
+          "Kvco2": {
+            "value": 0,
+            "unit": "Hz/V^2"
+          },
+          "CP_mismatch": {
+            "value": 0,
+            "unit": "1"
+          },
+          "CP_leakage": {
+            "value": 0,
+            "unit": "A"
+          },
+          "q0": {
+            "value": 0,
+            "unit": "C"
+          },
+          "PFD_reset_delay": {
+            "value": 0,
+            "unit": "s"
+          },
+          "Cload": {
+            "value": 0,
+            "unit": "F"
+          },
+          "Gload": {
+            "value": 0,
+            "unit": "S"
+          }
+        }
+      },
+      "parameter_sha256": "0904078383079648741d61a16319504af3768972fd7e11cfa6671910ec514303",
+      "screening": {
+        "status": "NECESSARY_CONDITIONS_SATISFIED",
+        "reason": "formal M1 still required",
+        "derived": {
+          "output_frequency_Hz": 80000000,
+          "Vctrl_required_V": 0.1359282786812562,
+          "tuning_margin_V": 0.1359282786812562,
+          "Icp_Kvco_product": 886.8152629819468,
+          "loop_gain_Icp_Kvco_over_N": 110.85190787274335,
+          "q": 12.59588381028652,
+          "LF_zero_rad_s": 151470.99681762047,
+          "LF_pole_rad_s": 1907911.0765430266,
+          "PM_ceiling_deg": 58.52813723894759
+        },
+        "formal_M1_evaluated": false
+      },
+      "cheap_prediction": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.1359282786812562,
+        "Kvco_local_Hz_per_V": 40968302.0710172,
+        "UGF_Hz": 140973.08033208203,
+        "BW_Hz": 232329.592181932,
+        "PM_deg": 55.39250940294437
+      },
+      "formal_M1_result": {
+        "status": "OK",
+        "reason": "",
+        "model_level": "M1",
+        "model_id": "ideal_cppll_locked_continuous_m1_v1",
+        "parameter_sha256": "0904078383079648741d61a16319504af3768972fd7e11cfa6671910ec514303",
+        "metrics": {
+          "output_frequency_Hz": 80000000,
+          "Vctrl_required_V": 0.1359282786812562,
+          "Kvco_local_Hz_per_V": 40968302.0710172,
+          "UGF_Hz": 140973.08033208887,
+          "BW_Hz": 232329.59218206312,
+          "PM_deg": 55.392509402943745
+        },
+        "units": {
+          "output_frequency_Hz": "Hz",
+          "Vctrl_required_V": "V",
+          "Kvco_local_Hz_per_V": "Hz/V",
+          "UGF_Hz": "Hz",
+          "BW_Hz": "Hz",
+          "PM_deg": "deg"
+        },
+        "protocols": {
+          "output_frequency_Hz": "conditional_locked_tuning_frequency",
+          "Vctrl_required_V": "linear_vco_static_tuning_solution",
+          "Kvco_local_Hz_per_V": "vco_derivative_at_tuning_point",
+          "UGF_Hz": "continuous_L_first_downward_unity_crossing",
+          "BW_Hz": "continuous_normalized_T_first_downward_minus3dB",
+          "PM_deg": "180_plus_continuous_L_phase_at_UGF"
+        },
+        "factors": {
+          "F_FREQ_PLAN": {
+            "f_target_Hz": 80000000,
+            "source": "model/solve_tuning_point.m"
+          },
+          "F_TUNING": {
+            "Vctrl_required_V": 0.1359282786812562,
+            "Kvco_local_Hz_per_V": 40968302.0710172,
+            "feasible": true,
+            "voltage_margin_V": 0.1359282786812562,
+            "tuning_frequency_min_Hz": 74431249.21899289,
+            "tuning_frequency_max_Hz": 123593211.70421353,
+            "source": "model/solve_tuning_point.m; model/vco_model.m"
+          },
+          "F_KPFD": {
+            "Kpfd_A_per_rad": 3.4451277104004126e-06,
+            "Iup_A": 2.164637581134512e-05,
+            "Idown_A": 2.164637581134512e-05,
+            "source": "model/pll_linear_kernel.m"
+          },
+          "F_LF_TF": {
+            "zero_Hz": 24107.357878581042,
+            "poles_rad_per_s": [
+              0,
+              -1907911.0765430261
+            ],
+            "nonzero_pole_Hz": 303653.4788116021,
+            "source": "model/pll_linear_kernel.m"
+          },
+          "F_LOOP": {
+            "UGF_Hz": 140973.08033208887,
+            "BW_Hz": 232329.59218206312,
+            "PM_deg": 55.392509402943745,
+            "characteristic_descending": [
+              3.984877461443416e-16,
+              7.60279184735455e-10,
+              0.0007318358643022283,
+              110.85190787274335
+            ],
+            "routh_stable": true,
+            "T_definition": "L/(1+L); normalized reference phase response; H_ref=N*T",
+            "source": "model/pll_linear_kernel.m; characterization/characterize_loop.m"
+          }
+        },
+        "diagnostics": {
+          "scan": {
+            "minimum_Hz": 2.4107357878581044,
+            "maximum_Hz": 1000000000,
+            "points": 8000
+          },
+          "UGF_over_fref": 0.014097308033208886,
+          "BW_over_fref": 0.02323295921820631,
+          "sampling_equivalence": "NOT_ESTABLISHED",
+          "transient_lock": "NOT_EVALUATED",
+          "MATLAB_runtime_calls": 0,
+          "behavioral_TB_calls": 0
+        },
+        "response": [],
+        "scope": "CONDITIONAL_LOCKED_CONTINUOUS_SMALL_SIGNAL_ONLY",
+        "verified_joint_block_spec": false
+      },
+      "M1_status": "OK",
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.1359282786812562,
+        "Kvco_local_Hz_per_V": 40968302.0710172,
+        "UGF_Hz": 140973.08033208887,
+        "BW_Hz": 232329.59218206312,
+        "PM_deg": 55.392509402943745
+      },
+      "judgment": {
+        "m1_feasibility": "FEASIBLE",
+        "all_enabled_specs_status": "UNKNOWN",
+        "constraints": [
+          {
+            "metric": "BW_Hz",
+            "unit": "Hz",
+            "enabled": true,
+            "min": 150000,
+            "max": 300000,
+            "evaluation_source": "M1",
+            "tolerance": 0.0,
+            "normalization_scale": 75000.0,
+            "support_status": "M1_SUPPORTED",
+            "protocol": "continuous_normalized_T_first_downward_minus3dB",
+            "value": 232329.59218206312,
+            "margin": 67670.40781793688,
+            "normalized_margin": 0.9022721042391584,
+            "bound_margins": {
+              "min": 82329.59218206312,
+              "max": 67670.40781793688
+            },
+            "tightest_bound": "max",
+            "status": "SATISFIED"
+          },
+          {
+            "metric": "PM_deg",
+            "unit": "deg",
+            "enabled": true,
+            "min": 50,
+            "evaluation_source": "M1",
+            "tolerance": 0.0,
+            "normalization_scale": 50,
+            "support_status": "M1_SUPPORTED",
+            "protocol": "180_plus_continuous_L_phase_at_UGF",
+            "value": 55.392509402943745,
+            "margin": 5.392509402943745,
+            "normalized_margin": 0.10785018805887489,
+            "bound_margins": {
+              "min": 5.392509402943745
+            },
+            "tightest_bound": "min",
+            "status": "SATISFIED"
+          },
+          {
+            "metric": "lock_time_s",
+            "unit": "s",
+            "enabled": true,
+            "max": 4e-05,
+            "evaluation_source": "M2",
+            "tolerance": 0.0,
+            "normalization_scale": 4e-05,
+            "support_status": "PENDING_M2",
+            "protocol": "NOT_EVALUATED_IN_STAGE7",
+            "value": null,
+            "margin": null,
+            "normalized_margin": null,
+            "bound_margins": {},
+            "tightest_bound": null,
+            "status": "UNKNOWN"
+          },
+          {
+            "metric": "jitter_s",
+            "unit": "s",
+            "enabled": true,
+            "max": 1e-11,
+            "evaluation_source": "UNSUPPORTED",
+            "tolerance": 0.0,
+            "normalization_scale": 1e-11,
+            "support_status": "UNSUPPORTED",
+            "protocol": "NOT_EVALUATED_IN_STAGE7",
+            "value": null,
+            "margin": null,
+            "normalized_margin": null,
+            "bound_margins": {},
+            "tightest_bound": null,
+            "status": "UNKNOWN"
+          }
+        ],
+        "minimum_normalized_margin": 0.10785018805887489,
+        "verified_joint_block_spec": false,
+        "M2_status": "NOT_EVALUATED"
+      },
+      "quick_minus_formal": {
+        "output_frequency_Hz": 0,
+        "Vctrl_required_V": 0.0,
+        "Kvco_local_Hz_per_V": 0.0,
+        "UGF_Hz": -6.83940015733242e-09,
+        "BW_Hz": -1.3111275620758533e-07,
+        "PM_deg": 6.252776074688882e-13
+      },
+      "cost": {
+        "analytic_calls": 116,
+        "M1_calls": 101,
+        "candidate_generations": 235,
+        "M2_calls": 0,
+        "LLM_calls": 0,
+        "proposals": 235,
+        "duplicates": 0,
+        "screen_rejections": 134,
+        "seed_failures": 0,
+        "analytic_failures": 0,
+        "M1_failures": 0,
+        "M1_budget_skips": 0,
+        "sobol_samples": 219
+      }
+    }
+  ],
+  "regions": {
+    "metadata": {
+      "problem_schema_version": "pll-research-problem-2.0",
+      "problem_sha256": "f6d7ef53e29ee0ef56950fcf7d77e388ed8cb15487d42260fde46fef1726c7e5",
+      "problem_id": "stage7_continuous_global_BW_PM",
+      "model_fingerprint": "9d9efbdb455680f3117b9c6e76dc695481e358aae283cb0c89c7dab112d527d8",
+      "source_fingerprint": "8ee0be2a2621b0bdf1b1bb2c010971662f1714ff0d259f074740c6486dc35a79",
+      "seed": 20261110,
+      "scope": "STAGE7_CONTINUOUS_M1_EXPLORATION_ONLY"
+    },
+    "model": {
+      "model_id": "ideal_cppll_locked_continuous_m1_v1",
+      "model_sha256": "9d9efbdb455680f3117b9c6e76dc695481e358aae283cb0c89c7dab112d527d8",
+      "source_fingerprints": {
+        "pll_allocation/block_space/contracts.py": "8aa26fc3520c52f3037332b306d0ec36074ae0c5541061f1c6a7be011924eaab",
+        "pll_allocation/physics_mapping/model.py": "412dbbbec9a499c56fe10781f2ff1debb525ead8fb411a2f72f056d36e8a2e34",
+        "pll_allocation/physics_mapping/registry.py": "a032f9e1c8dbef6e07e5c7da2b7213be659973d2e37a909619f40a929b9a8e73",
+        "pll_allocation/physics_mapping/experiment.py": "850196405effd005887a568bf19521214af1578aad785b25e384c7aecf4ca8de",
+        "pll_allocation/allocation/physics.py": "f10aa7d11044d484a18bd6aaa3b420f08f69f1215ce9c7d746132a4e72872860",
+        "pll_allocation/allocation/allocate.py": "bf570c5e05f29afc1f0d75723fca0a1f781fa321a20a4ab459ffe64ee4cb1535",
+        "pll_allocation/allocation/multispec_search.py": "68dc68bb82216826c1127d4af54b9dc42de99d7d797f7d0e95060546cdd871de",
+        "pll_allocation/allocation/agent.py": "b1c66dc9253ef0c6235d12a088a5538bc8a0744adfd93c3dde9d585cf009b183",
+        "pll_allocation/pipeline.py": "e18384c0e87ace8445758eb7baf038aa4e4279ddb638c88d8933ec753157a28e",
+        "pll_allocation/exploration/__init__.py": "177cdfb18ae27e540090f99a8d5d149d992b6cdcd84301dd45cdb912f46e91d2",
+        "pll_allocation/exploration/contracts.py": "4938560d9f86d985b16f3aae96aa60b97e54278941d868a9fe2874c853a63861",
+        "pll_allocation/exploration/engine.py": "521055e8ce5044b296822fda5dc6b828825333062475dbb1eeae2b62a8fa83fd",
+        "pll_allocation/exploration/regions.py": "9a92a5563e1a135ab594643a13fa5d3a608333cb633a5b5c83260e08691df832"
+      },
+      "scan": "unchanged formal M1 default FrequencyScan(points=8000)",
+      "domain_status": "USER_DECLARED_MATHEMATICAL_DOMAIN; M2_EQUIVALENCE_NOT_ESTABLISHED"
+    },
+    "cost": {
+      "analytic_calls": 166,
+      "M1_calls": 151,
+      "candidate_generations": 308,
+      "M2_calls": 0,
+      "LLM_calls": 0,
+      "proposals": 308,
+      "duplicates": 2,
+      "screen_rejections": 155,
+      "seed_failures": 0,
+      "analytic_failures": 0,
+      "M1_failures": 0,
+      "M1_budget_skips": 0,
+      "sobol_samples": 256,
+      "wall_time_s": 7.29544330004137,
+      "process_cpu_s": 6.9375,
+      "timing_scope": "post-resolution screening/sampling/sensitivity; excludes startup and final export",
+      "monetary_cost": null
+    },
+    "status": "M1_FEASIBLE_SAMPLES_FOUND",
+    "run_status": "M1_FEASIBLE_SAMPLES_FOUND",
+    "scientific_sha256": "ec22bef631e789c912e76b44149a4e2a4bc2e1fdc505126d11655ecbb0835497",
+    "regions": [
+      {
+        "region_id": "R001",
+        "representative_evidence_id": "S000003",
+        "representative_parameters": {
+          "schema_version": "pll-physics-mapping-2.0",
+          "conventions": {
+            "vco_f0": "frequency_at_zero_volts",
+            "phase_error": "reference_minus_feedback_rad",
+            "lf_topology": "C1_shunt_Rz_series_C2",
+            "cp_leakage": "positive_injected_into_lf"
+          },
+          "values": {
+            "Icp": {
+              "value": 9.442030184751138e-05,
+              "unit": "A"
+            },
+            "Rz": {
+              "value": 2304.686210698951,
+              "unit": "Ohm"
+            },
+            "C1": {
+              "value": 2e-11,
+              "unit": "F"
+            },
+            "C2": {
+              "value": 4e-09,
+              "unit": "F"
+            },
+            "f0": {
+              "value": 52788332.69965978,
+              "unit": "Hz"
+            },
+            "Kvco": {
+              "value": 45352778.83390038,
+              "unit": "Hz/V"
+            },
+            "f_ref": {
+              "value": 10000000,
+              "unit": "Hz"
+            },
+            "N": {
+              "value": 8,
+              "unit": "1"
+            },
+            "Vctrl_min": {
+              "value": 0,
+              "unit": "V"
+            },
+            "Vctrl_max": {
+              "value": 1.2,
+              "unit": "V"
+            },
+            "Kvco2": {
+              "value": 0,
+              "unit": "Hz/V^2"
+            },
+            "CP_mismatch": {
+              "value": 0,
+              "unit": "1"
+            },
+            "CP_leakage": {
+              "value": 0,
+              "unit": "A"
+            },
+            "q0": {
+              "value": 0,
+              "unit": "C"
+            },
+            "PFD_reset_delay": {
+              "value": 0,
+              "unit": "s"
+            },
+            "Cload": {
+              "value": 0,
+              "unit": "F"
+            },
+            "Gload": {
+              "value": 0,
+              "unit": "S"
+            }
+          }
+        },
+        "representative_metrics": {
+          "output_frequency_Hz": 80000000,
+          "Vctrl_required_V": 0.5999999999999999,
+          "Kvco_local_Hz_per_V": 45352778.83390038,
+          "UGF_Hz": 195810.6696435914,
+          "BW_Hz": 224999.999999915,
+          "PM_deg": 81.73172210753562
+        },
+        "representative_constraints": [
+          {
+            "metric": "BW_Hz",
+            "unit": "Hz",
+            "enabled": true,
+            "min": 150000,
+            "max": 300000,
+            "evaluation_source": "M1",
+            "tolerance": 0.0,
+            "normalization_scale": 75000.0,
+            "support_status": "M1_SUPPORTED",
+            "protocol": "continuous_normalized_T_first_downward_minus3dB",
+            "value": 224999.999999915,
+            "margin": 74999.99999991499,
+            "normalized_margin": 0.9999999999988665,
+            "bound_margins": {
+              "min": 74999.99999991499,
+              "max": 75000.00000008501
+            },
+            "tightest_bound": "min",
+            "status": "SATISFIED"
+          },
+          {
+            "metric": "PM_deg",
+            "unit": "deg",
+            "enabled": true,
+            "min": 50,
+            "evaluation_source": "M1",
+            "tolerance": 0.0,
+            "normalization_scale": 50,
+            "support_status": "M1_SUPPORTED",
+            "protocol": "180_plus_continuous_L_phase_at_UGF",
+            "value": 81.73172210753562,
+            "margin": 31.731722107535617,
+            "normalized_margin": 0.6346344421507123,
+            "bound_margins": {
+              "min": 31.731722107535617
+            },
+            "tightest_bound": "min",
+            "status": "SATISFIED"
+          },
+          {
+            "metric": "lock_time_s",
+            "unit": "s",
+            "enabled": true,
+            "max": 4e-05,
+            "evaluation_source": "M2",
+            "tolerance": 0.0,
+            "normalization_scale": 4e-05,
+            "support_status": "PENDING_M2",
+            "protocol": "NOT_EVALUATED_IN_STAGE7",
+            "value": null,
+            "margin": null,
+            "normalized_margin": null,
+            "bound_margins": {},
+            "tightest_bound": null,
+            "status": "UNKNOWN"
+          },
+          {
+            "metric": "jitter_s",
+            "unit": "s",
+            "enabled": true,
+            "max": 1e-11,
+            "evaluation_source": "UNSUPPORTED",
+            "tolerance": 0.0,
+            "normalization_scale": 1e-11,
+            "support_status": "UNSUPPORTED",
+            "protocol": "NOT_EVALUATED_IN_STAGE7",
+            "value": null,
+            "margin": null,
+            "normalized_margin": null,
+            "bound_margins": {},
+            "tightest_bound": null,
+            "status": "UNKNOWN"
+          }
+        ],
+        "tightest_constraint": {
+          "metric": "PM_deg",
+          "unit": "deg",
+          "enabled": true,
+          "min": 50,
+          "evaluation_source": "M1",
+          "tolerance": 0.0,
+          "normalization_scale": 50,
+          "support_status": "M1_SUPPORTED",
+          "protocol": "180_plus_continuous_L_phase_at_UGF",
+          "value": 81.73172210753562,
+          "margin": 31.731722107535617,
+          "normalized_margin": 0.6346344421507123,
+          "bound_margins": {
+            "min": 31.731722107535617
+          },
+          "tightest_bound": "min",
+          "status": "SATISFIED"
+        },
+        "bounds": {
+          "Icp": {
+            "min": 8.128565033210737e-05,
+            "max": 0.00010967733375510335,
+            "unit": "A",
+            "scale": "log"
+          },
+          "Rz": {
+            "min": 1944.266264338488,
+            "max": 2731.9192989202465,
+            "unit": "Ohm",
+            "scale": "log"
+          },
+          "C1": {
+            "min": 2e-11,
+            "max": 2.2899951292871823e-11,
+            "unit": "F",
+            "scale": "log"
+          },
+          "C2": {
+            "min": 3.4435666373269363e-09,
+            "max": 4e-09,
+            "unit": "F",
+            "scale": "log"
+          },
+          "f0": {
+            "min": 50838332.69965978,
+            "max": 54738332.69965978,
+            "unit": "Hz",
+            "scale": "linear"
+          },
+          "Kvco": {
+            "min": 39481887.160896525,
+            "max": 52096662.441045545,
+            "unit": "Hz/V",
+            "scale": "log"
+          }
+        },
+        "normalized_bounds": {
+          "Icp": [
+            0.468078284938891,
+            0.568078284938891
+          ],
+          "Rz": [
+            0.3992805156775928,
+            0.4992805156775928
+          ],
+          "C1": [
+            0.0,
+            0.05
+          ],
+          "C2": [
+            0.95,
+            1.0
+          ],
+          "f0": [
+            0.2779059666579431,
+            0.37790596665794307
+          ],
+          "Kvco": [
+            0.7452977373966406,
+            0.8452977373966407
+          ]
+        },
+        "support_evidence_ids": [
+          "S000003"
+        ],
+        "status": "SAMPLED_POINT_SUPPORTED_SEARCH_SUGGESTION",
+        "whole_region_M1_certified": false,
+        "M2_status": "NOT_EVALUATED"
+      },
+      {
+        "region_id": "R002",
+        "representative_evidence_id": "S000229",
+        "representative_parameters": {
+          "schema_version": "pll-physics-mapping-2.0",
+          "conventions": {
+            "vco_f0": "frequency_at_zero_volts",
+            "phase_error": "reference_minus_feedback_rad",
+            "lf_topology": "C1_shunt_Rz_series_C2",
+            "cp_leakage": "positive_injected_into_lf"
+          },
+          "values": {
+            "Icp": {
+              "value": 0.0001931183345777089,
+              "unit": "A"
+            },
+            "Rz": {
+              "value": 5791.992998480771,
+              "unit": "Ohm"
+            },
+            "C1": {
+              "value": 7.613295686002012e-11,
+              "unit": "F"
+            },
+            "C2": {
+              "value": 9.61346961915235e-10,
+              "unit": "F"
+            },
+            "f0": {
+              "value": 73167870.02142519,
+              "unit": "Hz"
+            },
+            "Kvco": {
+              "value": 6541191.815267658,
+              "unit": "Hz/V"
+            },
+            "f_ref": {
+              "value": 10000000,
+              "unit": "Hz"
+            },
+            "N": {
+              "value": 8,
+              "unit": "1"
+            },
+            "Vctrl_min": {
+              "value": 0,
+              "unit": "V"
+            },
+            "Vctrl_max": {
+              "value": 1.2,
+              "unit": "V"
+            },
+            "Kvco2": {
+              "value": 0,
+              "unit": "Hz/V^2"
+            },
+            "CP_mismatch": {
+              "value": 0,
+              "unit": "1"
+            },
+            "CP_leakage": {
+              "value": 0,
+              "unit": "A"
+            },
+            "q0": {
+              "value": 0,
+              "unit": "C"
+            },
+            "PFD_reset_delay": {
+              "value": 0,
+              "unit": "s"
+            },
+            "Cload": {
+              "value": 0,
+              "unit": "F"
+            },
+            "Gload": {
+              "value": 0,
+              "unit": "S"
+            }
+          }
+        },
+        "representative_metrics": {
+          "output_frequency_Hz": 80000000,
+          "Vctrl_required_V": 1.0444778522819163,
+          "Kvco_local_Hz_per_V": 6541191.815267658,
+          "UGF_Hz": 130868.03403531743,
+          "BW_Hz": 209633.31997809457,
+          "PM_deg": 59.107977323861206
+        },
+        "representative_constraints": [
+          {
+            "metric": "BW_Hz",
+            "unit": "Hz",
+            "enabled": true,
+            "min": 150000,
+            "max": 300000,
+            "evaluation_source": "M1",
+            "tolerance": 0.0,
+            "normalization_scale": 75000.0,
+            "support_status": "M1_SUPPORTED",
+            "protocol": "continuous_normalized_T_first_downward_minus3dB",
+            "value": 209633.31997809457,
+            "margin": 59633.31997809457,
+            "normalized_margin": 0.795110933041261,
+            "bound_margins": {
+              "min": 59633.31997809457,
+              "max": 90366.68002190543
+            },
+            "tightest_bound": "min",
+            "status": "SATISFIED"
+          },
+          {
+            "metric": "PM_deg",
+            "unit": "deg",
+            "enabled": true,
+            "min": 50,
+            "evaluation_source": "M1",
+            "tolerance": 0.0,
+            "normalization_scale": 50,
+            "support_status": "M1_SUPPORTED",
+            "protocol": "180_plus_continuous_L_phase_at_UGF",
+            "value": 59.107977323861206,
+            "margin": 9.107977323861206,
+            "normalized_margin": 0.18215954647722413,
+            "bound_margins": {
+              "min": 9.107977323861206
+            },
+            "tightest_bound": "min",
+            "status": "SATISFIED"
+          },
+          {
+            "metric": "lock_time_s",
+            "unit": "s",
+            "enabled": true,
+            "max": 4e-05,
+            "evaluation_source": "M2",
+            "tolerance": 0.0,
+            "normalization_scale": 4e-05,
+            "support_status": "PENDING_M2",
+            "protocol": "NOT_EVALUATED_IN_STAGE7",
+            "value": null,
+            "margin": null,
+            "normalized_margin": null,
+            "bound_margins": {},
+            "tightest_bound": null,
+            "status": "UNKNOWN"
+          },
+          {
+            "metric": "jitter_s",
+            "unit": "s",
+            "enabled": true,
+            "max": 1e-11,
+            "evaluation_source": "UNSUPPORTED",
+            "tolerance": 0.0,
+            "normalization_scale": 1e-11,
+            "support_status": "UNSUPPORTED",
+            "protocol": "NOT_EVALUATED_IN_STAGE7",
+            "value": null,
+            "margin": null,
+            "normalized_margin": null,
+            "bound_margins": {},
+            "tightest_bound": null,
+            "status": "UNKNOWN"
+          }
+        ],
+        "tightest_constraint": {
+          "metric": "PM_deg",
+          "unit": "deg",
+          "enabled": true,
+          "min": 50,
+          "evaluation_source": "M1",
+          "tolerance": 0.0,
+          "normalization_scale": 50,
+          "support_status": "M1_SUPPORTED",
+          "protocol": "180_plus_continuous_L_phase_at_UGF",
+          "value": 59.107977323861206,
+          "margin": 9.107977323861206,
+          "normalized_margin": 0.18215954647722413,
+          "bound_margins": {
+            "min": 9.107977323861206
+          },
+          "tightest_bound": "min",
+          "status": "SATISFIED"
+        },
+        "bounds": {
+          "Icp": {
+            "min": 0.00016625396350198495,
+            "max": 0.0002243236213109749,
+            "unit": "A",
+            "scale": "log"
+          },
+          "Rz": {
+            "min": 4886.208169230842,
+            "max": 6865.688430079939,
+            "unit": "Ohm",
+            "scale": "log"
+          },
+          "C1": {
+            "min": 6.649180680460086e-11,
+            "max": 8.71720501938386e-11,
+            "unit": "F",
+            "scale": "log"
+          },
+          "C2": {
+            "min": 8.276155812367303e-10,
+            "max": 1.1166875082301067e-09,
+            "unit": "F",
+            "scale": "log"
+          },
+          "f0": {
+            "min": 71217870.02142519,
+            "max": 75117870.02142519,
+            "unit": "Hz",
+            "scale": "linear"
+          },
+          "Kvco": {
+            "min": 5694438.219409256,
+            "max": 7513856.277918028,
+            "unit": "Hz/V",
+            "scale": "log"
+          }
+        },
+        "normalized_bounds": {
+          "Icp": [
+            0.7069337487220767,
+            0.8069337487220768
+          ],
+          "Rz": [
+            0.6702238952741025,
+            0.7702238952741026
+          ],
+          "C1": [
+            0.4436204543337224,
+            0.5436204543337224
+          ],
+          "C2": [
+            0.474084890261292,
+            0.5740848902612921
+          ],
+          "f0": [
+            0.8004582056775689,
+            0.900458205677569
+          ],
+          "Kvco": [
+            0.04690635651350006,
+            0.14690635651350006
+          ]
+        },
+        "support_evidence_ids": [
+          "S000229"
+        ],
+        "status": "SAMPLED_POINT_SUPPORTED_SEARCH_SUGGESTION",
+        "whole_region_M1_certified": false,
+        "M2_status": "NOT_EVALUATED"
+      },
+      {
+        "region_id": "R003",
+        "representative_evidence_id": "S000235",
+        "representative_parameters": {
+          "schema_version": "pll-physics-mapping-2.0",
+          "conventions": {
+            "vco_f0": "frequency_at_zero_volts",
+            "phase_error": "reference_minus_feedback_rad",
+            "lf_topology": "C1_shunt_Rz_series_C2",
+            "cp_leakage": "positive_injected_into_lf"
+          },
+          "values": {
+            "Icp": {
+              "value": 2.164637581134512e-05,
+              "unit": "A"
+            },
+            "Rz": {
+              "value": 9432.399941845724,
+              "unit": "Ohm"
+            },
+            "C1": {
+              "value": 6.035933612809032e-11,
+              "unit": "F"
+            },
+            "C2": {
+              "value": 6.999198486073647e-10,
+              "unit": "F"
+            },
+            "f0": {
+              "value": 74431249.21899289,
+              "unit": "Hz"
+            },
+            "Kvco": {
+              "value": 40968302.0710172,
+              "unit": "Hz/V"
+            },
+            "f_ref": {
+              "value": 10000000,
+              "unit": "Hz"
+            },
+            "N": {
+              "value": 8,
+              "unit": "1"
+            },
+            "Vctrl_min": {
+              "value": 0,
+              "unit": "V"
+            },
+            "Vctrl_max": {
+              "value": 1.2,
+              "unit": "V"
+            },
+            "Kvco2": {
+              "value": 0,
+              "unit": "Hz/V^2"
+            },
+            "CP_mismatch": {
+              "value": 0,
+              "unit": "1"
+            },
+            "CP_leakage": {
+              "value": 0,
+              "unit": "A"
+            },
+            "q0": {
+              "value": 0,
+              "unit": "C"
+            },
+            "PFD_reset_delay": {
+              "value": 0,
+              "unit": "s"
+            },
+            "Cload": {
+              "value": 0,
+              "unit": "F"
+            },
+            "Gload": {
+              "value": 0,
+              "unit": "S"
+            }
+          }
+        },
+        "representative_metrics": {
+          "output_frequency_Hz": 80000000,
+          "Vctrl_required_V": 0.1359282786812562,
+          "Kvco_local_Hz_per_V": 40968302.0710172,
+          "UGF_Hz": 140973.08033208887,
+          "BW_Hz": 232329.59218206312,
+          "PM_deg": 55.392509402943745
+        },
+        "representative_constraints": [
+          {
+            "metric": "BW_Hz",
+            "unit": "Hz",
+            "enabled": true,
+            "min": 150000,
+            "max": 300000,
+            "evaluation_source": "M1",
+            "tolerance": 0.0,
+            "normalization_scale": 75000.0,
+            "support_status": "M1_SUPPORTED",
+            "protocol": "continuous_normalized_T_first_downward_minus3dB",
+            "value": 232329.59218206312,
+            "margin": 67670.40781793688,
+            "normalized_margin": 0.9022721042391584,
+            "bound_margins": {
+              "min": 82329.59218206312,
+              "max": 67670.40781793688
+            },
+            "tightest_bound": "max",
+            "status": "SATISFIED"
+          },
+          {
+            "metric": "PM_deg",
+            "unit": "deg",
+            "enabled": true,
+            "min": 50,
+            "evaluation_source": "M1",
+            "tolerance": 0.0,
+            "normalization_scale": 50,
+            "support_status": "M1_SUPPORTED",
+            "protocol": "180_plus_continuous_L_phase_at_UGF",
+            "value": 55.392509402943745,
+            "margin": 5.392509402943745,
+            "normalized_margin": 0.10785018805887489,
+            "bound_margins": {
+              "min": 5.392509402943745
+            },
+            "tightest_bound": "min",
+            "status": "SATISFIED"
+          },
+          {
+            "metric": "lock_time_s",
+            "unit": "s",
+            "enabled": true,
+            "max": 4e-05,
+            "evaluation_source": "M2",
+            "tolerance": 0.0,
+            "normalization_scale": 4e-05,
+            "support_status": "PENDING_M2",
+            "protocol": "NOT_EVALUATED_IN_STAGE7",
+            "value": null,
+            "margin": null,
+            "normalized_margin": null,
+            "bound_margins": {},
+            "tightest_bound": null,
+            "status": "UNKNOWN"
+          },
+          {
+            "metric": "jitter_s",
+            "unit": "s",
+            "enabled": true,
+            "max": 1e-11,
+            "evaluation_source": "UNSUPPORTED",
+            "tolerance": 0.0,
+            "normalization_scale": 1e-11,
+            "support_status": "UNSUPPORTED",
+            "protocol": "NOT_EVALUATED_IN_STAGE7",
+            "value": null,
+            "margin": null,
+            "normalized_margin": null,
+            "bound_margins": {},
+            "tightest_bound": null,
+            "status": "UNKNOWN"
+          }
+        ],
+        "tightest_constraint": {
+          "metric": "PM_deg",
+          "unit": "deg",
+          "enabled": true,
+          "min": 50,
+          "evaluation_source": "M1",
+          "tolerance": 0.0,
+          "normalization_scale": 50,
+          "support_status": "M1_SUPPORTED",
+          "protocol": "180_plus_continuous_L_phase_at_UGF",
+          "value": 55.392509402943745,
+          "margin": 5.392509402943745,
+          "normalized_margin": 0.10785018805887489,
+          "bound_margins": {
+            "min": 5.392509402943745
+          },
+          "tightest_bound": "min",
+          "status": "SATISFIED"
+        },
+        "bounds": {
+          "Icp": {
+            "min": 2e-05,
+            "max": 2.5144134661669357e-05,
+            "unit": "A",
+            "scale": "log"
+          },
+          "Rz": {
+            "min": 7957.307556032624,
+            "max": 11180.938783179345,
+            "unit": "Ohm",
+            "scale": "log"
+          },
+          "C1": {
+            "min": 5.271568952801981e-11,
+            "max": 6.911129287016732e-11,
+            "unit": "F",
+            "scale": "log"
+          },
+          "C2": {
+            "min": 6.025551598668119e-10,
+            "max": 8.130173419854882e-10,
+            "unit": "F",
+            "scale": "log"
+          },
+          "f0": {
+            "min": 72481249.21899289,
+            "max": 76381249.21899289,
+            "unit": "Hz",
+            "scale": "linear"
+          },
+          "Kvco": {
+            "min": 35664978.44520973,
+            "max": 47060221.19599917,
+            "unit": "Hz/V",
+            "scale": "log"
+          }
+        },
+        "normalized_bounds": {
+          "Icp": [
+            0.0,
+            0.07640615403652201
+          ],
+          "Rz": [
+            0.8136069642379877,
+            0.9136069642379878
+          ],
+          "C1": [
+            0.35788880549371227,
+            0.45788880549371225
+          ],
+          "C2": [
+            0.36814432851970225,
+            0.4681443285197022
+          ],
+          "f0": [
+            0.8328525440767407,
+            0.9328525440767408
+          ],
+          "Kvco": [
+            0.7086270254105324,
+            0.8086270254105324
+          ]
+        },
+        "support_evidence_ids": [
+          "S000235"
+        ],
+        "status": "SAMPLED_POINT_SUPPORTED_SEARCH_SUGGESTION",
+        "whole_region_M1_certified": false,
+        "M2_status": "NOT_EVALUATED"
+      }
+    ],
+    "feasible_evidence_ids": [
+      "S000001",
+      "S000002",
+      "S000003",
+      "S000004",
+      "S000006",
+      "S000009",
+      "S000011",
+      "S000012",
+      "S000014",
+      "S000015",
+      "S000016",
+      "S000040",
+      "S000048",
+      "S000064",
+      "S000103",
+      "S000120",
+      "S000131",
+      "S000156",
+      "S000175",
+      "S000185",
+      "S000199",
+      "S000229",
+      "S000235",
+      "S000257"
+    ],
+    "selection": "largest worst normalized margin, then farthest in configured normalized coordinates",
+    "scope": "Local boxes suggest where to search; unsampled interiors and corners are not certified."
+  },
+  "sensitivity": {
+    "metadata": {
+      "problem_schema_version": "pll-research-problem-2.0",
+      "problem_sha256": "f6d7ef53e29ee0ef56950fcf7d77e388ed8cb15487d42260fde46fef1726c7e5",
+      "problem_id": "stage7_continuous_global_BW_PM",
+      "model_fingerprint": "9d9efbdb455680f3117b9c6e76dc695481e358aae283cb0c89c7dab112d527d8",
+      "source_fingerprint": "8ee0be2a2621b0bdf1b1bb2c010971662f1714ff0d259f074740c6486dc35a79",
+      "seed": 20261110,
+      "scope": "STAGE7_CONTINUOUS_M1_EXPLORATION_ONLY"
+    },
+    "model": {
+      "model_id": "ideal_cppll_locked_continuous_m1_v1",
+      "model_sha256": "9d9efbdb455680f3117b9c6e76dc695481e358aae283cb0c89c7dab112d527d8",
+      "source_fingerprints": {
+        "pll_allocation/block_space/contracts.py": "8aa26fc3520c52f3037332b306d0ec36074ae0c5541061f1c6a7be011924eaab",
+        "pll_allocation/physics_mapping/model.py": "412dbbbec9a499c56fe10781f2ff1debb525ead8fb411a2f72f056d36e8a2e34",
+        "pll_allocation/physics_mapping/registry.py": "a032f9e1c8dbef6e07e5c7da2b7213be659973d2e37a909619f40a929b9a8e73",
+        "pll_allocation/physics_mapping/experiment.py": "850196405effd005887a568bf19521214af1578aad785b25e384c7aecf4ca8de",
+        "pll_allocation/allocation/physics.py": "f10aa7d11044d484a18bd6aaa3b420f08f69f1215ce9c7d746132a4e72872860",
+        "pll_allocation/allocation/allocate.py": "bf570c5e05f29afc1f0d75723fca0a1f781fa321a20a4ab459ffe64ee4cb1535",
+        "pll_allocation/allocation/multispec_search.py": "68dc68bb82216826c1127d4af54b9dc42de99d7d797f7d0e95060546cdd871de",
+        "pll_allocation/allocation/agent.py": "b1c66dc9253ef0c6235d12a088a5538bc8a0744adfd93c3dde9d585cf009b183",
+        "pll_allocation/pipeline.py": "e18384c0e87ace8445758eb7baf038aa4e4279ddb638c88d8933ec753157a28e",
+        "pll_allocation/exploration/__init__.py": "177cdfb18ae27e540090f99a8d5d149d992b6cdcd84301dd45cdb912f46e91d2",
+        "pll_allocation/exploration/contracts.py": "4938560d9f86d985b16f3aae96aa60b97e54278941d868a9fe2874c853a63861",
+        "pll_allocation/exploration/engine.py": "521055e8ce5044b296822fda5dc6b828825333062475dbb1eeae2b62a8fa83fd",
+        "pll_allocation/exploration/regions.py": "9a92a5563e1a135ab594643a13fa5d3a608333cb633a5b5c83260e08691df832"
+      },
+      "scan": "unchanged formal M1 default FrequencyScan(points=8000)",
+      "domain_status": "USER_DECLARED_MATHEMATICAL_DOMAIN; M2_EQUIVALENCE_NOT_ESTABLISHED"
+    },
+    "cost": {
+      "analytic_calls": 166,
+      "M1_calls": 151,
+      "candidate_generations": 308,
+      "M2_calls": 0,
+      "LLM_calls": 0,
+      "proposals": 308,
+      "duplicates": 2,
+      "screen_rejections": 155,
+      "seed_failures": 0,
+      "analytic_failures": 0,
+      "M1_failures": 0,
+      "M1_budget_skips": 0,
+      "sobol_samples": 256,
+      "wall_time_s": 7.29544330004137,
+      "process_cpu_s": 6.9375,
+      "timing_scope": "post-resolution screening/sampling/sensitivity; excludes startup and final export",
+      "monetary_cost": null
+    },
+    "status": "M1_FEASIBLE_SAMPLES_FOUND",
+    "run_status": "M1_FEASIBLE_SAMPLES_FOUND",
+    "scientific_sha256": "ec22bef631e789c912e76b44149a4e2a4bc2e1fdc505126d11655ecbb0835497",
+    "representatives": [
+      {
+        "region_id": "R001",
+        "center_evidence_id": "S000003",
+        "metric_normalization_scales": {
+          "output_frequency_Hz": 80000000,
+          "Vctrl_required_V": 0.5999999999999999,
+          "Kvco_local_Hz_per_V": 45352778.83390038,
+          "UGF_Hz": 195810.6696435914,
+          "BW_Hz": 75000.0,
+          "PM_deg": 50
+        },
+        "columns": {
+          "Icp": {
+            "status": "OK",
+            "evidence_ids": [
+              "S000273",
+              "S000274"
+            ],
+            "parameter_points": [
+              9.301655151571586e-05,
+              9.584523674228965e-05
+            ],
+            "normalized_points": [
+              0.513078284938891,
+              0.523078284938891
+            ],
+            "stencil": "CENTRAL",
+            "normalized_derivative": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": 0.0,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": 2.9635738783607826,
+              "BW_Hz": 8.798291822206416,
+              "PM_deg": 0.10608862895654161
+            },
+            "log_elasticity": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": 0.0,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": 0.9892281007812085,
+              "BW_Hz": 0.9789311571287845,
+              "PM_deg": 0.021664563646288805
+            },
+            "PM_deg_per_log_parameter": 1.770662717310838
+          },
+          "Rz": {
+            "status": "OK",
+            "evidence_ids": [
+              "S000275",
+              "S000276"
+            ],
+            "parameter_points": [
+              2265.8241277919255,
+              2344.2148331971775
+            ],
+            "normalized_points": [
+              0.4442805156775928,
+              0.4542805156775928
+            ],
+            "stencil": "CENTRAL",
+            "normalized_derivative": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": 0.0,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": 3.328049963907946,
+              "BW_Hz": 9.77483767577838,
+              "PM_deg": 0.24092097473723562
+            },
+            "log_elasticity": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": 0.0,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": 0.978443554932765,
+              "BW_Hz": 0.9578649418810489,
+              "PM_deg": 0.043335782040055656
+            },
+            "PM_deg_per_log_parameter": 3.5417082236417787
+          },
+          "C1": {
+            "status": "OK",
+            "evidence_ids": [
+              "S000003",
+              "S000278"
+            ],
+            "parameter_points": [
+              2e-11,
+              2.02726467069964e-11
+            ],
+            "normalized_points": [
+              0.0,
+              0.005
+            ],
+            "stencil": "ONE_SIDED",
+            "normalized_derivative": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": 0.0,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": -0.02198961768678818,
+              "BW_Hz": 0.43127120024260757,
+              "PM_deg": -0.17561199258625493
+            },
+            "log_elasticity": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": 0.0,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": -0.008120538764257968,
+              "BW_Hz": 0.053066012660192924,
+              "PM_deg": -0.039681993648312236
+            },
+            "PM_deg_per_log_parameter": -3.2424065202845616
+          },
+          "C2": {
+            "status": "OK",
+            "evidence_ids": [
+              "S000279",
+              "S000003"
+            ],
+            "parameter_points": [
+              3.940531843074913e-09,
+              4e-09
+            ],
+            "normalized_points": [
+              0.995,
+              1.0
+            ],
+            "stencil": "ONE_SIDED",
+            "normalized_derivative": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": 0.0,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": -0.008393686358672891,
+              "BW_Hz": -0.6678521131479641,
+              "PM_deg": 0.30127845850847706
+            },
+            "log_elasticity": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": 0.0,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": -0.002801822546952924,
+              "BW_Hz": -0.07427017715845963,
+              "PM_deg": 0.06155234813596595
+            },
+            "PM_deg_per_log_parameter": 5.028461007149053
+          },
+          "f0": {
+            "status": "OK",
+            "evidence_ids": [
+              "S000281",
+              "S000282"
+            ],
+            "parameter_points": [
+              52593332.69965978,
+              52983332.69965978
+            ],
+            "normalized_points": [
+              0.3229059666579431,
+              0.3329059666579431
+            ],
+            "stencil": "CENTRAL",
+            "normalized_derivative": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": -1.4332087618722502,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": 0.0,
+              "BW_Hz": 0.0,
+              "PM_deg": 0.0
+            },
+            "log_elasticity": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": -1.9399397923222845,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": 0.0,
+              "BW_Hz": 0.0,
+              "PM_deg": 0.0
+            },
+            "PM_deg_per_log_parameter": 0.0
+          },
+          "Kvco": {
+            "status": "OK",
+            "evidence_ids": [
+              "S000283",
+              "S000284"
+            ],
+            "parameter_points": [
+              44728393.72564674,
+              45985880.03345375
+            ],
+            "normalized_points": [
+              0.7902977373966407,
+              0.8002977373966407
+            ],
+            "stencil": "CENTRAL",
+            "normalized_derivative": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": -2.7726775296667356,
+              "Kvco_local_Hz_per_V": 2.7726775296667308,
+              "UGF_Hz": 2.742811540692711,
+              "BW_Hz": 8.142872735557372,
+              "PM_deg": 0.09818602331722551
+            },
+            "log_elasticity": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": -0.9999999999999984,
+              "Kvco_local_Hz_per_V": 1.0000000000000013,
+              "UGF_Hz": 0.9892283189856551,
+              "BW_Hz": 0.9789311118242696,
+              "PM_deg": 0.02166444881679937
+            },
+            "PM_deg_per_log_parameter": 1.7706561115547845
+          }
+        },
+        "normalized_matrix": {
+          "output_frequency_Hz": {
+            "Icp": 0.0,
+            "Rz": 0.0,
+            "C1": 0.0,
+            "C2": 0.0,
+            "f0": 0.0,
+            "Kvco": 0.0
+          },
+          "Vctrl_required_V": {
+            "Icp": 0.0,
+            "Rz": 0.0,
+            "C1": 0.0,
+            "C2": 0.0,
+            "f0": -1.4332087618722502,
+            "Kvco": -2.7726775296667356
+          },
+          "Kvco_local_Hz_per_V": {
+            "Icp": 0.0,
+            "Rz": 0.0,
+            "C1": 0.0,
+            "C2": 0.0,
+            "f0": 0.0,
+            "Kvco": 2.7726775296667308
+          },
+          "UGF_Hz": {
+            "Icp": 2.9635738783607826,
+            "Rz": 3.328049963907946,
+            "C1": -0.02198961768678818,
+            "C2": -0.008393686358672891,
+            "f0": 0.0,
+            "Kvco": 2.742811540692711
+          },
+          "BW_Hz": {
+            "Icp": 8.798291822206416,
+            "Rz": 9.77483767577838,
+            "C1": 0.43127120024260757,
+            "C2": -0.6678521131479641,
+            "f0": 0.0,
+            "Kvco": 8.142872735557372
+          },
+          "PM_deg": {
+            "Icp": 0.10608862895654161,
+            "Rz": 0.24092097473723562,
+            "C1": -0.17561199258625493,
+            "C2": 0.30127845850847706,
+            "f0": 0.0,
+            "Kvco": 0.09818602331722551
+          }
+        }
+      },
+      {
+        "region_id": "R002",
+        "center_evidence_id": "S000229",
+        "metric_normalization_scales": {
+          "output_frequency_Hz": 80000000,
+          "Vctrl_required_V": 1.0444778522819163,
+          "Kvco_local_Hz_per_V": 6541191.815267658,
+          "UGF_Hz": 130868.03403531743,
+          "BW_Hz": 75000.0,
+          "PM_deg": 50
+        },
+        "columns": {
+          "Icp": {
+            "status": "OK",
+            "evidence_ids": [
+              "S000285",
+              "S000286"
+            ],
+            "parameter_points": [
+              0.0001902472367212641,
+              0.00019603276133103205
+            ],
+            "normalized_points": [
+              0.7519337487220767,
+              0.7619337487220768
+            ],
+            "stencil": "CENTRAL",
+            "normalized_derivative": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": 0.0,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": 2.611905361694278,
+              "BW_Hz": 8.010098449518276,
+              "PM_deg": -0.2796280567354754
+            },
+            "log_elasticity": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": 0.0,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": 0.8718568291580345,
+              "BW_Hz": 0.9565907818367304,
+              "PM_deg": -0.0789617959358551
+            },
+            "PM_deg_per_log_parameter": -4.667106924139934
+          },
+          "Rz": {
+            "status": "OK",
+            "evidence_ids": [
+              "S000287",
+              "S000288"
+            ],
+            "parameter_points": [
+              5694.327246388817,
+              5891.333856115305
+            ],
+            "normalized_points": [
+              0.7152238952741026,
+              0.7252238952741026
+            ],
+            "stencil": "CENTRAL",
+            "normalized_derivative": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": 0.0,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": 2.529232448841561,
+              "BW_Hz": 8.67909918871013,
+              "PM_deg": -0.6347926382277359
+            },
+            "log_elasticity": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": 0.0,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": 0.743637371199342,
+              "BW_Hz": 0.9129633684180758,
+              "PM_deg": -0.15790764969653706
+            },
+            "PM_deg_per_log_parameter": -9.331899431216112
+          },
+          "C1": {
+            "status": "OK",
+            "evidence_ids": [
+              "S000289",
+              "S000290"
+            ],
+            "parameter_points": [
+              7.510904516847866e-11,
+              7.717082685910928e-11
+            ],
+            "normalized_points": [
+              0.48862045433372236,
+              0.4986204543337224
+            ],
+            "stencil": "CENTRAL",
+            "normalized_derivative": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": 0.0,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": -0.3951769264800057,
+              "BW_Hz": -0.08745810845160538,
+              "PM_deg": -0.8257910527474899
+            },
+            "log_elasticity": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": 0.0,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": -0.14592862771522078,
+              "BW_Hz": -0.011554663353062669,
+              "PM_deg": -0.2579548053916645
+            },
+            "PM_deg_per_log_parameter": -15.246967216695353
+          },
+          "C2": {
+            "status": "OK",
+            "evidence_ids": [
+              "S000291",
+              "S000292"
+            ],
+            "parameter_points": [
+              9.470545789175766e-10,
+              9.758550370348675e-10
+            ],
+            "normalized_points": [
+              0.519084890261292,
+              0.529084890261292
+            ],
+            "stencil": "CENTRAL",
+            "normalized_derivative": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": 0.0,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": 0.053290414302014553,
+              "BW_Hz": -0.2665991233931852,
+              "PM_deg": 0.6338977530805602
+            },
+            "log_elasticity": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": 0.0,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": 0.01778872938471271,
+              "BW_Hz": -0.031838675940815894,
+              "PM_deg": 0.1789986111882872
+            },
+            "PM_deg_per_log_parameter": 10.580013419031443
+          },
+          "f0": {
+            "status": "OK",
+            "evidence_ids": [
+              "S000293",
+              "S000294"
+            ],
+            "parameter_points": [
+              72972870.02142519,
+              73362870.02142519
+            ],
+            "normalized_points": [
+              0.8454582056775689,
+              0.8554582056775689
+            ],
+            "stencil": "CENTRAL",
+            "normalized_derivative": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": -5.70832231270508,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": 0.0,
+              "BW_Hz": 0.0,
+              "PM_deg": 0.0
+            },
+            "log_elasticity": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": -10.712263200412432,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": 0.0,
+              "BW_Hz": 0.0,
+              "PM_deg": 0.0
+            },
+            "PM_deg_per_log_parameter": 0.0
+          },
+          "Kvco": {
+            "status": "OK",
+            "evidence_ids": [
+              "S000295",
+              "S000296"
+            ],
+            "parameter_points": [
+              6451137.294581244,
+              6632503.450215594
+            ],
+            "normalized_points": [
+              0.09190635651350006,
+              0.10190635651350007
+            ],
+            "stencil": "CENTRAL",
+            "normalized_derivative": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": -2.7726775296671025,
+              "Kvco_local_Hz_per_V": 2.7726775296671025,
+              "UGF_Hz": 2.417348235871995,
+              "BW_Hz": 7.413454718740612,
+              "PM_deg": -0.2588015752291708
+            },
+            "log_elasticity": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": -1.0000000000000018,
+              "Kvco_local_Hz_per_V": 1.000000000000001,
+              "UGF_Hz": 0.8718581456596525,
+              "BW_Hz": 0.9565945487395201,
+              "PM_deg": -0.07896207100885032
+            },
+            "PM_deg_per_log_parameter": -4.667146864467031
+          }
+        },
+        "normalized_matrix": {
+          "output_frequency_Hz": {
+            "Icp": 0.0,
+            "Rz": 0.0,
+            "C1": 0.0,
+            "C2": 0.0,
+            "f0": 0.0,
+            "Kvco": 0.0
+          },
+          "Vctrl_required_V": {
+            "Icp": 0.0,
+            "Rz": 0.0,
+            "C1": 0.0,
+            "C2": 0.0,
+            "f0": -5.70832231270508,
+            "Kvco": -2.7726775296671025
+          },
+          "Kvco_local_Hz_per_V": {
+            "Icp": 0.0,
+            "Rz": 0.0,
+            "C1": 0.0,
+            "C2": 0.0,
+            "f0": 0.0,
+            "Kvco": 2.7726775296671025
+          },
+          "UGF_Hz": {
+            "Icp": 2.611905361694278,
+            "Rz": 2.529232448841561,
+            "C1": -0.3951769264800057,
+            "C2": 0.053290414302014553,
+            "f0": 0.0,
+            "Kvco": 2.417348235871995
+          },
+          "BW_Hz": {
+            "Icp": 8.010098449518276,
+            "Rz": 8.67909918871013,
+            "C1": -0.08745810845160538,
+            "C2": -0.2665991233931852,
+            "f0": 0.0,
+            "Kvco": 7.413454718740612
+          },
+          "PM_deg": {
+            "Icp": -0.2796280567354754,
+            "Rz": -0.6347926382277359,
+            "C1": -0.8257910527474899,
+            "C2": 0.6338977530805602,
+            "f0": 0.0,
+            "Kvco": -0.2588015752291708
+          }
+        }
+      },
+      {
+        "region_id": "R003",
+        "center_evidence_id": "S000235",
+        "metric_normalization_scales": {
+          "output_frequency_Hz": 80000000,
+          "Vctrl_required_V": 0.1359282786812562,
+          "Kvco_local_Hz_per_V": 40968302.0710172,
+          "UGF_Hz": 140973.08033208887,
+          "BW_Hz": 75000.0,
+          "PM_deg": 50
+        },
+        "columns": {
+          "Icp": {
+            "status": "OK",
+            "evidence_ids": [
+              "S000297",
+              "S000298"
+            ],
+            "parameter_points": [
+              2.1324558292942985e-05,
+              2.197305000784243e-05
+            ],
+            "normalized_points": [
+              0.021406154036522015,
+              0.03140615403652201
+            ],
+            "stencil": "CENTRAL",
+            "normalized_derivative": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": 0.0,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": 2.484590388538342,
+              "BW_Hz": 8.05483731222921,
+              "PM_deg": -0.6143389018724009
+            },
+            "log_elasticity": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": 0.0,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": 0.8293678693832865,
+              "BW_Hz": 0.8679838592425663,
+              "PM_deg": -0.1851132922371872
+            },
+            "PM_deg_per_log_parameter": -10.253568172558335
+          },
+          "Rz": {
+            "status": "OK",
+            "evidence_ids": [
+              "S000299",
+              "S000300"
+            ],
+            "parameter_points": [
+              9273.348914920432,
+              9594.17891844681
+            ],
+            "normalized_points": [
+              0.8586069642379878,
+              0.8686069642379878
+            ],
+            "stencil": "CENTRAL",
+            "normalized_derivative": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": 0.0,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": 2.2401915041938514,
+              "BW_Hz": 7.752497305617079,
+              "PM_deg": -1.3946366681204823
+            },
+            "log_elasticity": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": 0.0,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": 0.6586855217728919,
+              "BW_Hz": 0.7359090126037898,
+              "PM_deg": -0.3701846774232846
+            },
+            "PM_deg_per_log_parameter": -20.502142504868846
+          },
+          "C1": {
+            "status": "OK",
+            "evidence_ids": [
+              "S000301",
+              "S000302"
+            ],
+            "parameter_points": [
+              5.954756376951945e-11,
+              6.118217483968094e-11
+            ],
+            "normalized_points": [
+              0.40288880549371225,
+              0.41288880549371226
+            ],
+            "stencil": "CENTRAL",
+            "normalized_derivative": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": 0.0,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": -0.5449376914418822,
+              "BW_Hz": -1.113458325445263,
+              "PM_deg": -0.956360472827213
+            },
+            "log_elasticity": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": 0.0,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": -0.2012317462369575,
+              "BW_Hz": -0.13273593754283905,
+              "PM_deg": -0.31877877224942536
+            },
+            "PM_deg_per_log_parameter": -17.657731611435317
+          },
+          "C2": {
+            "status": "OK",
+            "evidence_ids": [
+              "S000303",
+              "S000304"
+            ],
+            "parameter_points": [
+              6.895141127593726e-10,
+              7.104826216160681e-10
+            ],
+            "normalized_points": [
+              0.41314432851970223,
+              0.42314432851970224
+            ],
+            "stencil": "CENTRAL",
+            "normalized_derivative": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": 0.0,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": 0.0916787967887482,
+              "BW_Hz": 0.00678963816169804,
+              "PM_deg": 0.4436168040445519
+            },
+            "log_elasticity": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": 0.0,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": 0.030603147401901953,
+              "BW_Hz": 0.0007316443188425043,
+              "PM_deg": 0.1336692838430334
+            },
+            "PM_deg_per_log_parameter": 7.40414635781607
+          },
+          "f0": {
+            "status": "OK",
+            "evidence_ids": [
+              "S000305",
+              "S000306"
+            ],
+            "parameter_points": [
+              74236249.21899289,
+              74626249.21899289
+            ],
+            "normalized_points": [
+              0.8778525440767407,
+              0.8878525440767407
+            ],
+            "stencil": "CENTRAL",
+            "normalized_derivative": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": -7.003366021157582,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": 0.0,
+              "BW_Hz": 0.0,
+              "PM_deg": 0.0
+            },
+            "log_elasticity": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": -13.371315432065686,
+              "Kvco_local_Hz_per_V": 0.0,
+              "UGF_Hz": 0.0,
+              "BW_Hz": 0.0,
+              "PM_deg": 0.0
+            },
+            "PM_deg_per_log_parameter": 0.0
+          },
+          "Kvco": {
+            "status": "OK",
+            "evidence_ids": [
+              "S000307",
+              "S000308"
+            ],
+            "parameter_points": [
+              40404279.35000023,
+              41540198.25580932
+            ],
+            "normalized_points": [
+              0.7536270254105324,
+              0.7636270254105324
+            ],
+            "stencil": "CENTRAL",
+            "normalized_derivative": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": -2.7726775296667285,
+              "Kvco_local_Hz_per_V": 2.7726775296667423,
+              "UGF_Hz": 2.2995192501472417,
+              "BW_Hz": 7.454866960497333,
+              "PM_deg": -0.5685833285880331
+            },
+            "log_elasticity": {
+              "output_frequency_Hz": 0.0,
+              "Vctrl_required_V": -0.9999999999999957,
+              "Kvco_local_Hz_per_V": 0.9999999999999984,
+              "UGF_Hz": 0.8293687359391725,
+              "BW_Hz": 0.8679848716731166,
+              "PM_deg": -0.1851140154155263
+            },
+            "PM_deg_per_log_parameter": -10.25365435607713
+          }
+        },
+        "normalized_matrix": {
+          "output_frequency_Hz": {
+            "Icp": 0.0,
+            "Rz": 0.0,
+            "C1": 0.0,
+            "C2": 0.0,
+            "f0": 0.0,
+            "Kvco": 0.0
+          },
+          "Vctrl_required_V": {
+            "Icp": 0.0,
+            "Rz": 0.0,
+            "C1": 0.0,
+            "C2": 0.0,
+            "f0": -7.003366021157582,
+            "Kvco": -2.7726775296667285
+          },
+          "Kvco_local_Hz_per_V": {
+            "Icp": 0.0,
+            "Rz": 0.0,
+            "C1": 0.0,
+            "C2": 0.0,
+            "f0": 0.0,
+            "Kvco": 2.7726775296667423
+          },
+          "UGF_Hz": {
+            "Icp": 2.484590388538342,
+            "Rz": 2.2401915041938514,
+            "C1": -0.5449376914418822,
+            "C2": 0.0916787967887482,
+            "f0": 0.0,
+            "Kvco": 2.2995192501472417
+          },
+          "BW_Hz": {
+            "Icp": 8.05483731222921,
+            "Rz": 7.752497305617079,
+            "C1": -1.113458325445263,
+            "C2": 0.00678963816169804,
+            "f0": 0.0,
+            "Kvco": 7.454866960497333
+          },
+          "PM_deg": {
+            "Icp": -0.6143389018724009,
+            "Rz": -1.3946366681204823,
+            "C1": -0.956360472827213,
+            "C2": 0.4436168040445519,
+            "f0": 0.0,
+            "Kvco": -0.5685833285880331
+          }
+        }
+      }
+    ],
+    "definition": "d(metric / metric_scale) / d(u); u is configured linear/log axis normalized to [0,1]",
+    "scope": "Six-variable local formal M1 finite differences; not capture/noise derivatives or a global guarantee.",
+    "coupling": {
+      "Icp_Kvco": "Ideal BW/UGF/PM depend on Icp*Kvco/N; tuning also changes with Kvco and f0.",
+      "LF": "C2/C1 sets the ideal phase ceiling; Rz*C2 sets the zero; all three change BW and PM.",
+      "tuning": "Vreq=(N*f_ref-f0)/Kvco; gain splitting must retain interior tuning."
+    }
+  }
+}

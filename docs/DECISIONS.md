@@ -129,3 +129,23 @@ PhaseE扩展problem1.1通过原pipeline.run_multispec/run_pipeline、原SearchCo
 清理前记录F盘master/e11a4b0及340个源码/配置/数据/构建身份指纹。删除两个bundlecheck完整副本及Stage6A/B/C的大型experiments/delivery，共增加C盘可用空间约11.897GiB；340指纹无变化，原两份ZIP未暂存删除保留。应用archive_worktree对两处返回“Another active task still uses this worktree.”、当前工作树返回“The task's primary checkout cannot be removed.”，故未绕过保护删除三处合计约132MiB工作树壳。后续开发和输出只用F盘。
 
 GitHub已有main/master和Stage6A/B独立分支；本轮以F盘已验收实现为正式源码，保留远端历史与独立研究分支，使用普通可追溯合并同步main/master，不强推，不重跑或捏造历史实验。已有快照/Release继续是历史证据，当前能力以F盘README和研究边界为准。同步是否完成以远端SHA和源码树核验回执为准，不提前宣称成功。
+
+## D024 · 2026-11-10 · Stage 7–10 同工作区开发与最终推送约束
+
+用户要求Stage 7–10直接在现有PLL_EVALAGENT本地项目顺序开发，不为各阶段另建分支、Worktree或副本；唯一工作区仍为F:/LJP/概伦AI/PLL_allocation。保留全部用户文件、历史实验及现有未提交修改，禁止破坏性Git操作、强制覆盖与未经确认的合并。沿用现有正式pipeline、M1/M2和allocation；新增agent模块仅承担规划、策略接口与反馈解释，GUI调用同一正式后端。
+
+每阶段运行相应回归并保存新增配置、Action/Observation/Decision、实验、M1/M2及成本；验收后可本地Commit，不自动Push。所有阶段完成先提供完整Diff、测试报告、实验对照和GUI演示，只有用户明确批准最终验收后才可推送GitHub。本轮优先真实LLM首发与反馈修复接入现有确定性优化/M2链；具体Stage 7–10功能划分尚待明确，不将历史已更名Stage6C的Stage7计划直接复用。
+
+开发前已核对master/e395f24859cdd81e3deb5ea83ba3f9598a27cd16及两份原有ZIP未暂存删除，保存14,868个tracked条目指纹，实际完整回归478项通过（43.76s）。报告与待确认范围见stage7_10/DEVELOPMENT_PREFLIGHT.md。本次仅落盘约束与基线，没有新增Agent能力、研究LLM/M2成绩或GUI验收。
+
+## D025 · 2026-11-10 · Stage7可配置连续域M1探索
+
+用户明确Stage7目标为ResearchProblemV2→连续物理初筛→固定Seed Sobol及物理种子→原正式M1→样本支持的区域/六轴敏感度→PhysicsContext，本阶段不接LLM或M2反馈、不进入Stage8。直接在现有master工作区开发；旧docs/stage7为后来更名Stage6C的历史资料，本轮文档用docs/stage7_exploration，不覆盖历史。
+
+先落盘BASELINE_AUDIT并保存14,868个tracked条目指纹，确认原model.evaluate支持连续C而旧block_space和分配器枚举C。新增独立pll-research-problem-2.0合同与exploration适配，直接复用原inverse_at_shape/raw_prediction/pm_ceiling及正式evaluate；不改原M1/M2、Stage6B合同、SLSQP、Sensitivity或搜索算法。唯一入口pipeline新增显式--explore-problem，未来GUI用同一run_exploration接口。用户定义域是数学行为声明域，不是旧数据或电路能力认证。
+
+M1可行性只使用启用且来源受支持的指标；LockTime/Jitter保留PENDING/UNSUPPORTED和UNKNOWN，不发完整PASS。严格必要条件可给M1假设下不可行证书，未找到样本不能证明不可行；区域盒仅为样本支持的搜索建议。样本精确去重、正式M1与代数分别计数，预算不足/无效/数值失败全留证据；六轴敏感度不把空项填0。最终实跑、回归、保护审计及限制以stage7_exploration/PHYSICS_EXPLORATION_REPORT.md与独立回执为准；不自动Commit/Push或启动Stage8。
+
+## D026 · 2026-11-10 · 用户授权Stage7提交与GitHub推送
+
+用户在Stage7交付后明确要求将Stage7推进提交GitHub，授权本次本地Commit及推送。发布前核对本地master与远端main/master均为e395f248、默认分支main；Stage7验收源码和产物SHA一致，7份PhysicsContext校验通过，原513项回归证据保持。本次提交源码/配置/测试/轻量证据和必要预检文档，保留两份原有ZIP未暂存删除；大型实验仍在F盘。新增Stage7配置/证据保字节属性，避免checkout换行破坏SHA。原验收回执作为历史快照不改写，发布状态另记stage7_exploration/GITHUB_PUBLICATION.md及本地发布回执。普通提交、原子快进main/master，不force、不merge、不启动Stage8；成功与精确SHA以实际远端核验为准。

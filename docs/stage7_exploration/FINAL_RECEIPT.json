@@ -1,0 +1,73 @@
+{
+  "stage": "Stage7 configurable physics-guided M1 exploration",
+  "status": "IMPLEMENTED_AND_LOCALLY_VERIFIED_PENDING_USER_ACCEPTANCE",
+  "workspace": "F:\\LJP\\概伦AI\\PLL_allocation",
+  "branch": "master",
+  "HEAD": "e395f24859cdd81e3deb5ea83ba3f9598a27cd16",
+  "commit_created": false,
+  "push_performed": false,
+  "stage8_started": false,
+  "protection": {
+    "baseline_tracked_entries": 14868,
+    "authorized_tracked_changes": [
+      {
+        "path": "README.md",
+        "before": "ade5294a2018b9f3dded04afa2f3079f6d7ee6fc97141ca241637d4f8cef1ca1",
+        "after": "c057a831351abc9465f67d7666198ad0b122748fa3a3186dcd075d33a5d43bc6",
+        "authorized": true
+      },
+      {
+        "path": "docs/DECISIONS.md",
+        "before": "a4f8578161546d31e2e9f55fd9623e00c91f2ef164f8b02be58b79288bf3a62b",
+        "after": "bd9a972a0b36fa225f5ad4e3699208e98bfe7d15226c8fc96c2166523d237e1e",
+        "authorized": true
+      },
+      {
+        "path": "docs/PROJECT_STATUS.md",
+        "before": "02e13dc0a16253b5211143a3b7db5e8f31b51d7184b1a8ee723d64389242b9f9",
+        "after": "79b6e883be4f69d71dd0e2e84c3f91ffb159d410f7fa58d759673af06321de28",
+        "authorized": true
+      },
+      {
+        "path": "pll_allocation/pipeline.py",
+        "before": "b522a44bd0adddb9bb265731a9abe47f069f8ec58b94e3962f0f36eb2dc6ae42",
+        "after": "e18384c0e87ace8445758eb7baf038aa4e4279ddb638c88d8933ec753157a28e",
+        "authorized": true
+      }
+    ],
+    "unexpected_changes": 0,
+    "preexisting_deletions_preserved": true,
+    "preexisting_document_prefixes_preserved": true,
+    "git_diff_check_exit_code": 0,
+    "untracked_historical_experiments": "Not exhaustively hashed; no writes/deletes issued to old experiment paths."
+  },
+  "tests": {
+    "tests": 513,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "pytest_display_duration_s": 48.3,
+    "stage7_tests": 35,
+    "stage6b_multispec_tests": 28,
+    "all_old_tests": 478,
+    "command": "python -m pytest -q --basetemp=experiments/stage7_exploration_development_20261110_01/pytest_full_final --junitxml=experiments/stage7_exploration_development_20261110_01/tests_full_final.xml",
+    "intentional_negative_cases": "Invalid inputs, numerical failure, infeasible proof, no sample found and budget skips are asserted outcomes; no test failures."
+  },
+  "final_run_directory": "experiments/stage7_exploration_20261110_03",
+  "artifacts": {
+    "docs/stage7_exploration/CHANGE_MANIFEST.json": "eff263de962faa4a17f6028b008f04838761e702950d8a41709c6916b6979710",
+    "docs/stage7_exploration/TESTS_FINAL.xml": "817d3543a66ec84373a9bf9e850b03d4ac042bdc1e42f4555abe05f96f217729",
+    "docs/stage7_exploration/PHYSICS_EXPLORATION_REPORT.md": "b51a3c41a2fa50db03ed792a185f4d4d0d2f90b8c773408d61087515f9620486",
+    "docs/stage7_exploration/INTERFACE_AND_REPRODUCE.md": "84cf99287fc3f6ca2fee22f40565bfd943ac57b6031b4ae4b00bbedd1658c3e2",
+    "experiments/stage7_exploration_20261110_03/experiment_comparison.json": "090aca9b8edcae3a4d73190b215cdebf072004d989ea55d8748465bbff6ef803",
+    "experiments/stage7_exploration_20261110_03/EVIDENCE_MANIFEST.json": "5219de7816953f40965ebaa24a0f6cf8304c0b3354e5cadddda4429829022855",
+    "experiments/stage7_exploration_20261110_03/STAGE7_FULL_DIFF.patch": "eab51933e2b0fb0f3ce391df7939f8fe7fd6d45dc02c7021f66dd11a4f6f6d7c"
+  },
+  "reporting_limits": [
+    "M1 conditional locked-point only",
+    "No whole-region or full SystemSpec certification",
+    "Enabled LockTime/Jitter pending/unsupported",
+    "No LLM or research M2 execution",
+    "Original regression may execute its existing M2 tests"
+  ]
+}

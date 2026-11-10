@@ -114,3 +114,19 @@ F盘Git收束：源码与必要材料已提交eb8cd11e4986554ed49085f8756841ea01
 
 
 F盘与GitHub主干同步验收补充：fe3c247731ba9be86794f78a8c0686b1bee5851d整合实现已原子快进发布到远端main/master，14,867文件Git身份全量一致。正式代码/配置/测试/工具与原F盘已验收子树相同，Stage6A/B不再仅存在独立远端分支；Stage6C继续显式可选。合并后本次实跑478项测试全通过（44.88s），340保护指纹零差异。此后只补交验收文档，最终精确远端SHA见独立运行回执；原两份ZIP未暂存删除保留。研究重心仍是固定spec/模型下Agent策略与反馈增量，不新增LLM成绩。
+
+## 2026-11-10 · Stage 7–10 开发前检查完成
+
+已记录用户本轮同工作区开发与最终验收后才能Push的约束（D024），核对当前F盘master/e395f248及原有两份ZIP删除，保存14,868个Git跟踪条目指纹。Stage6B的正式实现已确认位于现有pipeline.run_multispec、allocation/multispec_search与multispec_constraints，不需创建新系统。本轮重新完整回归478 passed in 43.76s，报告及轻量证据在stage7_10/DEVELOPMENT_PREFLIGHT.md和BASELINE_TESTS.xml；完整审计/临时目录在experiments/stage7_10_development_20261110_01。
+
+本次预检完成；Stage 7–10各阶段具体功能清单尚待明确，未开始功能实现、真实LLM研究调用、实验对照或GUI演示，未Commit/Push。既有真实LLM反馈修复仍未实现，不因完成预检而升级研究状态。
+
+## 2026-11-10 · Stage7可配置连续域M1探索完成待验收
+
+依据用户后续明确Stage7任务（D025），已在原master工作区实现ResearchProblemV2、六轴连续域物理初筛、固定Seed Sobol/物理种子、原正式M1评价、样本支持区域、六轴敏感度及PhysicsContext。唯一pipeline增加--explore-problem选项；原M1/M2、Stage6B合同/算法、SLSQP/Sensitivity均不修改。历史docs/stage7不覆盖，本轮资料在stage7_exploration。
+
+最终完整回归513 passed in 48.30s（原478+新增35，含Stage6B多指标28项），0失败/错误/跳过。权威新实验experiments/stage7_exploration_20261110_03：global24个M1可行点/3区域，修改全部六范围并收紧BW/PM的tight2点/2区域；PM95必要条件证书无M1，固定Seed复验样本逐字节相同；预算不足、数值失败、未找到及非法输入均如实保存。最终运行390M1/450代数/研究M2=0/LLM=0，开发成本另列。LockTime/Jitter保持UNKNOWN，整个区域与完整SystemSpec不认证。
+
+交付见stage7_exploration/PHYSICS_EXPLORATION_REPORT.md、INTERFACE_AND_REPRODUCE.md、测试XML、对照、代表证据、变更清单及最终回执。当前仅工作树改动，未Commit/Push；原有文件/删除保持。Stage7在此停止，尚未启动Stage8/GUI，真实LLM反馈修复状态不升级。
+
+Stage7发布授权补充（D026）：用户已明确要求提交GitHub。本次按已验收Stage7实现提交源码、配置、测试和轻量证据，原513项回归与7份PhysicsContext发布前哈希校验通过；两份ZIP删除不纳入提交。原验收文档保存当时状态，发布规则及实际核验回执位置见stage7_exploration/GITHUB_PUBLICATION.md。Stage8仍未启动，不增加LLM/M2研究成绩。
