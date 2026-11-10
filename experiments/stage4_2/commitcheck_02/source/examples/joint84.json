@@ -1,0 +1,221 @@
+{
+  "schema_version": "pll-allocation-1.0",
+  "task_id": "joint84",
+  "topology": {
+    "id": "integer_n_cppll",
+    "blocks": [
+      "PFD",
+      "CP",
+      "LF",
+      "VCO",
+      "Divider"
+    ],
+    "connections": [
+      [
+        "PFD",
+        "CP"
+      ],
+      [
+        "CP",
+        "LF"
+      ],
+      [
+        "LF",
+        "VCO"
+      ],
+      [
+        "VCO",
+        "Divider"
+      ],
+      [
+        "Divider",
+        "PFD"
+      ]
+    ]
+  },
+  "operating_context": {
+    "fref_Hz": 10500000.0,
+    "N": 8,
+    "fout_target_Hz": 84000000.0,
+    "VDD_V": 1.8,
+    "temperature_C": 27.0,
+    "charge_definition": "net_balance_charge_including_local_proxy_demand",
+    "phase_convention": "feedback_minus_reference"
+  },
+  "initialization": {
+    "Vctrl_V": 1.1774,
+    "Vc2_V": 1.1774,
+    "feedback_error_cycles": 0.0
+  },
+  "measurement": {
+    "duration_s": 4e-05,
+    "tail_cycles": 50,
+    "lock_phase_deg": 5.0,
+    "lock_frequency_ppm": 100.0,
+    "lock_hold_cycles": 20
+  },
+  "system_spec": [
+    {
+      "metric": "mean_phase_abs_deg",
+      "operator": "<=",
+      "value": 0.2,
+      "unit": "deg",
+      "measurement": "final_50_complete_reference_cycles",
+      "tolerance": 0.0,
+      "source": "legacy triplet_84m_comparison.yaml; unchanged SystemSpec and 40us measurement"
+    },
+    {
+      "metric": "tail_max_abs_frequency_error_ppm",
+      "operator": "<=",
+      "value": 100.0,
+      "unit": "ppm",
+      "measurement": "final_50_complete_reference_cycles",
+      "tolerance": 0.0,
+      "source": "legacy triplet_84m_comparison.yaml; unchanged SystemSpec and 40us measurement"
+    },
+    {
+      "metric": "lock_status",
+      "operator": "==",
+      "value": "LOCKED",
+      "unit": "1",
+      "measurement": "frozen_lock_protocol_v1",
+      "tolerance": 0.0,
+      "source": "legacy triplet_84m_comparison.yaml; unchanged SystemSpec and 40us measurement"
+    }
+  ],
+  "block_space": {
+    "parameter_role": "DECLARED_TARGET",
+    "source": "legacy 84MHz CP/LF/VCO 450-point declared grid; no module evidence dependency",
+    "validity": {
+      "model_id": "signed_charge_exact_ideal_rc_linear_vco_v1",
+      "empirical_accuracy": "NOT_ESTABLISHED_FOR_NEW_TARGETS",
+      "load_model": "local_proxy_dc_in_q0_incremental_conductance_omitted"
+    },
+    "couplings": [
+      {
+        "type": "equal",
+        "left": "CP.I_up_A",
+        "right": "CP.I_down_A"
+      }
+    ],
+    "blocks": {
+      "PFD": {
+        "reset_s": {
+          "unit": "s",
+          "choices": [
+            2e-09
+          ]
+        }
+      },
+      "CP": {
+        "I_up_A": {
+          "unit": "A",
+          "choices": [
+            8e-05,
+            9e-05,
+            0.0001,
+            0.00011,
+            0.00012
+          ]
+        },
+        "I_down_A": {
+          "unit": "A",
+          "choices": [
+            8e-05,
+            9e-05,
+            0.0001,
+            0.00011,
+            0.00012
+          ]
+        },
+        "q0_C": {
+          "unit": "C",
+          "choices": [
+            2e-15,
+            4e-15,
+            6e-15,
+            8e-15,
+            1e-14
+          ]
+        }
+      },
+      "LF": {
+        "Rz_Ohm": {
+          "unit": "Ohm",
+          "choices": [
+            3820.0,
+            5000.0
+          ]
+        },
+        "C1_F": {
+          "unit": "F",
+          "choices": [
+            1e-10
+          ]
+        },
+        "C2_F": {
+          "unit": "F",
+          "choices": [
+            1e-09
+          ]
+        },
+        "Cload_F": {
+          "unit": "F",
+          "choices": [
+            5e-14
+          ]
+        },
+        "Rload_Ohm": {
+          "unit": "Ohm",
+          "choices": [
+            1000000000.0
+          ]
+        }
+      },
+      "VCO": {
+        "V0_V": {
+          "unit": "V",
+          "choices": [
+            1.17
+          ]
+        },
+        "f0_Hz": {
+          "unit": "Hz",
+          "choices": [
+            79165465.36642776,
+            81165465.36642776,
+            83165465.36642776
+          ]
+        },
+        "Kvco_Hz_per_V": {
+          "unit": "Hz/V",
+          "choices": [
+            120908831.94669026,
+            151136039.9333628,
+            181363247.92003536
+          ]
+        },
+        "voltage_min_V": {
+          "unit": "V",
+          "choices": [
+            1.13
+          ]
+        },
+        "voltage_max_V": {
+          "unit": "V",
+          "choices": [
+            1.21
+          ]
+        }
+      },
+      "Divider": {
+        "N": {
+          "unit": "1",
+          "choices": [
+            8
+          ]
+        }
+      }
+    }
+  }
+}

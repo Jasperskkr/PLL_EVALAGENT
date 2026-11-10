@@ -1,0 +1,35 @@
+{
+  "scope": "same Windows host, fresh source directory, no copied DLL; original and phase-port compiled with MSVC2022 x64",
+  "prepared_source_files": 242,
+  "prepared_source_hashes_still_match": true,
+  "new_tests": {
+    "tests": 17,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 17,
+    "elapsed_s": 0.828
+  },
+  "original_build_identity": {
+    "sha256": {
+      "kernel.cpp": "befdd779cd69c73f1a2fb8667e895f77efff979cb3186d80a83113c0321c9f54",
+      "build/kernel.dll": "9b49d6222d131d8be89e908976c59c4364a73c23fdda925eecb51c108e6f85a5"
+    },
+    "compiler": "MSVC C++17 /O2 /EHsc /LD",
+    "origin": "explicit build or audited byte-identical Track B DLL"
+  },
+  "phase_port_build_identity": {
+    "sha256": {
+      "kernel.cpp": "befdd779cd69c73f1a2fb8667e895f77efff979cb3186d80a83113c0321c9f54",
+      "return_ratio_kernel.cpp": "f632fbceba29b6c07fc9e2370c44737bdaf5e3e86871e1def26fc9d3d0cf7dfc",
+      "return_ratio.dll": "73eb6e1a075859c2c4dc693d311aac5dee732d4e9a206b79c3604e068bcb2ba4"
+    },
+    "compiler": "MSVC2022 x64 C++17 /O2 /EHsc /LD",
+    "model_version": "edge_euler_phase_port_stage4_0.1"
+  },
+  "not_claimed": [
+    "whole original suite isolated on another machine",
+    "wheel installation",
+    "cross-platform support"
+  ]
+}

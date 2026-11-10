@@ -1,0 +1,786 @@
+{
+  "status": "PASS",
+  "checks": 191,
+  "failed": [],
+  "original_files_checked": 14709,
+  "original_changes": [],
+  "isolated_inherited_changes": [
+    "docs/DECISIONS.md",
+    "docs/PROJECT_STATUS.md"
+  ],
+  "complete_M2": 8,
+  "native_runs": 852,
+  "native_elapsed_s": 23.257072699838318,
+  "new_M2_or_LLM_calls": 0,
+  "details": [
+    {
+      "name": "plan_digest",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:experiments\\stage6a\\study.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\__init__.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\__main__.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\_legacy\\__init__.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\_legacy\\evaluation\\__init__.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\_legacy\\evaluation\\python_behavioral.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\_legacy\\physics\\__init__.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\_legacy\\physics\\cp.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\_legacy\\physics\\lf.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\_legacy\\schemas.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\_legacy\\units.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\allocation\\__init__.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\allocation\\agent.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\allocation\\allocate.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\allocation\\core.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\allocation\\feedback_agent.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\allocation\\physics.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\allocation\\repair.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\behavioral.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\block_space\\__init__.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\block_space\\__main__.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\block_space\\calibration.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\block_space\\contracts.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\block_space\\event_reference.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\block_space\\sampling.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\block_space\\validation.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\cli.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\contracts.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\llm_transport.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\physics_mapping\\__init__.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\physics_mapping\\__main__.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\physics_mapping\\experiment.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\physics_mapping\\model.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\physics_mapping\\registry.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\physics_mapping\\validation.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\pipeline.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\pipeline_contracts.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\policies.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\runner.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\scenarios.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\track_a\\__init__.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\track_a\\__main__.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\track_a\\agent.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\track_a\\allocate.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\track_a\\audit.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\track_a\\benchmark.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\track_a\\core.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\track_a\\experiments.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\track_a\\feedback_agent.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\track_a\\physics.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\track_a\\repair.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\track_a\\report.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\track_a\\runner.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\verification\\__init__.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\verification\\build_identity.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\verification\\closed_loop.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\verification\\closed_loop_native.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\verification\\experiments.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\verification\\measure.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\verification\\resources.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\verification\\return_ratio.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\verification\\return_ratio_native.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\verification\\return_ratio_validity.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\verification\\run_suite.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\verification\\scenario.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\verification\\simulator.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\verification\\verify.py",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\verification\\closed_loop_kernel.cpp",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\verification\\kernel.cpp",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:pll_allocation\\verification\\return_ratio_kernel.cpp",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:configs\\BLOCK_SPACE_MODEL_V1.json",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:configs\\llm_env.json",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:configs\\physics_mapping_stage1_v2.json",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:configs\\pipeline_stage3a.json",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:configs\\PLL_EQUATION_REGISTRY_V1.json",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:configs\\SYSTEM_SPEC_STAGE1_5.json",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:configs\\track_a\\benchmark_plan.json",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:configs\\verification\\closed_loop_stage4_1_v0_1.json",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:configs\\verification\\protocol_v1_1.json",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:configs\\verification\\return_ratio_stage4_v0_1.json",
+      "passed": true
+    },
+    {
+      "name": "frozen_source:configs\\verification\\return_ratio_stage4_v0_2.json",
+      "passed": true
+    },
+    {
+      "name": "Registry_binding",
+      "passed": true
+    },
+    {
+      "name": "complete_M2_budget",
+      "passed": true
+    },
+    {
+      "name": "E0_analytical:formal_result_binding",
+      "passed": true
+    },
+    {
+      "name": "E0_analytical:candidate_hash",
+      "passed": true
+    },
+    {
+      "name": "E0_analytical:original_domain",
+      "passed": true
+    },
+    {
+      "name": "E0_analytical:not_full_certification",
+      "passed": true
+    },
+    {
+      "name": "E0_analytical:strict_PM_unknown",
+      "passed": true
+    },
+    {
+      "name": "E0_analytical:real_M2",
+      "passed": true
+    },
+    {
+      "name": "E0_analytical:prewritten_candidate_binding",
+      "passed": true
+    },
+    {
+      "name": "E0_analytical:fixed_initial_condition",
+      "passed": true
+    },
+    {
+      "name": "E0_analytical:two_capture_steps",
+      "passed": true
+    },
+    {
+      "name": "E0_analytical:native_count",
+      "passed": true
+    },
+    {
+      "name": "E0_analytical:native_elapsed",
+      "passed": true
+    },
+    {
+      "name": "E0_analytical:submission_before_M2_trace",
+      "passed": true
+    },
+    {
+      "name": "E0_slsqp:formal_result_binding",
+      "passed": true
+    },
+    {
+      "name": "E0_slsqp:candidate_hash",
+      "passed": true
+    },
+    {
+      "name": "E0_slsqp:original_domain",
+      "passed": true
+    },
+    {
+      "name": "E0_slsqp:not_full_certification",
+      "passed": true
+    },
+    {
+      "name": "E0_slsqp:strict_PM_unknown",
+      "passed": true
+    },
+    {
+      "name": "E0_slsqp:real_M2",
+      "passed": true
+    },
+    {
+      "name": "E0_slsqp:prewritten_candidate_binding",
+      "passed": true
+    },
+    {
+      "name": "E0_slsqp:fixed_initial_condition",
+      "passed": true
+    },
+    {
+      "name": "E0_slsqp:two_capture_steps",
+      "passed": true
+    },
+    {
+      "name": "E0_slsqp:native_count",
+      "passed": true
+    },
+    {
+      "name": "E0_slsqp:native_elapsed",
+      "passed": true
+    },
+    {
+      "name": "E0_slsqp:submission_before_M2_trace",
+      "passed": true
+    },
+    {
+      "name": "E0_alternative_capacitors:formal_result_binding",
+      "passed": true
+    },
+    {
+      "name": "E0_alternative_capacitors:candidate_hash",
+      "passed": true
+    },
+    {
+      "name": "E0_alternative_capacitors:original_domain",
+      "passed": true
+    },
+    {
+      "name": "E0_alternative_capacitors:not_full_certification",
+      "passed": true
+    },
+    {
+      "name": "E0_alternative_capacitors:strict_PM_unknown",
+      "passed": true
+    },
+    {
+      "name": "E0_alternative_capacitors:real_M2",
+      "passed": true
+    },
+    {
+      "name": "E0_alternative_capacitors:prewritten_candidate_binding",
+      "passed": true
+    },
+    {
+      "name": "E0_alternative_capacitors:fixed_initial_condition",
+      "passed": true
+    },
+    {
+      "name": "E0_alternative_capacitors:two_capture_steps",
+      "passed": true
+    },
+    {
+      "name": "E0_alternative_capacitors:native_count",
+      "passed": true
+    },
+    {
+      "name": "E0_alternative_capacitors:native_elapsed",
+      "passed": true
+    },
+    {
+      "name": "E0_alternative_capacitors:submission_before_M2_trace",
+      "passed": true
+    },
+    {
+      "name": "E1_analytical:formal_result_binding",
+      "passed": true
+    },
+    {
+      "name": "E1_analytical:candidate_hash",
+      "passed": true
+    },
+    {
+      "name": "E1_analytical:original_domain",
+      "passed": true
+    },
+    {
+      "name": "E1_analytical:not_full_certification",
+      "passed": true
+    },
+    {
+      "name": "E1_analytical:strict_PM_unknown",
+      "passed": true
+    },
+    {
+      "name": "E1_analytical:real_M2",
+      "passed": true
+    },
+    {
+      "name": "E1_analytical:prewritten_candidate_binding",
+      "passed": true
+    },
+    {
+      "name": "E1_analytical:fixed_initial_condition",
+      "passed": true
+    },
+    {
+      "name": "E1_analytical:two_capture_steps",
+      "passed": true
+    },
+    {
+      "name": "E1_analytical:native_count",
+      "passed": true
+    },
+    {
+      "name": "E1_analytical:native_elapsed",
+      "passed": true
+    },
+    {
+      "name": "E1_analytical:submission_before_M2_trace",
+      "passed": true
+    },
+    {
+      "name": "E1_upper_shape:formal_result_binding",
+      "passed": true
+    },
+    {
+      "name": "E1_upper_shape:candidate_hash",
+      "passed": true
+    },
+    {
+      "name": "E1_upper_shape:original_domain",
+      "passed": true
+    },
+    {
+      "name": "E1_upper_shape:not_full_certification",
+      "passed": true
+    },
+    {
+      "name": "E1_upper_shape:strict_PM_unknown",
+      "passed": true
+    },
+    {
+      "name": "E1_upper_shape:real_M2",
+      "passed": true
+    },
+    {
+      "name": "E1_upper_shape:prewritten_candidate_binding",
+      "passed": true
+    },
+    {
+      "name": "E1_upper_shape:fixed_initial_condition",
+      "passed": true
+    },
+    {
+      "name": "E1_upper_shape:two_capture_steps",
+      "passed": true
+    },
+    {
+      "name": "E1_upper_shape:native_count",
+      "passed": true
+    },
+    {
+      "name": "E1_upper_shape:native_elapsed",
+      "passed": true
+    },
+    {
+      "name": "E1_upper_shape:submission_before_M2_trace",
+      "passed": true
+    },
+    {
+      "name": "E2_far_operating_point:formal_result_binding",
+      "passed": true
+    },
+    {
+      "name": "E2_far_operating_point:candidate_hash",
+      "passed": true
+    },
+    {
+      "name": "E2_far_operating_point:original_domain",
+      "passed": true
+    },
+    {
+      "name": "E2_far_operating_point:not_full_certification",
+      "passed": true
+    },
+    {
+      "name": "E2_far_operating_point:strict_PM_unknown",
+      "passed": true
+    },
+    {
+      "name": "E2_far_operating_point:real_M2",
+      "passed": true
+    },
+    {
+      "name": "E2_far_operating_point:prewritten_candidate_binding",
+      "passed": true
+    },
+    {
+      "name": "E2_far_operating_point:fixed_initial_condition",
+      "passed": true
+    },
+    {
+      "name": "E2_far_operating_point:two_capture_steps",
+      "passed": true
+    },
+    {
+      "name": "E2_far_operating_point:native_count",
+      "passed": true
+    },
+    {
+      "name": "E2_far_operating_point:native_elapsed",
+      "passed": true
+    },
+    {
+      "name": "E2_far_operating_point:submission_before_M2_trace",
+      "passed": true
+    },
+    {
+      "name": "E2_high_Kvco_center:formal_result_binding",
+      "passed": true
+    },
+    {
+      "name": "E2_high_Kvco_center:candidate_hash",
+      "passed": true
+    },
+    {
+      "name": "E2_high_Kvco_center:original_domain",
+      "passed": true
+    },
+    {
+      "name": "E2_high_Kvco_center:not_full_certification",
+      "passed": true
+    },
+    {
+      "name": "E2_high_Kvco_center:strict_PM_unknown",
+      "passed": true
+    },
+    {
+      "name": "E2_high_Kvco_center:real_M2",
+      "passed": true
+    },
+    {
+      "name": "E2_high_Kvco_center:prewritten_candidate_binding",
+      "passed": true
+    },
+    {
+      "name": "E2_high_Kvco_center:fixed_initial_condition",
+      "passed": true
+    },
+    {
+      "name": "E2_high_Kvco_center:two_capture_steps",
+      "passed": true
+    },
+    {
+      "name": "E2_high_Kvco_center:native_count",
+      "passed": true
+    },
+    {
+      "name": "E2_high_Kvco_center:native_elapsed",
+      "passed": true
+    },
+    {
+      "name": "E2_high_Kvco_center:submission_before_M2_trace",
+      "passed": true
+    },
+    {
+      "name": "E1_BW_repair:formal_result_binding",
+      "passed": true
+    },
+    {
+      "name": "E1_BW_repair:candidate_hash",
+      "passed": true
+    },
+    {
+      "name": "E1_BW_repair:original_domain",
+      "passed": true
+    },
+    {
+      "name": "E1_BW_repair:not_full_certification",
+      "passed": true
+    },
+    {
+      "name": "E1_BW_repair:strict_PM_unknown",
+      "passed": true
+    },
+    {
+      "name": "E1_BW_repair:real_M2",
+      "passed": true
+    },
+    {
+      "name": "E1_BW_repair:fixed_initial_condition",
+      "passed": true
+    },
+    {
+      "name": "E1_BW_repair:two_capture_steps",
+      "passed": true
+    },
+    {
+      "name": "E1_BW_repair:native_count",
+      "passed": true
+    },
+    {
+      "name": "E1_BW_repair:native_elapsed",
+      "passed": true
+    },
+    {
+      "name": "E1_BW_repair:submission_before_M2_trace",
+      "passed": true
+    },
+    {
+      "name": "aggregate_native_runs",
+      "passed": true
+    },
+    {
+      "name": "aggregate_native_seconds",
+      "passed": true
+    },
+    {
+      "name": "Stage5_counterexample_preserved",
+      "passed": true
+    },
+    {
+      "name": "E1_boundary_reliable_fail",
+      "passed": true
+    },
+    {
+      "name": "baseline_semantics",
+      "passed": true
+    },
+    {
+      "name": "original_14709_files_unchanged",
+      "passed": true,
+      "changes": []
+    },
+    {
+      "name": "isolated_inherited_files_only_authorized_status_appends",
+      "passed": true,
+      "changes": [
+        "docs/DECISIONS.md",
+        "docs/PROJECT_STATUS.md"
+      ]
+    },
+    {
+      "name": "original_missing_preserved:docs/physics_mapping_stage1.zip",
+      "passed": true
+    },
+    {
+      "name": "original_missing_preserved:docs/stage1_5.zip",
+      "passed": true
+    },
+    {
+      "name": "original_git_status_unchanged",
+      "passed": true
+    },
+    {
+      "name": "master_untouched",
+      "passed": true
+    },
+    {
+      "name": "isolated_research_branch",
+      "passed": true
+    }
+  ]
+}

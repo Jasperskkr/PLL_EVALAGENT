@@ -1,0 +1,65 @@
+{
+  "center_parameter_sha256": "74864b2e3b6a8cbb9aac7610632ae0d8c5428be38c8a7e1d1c85038526ff050b",
+  "columns": {
+    "Icp": {
+      "status": "OK",
+      "points": [
+        0.00010336025718440147,
+        0.00010544834318812675
+      ],
+      "log_elasticity": {
+        "BW_Hz": 1.0234086740279136,
+        "UGF_Hz": 0.954543003813815,
+        "Vctrl_required_V": 0.0
+      },
+      "PM_deg_per_log_parameter": 0.000758035192335992,
+      "PM_curvature_log": -15.16035184284099
+    },
+    "Rz": {
+      "status": "OK",
+      "points": [
+        3017.643671462422,
+        3078.6061698758044
+      ],
+      "log_elasticity": {
+        "BW_Hz": 1.04678635858271,
+        "UGF_Hz": 0.9090713034824047,
+        "Vctrl_required_V": 0.0
+      },
+      "PM_deg_per_log_parameter": 0.0030321084549375242,
+      "PM_curvature_log": -60.64108400104906
+    },
+    "f0": {
+      "status": "OK",
+      "points": [
+        63123988.05870862,
+        64399220.14070274
+      ],
+      "log_elasticity": {
+        "BW_Hz": 0.0,
+        "UGF_Hz": 0.0,
+        "Vctrl_required_V": -3.9284839359486523
+      },
+      "PM_deg_per_log_parameter": 0.0,
+      "PM_curvature_log": 0.0
+    },
+    "Kvco": {
+      "status": "OK",
+      "points": [
+        26793353.235485632,
+        27334633.098828774
+      ],
+      "log_elasticity": {
+        "BW_Hz": 1.0234086740279136,
+        "UGF_Hz": 0.954543003813815,
+        "Vctrl_required_V": -1.0000000000000109
+      },
+      "PM_deg_per_log_parameter": 0.0007580351916254729,
+      "PM_curvature_log": -15.160351843125188
+    }
+  },
+  "continuous_step_fraction": 0.01,
+  "discrete_C": "enumerated, not differentiated",
+  "free_coordinate_decision": "Icp and Kvco have identical loop elasticities: solve in product gain, Rz, Kvco and Vreq",
+  "scope": "local M1 derivatives; curvature diagnostic; not a global model-error bound"
+}

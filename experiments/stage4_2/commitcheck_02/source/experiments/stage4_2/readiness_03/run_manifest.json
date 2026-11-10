@@ -1,0 +1,280 @@
+{
+  "command": [
+    "tools/run_stage4_2.py",
+    "--out",
+    "experiments/stage4_2/readiness_03"
+  ],
+  "Python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "baseline_commit": "47afcb72011636e838b03d81cf91bcec49744a77",
+  "model_versions": {
+    "formula_version": "stage1_m1_1.0.0",
+    "parameter_domain_version": "stage1_declared_domain_1.0.0",
+    "behavioral_model_version": "reference_python_edge_euler_sha256_f6f550276228"
+  },
+  "source_bindings": [
+    {
+      "path": "configs/BLOCK_SPACE_MODEL_V1.json",
+      "sha256": "9fe4b6025f344701b74c27834ab1fac1cf6cb58eb58c80c49a5e117e749ae518",
+      "bytes": 56672,
+      "normalized_lf_sha256": "d416d04ed08c8f578891a7cff93a1e0d0b024f1eec540ff3c1998eace5aa5b9c",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "configs/SYSTEM_SPEC_STAGE1_5.json",
+      "sha256": "49531ea5da98b87e5c5b219018fd54a86e1f30ba196d89caa7e755cb11bfeba3",
+      "bytes": 972,
+      "normalized_lf_sha256": "5a5f80c8f7482f4dec0b063b7d288cea8e864b87ec2022edad46005fcdc36aa0",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "configs/PLL_EQUATION_REGISTRY_V1.json",
+      "sha256": "2f38369d268e57ee3e9549d3a5aac27ee90d059ef40ad8c20499dd7830be96fb",
+      "bytes": 25933,
+      "normalized_lf_sha256": "fc4fd642c1db86e0a74fb68c631f013e39c3d89095929c1d653d8c4e5286c27c",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "configs/verification/protocol_v1_1.json",
+      "sha256": "7de5162bd57ad886170415e2d02e1d060878654d2c9e1f46b095ec7163b8399b",
+      "bytes": 3612,
+      "normalized_lf_sha256": "9263bf0b11ff4e5c155be42b67e1a2589f916749ba31b552e7428a2de783fa34",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "pll_allocation/physics_mapping/model.py",
+      "sha256": "412dbbbec9a499c56fe10781f2ff1debb525ead8fb411a2f72f056d36e8a2e34",
+      "bytes": 14711,
+      "normalized_lf_sha256": "412dbbbec9a499c56fe10781f2ff1debb525ead8fb411a2f72f056d36e8a2e34",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "pll_allocation/physics_mapping/validation.py",
+      "sha256": "2ed722b72c1dc87ce58d64f2004e6c6e9b518932db8a1a344fed7e5c0ae85e81",
+      "bytes": 9986,
+      "normalized_lf_sha256": "2ed722b72c1dc87ce58d64f2004e6c6e9b518932db8a1a344fed7e5c0ae85e81",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "pll_allocation/block_space/contracts.py",
+      "sha256": "8aa26fc3520c52f3037332b306d0ec36074ae0c5541061f1c6a7be011924eaab",
+      "bytes": 5820,
+      "normalized_lf_sha256": "8aa26fc3520c52f3037332b306d0ec36074ae0c5541061f1c6a7be011924eaab",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "pll_allocation/allocation/physics.py",
+      "sha256": "f10aa7d11044d484a18bd6aaa3b420f08f69f1215ce9c7d746132a4e72872860",
+      "bytes": 5300,
+      "normalized_lf_sha256": "f10aa7d11044d484a18bd6aaa3b420f08f69f1215ce9c7d746132a4e72872860",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "pll_allocation/allocation/allocate.py",
+      "sha256": "bf570c5e05f29afc1f0d75723fca0a1f781fa321a20a4ab459ffe64ee4cb1535",
+      "bytes": 11243,
+      "normalized_lf_sha256": "bf570c5e05f29afc1f0d75723fca0a1f781fa321a20a4ab459ffe64ee4cb1535",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "pll_allocation/allocation/core.py",
+      "sha256": "2c04824cc0bf86831050e059ee424c2b8c2ed539751a4971632ba833441a320c",
+      "bytes": 10115,
+      "normalized_lf_sha256": "2c04824cc0bf86831050e059ee424c2b8c2ed539751a4971632ba833441a320c",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "pll_allocation/verification/verify.py",
+      "sha256": "8c7a653d395fedb0552df073871afd08b59500afce80fde56ad92d6afa1048b3",
+      "bytes": 13129,
+      "normalized_lf_sha256": "8c7a653d395fedb0552df073871afd08b59500afce80fde56ad92d6afa1048b3",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "pll_allocation/verification/kernel.cpp",
+      "sha256": "befdd779cd69c73f1a2fb8667e895f77efff979cb3186d80a83113c0321c9f54",
+      "bytes": 3577,
+      "normalized_lf_sha256": "befdd779cd69c73f1a2fb8667e895f77efff979cb3186d80a83113c0321c9f54",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "pll_allocation/verification/simulator.py",
+      "sha256": "3c350efbb64cad3c7afb43b0f6946c819c52914d9a19893a749dffd48ee97750",
+      "bytes": 4251,
+      "normalized_lf_sha256": "3c350efbb64cad3c7afb43b0f6946c819c52914d9a19893a749dffd48ee97750",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "pll_allocation/_legacy/physics/cp.py",
+      "sha256": "21ac82286bc7df9e7a9ad5f7c7d6466a8f4f2524e6cada216000916ce73b6e77",
+      "bytes": 597,
+      "normalized_lf_sha256": "21ac82286bc7df9e7a9ad5f7c7d6466a8f4f2524e6cada216000916ce73b6e77",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "tools/run_stage4_2.py",
+      "sha256": "a6478d8ae040ef7384ebf5db2317012d0e16a570ffd87aad89639c922af7f56c",
+      "bytes": 25784,
+      "normalized_lf_sha256": "a6478d8ae040ef7384ebf5db2317012d0e16a570ffd87aad89639c922af7f56c",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "pll_allocation/physics_mapping/registry.py",
+      "sha256": "b7ddcc7434f24dd5b0a267ad0f2e93cc9c7b45a05370c97961bbdb14e80b6db2",
+      "bytes": 6308,
+      "normalized_lf_sha256": "b7ddcc7434f24dd5b0a267ad0f2e93cc9c7b45a05370c97961bbdb14e80b6db2",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    }
+  ],
+  "output_file_hashes": [
+    {
+      "path": "experiments/stage4_2/readiness_03/agent_query_examples.json",
+      "sha256": "1657800b7da2c046cabbf9bd08d8a1e4b8ce6c1c2838e86520b2b05a7483f204",
+      "bytes": 9884,
+      "normalized_lf_sha256": "375bdcccb126a2f6b1d63f9c1fde8edc05e809056e3ba87507298defc14150c4",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "experiments/stage4_2/readiness_03/candidate_selection_before_prediction.json",
+      "sha256": "58f8cbecbfe2c58787c382a5db6462ed682d25663a41181516bfcd202f5fce1c",
+      "bytes": 19589,
+      "normalized_lf_sha256": "4282c248cfe01e72adbbe5ee90f79691d39c02e9a35783e8405f8794c5ab1edf",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "experiments/stage4_2/readiness_03/constraint_propagation.json",
+      "sha256": "a9ee09da02fc8199b794dd8bc2fc74921b032b37493bfdf24d49ce167e5215ff",
+      "bytes": 4572,
+      "normalized_lf_sha256": "41568b7aa5f3f8449539c0de5c8d50a41f7b493407967c446dc14a7f90f13c22",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "experiments/stage4_2/readiness_03/coupling_and_sensitivity.json",
+      "sha256": "18946076b50ef9bce1103ab810212c980be207665a24732c9faef2ac4ba79bbd",
+      "bytes": 11545,
+      "normalized_lf_sha256": "a0b7d6c68b3726d5c65b5279f0cdc4cb5abdc010707025b924437f46ae0cdb7f",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "experiments/stage4_2/readiness_03/domain_scan.csv",
+      "sha256": "d06506404a36bc8d9cc9a52c25e1a41a9e625acb3086dbfc6370de2d655ca39c",
+      "bytes": 366265,
+      "normalized_lf_sha256": "9b7eaa92f215b85a8056cba01ddfe6fb1dd5d8e2552e2aaa6be29dfcf73b05b6",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "experiments/stage4_2/readiness_03/evidence/S15.json",
+      "sha256": "40292cbd250c750d3a22a4c1cad5065a6e734a17f470a0256140f9a7649e2eaf",
+      "bytes": 2377,
+      "normalized_lf_sha256": "c17eaad342c25b1aaddc5115cb4bfe05fdf8b4faa28e632a3feb8b48dd3a60b3",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "experiments/stage4_2/readiness_03/evidence/S4_agent.json",
+      "sha256": "06aeca4dc7ccfc56983859cee5f894cad8bae88a8d5eff6ab612fa5223b90320",
+      "bytes": 22632,
+      "normalized_lf_sha256": "fe1ed5790befd3204e22832317380926d02c7315725864754b41dc6dbbafc568",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "experiments/stage4_2/readiness_03/evidence/S4_boundary.json",
+      "sha256": "8c578a7a65206c173d154d25975a1801fcc7c1a74a63c0ae1e2aed376116fe7e",
+      "bytes": 23054,
+      "normalized_lf_sha256": "611b516355ebf60bf1b7e81c31fd99e25646bca64f97499672b982b7ae954c6b",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "experiments/stage4_2/readiness_03/evidence/S4_nominal.json",
+      "sha256": "34139f52001ee0eb82890c7d2a6a340d99f3b1d0e2cf0f418bdf12f26ef98e86",
+      "bytes": 22886,
+      "normalized_lf_sha256": "b9616ebd026a890a736dc97d9a27511f56ce4f7da038fb9e87b228cf4446b657",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "experiments/stage4_2/readiness_03/evidence/saved_agent_Proposal.json",
+      "sha256": "e8fdc291ea07e72a8e2295bdec9da7af268447ec40c980be5edcb5e2d4d5635b",
+      "bytes": 21454,
+      "normalized_lf_sha256": "2d65d19c3e5498ed841d242206c4ae4ee8b04875e73948d2ee8f06eceb6c96c2",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "experiments/stage4_2/readiness_03/evidence/saved_boundary_Proposal.json",
+      "sha256": "974fc472972acfde2d79a9d0df65c2770c39ac6a4b8926e85323274959c03ee0",
+      "bytes": 5313,
+      "normalized_lf_sha256": "d48d130967d902c7bb2f8b7a64774622b9fc971f746c6dc0202e88ee130f0ae3",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "experiments/stage4_2/readiness_03/evidence_manifest.json",
+      "sha256": "df57a381240fe5e7f20af14eb50c4c1c3d16f52a7049667f87a837da5b9bb743",
+      "bytes": 3412,
+      "normalized_lf_sha256": "4922c36ed8d5537a31e41f8559e3356db762fac1e857cc2a825de252720d1005",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "experiments/stage4_2/readiness_03/formal_M1_evaluations.json",
+      "sha256": "729f66327dd9807502e6ec000bf63f1899b0619ecbb5e624376323fcccd2ff17",
+      "bytes": 478407,
+      "normalized_lf_sha256": "3efad0b5a49f804c0857285b3f451c9eddd0d32a806714ccbaf1d5da3d093479",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "experiments/stage4_2/readiness_03/input_snapshot.json",
+      "sha256": "7b6b55c26b09a16a67d37d17df2f1113f2ec7d93ca4f78b1b09cd6e9cac9a44a",
+      "bytes": 60894,
+      "normalized_lf_sha256": "e72360ee722bb23a7e1e37d7c71f8fd1330709cfb242d643d65f26000ab0a2fd",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "experiments/stage4_2/readiness_03/M2_VALIDATION_CANDIDATES.json",
+      "sha256": "d31db2c3b3ef9c42fd863cf29d485c407f88cebb6b74e0d30cdbaa263d82b1c7",
+      "bytes": 86844,
+      "normalized_lf_sha256": "c6d779f110adbf1f8230ecec839e480f4bc4d699a64a4cab0fb9e5126ab93533",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "experiments/stage4_2/readiness_03/PHYSICS_MAPPING_REGISTRY.json",
+      "sha256": "9aaa5f800495dc4af512913f6179804042fa5531d9d2a785edfc2cfe5c5814a8",
+      "bytes": 33325,
+      "normalized_lf_sha256": "a25a6a1cfcd7ba55257b50b234fe13fabccfe887466aa4014a1ffdfd3a0e1192",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "experiments/stage4_2/readiness_03/scan_plan.json",
+      "sha256": "f2666a6d6ff55bb1784a261f0a5a4366bccf58bf5236c48d225e2b4a10b8dc26",
+      "bytes": 741,
+      "normalized_lf_sha256": "c80285d4d590dd1f5949955f1d95c48af00cec90c5cd1cad9b8fd46ac0d1509e",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "experiments/stage4_2/readiness_03/summary.json",
+      "sha256": "7d85ee3041c86bad34ede4067e7a8142f6b8457f58b66de7e0730b57cb57cd36",
+      "bytes": 1054,
+      "normalized_lf_sha256": "be13907b96837e0139df73a9abbf42d7903b91b70f911f279d6c577c4386b0d8",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    }
+  ],
+  "registry": {
+    "path": "experiments/stage4_2/readiness_03/PHYSICS_MAPPING_REGISTRY.json",
+    "sha256": "9aaa5f800495dc4af512913f6179804042fa5531d9d2a785edfc2cfe5c5814a8",
+    "bytes": 33325,
+    "normalized_lf_sha256": "a25a6a1cfcd7ba55257b50b234fe13fabccfe887466aa4014a1ffdfd3a0e1192",
+    "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+  },
+  "candidates": {
+    "path": "experiments/stage4_2/readiness_03/M2_VALIDATION_CANDIDATES.json",
+    "sha256": "d31db2c3b3ef9c42fd863cf29d485c407f88cebb6b74e0d30cdbaa263d82b1c7",
+    "bytes": 86844,
+    "normalized_lf_sha256": "c6d779f110adbf1f8230ecec839e480f4bc4d699a64a4cab0fb9e5126ab93533",
+    "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+  },
+  "cost": {
+    "domain_checks": 1738,
+    "cheap_prediction_calls": 1512,
+    "polynomial_reference_calls": 1512,
+    "formal_M1_calls": 94
+  },
+  "M2_calls": 0,
+  "LLM_calls": 0,
+  "verified_joint_block_spec": false
+}

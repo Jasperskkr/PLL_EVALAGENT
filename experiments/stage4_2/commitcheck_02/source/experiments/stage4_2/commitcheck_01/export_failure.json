@@ -1,0 +1,8 @@
+{
+  "phase": "fresh baseline archive regression",
+  "tests_passed": 295,
+  "tests_failed": 1,
+  "cause": "git archive with inherited core.autocrlf=true emitted CRLF for legacy LF snapshots, breaking historical byte SHA fixture; model numerical and all new tests passed.",
+  "repair": "new export_02 explicitly git -c core.autocrlf=false archive; do not alter legacy tests, model or main workspace",
+  "stage4_2_numerical_reproduction_started": false
+}

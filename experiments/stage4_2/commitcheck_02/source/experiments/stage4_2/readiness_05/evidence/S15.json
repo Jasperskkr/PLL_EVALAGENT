@@ -1,0 +1,106 @@
+{
+  "case_count": 139,
+  "declared_cases": 134,
+  "category_counts": {
+    "nominal": 1,
+    "local_sensitivity": 8,
+    "single_parameter_boundary": 16,
+    "discrete_sensitivity": 4,
+    "coupled_boundary": 16,
+    "capacitor_coupling": 4,
+    "low_discrepancy": 48,
+    "system_boundary_slice": 31,
+    "tuning_boundary": 3,
+    "explicit_coupling": 3,
+    "out_of_declared_domain_anomaly": 5
+  },
+  "domain_counts": {
+    "VALID": 124,
+    "OUT_OF_DOMAIN": 12,
+    "UNSUPPORTED": 3
+  },
+  "M1_verdict_counts": {
+    "M1_SPEC_PASS": 44,
+    "M1_SPEC_FAIL": 80,
+    "UNKNOWN": 15
+  },
+  "valid_M1_count": 124,
+  "numerical_failed_ids": [],
+  "maximum_numerical_errors": {
+    "UGF_Hz": 1.112166417033809e-12,
+    "BW_Hz": 1.1085602215066408e-12,
+    "PM_deg": 1.7003287666739197e-11,
+    "Vctrl_required_V": 0.0
+  },
+  "event_selected_count": 32,
+  "event_completed_count": 32,
+  "event_conditional_agreement_ids": [
+    "C000",
+    "C003",
+    "C006",
+    "C009",
+    "C012",
+    "C013",
+    "C014",
+    "C015",
+    "C016",
+    "C019",
+    "C022",
+    "C025",
+    "C028",
+    "C032",
+    "C044",
+    "C045",
+    "C046",
+    "C047",
+    "C048",
+    "C060",
+    "C072",
+    "C084",
+    "C096",
+    "C131",
+    "C132",
+    "C133"
+  ],
+  "event_nonagreement_ids": [
+    "C029",
+    "C041",
+    "C049",
+    "C128",
+    "C129",
+    "C130"
+  ],
+  "event_unconverged_ids": [],
+  "event_clip_observed_ids": [
+    "C029",
+    "C041",
+    "C049",
+    "C128",
+    "C129",
+    "C130"
+  ],
+  "event_errors_or_skips": [],
+  "continuous_instability": "NONE_POSSIBLE_IN_POSITIVE_IDEAL_DECLARED_DOMAIN_BY_ROUTH_PROOF",
+  "recommended_case_id": "C000",
+  "reference_metrics": {
+    "output_frequency_Hz": 80000000,
+    "Vctrl_required_V": 0.4,
+    "Kvco_local_Hz_per_V": 20000000,
+    "UGF_Hz": 138176.44113161,
+    "BW_Hz": 222379.1834929631,
+    "PM_deg": 56.44269021253223
+  },
+  "cost": {
+    "M1_attempts": 139,
+    "M1_evaluations": 124,
+    "polynomial_reference_evaluations": 124,
+    "Python_event_simulations": 64,
+    "Python_event_integration_points": 36943353,
+    "MATLAB_runtime_calls": 0,
+    "LLM_calls": 0
+  },
+  "numerical_acceptance": "PASS",
+  "full_domain_behavioral_accuracy": "NOT_ESTABLISHED",
+  "M2_system_verdict": "NOT_EVALUATED",
+  "stage2_started": false
+}

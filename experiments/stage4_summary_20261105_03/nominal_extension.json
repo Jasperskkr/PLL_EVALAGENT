@@ -1,0 +1,609 @@
+{
+  "schema_version": "pll-stage4-measurement-extension-1.0",
+  "candidate_id": "stage4_nominal",
+  "parameter_sha256": "9b116a350e5009606dde3a27a04d85b4a74f32f0d6ae67cc908a6546ea947e7c",
+  "block_space_sha256": "879c2748c1d74d5d05c651f905af6fa818e3f994e97206d93b295ca4b62097c0",
+  "system_spec_sha256": "9acdbf00d9b095e3cc23400024628f2301220549a45e8301aa42a08490fa598c",
+  "proposal_versions": {
+    "formula_version": "stage1_m1_1.0.0",
+    "parameter_domain_version": "stage1_declared_domain_1.0.0",
+    "behavioral_model_version": "reference_python_edge_euler_sha256_f6f550276228",
+    "baseline": "track-b-interface-reference-1.0",
+    "block_space_schema": "behavioral-block-space-1.0",
+    "system_spec": "0"
+  },
+  "protocol_id": "stage4_return_ratio_0.2",
+  "protocol_sha256": "75bfb8d9b5b148f3702fdd2a760fcabbf94de6c08a9ef24959912b3cf45f46df",
+  "base_protocol_id": "track_b_metrics_1.1",
+  "source_hashes": {
+    "kernel.cpp": "befdd779cd69c73f1a2fb8667e895f77efff979cb3186d80a83113c0321c9f54",
+    "return_ratio_kernel.cpp": "f632fbceba29b6c07fc9e2370c44737bdaf5e3e86871e1def26fc9d3d0cf7dfc",
+    "return_ratio_native.py": "0a2dc6a419d5ba9e48de51b327a321f7dafc717ecdb597979f83a88775b3b58a",
+    "return_ratio.py": "c6e773e824a34a0506fff9489c2c6f17015aac3a361228f5f4a92873daae5277",
+    "return_ratio_validity.py": "7176b645ebbd8f8d800224934c0737eb833202d252d6b126f8f324cd98416f3a"
+  },
+  "metrics": {
+    "UGF_Hz": {
+      "value": null,
+      "unit": "Hz",
+      "status": "UNKNOWN",
+      "reason": "PERIODIC_SCALAR_RETURN_RATIO_NOT_VALIDATED: reverse harmonic transfer near unity; finite harmonic probes do not establish generalized Nyquist/Floquet stability",
+      "diagnostic_series_value": 138419.60240658576,
+      "diagnostic_direct_clamp_value": 138177.56925250267,
+      "empirical_diagnostic_range": [
+        138177.56925250267,
+        138421.13221705798
+      ],
+      "numerical_converged": true,
+      "independent_event_measurement": true,
+      "certified_as_frozen_SystemSpec_metric": false
+    },
+    "PM_deg": {
+      "value": null,
+      "unit": "deg",
+      "status": "UNKNOWN",
+      "reason": "PERIODIC_SCALAR_RETURN_RATIO_NOT_VALIDATED: reverse harmonic transfer near unity; finite harmonic probes do not establish generalized Nyquist/Floquet stability",
+      "diagnostic_series_value": 56.43931963507268,
+      "diagnostic_direct_clamp_value": 56.438520368592066,
+      "empirical_diagnostic_range": [
+        56.43717867414543,
+        56.441137558553336
+      ],
+      "numerical_converged": true,
+      "independent_event_measurement": true,
+      "certified_as_frozen_SystemSpec_metric": false
+    },
+    "BW_Hz": {
+      "value": 222853.09255111087,
+      "unit": "Hz",
+      "status": "MEASURED_CONVERGED",
+      "numerical_envelope": [
+        222704.01737868128,
+        222969.11619365524
+      ],
+      "confidence": "LOCAL_WARM_START_SAMPLED_POINTS_ONLY",
+      "observable": "continuous divided VCO phase fundamental / reference phase fundamental",
+      "edge_only_equivalence": "NOT_ESTABLISHED; edge timestamp harmonic fits show different sampled response",
+      "envelope_scope": "bracketing and amplitude/step/window refinements; excludes cross-observable systematic difference"
+    }
+  },
+  "constraints": [
+    {
+      "metric": "output_frequency_Hz",
+      "target": {
+        "metric": "output_frequency_Hz",
+        "unit": "Hz",
+        "min": 80000000,
+        "max": 80000000,
+        "tolerance": 1e-06,
+        "evaluator": "M1",
+        "protocol": "conditional_locked_tuning_frequency",
+        "source": "User: 10 MHz x 8; conditional static frequency, not a transient measurement"
+      },
+      "status": "UNKNOWN",
+      "reason": "UNKNOWN_REQUIRED_PRECISION: frozen 1e-6 Hz tolerance not independently validated"
+    },
+    {
+      "metric": "BW_Hz",
+      "target": {
+        "metric": "BW_Hz",
+        "unit": "Hz",
+        "min": 150000,
+        "max": 300000,
+        "tolerance": 0,
+        "evaluator": "M1",
+        "protocol": "continuous_normalized_T_first_downward_minus3dB",
+        "source": "User: experimental BW target"
+      },
+      "status": "PASS",
+      "reason": "converged measured BW envelope"
+    },
+    {
+      "metric": "PM_deg",
+      "target": {
+        "metric": "PM_deg",
+        "unit": "deg",
+        "min": 50,
+        "tolerance": 0,
+        "evaluator": "M1",
+        "protocol": "180_plus_continuous_L_phase_at_UGF",
+        "source": "User: experimental PM target"
+      },
+      "status": "UNKNOWN",
+      "reason": "PM_M2_UNKNOWN"
+    }
+  ],
+  "overall_status": "UNKNOWN",
+  "verified_joint_block_spec": false,
+  "scientific_status": "UGF / PM M2 MEASUREMENT NOT YET VALIDATED",
+  "local_measurement_status": "NUMERICALLY_CONVERGED_PHASE_PORT_DIAGNOSTIC",
+  "structured_feedback": [
+    {
+      "category": "UNSUPPORTED_METRIC",
+      "metrics": [
+        "UGF_Hz",
+        "PM_deg"
+      ],
+      "reason": "periodic scalar interpretation not established by current measurement evidence",
+      "required_action": "measure a bounded harmonic return matrix and compare periodic stability criterion before promoting scalar PM"
+    }
+  ],
+  "prediction_errors": {
+    "UGF_Hz": {
+      "M1_prediction": 138176.44113161,
+      "M2_certified_measurement": null,
+      "diagnostic_series_difference": 243.1612749757769,
+      "diagnostic_series_relative_difference": 0.0017597882315132374,
+      "diagnostic_direct_clamp_difference": 1.1281208926811814,
+      "MODEL_DISAGREEMENT_asserted": false,
+      "reason": "do not label uncertified stability definition as reliable model error"
+    },
+    "PM_deg": {
+      "M1_prediction": 56.44269021253223,
+      "M2_certified_measurement": null,
+      "diagnostic_series_difference": -0.00337057745954894,
+      "diagnostic_series_relative_difference": -5.971681092553638e-05,
+      "diagnostic_direct_clamp_difference": -0.0041698439401614,
+      "MODEL_DISAGREEMENT_asserted": false,
+      "reason": "do not label uncertified stability definition as reliable model error"
+    }
+  },
+  "possible_error_sources": {
+    "physical_approximation": "continuous ideal M1 vs switched periodic event response; not isolated as the error cause",
+    "sampling_switching": "reverse fref±f to f conversion independently measured; scalar topology-dependent UGF observed",
+    "definition_mismatch": "series effective scalar return vs direct open-port L00; neither alone certifies periodic stability",
+    "numerical_integration": "step half differences recorded; not a certified global error bound",
+    "parameter_units": "proposal versions/complete SI envelope/frozen hashes validated; no detected mismatch"
+  },
+  "evidence": {
+    "measurement_gate": {
+      "passed": true,
+      "reasons": [],
+      "comparisons": {
+        "amplitude_half": {
+          "shared_points": 17,
+          "points": [
+            {
+              "f_Hz": 25000,
+              "complex_relative": 1.1600069387173494e-08,
+              "phase_deg": 6.611649188289066e-07
+            },
+            {
+              "f_Hz": 40000,
+              "complex_relative": 8.761150993428834e-09,
+              "phase_deg": 1.973045153136875e-07
+            },
+            {
+              "f_Hz": 63000,
+              "complex_relative": 1.2280368019366096e-05,
+              "phase_deg": 0.0006875633137401721
+            },
+            {
+              "f_Hz": 100000,
+              "complex_relative": 2.0507479580048095e-09,
+              "phase_deg": 2.0286869788325924e-08
+            },
+            {
+              "f_Hz": 126491.10640673517,
+              "complex_relative": 5.114852930168932e-05,
+              "phase_deg": 0.002900568233221235
+            },
+            {
+              "f_Hz": 134145.15424006627,
+              "complex_relative": 2.7128358262850608e-05,
+              "phase_deg": 0.0015394443187244139
+            },
+            {
+              "f_Hz": 138144.14667052828,
+              "complex_relative": 6.430565183932223e-05,
+              "phase_deg": 0.0036525184389041695
+            },
+            {
+              "f_Hz": 138398.00561330857,
+              "complex_relative": 4.223854260174331e-05,
+              "phase_deg": 0.0023992571634771833
+            },
+            {
+              "f_Hz": 138652.33105694602,
+              "complex_relative": 1.3687314413452647e-05,
+              "phase_deg": 0.0007680239178928973
+            },
+            {
+              "f_Hz": 139162.38487740656,
+              "complex_relative": 1.6335374307303172e-05,
+              "phase_deg": 0.0009273034609324567
+            },
+            {
+              "f_Hz": 140188.1283537511,
+              "complex_relative": 3.2890323288646076e-05,
+              "phase_deg": 0.0018677032421638273
+            },
+            {
+              "f_Hz": 142262.3528031138,
+              "complex_relative": 1.595191631571065e-06,
+              "phase_deg": 9.132852767869163e-05
+            },
+            {
+              "f_Hz": 160000,
+              "complex_relative": 1.6848524495738837e-09,
+              "phase_deg": 6.375509925638411e-08
+            },
+            {
+              "f_Hz": 250000,
+              "complex_relative": 2.156427186496932e-09,
+              "phase_deg": 2.52500810105523e-08
+            },
+            {
+              "f_Hz": 400000,
+              "complex_relative": 7.385735782459237e-09,
+              "phase_deg": 1.3605063746196853e-07
+            },
+            {
+              "f_Hz": 630000,
+              "complex_relative": 0.0002511795616808829,
+              "phase_deg": 0.014374424954273077
+            },
+            {
+              "f_Hz": 1000000,
+              "complex_relative": 0.00028713341370530457,
+              "phase_deg": 0.016387838661477843
+            }
+          ],
+          "max_complex_relative": 0.00028713341370530457,
+          "max_phase_deg": 0.016387838661477843,
+          "UGF_relative": 4.160167965561179e-06,
+          "PM_absolute_deg": 0.00214096092724958
+        },
+        "step_half": {
+          "shared_points": 17,
+          "points": [
+            {
+              "f_Hz": 25000,
+              "complex_relative": 2.001754381865394e-05,
+              "phase_deg": 0.0006590279721332236
+            },
+            {
+              "f_Hz": 40000,
+              "complex_relative": 2.4552895105211758e-05,
+              "phase_deg": 0.0007487104443886193
+            },
+            {
+              "f_Hz": 63000,
+              "complex_relative": 5.6304622908264244e-05,
+              "phase_deg": 0.00260682599896961
+            },
+            {
+              "f_Hz": 100000,
+              "complex_relative": 2.291206416553881e-05,
+              "phase_deg": 0.0006502087121996412
+            },
+            {
+              "f_Hz": 126491.10640673517,
+              "complex_relative": 5.1637287670283516e-05,
+              "phase_deg": 0.002793692900182608
+            },
+            {
+              "f_Hz": 134145.15424006627,
+              "complex_relative": 4.691191882512974e-05,
+              "phase_deg": 0.002586820508608584
+            },
+            {
+              "f_Hz": 138144.14667052828,
+              "complex_relative": 4.679719497889571e-05,
+              "phase_deg": 0.0025692048377364512
+            },
+            {
+              "f_Hz": 138398.00561330857,
+              "complex_relative": 3.723853715734483e-05,
+              "phase_deg": 0.001988627882351064
+            },
+            {
+              "f_Hz": 138652.33105694602,
+              "complex_relative": 6.66055892457317e-06,
+              "phase_deg": 4.589407105949527e-06
+            },
+            {
+              "f_Hz": 139162.38487740656,
+              "complex_relative": 4.31210173717125e-05,
+              "phase_deg": 0.002343232114451582
+            },
+            {
+              "f_Hz": 140188.1283537511,
+              "complex_relative": 4.6665970959569245e-05,
+              "phase_deg": 0.002602763309152402
+            },
+            {
+              "f_Hz": 142262.3528031138,
+              "complex_relative": 2.3058319489195413e-05,
+              "phase_deg": 0.0012065096127402695
+            },
+            {
+              "f_Hz": 160000,
+              "complex_relative": 1.6472881356585462e-05,
+              "phase_deg": 0.0009119714324188759
+            },
+            {
+              "f_Hz": 250000,
+              "complex_relative": 4.771374900026395e-05,
+              "phase_deg": 0.0021780930128273567
+            },
+            {
+              "f_Hz": 400000,
+              "complex_relative": 0.00013721397135996711,
+              "phase_deg": 0.00617076151008827
+            },
+            {
+              "f_Hz": 630000,
+              "complex_relative": 0.0001869899809036627,
+              "phase_deg": 0.006966422842464647
+            },
+            {
+              "f_Hz": 1000000,
+              "complex_relative": 0.000406930455211423,
+              "phase_deg": 0.021435365592241393
+            }
+          ],
+          "max_complex_relative": 0.000406930455211423,
+          "max_phase_deg": 0.021435365592241393,
+          "UGF_relative": 1.105197851769546e-05,
+          "PM_absolute_deg": 0.0018179234806581235
+        },
+        "window_double": {
+          "shared_points": 17,
+          "points": [
+            {
+              "f_Hz": 25000,
+              "complex_relative": 1.3729925587091227e-08,
+              "phase_deg": 7.293472312879564e-07
+            },
+            {
+              "f_Hz": 40000,
+              "complex_relative": 8.998158821656068e-09,
+              "phase_deg": 2.842860000985409e-07
+            },
+            {
+              "f_Hz": 63000,
+              "complex_relative": 4.032911803841606e-05,
+              "phase_deg": 0.002185626051225043
+            },
+            {
+              "f_Hz": 100000,
+              "complex_relative": 3.010095246227793e-09,
+              "phase_deg": 1.517371550639495e-07
+            },
+            {
+              "f_Hz": 126491.10640673517,
+              "complex_relative": 1.315889299555969e-06,
+              "phase_deg": 7.24864476815469e-05
+            },
+            {
+              "f_Hz": 134145.15424006627,
+              "complex_relative": 2.4828171950971453e-05,
+              "phase_deg": 0.0014126777281592083
+            },
+            {
+              "f_Hz": 138144.14667052828,
+              "complex_relative": 2.6350611767564324e-05,
+              "phase_deg": 0.0014972034342183365
+            },
+            {
+              "f_Hz": 138398.00561330857,
+              "complex_relative": 2.7145637769806725e-05,
+              "phase_deg": 0.001546821979029175
+            },
+            {
+              "f_Hz": 138652.33105694602,
+              "complex_relative": 4.3486917057167065e-05,
+              "phase_deg": 0.002473564306610168
+            },
+            {
+              "f_Hz": 139162.38487740656,
+              "complex_relative": 2.5609984885431804e-05,
+              "phase_deg": 0.001458504192151666
+            },
+            {
+              "f_Hz": 140188.1283537511,
+              "complex_relative": 7.658311009308314e-06,
+              "phase_deg": 0.0004364718750478601
+            },
+            {
+              "f_Hz": 142262.3528031138,
+              "complex_relative": 7.558997852115742e-06,
+              "phase_deg": 0.00042946372461678887
+            },
+            {
+              "f_Hz": 160000,
+              "complex_relative": 4.263218822820587e-08,
+              "phase_deg": 2.181503281847574e-06
+            },
+            {
+              "f_Hz": 250000,
+              "complex_relative": 6.30874480732629e-08,
+              "phase_deg": 1.199090841272725e-06
+            },
+            {
+              "f_Hz": 400000,
+              "complex_relative": 5.4766470047842226e-05,
+              "phase_deg": 0.0031169920331342656
+            },
+            {
+              "f_Hz": 630000,
+              "complex_relative": 2.032195922143969e-05,
+              "phase_deg": 0.0011635617846599666
+            },
+            {
+              "f_Hz": 1000000,
+              "complex_relative": 6.311224878174731e-05,
+              "phase_deg": 0.003583439238172814
+            }
+          ],
+          "max_complex_relative": 6.311224878174731e-05,
+          "max_phase_deg": 0.003583439238172814,
+          "UGF_relative": 1.839324715424695e-06,
+          "PM_absolute_deg": 0.0012027454757088663
+        },
+        "offset_grid": {
+          "shared_points": 0,
+          "points": [],
+          "max_complex_relative": null,
+          "max_phase_deg": null,
+          "UGF_relative": 1.7860570595829017e-06,
+          "PM_absolute_deg": 0.0009225702241337785
+        },
+        "independent_clamp": {
+          "shared_points": 17,
+          "points": [
+            {
+              "f_Hz": 25000,
+              "complex_relative": 0.0020395375968386906,
+              "phase_deg": 2.0658306787831637e-05
+            },
+            {
+              "f_Hz": 40000,
+              "complex_relative": 0.0020395996742113695,
+              "phase_deg": 3.364435645093259e-05
+            },
+            {
+              "f_Hz": 63000,
+              "complex_relative": 0.002028077472673148,
+              "phase_deg": 0.001781364794119843
+            },
+            {
+              "f_Hz": 100000,
+              "complex_relative": 0.0020399326264283783,
+              "phase_deg": 8.358837119748508e-05
+            },
+            {
+              "f_Hz": 126491.10640673517,
+              "complex_relative": 0.002036546275397472,
+              "phase_deg": 7.907336242237154e-05
+            },
+            {
+              "f_Hz": 134145.15424006627,
+              "complex_relative": 0.002037068159376613,
+              "phase_deg": 8.033011161403637e-05
+            },
+            {
+              "f_Hz": 138144.14667052828,
+              "complex_relative": 0.0020378962130086628,
+              "phase_deg": 0.00015868023646898544
+            },
+            {
+              "f_Hz": 138398.00561330857,
+              "complex_relative": 0.002038963653874724,
+              "phase_deg": 4.7443872260579446e-05
+            },
+            {
+              "f_Hz": 138652.33105694602,
+              "complex_relative": 0.0020435742427143146,
+              "phase_deg": 0.00034038694069369316
+            },
+            {
+              "f_Hz": 139162.38487740656,
+              "complex_relative": 0.0020384028682365806,
+              "phase_deg": 6.057679358387778e-05
+            },
+            {
+              "f_Hz": 140188.1283537511,
+              "complex_relative": 0.0020373975659451634,
+              "phase_deg": 0.00023889036727285057
+            },
+            {
+              "f_Hz": 142262.3528031138,
+              "complex_relative": 0.0020420220342967058,
+              "phase_deg": 0.0001939512957816573
+            },
+            {
+              "f_Hz": 160000,
+              "complex_relative": 0.0020405756973240017,
+              "phase_deg": 0.00013330119001031966
+            },
+            {
+              "f_Hz": 250000,
+              "complex_relative": 0.0020419648481735803,
+              "phase_deg": 0.0002061779414482887
+            },
+            {
+              "f_Hz": 400000,
+              "complex_relative": 0.002045926924712091,
+              "phase_deg": 0.0003388435895280114
+            },
+            {
+              "f_Hz": 630000,
+              "complex_relative": 0.0020570372641662777,
+              "phase_deg": 0.0028142678215302996
+            },
+            {
+              "f_Hz": 1000000,
+              "complex_relative": 0.0020793641943192193,
+              "phase_deg": 0.0018691784344922286
+            }
+          ],
+          "max_complex_relative": 0.0020793641943192193,
+          "max_phase_deg": 0.0028142678215302996,
+          "UGF_relative": 0.0017485468089423195,
+          "PM_absolute_deg": 0.0007992664806124594
+        }
+      },
+      "scope": "local fundamental phase-port measurements; not global periodic stability certification"
+    },
+    "raw_signal_checks": {
+      "all_raw_signals_passed": true,
+      "max_raw_THD": 0.0001513297123705049,
+      "max_raw_residual_relative": 0.002096492327350969,
+      "scope": "raw positive/negative runs, not only odd differential; pilots retained separately for DC failure diagnosis"
+    },
+    "reverse_harmonic_probes": [
+      {
+        "base_Hz": 138419.60240658576,
+        "excitation_Hz": 9861580.397593414,
+        "dt_s": 4e-10,
+        "reverse_conversion_complex": [
+          -0.5516155981759824,
+          -0.831553077145774
+        ],
+        "reverse_conversion_magnitude": 0.9978778924606219,
+        "returned_high_frequency_magnitude": 0.0006506607132970041,
+        "scope": "one-sided harmonic transfer; not complete harmonic return matrix or Floquet multiplier"
+      },
+      {
+        "base_Hz": 138419.60240658576,
+        "excitation_Hz": 9861580.397593414,
+        "dt_s": 2e-10,
+        "reverse_conversion_complex": [
+          -0.5516770740057695,
+          -0.8315850983355403
+        ],
+        "reverse_conversion_magnitude": 0.9979385601114417,
+        "returned_high_frequency_magnitude": 0.0006546385027252605,
+        "scope": "one-sided harmonic transfer; not complete harmonic return matrix or Floquet multiplier"
+      },
+      {
+        "base_Hz": 138419.60240658576,
+        "excitation_Hz": 10138419.602406586,
+        "dt_s": 4e-10,
+        "reverse_conversion_complex": [
+          -0.5516081046447272,
+          -0.8315529730961466
+        ],
+        "reverse_conversion_magnitude": 0.9978736634337981,
+        "returned_high_frequency_magnitude": 0.0006156339340596002,
+        "scope": "one-sided harmonic transfer; not complete harmonic return matrix or Floquet multiplier"
+      },
+      {
+        "base_Hz": 138419.60240658576,
+        "excitation_Hz": 10138419.602406586,
+        "dt_s": 2e-10,
+        "reverse_conversion_complex": [
+          -0.5516744841580606,
+          -0.8315837581616208
+        ],
+        "reverse_conversion_magnitude": 0.9979360116306392,
+        "returned_high_frequency_magnitude": 0.0006196549684443838,
+        "scope": "one-sided harmonic transfer; not complete harmonic return matrix or Floquet multiplier"
+      }
+    ],
+    "partial_return_matrix_only": true,
+    "original_Protocol1_1_unchanged": true
+  }
+}

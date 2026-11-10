@@ -1,0 +1,30 @@
+{
+  "schema_version": "allocation-feedback-1.0",
+  "parameter_sha256": "686a7011f66acbfefd272d7026d56428c4fc22778264fb56e23dc35207998227",
+  "candidate_id": "E1_upper_shape-001-686a7011f66a",
+  "source": "M2",
+  "kind": "BW",
+  "verdict": "FAIL",
+  "measurements": {
+    "BW_Hz": {
+      "value": 301453.5845831754,
+      "unit": "Hz",
+      "status": "MEASURED_CONVERGED",
+      "numerical_envelope": [
+        301329.3960689553,
+        301567.9293451422
+      ],
+      "confidence": "LOCAL_WARM_START_SAMPLED_POINTS_ONLY",
+      "observable": "continuous divided VCO phase fundamental / reference phase fundamental",
+      "edge_only_equivalence": "NOT_ESTABLISHED; edge timestamp harmonic fits show different sampled response",
+      "envelope_scope": "bracketing and amplitude/step/window refinements; excludes cross-observable systematic difference",
+      "reliable": true
+    }
+  },
+  "research_SystemSpec_sha256": "b78ae808d032c713fe6a85d382e32d2a95e2818032035c5cb89cd557d718825a",
+  "formal_SystemSpec_sha256": "9acdbf00d9b095e3cc23400024628f2301220549a45e8301aa42a08490fa598c",
+  "protocol_sha256": "250f8e4d3f186bfd286028c71a3515d6010876f57fa4a219567c99aa71f69280",
+  "evidence_sha256": "fbd9f071de6c7695ce2213609b6de540a5fbd4d5f1d0beba77a68e846cad4bad",
+  "scope": "research BW threshold; original independent measured envelope, not invented measurement",
+  "remaining_M2": 1
+}

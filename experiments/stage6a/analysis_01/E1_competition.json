@@ -1,0 +1,123 @@
+{
+  "scenario": {
+    "version": "0",
+    "draft": true,
+    "source": "User Stage 1 research targets, 2026-11-04; not frozen",
+    "metrics": [
+      {
+        "metric": "output_frequency_Hz",
+        "unit": "Hz",
+        "min": 80000000,
+        "max": 80000000,
+        "tolerance": 1e-06,
+        "evaluator": "M1",
+        "protocol": "conditional_locked_tuning_frequency",
+        "source": "User: 10 MHz x 8; conditional static frequency, not a transient measurement"
+      },
+      {
+        "metric": "BW_Hz",
+        "unit": "Hz",
+        "min": 290000,
+        "max": 300000,
+        "tolerance": 0,
+        "evaluator": "M1",
+        "protocol": "continuous_normalized_T_first_downward_minus3dB",
+        "source": "User: experimental BW target"
+      },
+      {
+        "metric": "PM_deg",
+        "unit": "deg",
+        "min": 70,
+        "tolerance": 0,
+        "evaluator": "M1",
+        "protocol": "180_plus_continuous_L_phase_at_UGF",
+        "source": "User: experimental PM target"
+      }
+    ]
+  },
+  "lower_PM_branch": {
+    "status": "EMPTY",
+    "x": 3.835869289613881,
+    "q": 41.0,
+    "beta": 1.335598756519525,
+    "h": 0.2533672827458354,
+    "a_R": 407689889.99302983,
+    "a_P": 9.196066571239306e-08,
+    "BW_min_Hz": 290000,
+    "BW_max_Hz": 203844.9449965149,
+    "intersections_Hz": {
+      "SystemSpec": [
+        290000,
+        300000
+      ],
+      "Rz": [
+        50961.23624912873,
+        203844.9449965149
+      ],
+      "gain_product": [
+        73736.74270964082,
+        294946.9708385633
+      ]
+    },
+    "existential_tuning_checked": true,
+    "scope": "CONDITIONAL_M1_MATHEMATICAL_DOMAIN",
+    "verified_joint_block_spec": false
+  },
+  "upper_PM_branch": {
+    "status": "NONEMPTY",
+    "x": 10.688313887808976,
+    "q": 41.0,
+    "beta": 1.441063820222946,
+    "h": 0.09626661072440924,
+    "a_R": 1225695382.9857602,
+    "a_P": 3.0013236953755606e-08,
+    "BW_min_Hz": 290000,
+    "BW_max_Hz": 300000,
+    "intersections_Hz": {
+      "SystemSpec": [
+        290000,
+        300000
+      ],
+      "Rz": [
+        153211.92287322003,
+        612847.6914928801
+      ],
+      "gain_product": [
+        129070.97290559285,
+        516283.8916223714
+      ]
+    },
+    "existential_tuning_checked": true,
+    "scope": "CONDITIONAL_M1_MATHEMATICAL_DOMAIN",
+    "verified_joint_block_spec": false
+  },
+  "peak_shape": {
+    "status": "NONEMPTY",
+    "x": 6.4031242374328485,
+    "q": 41.0,
+    "beta": 1.3459632911407546,
+    "h": 0.15617376188860607,
+    "a_R": 685828107.1505504,
+    "a_P": 5.581426699976064e-08,
+    "BW_min_Hz": 290000,
+    "BW_max_Hz": 300000,
+    "intersections_Hz": {
+      "SystemSpec": [
+        290000,
+        300000
+      ],
+      "Rz": [
+        85728.5133938188,
+        342914.0535752752
+      ],
+      "gain_product": [
+        94648.20660714887,
+        378592.82642859546
+      ]
+    },
+    "existential_tuning_checked": true,
+    "scope": "CONDITIONAL_M1_MATHEMATICAL_DOMAIN",
+    "verified_joint_block_spec": false
+  },
+  "tuning_conflict": "No unavoidable tuning conflict when f0 is free; each declared Kvco admits some interior f0."
+}

@@ -1,0 +1,6705 @@
+[
+  {
+    "index": 1,
+    "kind": "candidate_generations"
+  },
+  {
+    "index": 2,
+    "kind": "M1_calls",
+    "status": "RETURNED",
+    "input": {
+      "schema_version": "pll-physics-mapping-2.0",
+      "conventions": {
+        "vco_f0": "frequency_at_zero_volts",
+        "phase_error": "reference_minus_feedback_rad",
+        "lf_topology": "C1_shunt_Rz_series_C2",
+        "cp_leakage": "positive_injected_into_lf"
+      },
+      "values": {
+        "f_ref": {
+          "value": 10000000,
+          "unit": "Hz"
+        },
+        "N": {
+          "value": 8,
+          "unit": "1"
+        },
+        "Icp": {
+          "value": 0.0001,
+          "unit": "A"
+        },
+        "Rz": {
+          "value": 3820,
+          "unit": "Ohm"
+        },
+        "C1": {
+          "value": 1e-10,
+          "unit": "F"
+        },
+        "C2": {
+          "value": 1e-09,
+          "unit": "F"
+        },
+        "f0": {
+          "value": 72000000,
+          "unit": "Hz"
+        },
+        "Kvco": {
+          "value": 20000000,
+          "unit": "Hz/V"
+        },
+        "Vctrl_min": {
+          "value": 0,
+          "unit": "V"
+        },
+        "Vctrl_max": {
+          "value": 1.2,
+          "unit": "V"
+        },
+        "Kvco2": {
+          "value": 0,
+          "unit": "Hz/V^2"
+        },
+        "CP_mismatch": {
+          "value": 0,
+          "unit": "1"
+        },
+        "CP_leakage": {
+          "value": 0,
+          "unit": "A"
+        },
+        "q0": {
+          "value": 0,
+          "unit": "C"
+        },
+        "PFD_reset_delay": {
+          "value": 0,
+          "unit": "s"
+        },
+        "Cload": {
+          "value": 0,
+          "unit": "F"
+        },
+        "Gload": {
+          "value": 0,
+          "unit": "S"
+        }
+      }
+    },
+    "output": {
+      "status": "OK",
+      "reason": "",
+      "model_level": "M1",
+      "model_id": "ideal_cppll_locked_continuous_m1_v1",
+      "parameter_sha256": "9b116a350e5009606dde3a27a04d85b4a74f32f0d6ae67cc908a6546ea947e7c",
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.4,
+        "Kvco_local_Hz_per_V": 20000000,
+        "UGF_Hz": 138176.44113161,
+        "BW_Hz": 222379.1834929631,
+        "PM_deg": 56.44269021253223
+      },
+      "units": {
+        "output_frequency_Hz": "Hz",
+        "Vctrl_required_V": "V",
+        "Kvco_local_Hz_per_V": "Hz/V",
+        "UGF_Hz": "Hz",
+        "BW_Hz": "Hz",
+        "PM_deg": "deg"
+      },
+      "protocols": {
+        "output_frequency_Hz": "conditional_locked_tuning_frequency",
+        "Vctrl_required_V": "linear_vco_static_tuning_solution",
+        "Kvco_local_Hz_per_V": "vco_derivative_at_tuning_point",
+        "UGF_Hz": "continuous_L_first_downward_unity_crossing",
+        "BW_Hz": "continuous_normalized_T_first_downward_minus3dB",
+        "PM_deg": "180_plus_continuous_L_phase_at_UGF"
+      },
+      "factors": {
+        "F_FREQ_PLAN": {
+          "f_target_Hz": 80000000,
+          "source": "model/solve_tuning_point.m"
+        },
+        "F_TUNING": {
+          "Vctrl_required_V": 0.4,
+          "Kvco_local_Hz_per_V": 20000000,
+          "feasible": true,
+          "voltage_margin_V": 0.4,
+          "tuning_frequency_min_Hz": 72000000,
+          "tuning_frequency_max_Hz": 96000000.0,
+          "source": "model/solve_tuning_point.m; model/vco_model.m"
+        },
+        "F_KPFD": {
+          "Kpfd_A_per_rad": 1.5915494309189534e-05,
+          "Iup_A": 0.0001,
+          "Idown_A": 0.0001,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LF_TF": {
+          "zero_Hz": 41663.59766803543,
+          "poles_rad_per_s": [
+            0,
+            -2879581.151832461
+          ],
+          "nonzero_pole_Hz": 458299.57434838975,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LOOP": {
+          "UGF_Hz": 138176.44113161,
+          "BW_Hz": 222379.1834929631,
+          "PM_deg": 56.44269021253223,
+          "characteristic_descending": [
+            3.8200000000000004e-16,
+            1.1000000000000001e-09,
+            0.000955,
+            250.0
+          ],
+          "routh_stable": true,
+          "T_definition": "L/(1+L); normalized reference phase response; H_ref=N*T",
+          "source": "model/pll_linear_kernel.m; characterization/characterize_loop.m"
+        }
+      },
+      "diagnostics": {
+        "scan": {
+          "minimum_Hz": 4.166359766803543,
+          "maximum_Hz": 1000000000,
+          "points": 8000
+        },
+        "UGF_over_fref": 0.013817644113160998,
+        "BW_over_fref": 0.02223791834929631,
+        "sampling_equivalence": "NOT_ESTABLISHED",
+        "transient_lock": "NOT_EVALUATED",
+        "MATLAB_runtime_calls": 0,
+        "behavioral_TB_calls": 0
+      },
+      "response": [],
+      "scope": "CONDITIONAL_LOCKED_CONTINUOUS_SMALL_SIGNAL_ONLY",
+      "verified_joint_block_spec": false
+    },
+    "elapsed_s": 0.036882499989587814
+  },
+  {
+    "index": 3,
+    "kind": "candidate_generations"
+  },
+  {
+    "index": 4,
+    "kind": "M1_calls",
+    "status": "RETURNED",
+    "input": {
+      "schema_version": "pll-physics-mapping-2.0",
+      "conventions": {
+        "vco_f0": "frequency_at_zero_volts",
+        "phase_error": "reference_minus_feedback_rad",
+        "lf_topology": "C1_shunt_Rz_series_C2",
+        "cp_leakage": "positive_injected_into_lf"
+      },
+      "values": {
+        "f_ref": {
+          "value": 10000000,
+          "unit": "Hz"
+        },
+        "N": {
+          "value": 8,
+          "unit": "1"
+        },
+        "Icp": {
+          "value": 9.900000000000001e-05,
+          "unit": "A"
+        },
+        "Rz": {
+          "value": 3820,
+          "unit": "Ohm"
+        },
+        "C1": {
+          "value": 1e-10,
+          "unit": "F"
+        },
+        "C2": {
+          "value": 1e-09,
+          "unit": "F"
+        },
+        "f0": {
+          "value": 72000000,
+          "unit": "Hz"
+        },
+        "Kvco": {
+          "value": 20000000,
+          "unit": "Hz/V"
+        },
+        "Vctrl_min": {
+          "value": 0,
+          "unit": "V"
+        },
+        "Vctrl_max": {
+          "value": 1.2,
+          "unit": "V"
+        },
+        "Kvco2": {
+          "value": 0,
+          "unit": "Hz/V^2"
+        },
+        "CP_mismatch": {
+          "value": 0,
+          "unit": "1"
+        },
+        "CP_leakage": {
+          "value": 0,
+          "unit": "A"
+        },
+        "q0": {
+          "value": 0,
+          "unit": "C"
+        },
+        "PFD_reset_delay": {
+          "value": 0,
+          "unit": "s"
+        },
+        "Cload": {
+          "value": 0,
+          "unit": "F"
+        },
+        "Gload": {
+          "value": 0,
+          "unit": "S"
+        }
+      }
+    },
+    "output": {
+      "status": "OK",
+      "reason": "",
+      "model_level": "M1",
+      "model_id": "ideal_cppll_locked_continuous_m1_v1",
+      "parameter_sha256": "98ab7227841aea8540d1488e31726925f44461e9837b2a3e0c962915102af2e6",
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.4,
+        "Kvco_local_Hz_per_V": 20000000,
+        "UGF_Hz": 136991.22888734378,
+        "BW_Hz": 220315.97850822465,
+        "PM_deg": 56.441700906021694
+      },
+      "units": {
+        "output_frequency_Hz": "Hz",
+        "Vctrl_required_V": "V",
+        "Kvco_local_Hz_per_V": "Hz/V",
+        "UGF_Hz": "Hz",
+        "BW_Hz": "Hz",
+        "PM_deg": "deg"
+      },
+      "protocols": {
+        "output_frequency_Hz": "conditional_locked_tuning_frequency",
+        "Vctrl_required_V": "linear_vco_static_tuning_solution",
+        "Kvco_local_Hz_per_V": "vco_derivative_at_tuning_point",
+        "UGF_Hz": "continuous_L_first_downward_unity_crossing",
+        "BW_Hz": "continuous_normalized_T_first_downward_minus3dB",
+        "PM_deg": "180_plus_continuous_L_phase_at_UGF"
+      },
+      "factors": {
+        "F_FREQ_PLAN": {
+          "f_target_Hz": 80000000,
+          "source": "model/solve_tuning_point.m"
+        },
+        "F_TUNING": {
+          "Vctrl_required_V": 0.4,
+          "Kvco_local_Hz_per_V": 20000000,
+          "feasible": true,
+          "voltage_margin_V": 0.4,
+          "tuning_frequency_min_Hz": 72000000,
+          "tuning_frequency_max_Hz": 96000000.0,
+          "source": "model/solve_tuning_point.m; model/vco_model.m"
+        },
+        "F_KPFD": {
+          "Kpfd_A_per_rad": 1.575633936609764e-05,
+          "Iup_A": 9.900000000000001e-05,
+          "Idown_A": 9.900000000000001e-05,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LF_TF": {
+          "zero_Hz": 41663.59766803543,
+          "poles_rad_per_s": [
+            0,
+            -2879581.151832461
+          ],
+          "nonzero_pole_Hz": 458299.57434838975,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LOOP": {
+          "UGF_Hz": 136991.22888734378,
+          "BW_Hz": 220315.97850822465,
+          "PM_deg": 56.441700906021694,
+          "characteristic_descending": [
+            3.8200000000000004e-16,
+            1.1000000000000001e-09,
+            0.0009454500000000001,
+            247.50000000000003
+          ],
+          "routh_stable": true,
+          "T_definition": "L/(1+L); normalized reference phase response; H_ref=N*T",
+          "source": "model/pll_linear_kernel.m; characterization/characterize_loop.m"
+        }
+      },
+      "diagnostics": {
+        "scan": {
+          "minimum_Hz": 4.166359766803543,
+          "maximum_Hz": 1000000000,
+          "points": 8000
+        },
+        "UGF_over_fref": 0.013699122888734377,
+        "BW_over_fref": 0.022031597850822465,
+        "sampling_equivalence": "NOT_ESTABLISHED",
+        "transient_lock": "NOT_EVALUATED",
+        "MATLAB_runtime_calls": 0,
+        "behavioral_TB_calls": 0
+      },
+      "response": [],
+      "scope": "CONDITIONAL_LOCKED_CONTINUOUS_SMALL_SIGNAL_ONLY",
+      "verified_joint_block_spec": false
+    },
+    "elapsed_s": 0.03455550002399832
+  },
+  {
+    "index": 5,
+    "kind": "candidate_generations"
+  },
+  {
+    "index": 6,
+    "kind": "M1_calls",
+    "status": "RETURNED",
+    "input": {
+      "schema_version": "pll-physics-mapping-2.0",
+      "conventions": {
+        "vco_f0": "frequency_at_zero_volts",
+        "phase_error": "reference_minus_feedback_rad",
+        "lf_topology": "C1_shunt_Rz_series_C2",
+        "cp_leakage": "positive_injected_into_lf"
+      },
+      "values": {
+        "f_ref": {
+          "value": 10000000,
+          "unit": "Hz"
+        },
+        "N": {
+          "value": 8,
+          "unit": "1"
+        },
+        "Icp": {
+          "value": 0.000101,
+          "unit": "A"
+        },
+        "Rz": {
+          "value": 3820,
+          "unit": "Ohm"
+        },
+        "C1": {
+          "value": 1e-10,
+          "unit": "F"
+        },
+        "C2": {
+          "value": 1e-09,
+          "unit": "F"
+        },
+        "f0": {
+          "value": 72000000,
+          "unit": "Hz"
+        },
+        "Kvco": {
+          "value": 20000000,
+          "unit": "Hz/V"
+        },
+        "Vctrl_min": {
+          "value": 0,
+          "unit": "V"
+        },
+        "Vctrl_max": {
+          "value": 1.2,
+          "unit": "V"
+        },
+        "Kvco2": {
+          "value": 0,
+          "unit": "Hz/V^2"
+        },
+        "CP_mismatch": {
+          "value": 0,
+          "unit": "1"
+        },
+        "CP_leakage": {
+          "value": 0,
+          "unit": "A"
+        },
+        "q0": {
+          "value": 0,
+          "unit": "C"
+        },
+        "PFD_reset_delay": {
+          "value": 0,
+          "unit": "s"
+        },
+        "Cload": {
+          "value": 0,
+          "unit": "F"
+        },
+        "Gload": {
+          "value": 0,
+          "unit": "S"
+        }
+      }
+    },
+    "output": {
+      "status": "OK",
+      "reason": "",
+      "model_level": "M1",
+      "model_id": "ideal_cppll_locked_continuous_m1_v1",
+      "parameter_sha256": "4f24942e8ed4c570c28524a820fc8783ec027825587d41df6e40f7aab6dfc3bd",
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.4,
+        "Kvco_local_Hz_per_V": 20000000,
+        "UGF_Hz": 139359.96166144946,
+        "BW_Hz": 224441.02900893363,
+        "PM_deg": 56.441740205008514
+      },
+      "units": {
+        "output_frequency_Hz": "Hz",
+        "Vctrl_required_V": "V",
+        "Kvco_local_Hz_per_V": "Hz/V",
+        "UGF_Hz": "Hz",
+        "BW_Hz": "Hz",
+        "PM_deg": "deg"
+      },
+      "protocols": {
+        "output_frequency_Hz": "conditional_locked_tuning_frequency",
+        "Vctrl_required_V": "linear_vco_static_tuning_solution",
+        "Kvco_local_Hz_per_V": "vco_derivative_at_tuning_point",
+        "UGF_Hz": "continuous_L_first_downward_unity_crossing",
+        "BW_Hz": "continuous_normalized_T_first_downward_minus3dB",
+        "PM_deg": "180_plus_continuous_L_phase_at_UGF"
+      },
+      "factors": {
+        "F_FREQ_PLAN": {
+          "f_target_Hz": 80000000,
+          "source": "model/solve_tuning_point.m"
+        },
+        "F_TUNING": {
+          "Vctrl_required_V": 0.4,
+          "Kvco_local_Hz_per_V": 20000000,
+          "feasible": true,
+          "voltage_margin_V": 0.4,
+          "tuning_frequency_min_Hz": 72000000,
+          "tuning_frequency_max_Hz": 96000000.0,
+          "source": "model/solve_tuning_point.m; model/vco_model.m"
+        },
+        "F_KPFD": {
+          "Kpfd_A_per_rad": 1.607464925228143e-05,
+          "Iup_A": 0.000101,
+          "Idown_A": 0.000101,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LF_TF": {
+          "zero_Hz": 41663.59766803543,
+          "poles_rad_per_s": [
+            0,
+            -2879581.151832461
+          ],
+          "nonzero_pole_Hz": 458299.57434838975,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LOOP": {
+          "UGF_Hz": 139359.96166144946,
+          "BW_Hz": 224441.02900893363,
+          "PM_deg": 56.441740205008514,
+          "characteristic_descending": [
+            3.8200000000000004e-16,
+            1.1000000000000001e-09,
+            0.0009645500000000001,
+            252.5
+          ],
+          "routh_stable": true,
+          "T_definition": "L/(1+L); normalized reference phase response; H_ref=N*T",
+          "source": "model/pll_linear_kernel.m; characterization/characterize_loop.m"
+        }
+      },
+      "diagnostics": {
+        "scan": {
+          "minimum_Hz": 4.166359766803543,
+          "maximum_Hz": 1000000000,
+          "points": 8000
+        },
+        "UGF_over_fref": 0.013935996166144946,
+        "BW_over_fref": 0.022444102900893364,
+        "sampling_equivalence": "NOT_ESTABLISHED",
+        "transient_lock": "NOT_EVALUATED",
+        "MATLAB_runtime_calls": 0,
+        "behavioral_TB_calls": 0
+      },
+      "response": [],
+      "scope": "CONDITIONAL_LOCKED_CONTINUOUS_SMALL_SIGNAL_ONLY",
+      "verified_joint_block_spec": false
+    },
+    "elapsed_s": 0.034182799980044365
+  },
+  {
+    "index": 7,
+    "kind": "candidate_generations"
+  },
+  {
+    "index": 8,
+    "kind": "M1_calls",
+    "status": "RETURNED",
+    "input": {
+      "schema_version": "pll-physics-mapping-2.0",
+      "conventions": {
+        "vco_f0": "frequency_at_zero_volts",
+        "phase_error": "reference_minus_feedback_rad",
+        "lf_topology": "C1_shunt_Rz_series_C2",
+        "cp_leakage": "positive_injected_into_lf"
+      },
+      "values": {
+        "f_ref": {
+          "value": 10000000,
+          "unit": "Hz"
+        },
+        "N": {
+          "value": 8,
+          "unit": "1"
+        },
+        "Icp": {
+          "value": 0.0001,
+          "unit": "A"
+        },
+        "Rz": {
+          "value": 3781.8,
+          "unit": "Ohm"
+        },
+        "C1": {
+          "value": 1e-10,
+          "unit": "F"
+        },
+        "C2": {
+          "value": 1e-09,
+          "unit": "F"
+        },
+        "f0": {
+          "value": 72000000,
+          "unit": "Hz"
+        },
+        "Kvco": {
+          "value": 20000000,
+          "unit": "Hz/V"
+        },
+        "Vctrl_min": {
+          "value": 0,
+          "unit": "V"
+        },
+        "Vctrl_max": {
+          "value": 1.2,
+          "unit": "V"
+        },
+        "Kvco2": {
+          "value": 0,
+          "unit": "Hz/V^2"
+        },
+        "CP_mismatch": {
+          "value": 0,
+          "unit": "1"
+        },
+        "CP_leakage": {
+          "value": 0,
+          "unit": "A"
+        },
+        "q0": {
+          "value": 0,
+          "unit": "C"
+        },
+        "PFD_reset_delay": {
+          "value": 0,
+          "unit": "s"
+        },
+        "Cload": {
+          "value": 0,
+          "unit": "F"
+        },
+        "Gload": {
+          "value": 0,
+          "unit": "S"
+        }
+      }
+    },
+    "output": {
+      "status": "OK",
+      "reason": "",
+      "model_level": "M1",
+      "model_id": "ideal_cppll_locked_continuous_m1_v1",
+      "parameter_sha256": "ec8c06d381028726113ed5d7ce7a64d31c97d035908ad43f548e41bf44f73cf7",
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.4,
+        "Kvco_local_Hz_per_V": 20000000,
+        "UGF_Hz": 137188.1019445061,
+        "BW_Hz": 220476.96032538597,
+        "PM_deg": 56.43875318269244
+      },
+      "units": {
+        "output_frequency_Hz": "Hz",
+        "Vctrl_required_V": "V",
+        "Kvco_local_Hz_per_V": "Hz/V",
+        "UGF_Hz": "Hz",
+        "BW_Hz": "Hz",
+        "PM_deg": "deg"
+      },
+      "protocols": {
+        "output_frequency_Hz": "conditional_locked_tuning_frequency",
+        "Vctrl_required_V": "linear_vco_static_tuning_solution",
+        "Kvco_local_Hz_per_V": "vco_derivative_at_tuning_point",
+        "UGF_Hz": "continuous_L_first_downward_unity_crossing",
+        "BW_Hz": "continuous_normalized_T_first_downward_minus3dB",
+        "PM_deg": "180_plus_continuous_L_phase_at_UGF"
+      },
+      "factors": {
+        "F_FREQ_PLAN": {
+          "f_target_Hz": 80000000,
+          "source": "model/solve_tuning_point.m"
+        },
+        "F_TUNING": {
+          "Vctrl_required_V": 0.4,
+          "Kvco_local_Hz_per_V": 20000000,
+          "feasible": true,
+          "voltage_margin_V": 0.4,
+          "tuning_frequency_min_Hz": 72000000,
+          "tuning_frequency_max_Hz": 96000000.0,
+          "source": "model/solve_tuning_point.m; model/vco_model.m"
+        },
+        "F_KPFD": {
+          "Kpfd_A_per_rad": 1.5915494309189534e-05,
+          "Iup_A": 0.0001,
+          "Idown_A": 0.0001,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LF_TF": {
+          "zero_Hz": 42084.44208892467,
+          "poles_rad_per_s": [
+            0,
+            -2908667.8301337985
+          ],
+          "nonzero_pole_Hz": 462928.86297817144,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LOOP": {
+          "UGF_Hz": 137188.1019445061,
+          "BW_Hz": 220476.96032538597,
+          "PM_deg": 56.43875318269244,
+          "characteristic_descending": [
+            3.7818000000000006e-16,
+            1.1000000000000001e-09,
+            0.00094545,
+            250.0
+          ],
+          "routh_stable": true,
+          "T_definition": "L/(1+L); normalized reference phase response; H_ref=N*T",
+          "source": "model/pll_linear_kernel.m; characterization/characterize_loop.m"
+        }
+      },
+      "diagnostics": {
+        "scan": {
+          "minimum_Hz": 4.208444208892467,
+          "maximum_Hz": 1000000000,
+          "points": 8000
+        },
+        "UGF_over_fref": 0.013718810194450612,
+        "BW_over_fref": 0.022047696032538595,
+        "sampling_equivalence": "NOT_ESTABLISHED",
+        "transient_lock": "NOT_EVALUATED",
+        "MATLAB_runtime_calls": 0,
+        "behavioral_TB_calls": 0
+      },
+      "response": [],
+      "scope": "CONDITIONAL_LOCKED_CONTINUOUS_SMALL_SIGNAL_ONLY",
+      "verified_joint_block_spec": false
+    },
+    "elapsed_s": 0.03453479998279363
+  },
+  {
+    "index": 9,
+    "kind": "candidate_generations"
+  },
+  {
+    "index": 10,
+    "kind": "M1_calls",
+    "status": "RETURNED",
+    "input": {
+      "schema_version": "pll-physics-mapping-2.0",
+      "conventions": {
+        "vco_f0": "frequency_at_zero_volts",
+        "phase_error": "reference_minus_feedback_rad",
+        "lf_topology": "C1_shunt_Rz_series_C2",
+        "cp_leakage": "positive_injected_into_lf"
+      },
+      "values": {
+        "f_ref": {
+          "value": 10000000,
+          "unit": "Hz"
+        },
+        "N": {
+          "value": 8,
+          "unit": "1"
+        },
+        "Icp": {
+          "value": 0.0001,
+          "unit": "A"
+        },
+        "Rz": {
+          "value": 3858.2,
+          "unit": "Ohm"
+        },
+        "C1": {
+          "value": 1e-10,
+          "unit": "F"
+        },
+        "C2": {
+          "value": 1e-09,
+          "unit": "F"
+        },
+        "f0": {
+          "value": 72000000,
+          "unit": "Hz"
+        },
+        "Kvco": {
+          "value": 20000000,
+          "unit": "Hz/V"
+        },
+        "Vctrl_min": {
+          "value": 0,
+          "unit": "V"
+        },
+        "Vctrl_max": {
+          "value": 1.2,
+          "unit": "V"
+        },
+        "Kvco2": {
+          "value": 0,
+          "unit": "Hz/V^2"
+        },
+        "CP_mismatch": {
+          "value": 0,
+          "unit": "1"
+        },
+        "CP_leakage": {
+          "value": 0,
+          "unit": "A"
+        },
+        "q0": {
+          "value": 0,
+          "unit": "C"
+        },
+        "PFD_reset_delay": {
+          "value": 0,
+          "unit": "s"
+        },
+        "Cload": {
+          "value": 0,
+          "unit": "F"
+        },
+        "Gload": {
+          "value": 0,
+          "unit": "S"
+        }
+      }
+    },
+    "output": {
+      "status": "OK",
+      "reason": "",
+      "model_level": "M1",
+      "model_id": "ideal_cppll_locked_continuous_m1_v1",
+      "parameter_sha256": "4e466e8b59a28d47abe7c022e46658bb4cf6e532c7ad5072915ae8fdd2dd65b7",
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.4,
+        "Kvco_local_Hz_per_V": 20000000,
+        "UGF_Hz": 139161.96189797437,
+        "BW_Hz": 224279.1941436427,
+        "PM_deg": 56.43887055289815
+      },
+      "units": {
+        "output_frequency_Hz": "Hz",
+        "Vctrl_required_V": "V",
+        "Kvco_local_Hz_per_V": "Hz/V",
+        "UGF_Hz": "Hz",
+        "BW_Hz": "Hz",
+        "PM_deg": "deg"
+      },
+      "protocols": {
+        "output_frequency_Hz": "conditional_locked_tuning_frequency",
+        "Vctrl_required_V": "linear_vco_static_tuning_solution",
+        "Kvco_local_Hz_per_V": "vco_derivative_at_tuning_point",
+        "UGF_Hz": "continuous_L_first_downward_unity_crossing",
+        "BW_Hz": "continuous_normalized_T_first_downward_minus3dB",
+        "PM_deg": "180_plus_continuous_L_phase_at_UGF"
+      },
+      "factors": {
+        "F_FREQ_PLAN": {
+          "f_target_Hz": 80000000,
+          "source": "model/solve_tuning_point.m"
+        },
+        "F_TUNING": {
+          "Vctrl_required_V": 0.4,
+          "Kvco_local_Hz_per_V": 20000000,
+          "feasible": true,
+          "voltage_margin_V": 0.4,
+          "tuning_frequency_min_Hz": 72000000,
+          "tuning_frequency_max_Hz": 96000000.0,
+          "source": "model/solve_tuning_point.m; model/vco_model.m"
+        },
+        "F_KPFD": {
+          "Kpfd_A_per_rad": 1.5915494309189534e-05,
+          "Iup_A": 0.0001,
+          "Idown_A": 0.0001,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LF_TF": {
+          "zero_Hz": 41251.086800035075,
+          "poles_rad_per_s": [
+            0,
+            -2851070.447358872
+          ],
+          "nonzero_pole_Hz": 453761.95480038587,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LOOP": {
+          "UGF_Hz": 139161.96189797437,
+          "BW_Hz": 224279.1941436427,
+          "PM_deg": 56.43887055289815,
+          "characteristic_descending": [
+            3.8582000000000003e-16,
+            1.1000000000000001e-09,
+            0.0009645500000000001,
+            250.0
+          ],
+          "routh_stable": true,
+          "T_definition": "L/(1+L); normalized reference phase response; H_ref=N*T",
+          "source": "model/pll_linear_kernel.m; characterization/characterize_loop.m"
+        }
+      },
+      "diagnostics": {
+        "scan": {
+          "minimum_Hz": 4.125108680003508,
+          "maximum_Hz": 1000000000,
+          "points": 8000
+        },
+        "UGF_over_fref": 0.013916196189797437,
+        "BW_over_fref": 0.02242791941436427,
+        "sampling_equivalence": "NOT_ESTABLISHED",
+        "transient_lock": "NOT_EVALUATED",
+        "MATLAB_runtime_calls": 0,
+        "behavioral_TB_calls": 0
+      },
+      "response": [],
+      "scope": "CONDITIONAL_LOCKED_CONTINUOUS_SMALL_SIGNAL_ONLY",
+      "verified_joint_block_spec": false
+    },
+    "elapsed_s": 0.03490560001228005
+  },
+  {
+    "index": 11,
+    "kind": "candidate_generations"
+  },
+  {
+    "index": 12,
+    "kind": "M1_calls",
+    "status": "RETURNED",
+    "input": {
+      "schema_version": "pll-physics-mapping-2.0",
+      "conventions": {
+        "vco_f0": "frequency_at_zero_volts",
+        "phase_error": "reference_minus_feedback_rad",
+        "lf_topology": "C1_shunt_Rz_series_C2",
+        "cp_leakage": "positive_injected_into_lf"
+      },
+      "values": {
+        "f_ref": {
+          "value": 10000000,
+          "unit": "Hz"
+        },
+        "N": {
+          "value": 8,
+          "unit": "1"
+        },
+        "Icp": {
+          "value": 0.0001,
+          "unit": "A"
+        },
+        "Rz": {
+          "value": 3820,
+          "unit": "Ohm"
+        },
+        "C1": {
+          "value": 1e-10,
+          "unit": "F"
+        },
+        "C2": {
+          "value": 1e-09,
+          "unit": "F"
+        },
+        "f0": {
+          "value": 71280000.0,
+          "unit": "Hz"
+        },
+        "Kvco": {
+          "value": 20000000,
+          "unit": "Hz/V"
+        },
+        "Vctrl_min": {
+          "value": 0,
+          "unit": "V"
+        },
+        "Vctrl_max": {
+          "value": 1.2,
+          "unit": "V"
+        },
+        "Kvco2": {
+          "value": 0,
+          "unit": "Hz/V^2"
+        },
+        "CP_mismatch": {
+          "value": 0,
+          "unit": "1"
+        },
+        "CP_leakage": {
+          "value": 0,
+          "unit": "A"
+        },
+        "q0": {
+          "value": 0,
+          "unit": "C"
+        },
+        "PFD_reset_delay": {
+          "value": 0,
+          "unit": "s"
+        },
+        "Cload": {
+          "value": 0,
+          "unit": "F"
+        },
+        "Gload": {
+          "value": 0,
+          "unit": "S"
+        }
+      }
+    },
+    "output": {
+      "status": "OK",
+      "reason": "",
+      "model_level": "M1",
+      "model_id": "ideal_cppll_locked_continuous_m1_v1",
+      "parameter_sha256": "48f381248780e83c1975fbf07637bb5cb523154e290e3c396675f5ddb74de771",
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.436,
+        "Kvco_local_Hz_per_V": 20000000,
+        "UGF_Hz": 138176.44113161,
+        "BW_Hz": 222379.1834929631,
+        "PM_deg": 56.44269021253223
+      },
+      "units": {
+        "output_frequency_Hz": "Hz",
+        "Vctrl_required_V": "V",
+        "Kvco_local_Hz_per_V": "Hz/V",
+        "UGF_Hz": "Hz",
+        "BW_Hz": "Hz",
+        "PM_deg": "deg"
+      },
+      "protocols": {
+        "output_frequency_Hz": "conditional_locked_tuning_frequency",
+        "Vctrl_required_V": "linear_vco_static_tuning_solution",
+        "Kvco_local_Hz_per_V": "vco_derivative_at_tuning_point",
+        "UGF_Hz": "continuous_L_first_downward_unity_crossing",
+        "BW_Hz": "continuous_normalized_T_first_downward_minus3dB",
+        "PM_deg": "180_plus_continuous_L_phase_at_UGF"
+      },
+      "factors": {
+        "F_FREQ_PLAN": {
+          "f_target_Hz": 80000000,
+          "source": "model/solve_tuning_point.m"
+        },
+        "F_TUNING": {
+          "Vctrl_required_V": 0.436,
+          "Kvco_local_Hz_per_V": 20000000,
+          "feasible": true,
+          "voltage_margin_V": 0.436,
+          "tuning_frequency_min_Hz": 71280000.0,
+          "tuning_frequency_max_Hz": 95280000.0,
+          "source": "model/solve_tuning_point.m; model/vco_model.m"
+        },
+        "F_KPFD": {
+          "Kpfd_A_per_rad": 1.5915494309189534e-05,
+          "Iup_A": 0.0001,
+          "Idown_A": 0.0001,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LF_TF": {
+          "zero_Hz": 41663.59766803543,
+          "poles_rad_per_s": [
+            0,
+            -2879581.151832461
+          ],
+          "nonzero_pole_Hz": 458299.57434838975,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LOOP": {
+          "UGF_Hz": 138176.44113161,
+          "BW_Hz": 222379.1834929631,
+          "PM_deg": 56.44269021253223,
+          "characteristic_descending": [
+            3.8200000000000004e-16,
+            1.1000000000000001e-09,
+            0.000955,
+            250.0
+          ],
+          "routh_stable": true,
+          "T_definition": "L/(1+L); normalized reference phase response; H_ref=N*T",
+          "source": "model/pll_linear_kernel.m; characterization/characterize_loop.m"
+        }
+      },
+      "diagnostics": {
+        "scan": {
+          "minimum_Hz": 4.166359766803543,
+          "maximum_Hz": 1000000000,
+          "points": 8000
+        },
+        "UGF_over_fref": 0.013817644113160998,
+        "BW_over_fref": 0.02223791834929631,
+        "sampling_equivalence": "NOT_ESTABLISHED",
+        "transient_lock": "NOT_EVALUATED",
+        "MATLAB_runtime_calls": 0,
+        "behavioral_TB_calls": 0
+      },
+      "response": [],
+      "scope": "CONDITIONAL_LOCKED_CONTINUOUS_SMALL_SIGNAL_ONLY",
+      "verified_joint_block_spec": false
+    },
+    "elapsed_s": 0.034128499974031
+  },
+  {
+    "index": 13,
+    "kind": "candidate_generations"
+  },
+  {
+    "index": 14,
+    "kind": "M1_calls",
+    "status": "RETURNED",
+    "input": {
+      "schema_version": "pll-physics-mapping-2.0",
+      "conventions": {
+        "vco_f0": "frequency_at_zero_volts",
+        "phase_error": "reference_minus_feedback_rad",
+        "lf_topology": "C1_shunt_Rz_series_C2",
+        "cp_leakage": "positive_injected_into_lf"
+      },
+      "values": {
+        "f_ref": {
+          "value": 10000000,
+          "unit": "Hz"
+        },
+        "N": {
+          "value": 8,
+          "unit": "1"
+        },
+        "Icp": {
+          "value": 0.0001,
+          "unit": "A"
+        },
+        "Rz": {
+          "value": 3820,
+          "unit": "Ohm"
+        },
+        "C1": {
+          "value": 1e-10,
+          "unit": "F"
+        },
+        "C2": {
+          "value": 1e-09,
+          "unit": "F"
+        },
+        "f0": {
+          "value": 72720000.0,
+          "unit": "Hz"
+        },
+        "Kvco": {
+          "value": 20000000,
+          "unit": "Hz/V"
+        },
+        "Vctrl_min": {
+          "value": 0,
+          "unit": "V"
+        },
+        "Vctrl_max": {
+          "value": 1.2,
+          "unit": "V"
+        },
+        "Kvco2": {
+          "value": 0,
+          "unit": "Hz/V^2"
+        },
+        "CP_mismatch": {
+          "value": 0,
+          "unit": "1"
+        },
+        "CP_leakage": {
+          "value": 0,
+          "unit": "A"
+        },
+        "q0": {
+          "value": 0,
+          "unit": "C"
+        },
+        "PFD_reset_delay": {
+          "value": 0,
+          "unit": "s"
+        },
+        "Cload": {
+          "value": 0,
+          "unit": "F"
+        },
+        "Gload": {
+          "value": 0,
+          "unit": "S"
+        }
+      }
+    },
+    "output": {
+      "status": "OK",
+      "reason": "",
+      "model_level": "M1",
+      "model_id": "ideal_cppll_locked_continuous_m1_v1",
+      "parameter_sha256": "efd47e989036e6ae50b2e51ab93b09b0ab67b5af3545fa8b7e0a88b297857c8a",
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.364,
+        "Kvco_local_Hz_per_V": 20000000,
+        "UGF_Hz": 138176.44113161,
+        "BW_Hz": 222379.1834929631,
+        "PM_deg": 56.44269021253223
+      },
+      "units": {
+        "output_frequency_Hz": "Hz",
+        "Vctrl_required_V": "V",
+        "Kvco_local_Hz_per_V": "Hz/V",
+        "UGF_Hz": "Hz",
+        "BW_Hz": "Hz",
+        "PM_deg": "deg"
+      },
+      "protocols": {
+        "output_frequency_Hz": "conditional_locked_tuning_frequency",
+        "Vctrl_required_V": "linear_vco_static_tuning_solution",
+        "Kvco_local_Hz_per_V": "vco_derivative_at_tuning_point",
+        "UGF_Hz": "continuous_L_first_downward_unity_crossing",
+        "BW_Hz": "continuous_normalized_T_first_downward_minus3dB",
+        "PM_deg": "180_plus_continuous_L_phase_at_UGF"
+      },
+      "factors": {
+        "F_FREQ_PLAN": {
+          "f_target_Hz": 80000000,
+          "source": "model/solve_tuning_point.m"
+        },
+        "F_TUNING": {
+          "Vctrl_required_V": 0.364,
+          "Kvco_local_Hz_per_V": 20000000,
+          "feasible": true,
+          "voltage_margin_V": 0.364,
+          "tuning_frequency_min_Hz": 72720000.0,
+          "tuning_frequency_max_Hz": 96720000.0,
+          "source": "model/solve_tuning_point.m; model/vco_model.m"
+        },
+        "F_KPFD": {
+          "Kpfd_A_per_rad": 1.5915494309189534e-05,
+          "Iup_A": 0.0001,
+          "Idown_A": 0.0001,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LF_TF": {
+          "zero_Hz": 41663.59766803543,
+          "poles_rad_per_s": [
+            0,
+            -2879581.151832461
+          ],
+          "nonzero_pole_Hz": 458299.57434838975,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LOOP": {
+          "UGF_Hz": 138176.44113161,
+          "BW_Hz": 222379.1834929631,
+          "PM_deg": 56.44269021253223,
+          "characteristic_descending": [
+            3.8200000000000004e-16,
+            1.1000000000000001e-09,
+            0.000955,
+            250.0
+          ],
+          "routh_stable": true,
+          "T_definition": "L/(1+L); normalized reference phase response; H_ref=N*T",
+          "source": "model/pll_linear_kernel.m; characterization/characterize_loop.m"
+        }
+      },
+      "diagnostics": {
+        "scan": {
+          "minimum_Hz": 4.166359766803543,
+          "maximum_Hz": 1000000000,
+          "points": 8000
+        },
+        "UGF_over_fref": 0.013817644113160998,
+        "BW_over_fref": 0.02223791834929631,
+        "sampling_equivalence": "NOT_ESTABLISHED",
+        "transient_lock": "NOT_EVALUATED",
+        "MATLAB_runtime_calls": 0,
+        "behavioral_TB_calls": 0
+      },
+      "response": [],
+      "scope": "CONDITIONAL_LOCKED_CONTINUOUS_SMALL_SIGNAL_ONLY",
+      "verified_joint_block_spec": false
+    },
+    "elapsed_s": 0.03438630001619458
+  },
+  {
+    "index": 15,
+    "kind": "candidate_generations"
+  },
+  {
+    "index": 16,
+    "kind": "M1_calls",
+    "status": "RETURNED",
+    "input": {
+      "schema_version": "pll-physics-mapping-2.0",
+      "conventions": {
+        "vco_f0": "frequency_at_zero_volts",
+        "phase_error": "reference_minus_feedback_rad",
+        "lf_topology": "C1_shunt_Rz_series_C2",
+        "cp_leakage": "positive_injected_into_lf"
+      },
+      "values": {
+        "f_ref": {
+          "value": 10000000,
+          "unit": "Hz"
+        },
+        "N": {
+          "value": 8,
+          "unit": "1"
+        },
+        "Icp": {
+          "value": 0.0001,
+          "unit": "A"
+        },
+        "Rz": {
+          "value": 3820,
+          "unit": "Ohm"
+        },
+        "C1": {
+          "value": 1e-10,
+          "unit": "F"
+        },
+        "C2": {
+          "value": 1e-09,
+          "unit": "F"
+        },
+        "f0": {
+          "value": 72000000,
+          "unit": "Hz"
+        },
+        "Kvco": {
+          "value": 19800000.0,
+          "unit": "Hz/V"
+        },
+        "Vctrl_min": {
+          "value": 0,
+          "unit": "V"
+        },
+        "Vctrl_max": {
+          "value": 1.2,
+          "unit": "V"
+        },
+        "Kvco2": {
+          "value": 0,
+          "unit": "Hz/V^2"
+        },
+        "CP_mismatch": {
+          "value": 0,
+          "unit": "1"
+        },
+        "CP_leakage": {
+          "value": 0,
+          "unit": "A"
+        },
+        "q0": {
+          "value": 0,
+          "unit": "C"
+        },
+        "PFD_reset_delay": {
+          "value": 0,
+          "unit": "s"
+        },
+        "Cload": {
+          "value": 0,
+          "unit": "F"
+        },
+        "Gload": {
+          "value": 0,
+          "unit": "S"
+        }
+      }
+    },
+    "output": {
+      "status": "OK",
+      "reason": "",
+      "model_level": "M1",
+      "model_id": "ideal_cppll_locked_continuous_m1_v1",
+      "parameter_sha256": "5251bb293795f0e4e294a876cf726d5dd910316916300d7d8d1721e66d5eff53",
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.40404040404040403,
+        "Kvco_local_Hz_per_V": 19800000.0,
+        "UGF_Hz": 136991.22888734378,
+        "BW_Hz": 220315.97850822465,
+        "PM_deg": 56.441700906021694
+      },
+      "units": {
+        "output_frequency_Hz": "Hz",
+        "Vctrl_required_V": "V",
+        "Kvco_local_Hz_per_V": "Hz/V",
+        "UGF_Hz": "Hz",
+        "BW_Hz": "Hz",
+        "PM_deg": "deg"
+      },
+      "protocols": {
+        "output_frequency_Hz": "conditional_locked_tuning_frequency",
+        "Vctrl_required_V": "linear_vco_static_tuning_solution",
+        "Kvco_local_Hz_per_V": "vco_derivative_at_tuning_point",
+        "UGF_Hz": "continuous_L_first_downward_unity_crossing",
+        "BW_Hz": "continuous_normalized_T_first_downward_minus3dB",
+        "PM_deg": "180_plus_continuous_L_phase_at_UGF"
+      },
+      "factors": {
+        "F_FREQ_PLAN": {
+          "f_target_Hz": 80000000,
+          "source": "model/solve_tuning_point.m"
+        },
+        "F_TUNING": {
+          "Vctrl_required_V": 0.40404040404040403,
+          "Kvco_local_Hz_per_V": 19800000.0,
+          "feasible": true,
+          "voltage_margin_V": 0.40404040404040403,
+          "tuning_frequency_min_Hz": 72000000.0,
+          "tuning_frequency_max_Hz": 95760000.0,
+          "source": "model/solve_tuning_point.m; model/vco_model.m"
+        },
+        "F_KPFD": {
+          "Kpfd_A_per_rad": 1.5915494309189534e-05,
+          "Iup_A": 0.0001,
+          "Idown_A": 0.0001,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LF_TF": {
+          "zero_Hz": 41663.59766803543,
+          "poles_rad_per_s": [
+            0,
+            -2879581.151832461
+          ],
+          "nonzero_pole_Hz": 458299.57434838975,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LOOP": {
+          "UGF_Hz": 136991.22888734378,
+          "BW_Hz": 220315.97850822465,
+          "PM_deg": 56.441700906021694,
+          "characteristic_descending": [
+            3.8200000000000004e-16,
+            1.1000000000000001e-09,
+            0.00094545,
+            247.5
+          ],
+          "routh_stable": true,
+          "T_definition": "L/(1+L); normalized reference phase response; H_ref=N*T",
+          "source": "model/pll_linear_kernel.m; characterization/characterize_loop.m"
+        }
+      },
+      "diagnostics": {
+        "scan": {
+          "minimum_Hz": 4.166359766803543,
+          "maximum_Hz": 1000000000,
+          "points": 8000
+        },
+        "UGF_over_fref": 0.013699122888734377,
+        "BW_over_fref": 0.022031597850822465,
+        "sampling_equivalence": "NOT_ESTABLISHED",
+        "transient_lock": "NOT_EVALUATED",
+        "MATLAB_runtime_calls": 0,
+        "behavioral_TB_calls": 0
+      },
+      "response": [],
+      "scope": "CONDITIONAL_LOCKED_CONTINUOUS_SMALL_SIGNAL_ONLY",
+      "verified_joint_block_spec": false
+    },
+    "elapsed_s": 0.04126159998122603
+  },
+  {
+    "index": 17,
+    "kind": "candidate_generations"
+  },
+  {
+    "index": 18,
+    "kind": "M1_calls",
+    "status": "RETURNED",
+    "input": {
+      "schema_version": "pll-physics-mapping-2.0",
+      "conventions": {
+        "vco_f0": "frequency_at_zero_volts",
+        "phase_error": "reference_minus_feedback_rad",
+        "lf_topology": "C1_shunt_Rz_series_C2",
+        "cp_leakage": "positive_injected_into_lf"
+      },
+      "values": {
+        "f_ref": {
+          "value": 10000000,
+          "unit": "Hz"
+        },
+        "N": {
+          "value": 8,
+          "unit": "1"
+        },
+        "Icp": {
+          "value": 0.0001,
+          "unit": "A"
+        },
+        "Rz": {
+          "value": 3820,
+          "unit": "Ohm"
+        },
+        "C1": {
+          "value": 1e-10,
+          "unit": "F"
+        },
+        "C2": {
+          "value": 1e-09,
+          "unit": "F"
+        },
+        "f0": {
+          "value": 72000000,
+          "unit": "Hz"
+        },
+        "Kvco": {
+          "value": 20200000.0,
+          "unit": "Hz/V"
+        },
+        "Vctrl_min": {
+          "value": 0,
+          "unit": "V"
+        },
+        "Vctrl_max": {
+          "value": 1.2,
+          "unit": "V"
+        },
+        "Kvco2": {
+          "value": 0,
+          "unit": "Hz/V^2"
+        },
+        "CP_mismatch": {
+          "value": 0,
+          "unit": "1"
+        },
+        "CP_leakage": {
+          "value": 0,
+          "unit": "A"
+        },
+        "q0": {
+          "value": 0,
+          "unit": "C"
+        },
+        "PFD_reset_delay": {
+          "value": 0,
+          "unit": "s"
+        },
+        "Cload": {
+          "value": 0,
+          "unit": "F"
+        },
+        "Gload": {
+          "value": 0,
+          "unit": "S"
+        }
+      }
+    },
+    "output": {
+      "status": "OK",
+      "reason": "",
+      "model_level": "M1",
+      "model_id": "ideal_cppll_locked_continuous_m1_v1",
+      "parameter_sha256": "1827e3ff13aff02306fbeed1421fb60f6cf3f39bca6c4ce0c5412d09606c91ca",
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.39603960396039606,
+        "Kvco_local_Hz_per_V": 20200000.0,
+        "UGF_Hz": 139359.96166144946,
+        "BW_Hz": 224441.02900893363,
+        "PM_deg": 56.441740205008514
+      },
+      "units": {
+        "output_frequency_Hz": "Hz",
+        "Vctrl_required_V": "V",
+        "Kvco_local_Hz_per_V": "Hz/V",
+        "UGF_Hz": "Hz",
+        "BW_Hz": "Hz",
+        "PM_deg": "deg"
+      },
+      "protocols": {
+        "output_frequency_Hz": "conditional_locked_tuning_frequency",
+        "Vctrl_required_V": "linear_vco_static_tuning_solution",
+        "Kvco_local_Hz_per_V": "vco_derivative_at_tuning_point",
+        "UGF_Hz": "continuous_L_first_downward_unity_crossing",
+        "BW_Hz": "continuous_normalized_T_first_downward_minus3dB",
+        "PM_deg": "180_plus_continuous_L_phase_at_UGF"
+      },
+      "factors": {
+        "F_FREQ_PLAN": {
+          "f_target_Hz": 80000000,
+          "source": "model/solve_tuning_point.m"
+        },
+        "F_TUNING": {
+          "Vctrl_required_V": 0.39603960396039606,
+          "Kvco_local_Hz_per_V": 20200000.0,
+          "feasible": true,
+          "voltage_margin_V": 0.39603960396039606,
+          "tuning_frequency_min_Hz": 72000000.0,
+          "tuning_frequency_max_Hz": 96240000.0,
+          "source": "model/solve_tuning_point.m; model/vco_model.m"
+        },
+        "F_KPFD": {
+          "Kpfd_A_per_rad": 1.5915494309189534e-05,
+          "Iup_A": 0.0001,
+          "Idown_A": 0.0001,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LF_TF": {
+          "zero_Hz": 41663.59766803543,
+          "poles_rad_per_s": [
+            0,
+            -2879581.151832461
+          ],
+          "nonzero_pole_Hz": 458299.57434838975,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LOOP": {
+          "UGF_Hz": 139359.96166144946,
+          "BW_Hz": 224441.02900893363,
+          "PM_deg": 56.441740205008514,
+          "characteristic_descending": [
+            3.8200000000000004e-16,
+            1.1000000000000001e-09,
+            0.0009645500000000001,
+            252.5
+          ],
+          "routh_stable": true,
+          "T_definition": "L/(1+L); normalized reference phase response; H_ref=N*T",
+          "source": "model/pll_linear_kernel.m; characterization/characterize_loop.m"
+        }
+      },
+      "diagnostics": {
+        "scan": {
+          "minimum_Hz": 4.166359766803543,
+          "maximum_Hz": 1000000000,
+          "points": 8000
+        },
+        "UGF_over_fref": 0.013935996166144946,
+        "BW_over_fref": 0.022444102900893364,
+        "sampling_equivalence": "NOT_ESTABLISHED",
+        "transient_lock": "NOT_EVALUATED",
+        "MATLAB_runtime_calls": 0,
+        "behavioral_TB_calls": 0
+      },
+      "response": [],
+      "scope": "CONDITIONAL_LOCKED_CONTINUOUS_SMALL_SIGNAL_ONLY",
+      "verified_joint_block_spec": false
+    },
+    "elapsed_s": 0.040128499967977405
+  },
+  {
+    "index": 19,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": [
+      11.0,
+      3.3166247903554
+    ],
+    "output": 1.6093914759145282,
+    "elapsed_s": 5.099998088553548e-05
+  },
+  {
+    "index": 20,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.787309262927287e-05,
+      "Rz": 5759.518142952891,
+      "C1": 5e-11,
+      "C2": 5e-10,
+      "f0": 66441846.7988488,
+      "Kvco": 22596922.001918666,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6,
+      "Kvco_local_Hz_per_V": 22596922.001918666,
+      "UGF_Hz": 183299.0943563733,
+      "BW_Hz": 295000.0,
+      "PM_deg": 56.44269023807929
+    },
+    "elapsed_s": 7.03000114299357e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.787309262927287e-05,
+      "Rz": 5759.518142952891,
+      "C1": 5e-11,
+      "C2": 5e-10,
+      "f0": 66441846.7988488,
+      "Kvco": 22596922.001918666,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 21,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.787342453288342e-05,
+      "Rz": 5759.518142952891,
+      "C1": 5e-11,
+      "C2": 5e-10,
+      "f0": 66441846.7988488,
+      "Kvco": 22596922.001918666,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6,
+      "Kvco_local_Hz_per_V": 22596922.001918666,
+      "UGF_Hz": 183299.76399107528,
+      "BW_Hz": 295001.1661548113,
+      "PM_deg": 56.442690237903165
+    },
+    "elapsed_s": 6.779999239370227e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.787342453288342e-05,
+      "Rz": 5759.518142952891,
+      "C1": 5e-11,
+      "C2": 5e-10,
+      "f0": 66441846.7988488,
+      "Kvco": 22596922.001918666,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 22,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.787309262927287e-05,
+      "Rz": 5759.5241429528905,
+      "C1": 5e-11,
+      "C2": 5e-10,
+      "f0": 66441846.7988488,
+      "Kvco": 22596922.001918666,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6,
+      "Kvco_local_Hz_per_V": 22596922.001918666,
+      "UGF_Hz": 183299.23075101787,
+      "BW_Hz": 295000.2627508018,
+      "PM_deg": 56.4426902380372
+    },
+    "elapsed_s": 6.210000719875097e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.787309262927287e-05,
+      "Rz": 5759.5241429528905,
+      "C1": 5e-11,
+      "C2": 5e-10,
+      "f0": 66441846.7988488,
+      "Kvco": 22596922.001918666,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 23,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.787298924396768e-05,
+      "Rz": 5759.518142952891,
+      "C1": 5e-11,
+      "C2": 5e-10,
+      "f0": 66441828.7988488,
+      "Kvco": 22596952.001918666,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6,
+      "Kvco_local_Hz_per_V": 22596952.001918666,
+      "UGF_Hz": 183299.0943563733,
+      "BW_Hz": 295000.0,
+      "PM_deg": 56.44269023807929
+    },
+    "elapsed_s": 6.089999806135893e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.787298924396768e-05,
+      "Rz": 5759.518142952891,
+      "C1": 5e-11,
+      "C2": 5e-10,
+      "f0": 66441828.7988488,
+      "Kvco": 22596952.001918666,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 24,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.787309262927287e-05,
+      "Rz": 5759.518142952891,
+      "C1": 5e-11,
+      "C2": 5e-10,
+      "f0": 66441819.682542846,
+      "Kvco": 22596922.001918666,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6000011999999801,
+      "Kvco_local_Hz_per_V": 22596922.001918666,
+      "UGF_Hz": 183299.0943563733,
+      "BW_Hz": 295000.0,
+      "PM_deg": 56.44269023807929
+    },
+    "elapsed_s": 6.079999729990959e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.787309262927287e-05,
+      "Rz": 5759.518142952891,
+      "C1": 5e-11,
+      "C2": 5e-10,
+      "f0": 66441819.682542846,
+      "Kvco": 22596922.001918666,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 25,
+    "kind": "candidate_generations"
+  },
+  {
+    "index": 26,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.787309262927287e-05,
+      "Rz": 5759.518142952891,
+      "C1": 5e-11,
+      "C2": 5e-10,
+      "f0": 66441846.7988488,
+      "Kvco": 22596922.001918666,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6,
+      "Kvco_local_Hz_per_V": 22596922.001918666,
+      "UGF_Hz": 183299.0943563733,
+      "BW_Hz": 295000.0,
+      "PM_deg": 56.44269023807929
+    },
+    "elapsed_s": 6.180000491440296e-05
+  },
+  {
+    "index": 27,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": [
+      21.0,
+      4.58257569495584
+    ],
+    "output": 1.4779570793231307,
+    "elapsed_s": 4.220003029331565e-05
+  },
+  {
+    "index": 28,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00010596434764259733,
+      "Rz": 3654.008767940772,
+      "C1": 5e-11,
+      "C2": 1e-09,
+      "f0": 63675449.009273335,
+      "Kvco": 27207584.98454445,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5999999999999999,
+      "Kvco_local_Hz_per_V": 27207584.98454445,
+      "UGF_Hz": 199599.84232769677,
+      "BW_Hz": 295000.0,
+      "PM_deg": 65.38002267134291
+    },
+    "elapsed_s": 6.120000034570694e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00010596434764259733,
+      "Rz": 3654.008767940772,
+      "C1": 5e-11,
+      "C2": 1e-09,
+      "f0": 63675449.009273335,
+      "Kvco": 27207584.98454445,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 29,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001059646233010214,
+      "Rz": 3654.008767940772,
+      "C1": 5e-11,
+      "C2": 1e-09,
+      "f0": 63675449.009273335,
+      "Kvco": 27207584.98454445,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5999999999999999,
+      "Kvco_local_Hz_per_V": 27207584.98454445,
+      "UGF_Hz": 199600.31830153894,
+      "BW_Hz": 295000.7716631588,
+      "PM_deg": 65.3800226712812
+    },
+    "elapsed_s": 6.320001557469368e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001059646233010214,
+      "Rz": 3654.008767940772,
+      "C1": 5e-11,
+      "C2": 1e-09,
+      "f0": 63675449.009273335,
+      "Kvco": 27207584.98454445,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 30,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00010596434764259733,
+      "Rz": 3654.014767940772,
+      "C1": 5e-11,
+      "C2": 1e-09,
+      "f0": 63675449.009273335,
+      "Kvco": 27207584.98454445,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5999999999999999,
+      "Kvco_local_Hz_per_V": 27207584.98454445,
+      "UGF_Hz": 199600.11545213027,
+      "BW_Hz": 295000.489755251,
+      "PM_deg": 65.38002267124457
+    },
+    "elapsed_s": 6.019999273121357e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00010596434764259733,
+      "Rz": 3654.014767940772,
+      "C1": 5e-11,
+      "C2": 1e-09,
+      "f0": 63675449.009273335,
+      "Kvco": 27207584.98454445,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 31,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00010596423080286584,
+      "Rz": 3654.008767940772,
+      "C1": 5e-11,
+      "C2": 1e-09,
+      "f0": 63675431.009273335,
+      "Kvco": 27207614.98454445,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5999999999999999,
+      "Kvco_local_Hz_per_V": 27207614.98454445,
+      "UGF_Hz": 199599.84232769677,
+      "BW_Hz": 295000.0,
+      "PM_deg": 65.38002267134291
+    },
+    "elapsed_s": 5.9699988923966885e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00010596423080286584,
+      "Rz": 3654.008767940772,
+      "C1": 5e-11,
+      "C2": 1e-09,
+      "f0": 63675431.009273335,
+      "Kvco": 27207614.98454445,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 32,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00010596434764259733,
+      "Rz": 3654.008767940772,
+      "C1": 5e-11,
+      "C2": 1e-09,
+      "f0": 63675416.3601719,
+      "Kvco": 27207584.98454445,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6000011999999798,
+      "Kvco_local_Hz_per_V": 27207584.98454445,
+      "UGF_Hz": 199599.84232769677,
+      "BW_Hz": 295000.0,
+      "PM_deg": 65.38002267134291
+    },
+    "elapsed_s": 5.9399986639618874e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00010596434764259733,
+      "Rz": 3654.008767940772,
+      "C1": 5e-11,
+      "C2": 1e-09,
+      "f0": 63675416.3601719,
+      "Kvco": 27207584.98454445,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 33,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00010596434763574425,
+      "Rz": 3654.0087681758305,
+      "C1": 5e-11,
+      "C2": 1e-09,
+      "f0": 63675449.009273335,
+      "Kvco": 27207584.98454445,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5999999999999999,
+      "Kvco_local_Hz_per_V": 27207584.98454445,
+      "UGF_Hz": 199599.8423265637,
+      "BW_Hz": 295000.0000000028,
+      "PM_deg": 65.3800226713429
+    },
+    "elapsed_s": 6.250001024454832e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00010596434763574425,
+      "Rz": 3654.0087681758305,
+      "C1": 5e-11,
+      "C2": 1e-09,
+      "f0": 63675449.009273335,
+      "Kvco": 27207584.98454445,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 34,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00010596462329416833,
+      "Rz": 3654.0087681758305,
+      "C1": 5e-11,
+      "C2": 1e-09,
+      "f0": 63675449.009273335,
+      "Kvco": 27207584.98454445,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5999999999999999,
+      "Kvco_local_Hz_per_V": 27207584.98454445,
+      "UGF_Hz": 199600.31830040587,
+      "BW_Hz": 295000.7716631615,
+      "PM_deg": 65.3800226712812
+    },
+    "elapsed_s": 6.280001252889633e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00010596462329416833,
+      "Rz": 3654.0087681758305,
+      "C1": 5e-11,
+      "C2": 1e-09,
+      "f0": 63675449.009273335,
+      "Kvco": 27207584.98454445,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 35,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00010596434763574425,
+      "Rz": 3654.0147681758303,
+      "C1": 5e-11,
+      "C2": 1e-09,
+      "f0": 63675449.009273335,
+      "Kvco": 27207584.98454445,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5999999999999999,
+      "Kvco_local_Hz_per_V": 27207584.98454445,
+      "UGF_Hz": 199600.11545099723,
+      "BW_Hz": 295000.4897552539,
+      "PM_deg": 65.38002267124456
+    },
+    "elapsed_s": 8.530000923201442e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00010596434763574425,
+      "Rz": 3654.0147681758303,
+      "C1": 5e-11,
+      "C2": 1e-09,
+      "f0": 63675449.009273335,
+      "Kvco": 27207584.98454445,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 36,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00010596423079601277,
+      "Rz": 3654.0087681758305,
+      "C1": 5e-11,
+      "C2": 1e-09,
+      "f0": 63675431.009273335,
+      "Kvco": 27207614.98454445,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5999999999999999,
+      "Kvco_local_Hz_per_V": 27207614.98454445,
+      "UGF_Hz": 199599.8423265637,
+      "BW_Hz": 295000.0000000028,
+      "PM_deg": 65.3800226713429
+    },
+    "elapsed_s": 7.920002099126577e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00010596423079601277,
+      "Rz": 3654.0087681758305,
+      "C1": 5e-11,
+      "C2": 1e-09,
+      "f0": 63675431.009273335,
+      "Kvco": 27207614.98454445,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 37,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00010596434763574425,
+      "Rz": 3654.0087681758305,
+      "C1": 5e-11,
+      "C2": 1e-09,
+      "f0": 63675416.3601719,
+      "Kvco": 27207584.98454445,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6000011999999798,
+      "Kvco_local_Hz_per_V": 27207584.98454445,
+      "UGF_Hz": 199599.8423265637,
+      "BW_Hz": 295000.0000000028,
+      "PM_deg": 65.3800226713429
+    },
+    "elapsed_s": 6.200000643730164e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00010596434763574425,
+      "Rz": 3654.0087681758305,
+      "C1": 5e-11,
+      "C2": 1e-09,
+      "f0": 63675416.3601719,
+      "Kvco": 27207584.98454445,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 38,
+    "kind": "candidate_generations"
+  },
+  {
+    "index": 39,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00010596434763574425,
+      "Rz": 3654.0087681758305,
+      "C1": 5e-11,
+      "C2": 1e-09,
+      "f0": 63675449.009273335,
+      "Kvco": 27207584.98454445,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5999999999999999,
+      "Kvco_local_Hz_per_V": 27207584.98454445,
+      "UGF_Hz": 199599.8423265637,
+      "BW_Hz": 295000.0000000028,
+      "PM_deg": 65.3800226713429
+    },
+    "elapsed_s": 7.940002251416445e-05
+  },
+  {
+    "index": 40,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": [
+      41.0,
+      6.4031242374328485
+    ],
+    "output": 1.3459632911407546,
+    "elapsed_s": 4.18000272475183e-05
+  },
+  {
+    "index": 41,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001511129254967205,
+      "Rz": 2324.8410411883065,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714145.121518746,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6,
+      "Kvco_local_Hz_per_V": 32143091.464135423,
+      "UGF_Hz": 219173.88233521313,
+      "BW_Hz": 294999.9999999999,
+      "PM_deg": 72.24720983805332
+    },
+    "elapsed_s": 6.0699996538460255e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001511129254967205,
+      "Rz": 2324.8410411883065,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714145.121518746,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 42,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015111315882835284,
+      "Rz": 2324.8410411883065,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714145.121518746,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6,
+      "Kvco_local_Hz_per_V": 32143091.464135423,
+      "UGF_Hz": 219174.2053760339,
+      "BW_Hz": 295000.46617453615,
+      "PM_deg": 72.24720983803525
+    },
+    "elapsed_s": 6.260001100599766e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015111315882835284,
+      "Rz": 2324.8410411883065,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714145.121518746,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 43,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001511129254967205,
+      "Rz": 2324.8470411883063,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714145.121518746,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6,
+      "Kvco_local_Hz_per_V": 32143091.464135423,
+      "UGF_Hz": 219174.39656123644,
+      "BW_Hz": 295000.79700653284,
+      "PM_deg": 72.24720983785137
+    },
+    "elapsed_s": 6.0699996538460255e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001511129254967205,
+      "Rz": 2324.8470411883063,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714145.121518746,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 44,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015111278445914983,
+      "Rz": 2324.8410411883065,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714127.121518746,
+      "Kvco": 32143121.464135427,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6,
+      "Kvco_local_Hz_per_V": 32143121.464135427,
+      "UGF_Hz": 219173.88233521313,
+      "BW_Hz": 294999.9999999999,
+      "PM_deg": 72.24720983805332
+    },
+    "elapsed_s": 6.0399994254112244e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015111278445914983,
+      "Rz": 2324.8410411883065,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714127.121518746,
+      "Kvco": 32143121.464135427,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 45,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001511129254967205,
+      "Rz": 2324.8410411883065,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714106.549809635,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6000011999999799,
+      "Kvco_local_Hz_per_V": 32143091.464135423,
+      "UGF_Hz": 219173.88233521313,
+      "BW_Hz": 294999.9999999999,
+      "PM_deg": 72.24720983805332
+    },
+    "elapsed_s": 5.9999991208314896e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001511129254967205,
+      "Rz": 2324.8410411883065,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714106.549809635,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 46,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015111292550627357,
+      "Rz": 2324.841041044545,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714145.121518746,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6,
+      "Kvco_local_Hz_per_V": 32143091.464135423,
+      "UGF_Hz": 219173.88233611817,
+      "BW_Hz": 294999.99999998976,
+      "PM_deg": 72.24720983805332
+    },
+    "elapsed_s": 6.210000719875097e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015111292550627357,
+      "Rz": 2324.841041044545,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714145.121518746,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 47,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015111315883790596,
+      "Rz": 2324.841041044545,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714145.121518746,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6,
+      "Kvco_local_Hz_per_V": 32143091.464135423,
+      "UGF_Hz": 219174.20537693897,
+      "BW_Hz": 295000.4661745261,
+      "PM_deg": 72.24720983803525
+    },
+    "elapsed_s": 6.200000643730164e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015111315883790596,
+      "Rz": 2324.841041044545,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714145.121518746,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 48,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015111292550627357,
+      "Rz": 2324.8470410445448,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714145.121518746,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6,
+      "Kvco_local_Hz_per_V": 32143091.464135423,
+      "UGF_Hz": 219174.39656214137,
+      "BW_Hz": 295000.7970065224,
+      "PM_deg": 72.24720983785137
+    },
+    "elapsed_s": 6.089999806135893e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015111292550627357,
+      "Rz": 2324.8470410445448,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714145.121518746,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 49,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001511127844687029,
+      "Rz": 2324.841041044545,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714127.121518746,
+      "Kvco": 32143121.464135427,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6,
+      "Kvco_local_Hz_per_V": 32143121.464135427,
+      "UGF_Hz": 219173.88233611817,
+      "BW_Hz": 294999.99999998976,
+      "PM_deg": 72.24720983805332
+    },
+    "elapsed_s": 6.049999501556158e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001511127844687029,
+      "Rz": 2324.841041044545,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714127.121518746,
+      "Kvco": 32143121.464135427,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 50,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015111292550627357,
+      "Rz": 2324.841041044545,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714106.549809635,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6000011999999799,
+      "Kvco_local_Hz_per_V": 32143091.464135423,
+      "UGF_Hz": 219173.88233611817,
+      "BW_Hz": 294999.99999998976,
+      "PM_deg": 72.24720983805332
+    },
+    "elapsed_s": 6.009999196976423e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015111292550627357,
+      "Rz": 2324.841041044545,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714106.549809635,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 51,
+    "kind": "candidate_generations"
+  },
+  {
+    "index": 52,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015111292550627357,
+      "Rz": 2324.841041044545,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714145.121518746,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6,
+      "Kvco_local_Hz_per_V": 32143091.464135423,
+      "UGF_Hz": 219173.88233611817,
+      "BW_Hz": 294999.99999998976,
+      "PM_deg": 72.24720983805332
+    },
+    "elapsed_s": 6.160000339150429e-05
+  },
+  {
+    "index": 53,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": [
+      11.0,
+      3.3166247903554
+    ],
+    "output": 1.6093914759145282,
+    "elapsed_s": 4.1700026486068964e-05
+  },
+  {
+    "index": 54,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00012220737768822075,
+      "Rz": 2879.7590714764456,
+      "C1": 1e-10,
+      "C2": 1e-09,
+      "f0": 62720923.399424404,
+      "Kvco": 28798461.000959333,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5999999999999999,
+      "Kvco_local_Hz_per_V": 28798461.000959333,
+      "UGF_Hz": 183299.0943563733,
+      "BW_Hz": 295000.0,
+      "PM_deg": 56.44269023807929
+    },
+    "elapsed_s": 5.9699988923966885e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00012220737768822075,
+      "Rz": 2879.7590714764456,
+      "C1": 1e-10,
+      "C2": 1e-09,
+      "f0": 62720923.399424404,
+      "Kvco": 28798461.000959333,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 55,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00012220763811880418,
+      "Rz": 2879.7590714764456,
+      "C1": 1e-10,
+      "C2": 1e-09,
+      "f0": 62720923.399424404,
+      "Kvco": 28798461.000959333,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5999999999999999,
+      "Kvco_local_Hz_per_V": 28798461.000959333,
+      "UGF_Hz": 183299.42917377528,
+      "BW_Hz": 295000.5830774466,
+      "PM_deg": 56.442690238035254
+    },
+    "elapsed_s": 6.200000643730164e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00012220763811880418,
+      "Rz": 2879.7590714764456,
+      "C1": 1e-10,
+      "C2": 1e-09,
+      "f0": 62720923.399424404,
+      "Kvco": 28798461.000959333,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 56,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00012220737768822075,
+      "Rz": 2879.7650714764454,
+      "C1": 1e-10,
+      "C2": 1e-09,
+      "f0": 62720923.399424404,
+      "Kvco": 28798461.000959333,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5999999999999999,
+      "Kvco_local_Hz_per_V": 28798461.000959333,
+      "UGF_Hz": 183299.36714562192,
+      "BW_Hz": 295000.52550157177,
+      "PM_deg": 56.44269023791094
+    },
+    "elapsed_s": 6.0999998822808266e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00012220737768822075,
+      "Rz": 2879.7650714764454,
+      "C1": 1e-10,
+      "C2": 1e-09,
+      "f0": 62720923.399424404,
+      "Kvco": 28798461.000959333,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 57,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00012220725038219866,
+      "Rz": 2879.7590714764456,
+      "C1": 1e-10,
+      "C2": 1e-09,
+      "f0": 62720905.399424404,
+      "Kvco": 28798491.000959337,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5999999999999998,
+      "Kvco_local_Hz_per_V": 28798491.000959337,
+      "UGF_Hz": 183299.0943563733,
+      "BW_Hz": 295000.0,
+      "PM_deg": 56.44269023807929
+    },
+    "elapsed_s": 5.989999044686556e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00012220725038219866,
+      "Rz": 2879.7590714764456,
+      "C1": 1e-10,
+      "C2": 1e-09,
+      "f0": 62720905.399424404,
+      "Kvco": 28798491.000959337,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 58,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00012220737768822075,
+      "Rz": 2879.7590714764456,
+      "C1": 1e-10,
+      "C2": 1e-09,
+      "f0": 62720888.84127178,
+      "Kvco": 28798461.000959333,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6000011999999798,
+      "Kvco_local_Hz_per_V": 28798461.000959333,
+      "UGF_Hz": 183299.0943563733,
+      "BW_Hz": 295000.0,
+      "PM_deg": 56.44269023807929
+    },
+    "elapsed_s": 5.9299985878169537e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00012220737768822075,
+      "Rz": 2879.7590714764456,
+      "C1": 1e-10,
+      "C2": 1e-09,
+      "f0": 62720888.84127178,
+      "Kvco": 28798461.000959333,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 59,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001222073776889206,
+      "Rz": 2879.7590714584226,
+      "C1": 1e-10,
+      "C2": 1e-09,
+      "f0": 62720923.399424404,
+      "Kvco": 28798461.000959333,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5999999999999999,
+      "Kvco_local_Hz_per_V": 28798461.000959333,
+      "UGF_Hz": 183299.09435645363,
+      "BW_Hz": 294999.99999998836,
+      "PM_deg": 56.44269023807929
+    },
+    "elapsed_s": 6.150000263005495e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001222073776889206,
+      "Rz": 2879.7590714584226,
+      "C1": 1e-10,
+      "C2": 1e-09,
+      "f0": 62720923.399424404,
+      "Kvco": 28798461.000959333,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 60,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.000122207638119504,
+      "Rz": 2879.7590714584226,
+      "C1": 1e-10,
+      "C2": 1e-09,
+      "f0": 62720923.399424404,
+      "Kvco": 28798461.000959333,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5999999999999999,
+      "Kvco_local_Hz_per_V": 28798461.000959333,
+      "UGF_Hz": 183299.42917385563,
+      "BW_Hz": 295000.583077435,
+      "PM_deg": 56.44269023803525
+    },
+    "elapsed_s": 6.19000056758523e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.000122207638119504,
+      "Rz": 2879.7590714584226,
+      "C1": 1e-10,
+      "C2": 1e-09,
+      "f0": 62720923.399424404,
+      "Kvco": 28798461.000959333,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 61,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001222073776889206,
+      "Rz": 2879.7650714584224,
+      "C1": 1e-10,
+      "C2": 1e-09,
+      "f0": 62720923.399424404,
+      "Kvco": 28798461.000959333,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5999999999999999,
+      "Kvco_local_Hz_per_V": 28798461.000959333,
+      "UGF_Hz": 183299.36714570233,
+      "BW_Hz": 295000.5255015602,
+      "PM_deg": 56.44269023791094
+    },
+    "elapsed_s": 6.049999501556158e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001222073776889206,
+      "Rz": 2879.7650714584224,
+      "C1": 1e-10,
+      "C2": 1e-09,
+      "f0": 62720923.399424404,
+      "Kvco": 28798461.000959333,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 62,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00012220725038289851,
+      "Rz": 2879.7590714584226,
+      "C1": 1e-10,
+      "C2": 1e-09,
+      "f0": 62720905.399424404,
+      "Kvco": 28798491.000959337,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5999999999999998,
+      "Kvco_local_Hz_per_V": 28798491.000959337,
+      "UGF_Hz": 183299.09435645363,
+      "BW_Hz": 294999.99999998836,
+      "PM_deg": 56.44269023807929
+    },
+    "elapsed_s": 5.9999991208314896e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00012220725038289851,
+      "Rz": 2879.7590714584226,
+      "C1": 1e-10,
+      "C2": 1e-09,
+      "f0": 62720905.399424404,
+      "Kvco": 28798491.000959337,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 63,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001222073776889206,
+      "Rz": 2879.7590714584226,
+      "C1": 1e-10,
+      "C2": 1e-09,
+      "f0": 62720888.84127178,
+      "Kvco": 28798461.000959333,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6000011999999798,
+      "Kvco_local_Hz_per_V": 28798461.000959333,
+      "UGF_Hz": 183299.09435645363,
+      "BW_Hz": 294999.99999998836,
+      "PM_deg": 56.44269023807929
+    },
+    "elapsed_s": 5.949998740106821e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001222073776889206,
+      "Rz": 2879.7590714584226,
+      "C1": 1e-10,
+      "C2": 1e-09,
+      "f0": 62720888.84127178,
+      "Kvco": 28798461.000959333,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 64,
+    "kind": "candidate_generations"
+  },
+  {
+    "index": 65,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001222073776889206,
+      "Rz": 2879.7590714584226,
+      "C1": 1e-10,
+      "C2": 1e-09,
+      "f0": 62720923.399424404,
+      "Kvco": 28798461.000959333,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5999999999999999,
+      "Kvco_local_Hz_per_V": 28798461.000959333,
+      "UGF_Hz": 183299.09435645363,
+      "BW_Hz": 294999.99999998836,
+      "PM_deg": 56.44269023807929
+    },
+    "elapsed_s": 6.220000796020031e-05
+  },
+  {
+    "index": 66,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": [
+      21.0,
+      4.58257569495584
+    ],
+    "output": 1.4779570793231307,
+    "elapsed_s": 4.109996370971203e-05
+  },
+  {
+    "index": 67,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001675443704858799,
+      "Rz": 2000.0,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5811390737853002,
+      "Kvco_local_Hz_per_V": 34415169.9690889,
+      "UGF_Hz": 215182.4250517213,
+      "BW_Hz": 323984.1448207422,
+      "PM_deg": 65.08237207429212
+    },
+    "elapsed_s": 6.009999196976423e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001675443704858799,
+      "Rz": 2000.0,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 68,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00016754458841303257,
+      "Rz": 2000.0,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5811390737853002,
+      "Kvco_local_Hz_per_V": 34415169.9690889,
+      "UGF_Hz": 215182.6805996083,
+      "BW_Hz": 323984.57776318456,
+      "PM_deg": 65.08236780669009
+    },
+    "elapsed_s": 6.289995508268476e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00016754458841303257,
+      "Rz": 2000.0,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 69,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001675443704858799,
+      "Rz": 2000.006,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5811390737853002,
+      "Kvco_local_Hz_per_V": 34415169.9690889,
+      "UGF_Hz": 215182.95830944442,
+      "BW_Hz": 323985.1699691066,
+      "PM_deg": 65.08235238822928
+    },
+    "elapsed_s": 6.070005474612117e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001675443704858799,
+      "Rz": 2000.006,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 70,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001675442244361368,
+      "Rz": 2000.0,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 59999982.56582779,
+      "Kvco": 34415199.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5811390737853002,
+      "Kvco_local_Hz_per_V": 34415199.9690889,
+      "UGF_Hz": 215182.4250517213,
+      "BW_Hz": 323984.1448207422,
+      "PM_deg": 65.08237207429212
+    },
+    "elapsed_s": 6.009999196976423e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001675442244361368,
+      "Rz": 2000.0,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 59999982.56582779,
+      "Kvco": 34415199.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 71,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001675443704858799,
+      "Rz": 2000.0,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 59999958.701796725,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5811402737852802,
+      "Kvco_local_Hz_per_V": 34415169.9690889,
+      "UGF_Hz": 215182.4250517213,
+      "BW_Hz": 323984.1448207422,
+      "PM_deg": 65.08237207429212
+    },
+    "elapsed_s": 5.959998816251755e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001675443704858799,
+      "Rz": 2000.0,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 59999958.701796725,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 72,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00016505305653558158,
+      "Rz": 2000.0,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5811390737853002,
+      "Kvco_local_Hz_per_V": 34415169.9690889,
+      "UGF_Hz": 212258.20671495557,
+      "BW_Hz": 319038.32098904334,
+      "PM_deg": 65.12951087217958
+    },
+    "elapsed_s": 6.210000719875097e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00016505305653558158,
+      "Rz": 2000.0,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 73,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00016505327446273424,
+      "Rz": 2000.0,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5811390737853002,
+      "Kvco_local_Hz_per_V": 34415169.9690889,
+      "UGF_Hz": 212258.46275646923,
+      "BW_Hz": 319038.75330546586,
+      "PM_deg": 65.12950689533355
+    },
+    "elapsed_s": 6.199994822964072e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00016505327446273424,
+      "Rz": 2000.0,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 74,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00016505305653558158,
+      "Rz": 2000.006,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5811390737853002,
+      "Kvco_local_Hz_per_V": 34415169.9690889,
+      "UGF_Hz": 212258.73346018267,
+      "BW_Hz": 319039.32843407686,
+      "PM_deg": 65.1294928001073
+    },
+    "elapsed_s": 6.009999196976423e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00016505305653558158,
+      "Rz": 2000.006,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 75,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00016505291265753638,
+      "Rz": 2000.0,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 59999982.56582779,
+      "Kvco": 34415199.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5811390737853002,
+      "Kvco_local_Hz_per_V": 34415199.9690889,
+      "UGF_Hz": 212258.20671495557,
+      "BW_Hz": 319038.32098904334,
+      "PM_deg": 65.12951087217958
+    },
+    "elapsed_s": 6.029999349266291e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00016505291265753638,
+      "Rz": 2000.0,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 59999982.56582779,
+      "Kvco": 34415199.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 76,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00016505305653558158,
+      "Rz": 2000.0,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 59999958.701796725,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5811402737852802,
+      "Kvco_local_Hz_per_V": 34415169.9690889,
+      "UGF_Hz": 212258.20671495557,
+      "BW_Hz": 319038.32098904334,
+      "PM_deg": 65.12951087217958
+    },
+    "elapsed_s": 6.049999501556158e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00016505305653558158,
+      "Rz": 2000.0,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 59999958.701796725,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 77,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015293553665186957,
+      "Rz": 2000.0000000000014,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5811390737853002,
+      "Kvco_local_Hz_per_V": 34415169.9690889,
+      "UGF_Hz": 197957.02472435744,
+      "BW_Hz": 295103.3960513589,
+      "PM_deg": 65.30670615975266
+    },
+    "elapsed_s": 6.220000796020031e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015293553665186957,
+      "Rz": 2000.0000000000014,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 78,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015293575457902224,
+      "Rz": 2000.0000000000014,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5811390737853002,
+      "Kvco_local_Hz_per_V": 34415169.9690889,
+      "UGF_Hz": 197957.28304585628,
+      "BW_Hz": 295103.8243936883,
+      "PM_deg": 65.30670383211063
+    },
+    "elapsed_s": 6.209994899109006e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015293575457902224,
+      "Rz": 2000.0000000000014,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 79,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015293553665186957,
+      "Rz": 2000.0060000000014,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5811390737853002,
+      "Kvco_local_Hz_per_V": 34415169.9690889,
+      "UGF_Hz": 197957.51855251967,
+      "BW_Hz": 295104.31433789525,
+      "PM_deg": 65.30669635864392
+    },
+    "elapsed_s": 6.059999577701092e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015293553665186957,
+      "Rz": 2000.0060000000014,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 80,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015293540333676163,
+      "Rz": 2000.0000000000014,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 59999982.56582779,
+      "Kvco": 34415199.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5811390737853002,
+      "Kvco_local_Hz_per_V": 34415199.9690889,
+      "UGF_Hz": 197957.02472435744,
+      "BW_Hz": 295103.3960513589,
+      "PM_deg": 65.30670615975266
+    },
+    "elapsed_s": 6.029999349266291e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015293540333676163,
+      "Rz": 2000.0000000000014,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 59999982.56582779,
+      "Kvco": 34415199.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 81,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015293553665186957,
+      "Rz": 2000.0000000000014,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 59999958.701796725,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5811402737852802,
+      "Kvco_local_Hz_per_V": 34415169.9690889,
+      "UGF_Hz": 197957.02472435744,
+      "BW_Hz": 295103.3960513589,
+      "PM_deg": 65.30670615975266
+    },
+    "elapsed_s": 6.019999273121357e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015293553665186957,
+      "Rz": 2000.0000000000014,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 59999958.701796725,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 82,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015288293198143722,
+      "Rz": 2000.0,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5811390737853002,
+      "Kvco_local_Hz_per_V": 34415169.9690889,
+      "UGF_Hz": 197894.6682628784,
+      "BW_Hz": 295000.00249179115,
+      "PM_deg": 65.30726703905916
+    },
+    "elapsed_s": 6.160000339150429e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015288293198143722,
+      "Rz": 2000.0,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 83,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015288314990858986,
+      "Rz": 2000.0,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5811390737853002,
+      "Kvco_local_Hz_per_V": 34415169.9690889,
+      "UGF_Hz": 197894.92659379626,
+      "BW_Hz": 295000.43081355526,
+      "PM_deg": 65.30726471952164
+    },
+    "elapsed_s": 6.3000014051795e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015288314990858986,
+      "Rz": 2000.0,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 84,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015288293198143722,
+      "Rz": 2000.006,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5811390737853002,
+      "Kvco_local_Hz_per_V": 34415169.9690889,
+      "UGF_Hz": 197895.1619436247,
+      "BW_Hz": 295000.92038156954,
+      "PM_deg": 65.30725727543495
+    },
+    "elapsed_s": 6.250001024454832e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015288293198143722,
+      "Rz": 2000.006,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 85,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015288279871218514,
+      "Rz": 2000.0,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 59999982.56582779,
+      "Kvco": 34415199.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5811390737853002,
+      "Kvco_local_Hz_per_V": 34415199.9690889,
+      "UGF_Hz": 197894.6682628784,
+      "BW_Hz": 295000.00249179115,
+      "PM_deg": 65.30726703905916
+    },
+    "elapsed_s": 6.160000339150429e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015288279871218514,
+      "Rz": 2000.0,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 59999982.56582779,
+      "Kvco": 34415199.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 86,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015288293198143722,
+      "Rz": 2000.0,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 59999958.701796725,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5811402737852802,
+      "Kvco_local_Hz_per_V": 34415169.9690889,
+      "UGF_Hz": 197894.6682628784,
+      "BW_Hz": 295000.00249179115,
+      "PM_deg": 65.30726703905916
+    },
+    "elapsed_s": 6.079999729990959e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015288293198143722,
+      "Rz": 2000.0,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 59999958.701796725,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 87,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001528829307136355,
+      "Rz": 2000.0000000001392,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5811390737853002,
+      "Kvco_local_Hz_per_V": 34415169.9690889,
+      "UGF_Hz": 197894.66676003713,
+      "BW_Hz": 295000.00000003,
+      "PM_deg": 65.30726705255286
+    },
+    "elapsed_s": 6.250001024454832e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001528829307136355,
+      "Rz": 2000.0000000001392,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 88,
+    "kind": "candidate_generations"
+  },
+  {
+    "index": 89,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001528829307136355,
+      "Rz": 2000.0000000001392,
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 34415169.9690889,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5811390737853002,
+      "Kvco_local_Hz_per_V": 34415169.9690889,
+      "UGF_Hz": 197894.66676003713,
+      "BW_Hz": 295000.00000003,
+      "PM_deg": 65.30726705255286
+    },
+    "elapsed_s": 6.200000643730164e-05
+  },
+  {
+    "index": 90,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": [
+      11.0,
+      3.3166247903554
+    ],
+    "output": 1.6093914759145282,
+    "elapsed_s": 4.20999713242054e-05
+  },
+  {
+    "index": 91,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00018721662375468555,
+      "Rz": 2000.0,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 37596922.001918666,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5319584406132861,
+      "Kvco_local_Hz_per_V": 37596922.001918666,
+      "UGF_Hz": 228976.19889604228,
+      "BW_Hz": 380529.27191260975,
+      "PM_deg": 52.52533291935332
+    },
+    "elapsed_s": 6.19000056758523e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00018721662375468555,
+      "Rz": 2000.0,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 37596922.001918666,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 92,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001872168232391008,
+      "Rz": 2000.0,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 37596922.001918666,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5319584406132861,
+      "Kvco_local_Hz_per_V": 37596922.001918666,
+      "UGF_Hz": 228976.39499079273,
+      "BW_Hz": 380529.602758121,
+      "PM_deg": 52.52532104154406
+    },
+    "elapsed_s": 6.299995584413409e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001872168232391008,
+      "Rz": 2000.0,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 37596922.001918666,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 93,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00018721662375468555,
+      "Rz": 2000.006,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 37596922.001918666,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5319584406132861,
+      "Kvco_local_Hz_per_V": 37596922.001918666,
+      "UGF_Hz": 228976.61617931016,
+      "BW_Hz": 380529.9933191163,
+      "PM_deg": 52.525266035110064
+    },
+    "elapsed_s": 6.120000034570694e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00018721662375468555,
+      "Rz": 2000.006,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0,
+      "Kvco": 37596922.001918666,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 94,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00018721647436760992,
+      "Rz": 2000.0,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 59999984.04124678,
+      "Kvco": 37596952.001918666,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5319584406132861,
+      "Kvco_local_Hz_per_V": 37596952.001918666,
+      "UGF_Hz": 228976.19889604242,
+      "BW_Hz": 380529.27191261004,
+      "PM_deg": 52.5253329193533
+    },
+    "elapsed_s": 6.180000491440296e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00018721647436760992,
+      "Rz": 2000.0,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 59999984.04124678,
+      "Kvco": 37596952.001918666,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 95,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00018721662375468555,
+      "Rz": 2000.0,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 59999954.88369435,
+      "Kvco": 37596922.001918666,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5319596406132661,
+      "Kvco_local_Hz_per_V": 37596922.001918666,
+      "UGF_Hz": 228976.19889604228,
+      "BW_Hz": 380529.27191260975,
+      "PM_deg": 52.52533291935332
+    },
+    "elapsed_s": 6.089999806135893e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00018721662375468555,
+      "Rz": 2000.0,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 59999954.88369435,
+      "Kvco": 37596922.001918666,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 96,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00016098006934266054,
+      "Rz": 2000.0000000000002,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.00180311,
+      "Kvco": 37596921.9985291,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5319584406132861,
+      "Kvco_local_Hz_per_V": 37596921.9985291,
+      "UGF_Hz": 202489.11503613388,
+      "BW_Hz": 335407.3339014082,
+      "PM_deg": 54.05568690399855
+    },
+    "elapsed_s": 6.340001709759235e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00016098006934266054,
+      "Rz": 2000.0000000000002,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.00180311,
+      "Kvco": 37596921.9985291,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 97,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001609802688270758,
+      "Rz": 2000.0000000000002,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.00180311,
+      "Kvco": 37596921.9985291,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5319584406132861,
+      "Kvco_local_Hz_per_V": 37596921.9985291,
+      "UGF_Hz": 202489.3218146908,
+      "BW_Hz": 335407.6894851482,
+      "PM_deg": 54.055675676824464
+    },
+    "elapsed_s": 6.240000948309898e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001609802688270758,
+      "Rz": 2000.0000000000002,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.00180311,
+      "Kvco": 37596921.9985291,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 98,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00016098006934266054,
+      "Rz": 2000.0060000000003,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.00180311,
+      "Kvco": 37596921.9985291,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5319584406132861,
+      "Kvco_local_Hz_per_V": 37596921.9985291,
+      "UGF_Hz": 202489.50876614006,
+      "BW_Hz": 335408.04937330005,
+      "PM_deg": 54.05563254315567
+    },
+    "elapsed_s": 6.079999729990959e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00016098006934266054,
+      "Rz": 2000.0060000000003,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.00180311,
+      "Kvco": 37596921.9985291,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 99,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00016097994089070303,
+      "Rz": 2000.0000000000002,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 59999984.04304989,
+      "Kvco": 37596951.9985291,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5319584406132862,
+      "Kvco_local_Hz_per_V": 37596951.9985291,
+      "UGF_Hz": 202489.11503613388,
+      "BW_Hz": 335407.3339014082,
+      "PM_deg": 54.05568690399855
+    },
+    "elapsed_s": 6.029999349266291e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00016097994089070303,
+      "Rz": 2000.0000000000002,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 59999984.04304989,
+      "Kvco": 37596951.9985291,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 100,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00016098006934266054,
+      "Rz": 2000.0000000000002,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 59999954.885497466,
+      "Kvco": 37596921.9985291,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5319596406132661,
+      "Kvco_local_Hz_per_V": 37596921.9985291,
+      "UGF_Hz": 202489.11503613388,
+      "BW_Hz": 335407.3339014082,
+      "PM_deg": 54.05568690399855
+    },
+    "elapsed_s": 5.979998968541622e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00016098006934266054,
+      "Rz": 2000.0000000000002,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 59999954.885497466,
+      "Kvco": 37596921.9985291,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 101,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 6.587914554008206e-05,
+      "Rz": 2934.9704679158585,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.00179429,
+      "Kvco": 37596921.99854566,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5319584406132862,
+      "Kvco_local_Hz_per_V": 37596921.99854566,
+      "UGF_Hz": 124224.87350581039,
+      "BW_Hz": 204746.61568984503,
+      "PM_deg": 55.0752015438756
+    },
+    "elapsed_s": 6.150000263005495e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 6.587914554008206e-05,
+      "Rz": 2934.9704679158585,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.00179429,
+      "Kvco": 37596921.99854566,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 102,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 6.587934502449729e-05,
+      "Rz": 2934.9704679158585,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.00179429,
+      "Kvco": 37596921.99854566,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5319584406132862,
+      "Kvco_local_Hz_per_V": 37596921.99854566,
+      "UGF_Hz": 124225.18872788841,
+      "BW_Hz": 204747.16443932167,
+      "PM_deg": 55.07518022971154
+    },
+    "elapsed_s": 6.220000796020031e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 6.587934502449729e-05,
+      "Rz": 2934.9704679158585,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.00179429,
+      "Kvco": 37596921.99854566,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 103,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 6.587914554008206e-05,
+      "Rz": 2934.976467915859,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.00179429,
+      "Kvco": 37596921.99854566,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5319584406132862,
+      "Kvco_local_Hz_per_V": 37596921.99854566,
+      "UGF_Hz": 124225.04518211009,
+      "BW_Hz": 204746.93807643757,
+      "PM_deg": 55.07517276422178
+    },
+    "elapsed_s": 6.120000034570694e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 6.587914554008206e-05,
+      "Rz": 2934.976467915859,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.00179429,
+      "Kvco": 37596921.99854566,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 104,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 6.58790929726727e-05,
+      "Rz": 2934.9704679158585,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 59999984.04304108,
+      "Kvco": 37596951.99854566,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5319584406132861,
+      "Kvco_local_Hz_per_V": 37596951.99854566,
+      "UGF_Hz": 124224.87350581039,
+      "BW_Hz": 204746.61568984503,
+      "PM_deg": 55.0752015438756
+    },
+    "elapsed_s": 6.029999349266291e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 6.58790929726727e-05,
+      "Rz": 2934.9704679158585,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 59999984.04304108,
+      "Kvco": 37596951.99854566,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 105,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 6.587914554008206e-05,
+      "Rz": 2934.9704679158585,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 59999954.88548865,
+      "Kvco": 37596921.99854566,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5319596406132661,
+      "Kvco_local_Hz_per_V": 37596921.99854566,
+      "UGF_Hz": 124224.87350581039,
+      "BW_Hz": 204746.61568984503,
+      "PM_deg": 55.0752015438756
+    },
+    "elapsed_s": 6.0100050177425146e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 6.587914554008206e-05,
+      "Rz": 2934.9704679158585,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 59999954.88548865,
+      "Kvco": 37596921.99854566,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 106,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 6.963440620084781e-05,
+      "Rz": 4422.438048361599,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.00176524,
+      "Kvco": 37596921.998600274,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5319584406132861,
+      "Kvco_local_Hz_per_V": 37596921.998600274,
+      "UGF_Hz": 162735.43391472954,
+      "BW_Hz": 268038.8320552267,
+      "PM_deg": 44.26432599164715
+    },
+    "elapsed_s": 6.279995432123542e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 6.963440620084781e-05,
+      "Rz": 4422.438048361599,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.00176524,
+      "Kvco": 37596921.998600274,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 107,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 6.963460568526304e-05,
+      "Rz": 4422.438048361599,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.00176524,
+      "Kvco": 37596921.998600274,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5319584406132861,
+      "Kvco_local_Hz_per_V": 37596921.998600274,
+      "UGF_Hz": 162735.7632860608,
+      "BW_Hz": 268039.3501024417,
+      "PM_deg": 44.26428177094667
+    },
+    "elapsed_s": 6.240000948309898e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 6.963460568526304e-05,
+      "Rz": 4422.438048361599,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.00176524,
+      "Kvco": 37596921.998600274,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 108,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 6.963440620084781e-05,
+      "Rz": 4422.444048361598,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.00176524,
+      "Kvco": 37596921.998600274,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5319584406132861,
+      "Kvco_local_Hz_per_V": 37596921.998600274,
+      "UGF_Hz": 162735.52510406869,
+      "BW_Hz": 268038.95908845816,
+      "PM_deg": 44.26428410647227
+    },
+    "elapsed_s": 6.160000339150429e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 6.963440620084781e-05,
+      "Rz": 4422.444048361598,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.00176524,
+      "Kvco": 37596921.998600274,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 109,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 6.963435063697694e-05,
+      "Rz": 4422.438048361599,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 59999984.04301202,
+      "Kvco": 37596951.998600274,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5319584406132862,
+      "Kvco_local_Hz_per_V": 37596951.998600274,
+      "UGF_Hz": 162735.43391472954,
+      "BW_Hz": 268038.8320552267,
+      "PM_deg": 44.26432599164715
+    },
+    "elapsed_s": 6.0100050177425146e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 6.963435063697694e-05,
+      "Rz": 4422.438048361599,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 59999984.04301202,
+      "Kvco": 37596951.998600274,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 110,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 6.963440620084781e-05,
+      "Rz": 4422.438048361599,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 59999954.8854596,
+      "Kvco": 37596921.998600274,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5319596406132661,
+      "Kvco_local_Hz_per_V": 37596921.998600274,
+      "UGF_Hz": 162735.43391472954,
+      "BW_Hz": 268038.8320552267,
+      "PM_deg": 44.26432599164715
+    },
+    "elapsed_s": 6.0399994254112244e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 6.963440620084781e-05,
+      "Rz": 4422.438048361599,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 59999954.8854596,
+      "Kvco": 37596921.998600274,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 111,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.947906429074522e-05,
+      "Rz": 4488.339189539591,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.00176205,
+      "Kvco": 37596921.998606294,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.531958440613286,
+      "Kvco_local_Hz_per_V": 37596921.998606294,
+      "UGF_Hz": 179394.96278661085,
+      "BW_Hz": 293889.50837394956,
+      "PM_deg": 41.746573495843855
+    },
+    "elapsed_s": 6.160000339150429e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.947906429074522e-05,
+      "Rz": 4488.339189539591,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.00176205,
+      "Kvco": 37596921.998606294,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 112,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.947926377516046e-05,
+      "Rz": 4488.339189539591,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.00176205,
+      "Kvco": 37596921.998606294,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.531958440613286,
+      "Kvco_local_Hz_per_V": 37596921.998606294,
+      "UGF_Hz": 179395.26950663046,
+      "BW_Hz": 293889.9855392396,
+      "PM_deg": 41.74653427367937
+    },
+    "elapsed_s": 6.19000056758523e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.947926377516046e-05,
+      "Rz": 4488.339189539591,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.00176205,
+      "Kvco": 37596921.998606294,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 113,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.947906429074522e-05,
+      "Rz": 4488.345189539591,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.00176205,
+      "Kvco": 37596921.998606294,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.531958440613286,
+      "Kvco_local_Hz_per_V": 37596921.998606294,
+      "UGF_Hz": 179395.04969631296,
+      "BW_Hz": 293889.62378944457,
+      "PM_deg": 41.74653171558161
+    },
+    "elapsed_s": 6.059999577701092e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.947906429074522e-05,
+      "Rz": 4488.345189539591,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.00176205,
+      "Kvco": 37596921.998606294,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 114,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.947900087145717e-05,
+      "Rz": 4488.339189539591,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 59999984.04300882,
+      "Kvco": 37596951.998606294,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5319584406132862,
+      "Kvco_local_Hz_per_V": 37596951.998606294,
+      "UGF_Hz": 179394.96278661085,
+      "BW_Hz": 293889.50837394956,
+      "PM_deg": 41.746573495843855
+    },
+    "elapsed_s": 6.990000838413835e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.947900087145717e-05,
+      "Rz": 4488.339189539591,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 59999984.04300882,
+      "Kvco": 37596951.998606294,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 115,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.947906429074522e-05,
+      "Rz": 4488.339189539591,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 59999954.8854564,
+      "Kvco": 37596921.998606294,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5319596406132661,
+      "Kvco_local_Hz_per_V": 37596921.998606294,
+      "UGF_Hz": 179394.96278661085,
+      "BW_Hz": 293889.50837394956,
+      "PM_deg": 41.746573495843855
+    },
+    "elapsed_s": 5.9999991208314896e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.947906429074522e-05,
+      "Rz": 4488.339189539591,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 59999954.8854564,
+      "Kvco": 37596921.998606294,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 116,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.991986195907435e-05,
+      "Rz": 4491.255960774552,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0017619,
+      "Kvco": 37596921.99860656,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5319584406132861,
+      "Kvco_local_Hz_per_V": 37596921.99860656,
+      "UGF_Hz": 180113.88690942168,
+      "BW_Hz": 294998.0764545114,
+      "PM_deg": 41.63983628473412
+    },
+    "elapsed_s": 6.10999995842576e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.991986195907435e-05,
+      "Rz": 4491.255960774552,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0017619,
+      "Kvco": 37596921.99860656,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 117,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.992006144348959e-05,
+      "Rz": 4491.255960774552,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0017619,
+      "Kvco": 37596921.99860656,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5319584406132861,
+      "Kvco_local_Hz_per_V": 37596921.99860656,
+      "UGF_Hz": 180114.19269756487,
+      "BW_Hz": 294998.5519875302,
+      "PM_deg": 41.639797276235484
+    },
+    "elapsed_s": 6.19000056758523e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.992006144348959e-05,
+      "Rz": 4491.255960774552,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0017619,
+      "Kvco": 37596921.99860656,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 118,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.991986195907435e-05,
+      "Rz": 4491.261960774551,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0017619,
+      "Kvco": 37596921.99860656,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5319584406132861,
+      "Kvco_local_Hz_per_V": 37596921.99860656,
+      "UGF_Hz": 180113.97361560308,
+      "BW_Hz": 294998.1913840136,
+      "PM_deg": 41.63979452875418
+    },
+    "elapsed_s": 6.029999349266291e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.991986195907435e-05,
+      "Rz": 4491.261960774551,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0017619,
+      "Kvco": 37596921.99860656,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 119,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.991979818805751e-05,
+      "Rz": 4491.255960774552,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 59999984.043008685,
+      "Kvco": 37596951.99860656,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.531958440613286,
+      "Kvco_local_Hz_per_V": 37596951.99860656,
+      "UGF_Hz": 180113.88690942168,
+      "BW_Hz": 294998.0764545114,
+      "PM_deg": 41.63983628473412
+    },
+    "elapsed_s": 5.9800047893077135e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.991979818805751e-05,
+      "Rz": 4491.255960774552,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 59999984.043008685,
+      "Kvco": 37596951.99860656,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 120,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.991986195907435e-05,
+      "Rz": 4491.255960774552,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 59999954.88545626,
+      "Kvco": 37596921.99860656,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5319596406132661,
+      "Kvco_local_Hz_per_V": 37596921.99860656,
+      "UGF_Hz": 180113.88690942168,
+      "BW_Hz": 294998.0764545114,
+      "PM_deg": 41.63983628473412
+    },
+    "elapsed_s": 5.949998740106821e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.991986195907435e-05,
+      "Rz": 4491.255960774552,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 59999954.88545626,
+      "Kvco": 37596921.99860656,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 121,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.992062814872582e-05,
+      "Rz": 4491.261029690049,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0017619,
+      "Kvco": 37596921.99860656,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5319584406132861,
+      "Kvco_local_Hz_per_V": 37596921.99860656,
+      "UGF_Hz": 180115.13464441992,
+      "BW_Hz": 294999.99999577436,
+      "PM_deg": 41.63965118322012
+    },
+    "elapsed_s": 6.0999998822808266e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.992062814872582e-05,
+      "Rz": 4491.261029690049,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0017619,
+      "Kvco": 37596921.99860656,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 122,
+    "kind": "candidate_generations"
+  },
+  {
+    "index": 123,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 7.992062814872582e-05,
+      "Rz": 4491.261029690049,
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "f0": 60000000.0017619,
+      "Kvco": 37596921.99860656,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.5319584406132861,
+      "Kvco_local_Hz_per_V": 37596921.99860656,
+      "UGF_Hz": 180115.13464441992,
+      "BW_Hz": 294999.99999577436,
+      "PM_deg": 41.63965118322012
+    },
+    "elapsed_s": 6.0999998822808266e-05
+  },
+  {
+    "index": 124,
+    "kind": "M1_calls",
+    "status": "RETURNED",
+    "input": {
+      "schema_version": "pll-physics-mapping-2.0",
+      "conventions": {
+        "vco_f0": "frequency_at_zero_volts",
+        "phase_error": "reference_minus_feedback_rad",
+        "lf_topology": "C1_shunt_Rz_series_C2",
+        "cp_leakage": "positive_injected_into_lf"
+      },
+      "values": {
+        "f_ref": {
+          "value": 10000000,
+          "unit": "Hz"
+        },
+        "N": {
+          "value": 8,
+          "unit": "1"
+        },
+        "Icp": {
+          "value": 7.787309262927287e-05,
+          "unit": "A"
+        },
+        "Rz": {
+          "value": 5759.518142952891,
+          "unit": "Ohm"
+        },
+        "C1": {
+          "value": 5e-11,
+          "unit": "F"
+        },
+        "C2": {
+          "value": 5e-10,
+          "unit": "F"
+        },
+        "f0": {
+          "value": 66441846.7988488,
+          "unit": "Hz"
+        },
+        "Kvco": {
+          "value": 22596922.001918666,
+          "unit": "Hz/V"
+        },
+        "Vctrl_min": {
+          "value": 0,
+          "unit": "V"
+        },
+        "Vctrl_max": {
+          "value": 1.2,
+          "unit": "V"
+        },
+        "Kvco2": {
+          "value": 0,
+          "unit": "Hz/V^2"
+        },
+        "CP_mismatch": {
+          "value": 0,
+          "unit": "1"
+        },
+        "CP_leakage": {
+          "value": 0,
+          "unit": "A"
+        },
+        "q0": {
+          "value": 0,
+          "unit": "C"
+        },
+        "PFD_reset_delay": {
+          "value": 0,
+          "unit": "s"
+        },
+        "Cload": {
+          "value": 0,
+          "unit": "F"
+        },
+        "Gload": {
+          "value": 0,
+          "unit": "S"
+        }
+      }
+    },
+    "output": {
+      "status": "OK",
+      "reason": "",
+      "model_level": "M1",
+      "model_id": "ideal_cppll_locked_continuous_m1_v1",
+      "parameter_sha256": "b05f2db28aa05f0a8108551bf9886ce5fa1522f28ef2e02fcca0f0fcc4bbc404",
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.6,
+        "Kvco_local_Hz_per_V": 22596922.001918666,
+        "UGF_Hz": 183299.09435640214,
+        "BW_Hz": 295000.0000000365,
+        "PM_deg": 56.44269023807928
+      },
+      "units": {
+        "output_frequency_Hz": "Hz",
+        "Vctrl_required_V": "V",
+        "Kvco_local_Hz_per_V": "Hz/V",
+        "UGF_Hz": "Hz",
+        "BW_Hz": "Hz",
+        "PM_deg": "deg"
+      },
+      "protocols": {
+        "output_frequency_Hz": "conditional_locked_tuning_frequency",
+        "Vctrl_required_V": "linear_vco_static_tuning_solution",
+        "Kvco_local_Hz_per_V": "vco_derivative_at_tuning_point",
+        "UGF_Hz": "continuous_L_first_downward_unity_crossing",
+        "BW_Hz": "continuous_normalized_T_first_downward_minus3dB",
+        "PM_deg": "180_plus_continuous_L_phase_at_UGF"
+      },
+      "factors": {
+        "F_FREQ_PLAN": {
+          "f_target_Hz": 80000000,
+          "source": "model/solve_tuning_point.m"
+        },
+        "F_TUNING": {
+          "Vctrl_required_V": 0.6,
+          "Kvco_local_Hz_per_V": 22596922.001918666,
+          "feasible": true,
+          "voltage_margin_V": 0.6,
+          "tuning_frequency_min_Hz": 66441846.7988488,
+          "tuning_frequency_max_Hz": 93558153.20115119,
+          "source": "model/solve_tuning_point.m; model/vco_model.m"
+        },
+        "F_KPFD": {
+          "Kpfd_A_per_rad": 1.2393887625801819e-05,
+          "Iup_A": 7.787309262927287e-05,
+          "Idown_A": 7.787309262927287e-05,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LF_TF": {
+          "zero_Hz": 55266.75639927648,
+          "poles_rad_per_s": [
+            0,
+            -3819763.9896174814
+          ],
+          "nonzero_pole_Hz": 607934.3203920414,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LOOP": {
+          "UGF_Hz": 183299.09435640214,
+          "BW_Hz": 295000.0000000365,
+          "PM_deg": 56.44269023807928,
+          "characteristic_descending": [
+            1.4398795357382229e-16,
+            5.500000000000001e-10,
+            0.000633436197063609,
+            219.96152502398328
+          ],
+          "routh_stable": true,
+          "T_definition": "L/(1+L); normalized reference phase response; H_ref=N*T",
+          "source": "model/pll_linear_kernel.m; characterization/characterize_loop.m"
+        }
+      },
+      "diagnostics": {
+        "scan": {
+          "minimum_Hz": 5.526675639927648,
+          "maximum_Hz": 1000000000,
+          "points": 8000
+        },
+        "UGF_over_fref": 0.018329909435640213,
+        "BW_over_fref": 0.02950000000000365,
+        "sampling_equivalence": "NOT_ESTABLISHED",
+        "transient_lock": "NOT_EVALUATED",
+        "MATLAB_runtime_calls": 0,
+        "behavioral_TB_calls": 0
+      },
+      "response": [],
+      "scope": "CONDITIONAL_LOCKED_CONTINUOUS_SMALL_SIGNAL_ONLY",
+      "verified_joint_block_spec": false
+    },
+    "elapsed_s": 0.05493189999833703
+  },
+  {
+    "index": 125,
+    "kind": "M2_calls",
+    "stage": "FEEDBACK_REPAIR",
+    "parameter_sha256": "b05f2db28aa05f0a8108551bf9886ce5fa1522f28ef2e02fcca0f0fcc4bbc404",
+    "status": "RETURNED",
+    "elapsed_s": 9.21927840000717
+  }
+]

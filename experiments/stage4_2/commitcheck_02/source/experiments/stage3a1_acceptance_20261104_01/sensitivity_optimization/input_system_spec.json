@@ -1,0 +1,36 @@
+{
+  "version": "0",
+  "draft": true,
+  "source": "User Stage 1 research targets, 2026-11-04; not frozen",
+  "metrics": [
+    {
+      "metric": "output_frequency_Hz",
+      "unit": "Hz",
+      "min": 80000000,
+      "max": 80000000,
+      "tolerance": 1e-06,
+      "evaluator": "M1",
+      "protocol": "conditional_locked_tuning_frequency",
+      "source": "User: 10 MHz x 8; conditional static frequency, not a transient measurement"
+    },
+    {
+      "metric": "BW_Hz",
+      "unit": "Hz",
+      "min": 150000,
+      "max": 300000,
+      "tolerance": 0,
+      "evaluator": "M1",
+      "protocol": "continuous_normalized_T_first_downward_minus3dB",
+      "source": "User: experimental BW target"
+    },
+    {
+      "metric": "PM_deg",
+      "unit": "deg",
+      "min": 50,
+      "tolerance": 0,
+      "evaluator": "M1",
+      "protocol": "180_plus_continuous_L_phase_at_UGF",
+      "source": "User: experimental PM target"
+    }
+  ]
+}

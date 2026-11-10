@@ -1,0 +1,13 @@
+# Research scenario contract 1.0
+
+Formal frozen runs remain unchanged. Optional `pipeline --scenario <path>` selects a separate research scenario, never rewrites configs or the model's embedded experiment.
+
+Scenario schema `pll-research-scenario-1.0` requires nonempty ID/version/label, scope `RESEARCH_SCENARIO_NOT_FORMAL_SPEC`, exact original pipeline base bindings, and precisely three numeric finite nonnegative thresholds: BW min/max (strict min<max), PM min (0≤PM<90). No extra keys or booleans. Scope is limited to threshold changes; units, metric order, tolerance, source metadata, frequency plan, topology, declared variables and protocol remain unchanged.
+
+`scenario_sha256` hashes the complete object except that field using original sorted compact UTF8 canonical JSON. Raw file SHA is also recorded. Effective SystemSpec is a deep copy of original spec with only the three permitted leaves replaced. Its independent hash binds the actual judgments. A proposal contains the full scenario document and `scenario_binding` (schema/ID/version/hash/effective-spec hash/base-spec hash); M1 assessment, manifest, events, feedback and M2 result carry that binding. File mutation is checked again before and after execution.
+
+M2 research adapter validates original model/versions/protocol/equations/kernel bindings and scenario hash, validates full proposal, and forms an explicitly saved measurement request projected onto the unchanged frozen spec. Existing `verification.verify` executes the exact original cold/warm TB; its original result is retained. Adapter copies only those actually measured results, replaces requirement targets with the effective spec, recomputes BW interval judgment, preserves strict PM/frequency UNKNOWN or any measured frequency FAIL, and binds both source and research results. No missing metric is filled using M1. Original verifier remains unchanged, preserving Stage4.2 source-bound Registry compatibility.
+
+Runner validates result's targets, scenario binding, kernel/model/protocol identity and metric judgments independently. It rejects unbound custom specs, swapped scene IDs, edited hashes, wrong base assets, unsupported fields and stale/mutated scenario files. A valid content hash is integrity identification, not an external signature.
+
+PhaseB continuation accepts only a prior same-scene real M2 result with a certified FAIL, validates it and reconstructs feedback using the existing adapter. Its new candidate is FEEDBACK_REPAIR, never a new first-shot. Costs and source arm are linked; parent simulations are not counted as fresh execution. All standard frozen and proposal-reverification interfaces remain compatible.

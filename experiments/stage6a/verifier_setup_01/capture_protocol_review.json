@@ -1,0 +1,58 @@
+{
+  "status": "CONDITIONAL_RESEARCH_MEASUREMENT_SUPPORTED_PENDING_ACTUAL_REPEATABILITY",
+  "source_sha256": {
+    "pll_allocation/verification/kernel.cpp": "befdd779cd69c73f1a2fb8667e895f77efff979cb3186d80a83113c0321c9f54",
+    "pll_allocation/verification/simulator.py": "3c350efbb64cad3c7afb43b0f6946c819c52914d9a19893a749dffd48ee97750",
+    "pll_allocation/verification/run_suite.py": "6ab0d1ce08e4266c5de12e391208226d77909232ffb34cef607d914ac4496b0f",
+    "pll_allocation/verification/measure.py": "c59b734e0d58dd877fdbb1cc4335bc8dd2c8024a6a368fc2e58eab6bed962edb",
+    "pll_allocation/verification/verify.py": "8c7a653d395fedb0552df073871afd08b59500afce80fde56ad92d6afa1048b3",
+    "configs/verification/protocol_v1_1.json": "7de5162bd57ad886170415e2d02e1d060878654d2c9e1f46b095ec7163b8399b"
+  },
+  "initial_conditions": {
+    "control_node_V": 0.15,
+    "series_cap_node_V": 0.15,
+    "VCO_phase_rad": 0,
+    "reference_phase_rad": 0,
+    "PFD_UP": false,
+    "PFD_DOWN": false,
+    "reference_next_edge_index": 1,
+    "divider_next_edge_index": 1,
+    "onset_s": "duration_s, no phase modulation for cold capture"
+  },
+  "measurement": {
+    "duration_s": 0.00016,
+    "dt_s": [
+      4e-10,
+      2e-10
+    ],
+    "record_interval_s": 2e-08,
+    "block_s": 1e-06,
+    "hold_blocks": 10,
+    "valid_block_gates": {
+      "frequency_error_ppm": 100,
+      "wrapped_phase_peak_deg": 5,
+      "control_range_V": 0.005,
+      "clamps": 0,
+      "no_within_block_cycle_slips": true
+    },
+    "lock_time_definition": "earliest beginning after final invalid block with >=10 valid terminal blocks",
+    "initial_cycle_slips": "allowed before terminal sustained capture",
+    "step_convergence": {
+      "same_status": true,
+      "frequency_difference_ppm": 1,
+      "control_difference_V": 0.0001,
+      "lock_time_difference_s": 2e-06
+    }
+  },
+  "limitations": [
+    "No global initial-condition coverage or absolute nonlockability result",
+    "M1 BW/PM do not predict or certify capture time",
+    "Protocol permits pair-converged noncapture; this must be reported failure/unknown under an explicit finite-window requirement",
+    "Original 100 ppm capture tracking gate cannot replace frozen 1 microHz frequency equality",
+    "Lock time is quantized by 1 us blocks; research deadline should include resolution and two-step hull",
+    "Existing kernel has deterministic initial phase and LF-state coupling; no thermal/noise/random-start evidence",
+    "Capture measurement reliability still needs actual paired runs and one repeated pair; static review alone is not repeatability proof"
+  ],
+  "formal_files_modified": false,
+  "Stage6A_candidate_M2_calls": 0
+}

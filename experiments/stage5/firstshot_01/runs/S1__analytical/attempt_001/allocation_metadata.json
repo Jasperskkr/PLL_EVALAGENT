@@ -1,0 +1,103 @@
+{
+  "status": "PROPOSED",
+  "propagation": {
+    "status": "NECESSARY_CONDITIONS_ONLY",
+    "certificates": [],
+    "capacitor_pairs": [
+      {
+        "C1": 5e-11,
+        "C2": 5e-10,
+        "PM_ceiling_deg": 56.44269023807929,
+        "x_interval": null
+      },
+      {
+        "C1": 5e-11,
+        "C2": 1e-09,
+        "PM_ceiling_deg": 65.3800226713429,
+        "x_interval": [
+          2.2616181076120103,
+          9.285387276180508
+        ]
+      },
+      {
+        "C1": 5e-11,
+        "C2": 2e-09,
+        "PM_ceiling_deg": 72.24720983805331,
+        "x_interval": [
+          1.9379818468594654,
+          21.156028920725568
+        ]
+      },
+      {
+        "C1": 1e-10,
+        "C2": 5e-10,
+        "PM_ceiling_deg": 45.58469140280703,
+        "x_interval": null
+      },
+      {
+        "C1": 1e-10,
+        "C2": 1e-09,
+        "PM_ceiling_deg": 56.44269023807929,
+        "x_interval": null
+      },
+      {
+        "C1": 1e-10,
+        "C2": 2e-09,
+        "PM_ceiling_deg": 65.3800226713429,
+        "x_interval": [
+          2.2616181076120103,
+          9.285387276180508
+        ]
+      },
+      {
+        "C1": 2e-10,
+        "C2": 5e-10,
+        "PM_ceiling_deg": 33.74898859588859,
+        "x_interval": null
+      },
+      {
+        "C1": 2e-10,
+        "C2": 1e-09,
+        "PM_ceiling_deg": 45.58469140280703,
+        "x_interval": null
+      },
+      {
+        "C1": 2e-10,
+        "C2": 2e-09,
+        "PM_ceiling_deg": 56.44269023807929,
+        "x_interval": null
+      }
+    ],
+    "gain_product_interval": [
+      500.0,
+      8000.0
+    ],
+    "not_proven": "BW/gain/R/tuning intersection needs solving; no certificate is not proof of feasibility"
+  },
+  "target_BW_Hz": 205000.0,
+  "free_variables": [
+    "capacitor_pair",
+    "x=sqrt(q)",
+    "Kvco_gain_split",
+    "f0_tuning_center"
+  ],
+  "analytically_derived": [
+    "Rz",
+    "Icp_from_product"
+  ],
+  "numerically_solved": [
+    "BW/UGF ratio"
+  ],
+  "rationale": "Choose peak phase-lead shape per capacitor ratio, set BW scale, split gain within bounds, center tuning then project f0.",
+  "cheap_prediction": {
+    "output_frequency_Hz": 80000000,
+    "Vctrl_required_V": 0.6000000000000001,
+    "Kvco_local_Hz_per_V": 25863986.426662352,
+    "UGF_Hz": 152307.27416514818,
+    "BW_Hz": 205000.0000000001,
+    "PM_deg": 72.24720983805331
+  },
+  "selection_score": 0.20412016396755514,
+  "candidate_pairs": 3,
+  "rejected_pairs": []
+}

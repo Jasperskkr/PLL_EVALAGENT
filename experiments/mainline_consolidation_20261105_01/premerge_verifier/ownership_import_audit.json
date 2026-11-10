@@ -1,0 +1,60 @@
+{
+  "phase": "PRE_TARGET_BRANCH_MERGE",
+  "HEAD": "cd70cf445d2ac6789550b7df2da6736221262045",
+  "formal_objects": {
+    "M1Evaluator": {
+      "module": "pll_allocation.physics_mapping.model",
+      "source": "pll_allocation\\physics_mapping\\model.py"
+    },
+    "evaluate": {
+      "module": "pll_allocation.physics_mapping.model",
+      "source": "pll_allocation\\physics_mapping\\model.py"
+    },
+    "AllocationStrategyPolicy": {
+      "module": "pll_allocation.allocation",
+      "source": "pll_allocation\\allocation\\__init__.py"
+    },
+    "MessagesPolicy": {
+      "module": "pll_allocation.allocation.agent",
+      "source": "pll_allocation\\allocation\\agent.py"
+    },
+    "run_agent": {
+      "module": "pll_allocation.allocation.agent",
+      "source": "pll_allocation\\allocation\\agent.py"
+    },
+    "analytical": {
+      "module": "pll_allocation.allocation.allocate",
+      "source": "pll_allocation\\allocation\\allocate.py"
+    },
+    "optimize": {
+      "module": "pll_allocation.allocation.allocate",
+      "source": "pll_allocation\\allocation\\allocate.py"
+    },
+    "verify": {
+      "module": "pll_allocation.verification.verify",
+      "source": "pll_allocation\\verification\\verify.py"
+    },
+    "run_pipeline": {
+      "module": "pll_allocation.pipeline",
+      "source": "pll_allocation\\pipeline.py"
+    }
+  },
+  "legacy_alias_identity": {
+    "core": true,
+    "physics": true,
+    "allocate": true,
+    "agent": true,
+    "repair": true,
+    "feedback_agent": true
+  },
+  "formal_dependency_audit_pass": true,
+  "unique_formal_entry": "python -m pll_allocation pipeline",
+  "entrypoint_evidence": [
+    "pll_allocation/__main__.py -> cli.main",
+    "cli.main routes pipeline -> pipeline.main",
+    "MAINLINE_ARCHITECTURE.md declares run/suite and track_a CLI compatibility only"
+  ],
+  "M2_calls_this_audit": 0,
+  "LLM_calls_this_audit": 0,
+  "M1_evaluations_this_audit": 0
+}

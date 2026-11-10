@@ -1,0 +1,81 @@
+{
+  "real_calls": 3,
+  "responded": 3,
+  "requested_models": [
+    "deepseek-v4-pro"
+  ],
+  "response_models": [
+    "deepseek-v4-pro"
+  ],
+  "usage": [
+    {
+      "input_tokens": 37,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 1408,
+      "output_tokens": 307,
+      "service_tier": "standard"
+    },
+    {
+      "input_tokens": 6,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 1664,
+      "output_tokens": 591,
+      "service_tier": "standard"
+    },
+    {
+      "input_tokens": 104,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 4224,
+      "output_tokens": 610,
+      "service_tier": "standard"
+    }
+  ],
+  "calls": [
+    {
+      "model": "deepseek-v4-pro",
+      "real_network_call": true,
+      "usage": {
+        "input_tokens": 37,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1408,
+        "output_tokens": 307,
+        "service_tier": "standard"
+      },
+      "status": "RESPONDED",
+      "http_status": 200,
+      "response_model": "deepseek-v4-pro",
+      "elapsed_s": 9.155721400020411
+    },
+    {
+      "model": "deepseek-v4-pro",
+      "real_network_call": true,
+      "usage": {
+        "input_tokens": 6,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 1664,
+        "output_tokens": 591,
+        "service_tier": "standard"
+      },
+      "status": "RESPONDED",
+      "http_status": 200,
+      "response_model": "deepseek-v4-pro",
+      "elapsed_s": 14.475928899977589
+    },
+    {
+      "model": "deepseek-v4-pro",
+      "real_network_call": true,
+      "usage": {
+        "input_tokens": 104,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 4224,
+        "output_tokens": 610,
+        "service_tier": "standard"
+      },
+      "status": "RESPONDED",
+      "http_status": 200,
+      "response_model": "deepseek-v4-pro",
+      "elapsed_s": 14.96379799998249
+    }
+  ],
+  "real_LLM_repair_tested": false
+}

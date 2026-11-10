@@ -1,0 +1,69 @@
+{
+  "steps": [
+    {
+      "name": "formal",
+      "command": [
+        "cmd.exe",
+        "/d",
+        "/c",
+        "C:\\Users\\Lenovo\\.codex\\worktrees\\stage6a-multispec-feasibility\\PLL_allocation\\pll_allocation\\verification\\build_kernel.cmd"
+      ],
+      "returncode": 0,
+      "wall_s": 4.938461299985647,
+      "build": "pll_allocation\\verification\\build",
+      "files": {
+        "pll_allocation\\verification\\build\\identity.json": "3ac152a667a300112ee7ee2d1db154e155eb242e76157d0be673782eb2af255a",
+        "pll_allocation\\verification\\build\\kernel.dll": "14bf96a112d3e1454a591035dc6d340c52337bd85873b5321f508e82f7d9ecd6",
+        "pll_allocation\\verification\\build\\kernel.exp": "8fe1c5ccab8671c741aca0a8e75fbb5e11805353ca35695dbb043566a8a9cc86",
+        "pll_allocation\\verification\\build\\kernel.lib": "4acf8b06cfd1300cdc6c4404f35c51d355b5bdf25246b668494d7dff4a2cbb4c",
+        "pll_allocation\\verification\\build\\kernel.obj": "ec5efe544c04798b6afb9554b6175c9c880f22bd5d7e60a805a8b070482b96f1"
+      }
+    },
+    {
+      "name": "return_ratio",
+      "command": [
+        "cmd.exe",
+        "/d",
+        "/c",
+        "C:\\Users\\Lenovo\\.codex\\worktrees\\stage6a-multispec-feasibility\\PLL_allocation\\pll_allocation\\verification\\build_return_ratio.cmd"
+      ],
+      "returncode": 0,
+      "wall_s": 5.063885499956086,
+      "build": "pll_allocation\\verification\\build_stage4",
+      "files": {
+        "pll_allocation\\verification\\build_stage4\\identity.json": "d830d90ee469daec7b59c1be09389091e57b9bd86720abddf8a5f918a019e05b",
+        "pll_allocation\\verification\\build_stage4\\kernel.exp": "19e1a4535c5929149e9ab25ea45de53ed84ac1a1c5663bc29605f31b9fdc088f",
+        "pll_allocation\\verification\\build_stage4\\kernel.lib": "3fba8af78e8eeb83cf4bc0e436c765a333fb60e2b6aa6fcf698582c280355e9e",
+        "pll_allocation\\verification\\build_stage4\\kernel.obj": "de5a04a239fb403bc7c5222e3145d3d9540414e8630aa500a75dc27156f0b215",
+        "pll_allocation\\verification\\build_stage4\\return_ratio.dll": "b8087e16d549dcfd9ed99ef3aba4fe680c853f91532428335aa0d4fc378b6f5c"
+      }
+    },
+    {
+      "name": "closed_loop",
+      "command": [
+        "cmd.exe",
+        "/d",
+        "/c",
+        "C:\\Users\\Lenovo\\.codex\\worktrees\\stage6a-multispec-feasibility\\PLL_allocation\\pll_allocation\\verification\\build_closed_loop.cmd"
+      ],
+      "returncode": 0,
+      "wall_s": 5.214277400053106,
+      "build": "pll_allocation\\verification\\build_stage4_1_r2",
+      "files": {
+        "pll_allocation\\verification\\build_stage4_1_r2\\closed_loop.dll": "15c50896155d14e04e55baa575db645539f3f23a603d6f8f77300eea8a7d077e",
+        "pll_allocation\\verification\\build_stage4_1_r2\\identity.json": "63fdd3ba5ed708c2e37d2b054637de39067e9a46072cc884208186fcf31f9d18",
+        "pll_allocation\\verification\\build_stage4_1_r2\\kernel.exp": "60e449dcce792e9c5aea73854d1324146690d36d037d4783e009bbcae5d8801c",
+        "pll_allocation\\verification\\build_stage4_1_r2\\kernel.lib": "4700e8963ec950d70b39efd5c385729d831176b45b762c654b5359fa76f7e955",
+        "pll_allocation\\verification\\build_stage4_1_r2\\kernel.obj": "bf414e42ce215e54bf7b4a1c018f8ffce62a6edd11b6e8421f05cd535d8e7ed8"
+      }
+    }
+  ],
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "dependencies": {
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "pytest": "9.2.0"
+  }
+}

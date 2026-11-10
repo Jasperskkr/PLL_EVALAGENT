@@ -1,0 +1,61 @@
+{
+  "scope": "PYTHON_M1_NUMERICAL_ACCEPTANCE_ONLY",
+  "created_utc": "2026-11-06T03:00:59.212971+00:00",
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+  "command": [
+    "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\pytest\\__main__.py",
+    "-q",
+    "tests/test_physics_mapping_stage1.py",
+    "tests/verification/test_verification.py",
+    "tests/verification/test_measurements.py::test_complex_response_fit_recovers_known_gain_phase_independent_of_M1",
+    "tests/verification/test_measurements.py::test_PM_inversion_prototype_never_claims_independent_measurement",
+    "tests/verification/test_measurements.py::test_simulation_measurement_modules_do_not_use_M1_transfers",
+    "tests/test_block_space_v1.py::test_calibration_record_separates_protocols_and_does_not_correct",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp=docs/workflow_model_verifier_audit_20261106_01/test_tmp_01",
+    "--junitxml=docs/workflow_model_verifier_audit_20261106_01/tests_01.xml"
+  ],
+  "config_sha256": "4872a8d64f03ecc2bbe642a572a8fc2ea5fa6cfcb50b55917d14055fd7f46aeb",
+  "files": [
+    {
+      "path": "F:\\LJP\\概伦AI\\PLL_allocation\\configs\\physics_mapping_stage1_v2.json",
+      "sha256": "00c63e2516485d57e1c8444b376aefb4ea5887931f2b0e34a8b5fbad790a0b4e"
+    },
+    {
+      "path": "F:\\LJP\\概伦AI\\PLL_allocation\\pll_allocation\\physics_mapping\\__init__.py",
+      "sha256": "1ec84ef02eb3a57dc25c3d7b62f8edd00ab6edcb1eb78a63b4a32dfb9dbc11e0"
+    },
+    {
+      "path": "F:\\LJP\\概伦AI\\PLL_allocation\\pll_allocation\\physics_mapping\\__main__.py",
+      "sha256": "d2448eb5d3e952b09b5e363008ffaa52f1a7baa76b446c2742ede4d2dc292bb5"
+    },
+    {
+      "path": "F:\\LJP\\概伦AI\\PLL_allocation\\pll_allocation\\physics_mapping\\experiment.py",
+      "sha256": "850196405effd005887a568bf19521214af1578aad785b25e384c7aecf4ca8de"
+    },
+    {
+      "path": "F:\\LJP\\概伦AI\\PLL_allocation\\pll_allocation\\physics_mapping\\model.py",
+      "sha256": "412dbbbec9a499c56fe10781f2ff1debb525ead8fb411a2f72f056d36e8a2e34"
+    },
+    {
+      "path": "F:\\LJP\\概伦AI\\PLL_allocation\\pll_allocation\\physics_mapping\\registry.py",
+      "sha256": "a032f9e1c8dbef6e07e5c7da2b7213be659973d2e37a909619f40a929b9a8e73"
+    },
+    {
+      "path": "F:\\LJP\\概伦AI\\PLL_allocation\\pll_allocation\\physics_mapping\\validation.py",
+      "sha256": "2ed722b72c1dc87ce58d64f2004e6c6e9b518932db8a1a344fed7e5c0ae85e81"
+    }
+  ],
+  "cost": {
+    "M1_evaluations": 16,
+    "polynomial_reference_evaluations": 5,
+    "MATLAB_runtime_calls": 0,
+    "M2_behavioral_TB_calls": 0,
+    "LLM_calls": 0
+  },
+  "numerical_acceptance": "PASS",
+  "verified_joint_block_spec": false
+}

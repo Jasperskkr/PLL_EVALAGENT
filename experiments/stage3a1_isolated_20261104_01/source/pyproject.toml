@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pll-behavioral-allocation"
+version = "0.1.0"
+description = "Physics-informed joint PLL BlockSpec allocation with real behavioral verification"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+integration = ["numpy>=2.0,<3", "scipy>=1.14,<2"]
+
+[project.scripts]
+pll-allocation = "pll_allocation.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["pll_allocation*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.setuptools.package-data]
+"pll_allocation.verification" = ["kernel.cpp", "build_kernel.cmd"]
+
+[tool.setuptools.data-files]
+"share/pll-allocation/configs" = ["configs/BLOCK_SPACE_MODEL_V1.json", "configs/SYSTEM_SPEC_STAGE1_5.json", "configs/PLL_EQUATION_REGISTRY_V1.json", "configs/pipeline_stage3a.json"]
+"share/pll-allocation/configs/verification" = ["configs/verification/protocol_v1_1.json"]

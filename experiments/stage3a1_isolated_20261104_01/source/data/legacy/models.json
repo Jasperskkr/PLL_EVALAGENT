@@ -1,0 +1,59 @@
+{
+  "schema_version": "pll-spec-alloc-fixture-1.0",
+  "VCO": {
+    "implementation": "csr3_generic_demo_r1",
+    "model_id": "L0_cal",
+    "V0_V": 1.17,
+    "f0_Hz": 79165465.36642776,
+    "Kvco_Hz_per_V": 151136039.9333628,
+    "declared_voltage_range_V": [
+      1.13,
+      1.21
+    ],
+    "allocation_adjustable": false,
+    "model_card_id": "VCO:csr3_generic_demo_r1:L0_cal",
+    "fixed_conditions": {
+      "VDD_V": 1.8,
+      "temperature_C": 27.0,
+      "load": "Cstage=100e-15_F_each;Coutput_extra=20e-15_F;MOS_intrinsic_included",
+      "startup": "startup-assisted UIC"
+    },
+    "parameter_role": "fixed calibrated model; not a freely adjustable VCO capability",
+    "source_ids": [
+      "experiment_a:results/stage4/vco_model_validity.json",
+      "project:results/p1_block_space_20261028/model_space_release/model_cards.json"
+    ]
+  },
+  "common_context": {
+    "fref_Hz": 10000000.0,
+    "N": 8,
+    "VDD_V": 1.8,
+    "temperature_C": 27.0,
+    "pfd_reset_s": 2e-09,
+    "drive_id": "frozen_mos_buffer",
+    "measurement_id": "q_balance_C_after_proxy_load",
+    "probe_voltage_V": 1.17552174473848,
+    "command_rise_s": 1e-10,
+    "command_fall_s": 1e-10,
+    "output_condition": "loaded_unclamped_LF"
+  },
+  "LF": {
+    "Rz_choices_ohm": [
+      3820.0,
+      5000.0
+    ],
+    "C1_F": 1e-10,
+    "C2_F": 1e-09,
+    "Cload_F": 5e-14,
+    "Rload_ohm": 1000000000.0
+  },
+  "CP": {
+    "declared_local_timing_range_s": [
+      -1e-10,
+      1e-10
+    ],
+    "voltage_and_loading_transfer": "must be qualified separately through P1 and purchased evidence; timing bounds alone do not establish validity"
+  },
+  "visibility": "initial public models only; provider calibration is released only by explicit capability/library query",
+  "qualification": "historical Generic MOS Demo replay; no new simulator calls, no PDK or full-system qualification"
+}

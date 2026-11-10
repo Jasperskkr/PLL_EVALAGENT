@@ -1,0 +1,105 @@
+{
+  "schema_version": "pll-stage5-final-receipt-1.0",
+  "status": "STAGE5_COMPLETE_PENDING_TECHNICAL_LEADER_REVIEW",
+  "HEAD": "cd70cf445d2ac6789550b7df2da6736221262045",
+  "branch": "master",
+  "version_semantics": "HEAD plus exact Stage5 uncommitted/new source hashes; no automatic commit/push",
+  "formal_entry": "python -m pll_allocation pipeline",
+  "completed": [
+    "P0 audit and actual baseline",
+    "versioned scenario contract plus pipeline extension",
+    "25 predeclared first-shot arms",
+    "12 bound deterministic repair arms",
+    "real LLM attempts in S0-S3",
+    "S4 structured M1 infeasibility",
+    "S0/S3 predeclared local M2 engineering evidence",
+    "351 final tests",
+    "297 independent result checks",
+    "26 independent report checks",
+    "lightweight source review export CRC+SHA"
+  ],
+  "actual_counts": {
+    "firstshot_arms": 25,
+    "candidate_evaluation_rows": 31,
+    "CSV_rows_including_failures_and_infeasibility": 37,
+    "unique_candidate_hashes": 14,
+    "analytical_firstshot_BW_pass": 4,
+    "random_firstshot_BW_pass": 0,
+    "random_firstshot_BW_fail": 12,
+    "deterministic_repair_BW_pass": 12,
+    "repair_M1_PM_fail_retained": 1,
+    "real_LLM_requests": 10,
+    "LLM_successful_candidate_scenarios": 3,
+    "LLM_JSON_failed_scenarios": 1,
+    "S4_preflight_only_arms": 5
+  },
+  "study_cost": {
+    "complete_M2": 31,
+    "native_runs": 3840,
+    "native_s": 102.70187299896497,
+    "wall_s_including_failed_bookkeeping": 576.121263100009
+  },
+  "strategy_cost_details": {
+    "M2_calls": 31,
+    "M1_calls": 115,
+    "M1_posthoc_calls": 31,
+    "analytic_calls": 986,
+    "LLM_calls": 10,
+    "candidate_generations": 177,
+    "numerical_inverse_root_calls": 81,
+    "SLSQP_invocations": 45,
+    "native_completed_runs": 3350,
+    "native_failed_attempts": 0,
+    "integration_points": 2930851649,
+    "native_elapsed_s": 89.35565599898109,
+    "total_elapsed_s": 470.53991429990856,
+    "process_wall_s": 501.7441610004171
+  },
+  "LLM_model": "deepseek-v4-pro",
+  "LLM_result": "Three successful candidate scenarios equal deterministic analytical baseline; no numerical increment observed. Existing prompt restricts independent high-precision design. One actual HTTP200 malformed/truncated JSON response retained without retry.",
+  "certification": {
+    "BW": "independently measured subset; per-scene PASS/FAIL retained",
+    "PM": "UNKNOWN_STRICT_PERIODIC_PM",
+    "frequency_precision": "UNKNOWN_1_MICROHZ_NOT_CERTIFIED",
+    "full_systemspec_verified_pass_count": 0
+  },
+  "validation": {
+    "final_pytest": {
+      "passed": 351,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "evidence": "experiments/stage5/final_tests_01/tests.xml"
+    },
+    "result_audit_checks": 297,
+    "report_audit": "experiments/stage5/final_report_audit_01/audit.json; subsequent three wording clarifications accepted, no numerical change",
+    "protected_existing_tracked_files": 5765,
+    "unexpected_changes": [],
+    "formal_runtime_unchanged_through_main_study": true,
+    "export_static_no_simulation_validation": "delivery_01/export_validation_01; Registry/ownership/S4 preflight PASS without DLL or original history",
+    "wheel_installation": "NOT_EXECUTED",
+    "cross_platform": "NOT_EXECUTED"
+  },
+  "authoritative_results": "experiments/stage5/summary_02",
+  "required_csv": "experiments/stage5/scenario_results.csv",
+  "required_trace": "experiments/stage5/candidate_trace.jsonl",
+  "review_archive": "experiments/stage5/delivery_02/stage5_source_review.zip",
+  "archive_sha256": "e5b6ce11620f78b3de44486dbe144201047d00f1fbaa8b7e351a183e1da4a534",
+  "archive_bytes": 4515176,
+  "export_files": 1420,
+  "preserved_exceptions": [
+    "PhaseA inactive local-helper edits detected; formal runtime unchanged",
+    "S2 real LLM JSON response failure",
+    "local cost aggregation KeyError after completed S0; continuation runs S3 only",
+    "summary_01 repair seed metadata error; summary_02 corrected and independently audited"
+  ],
+  "limitations": [
+    "finite exploratory paired seeds, no general statistical superiority",
+    "local engineering evidence only on analytical S0/S3",
+    "no full periodic PM or strict frequency certification",
+    "all native experiment totals exclude comprehensively unmetered direct kernel calls in tests",
+    "no updated wheel release/installation",
+    "no new Git commit, source pinned by exact manifests"
+  ],
+  "stop_condition": "STOP_AFTER_STAGE5; no Stage5.1/Stage6 execution"
+}

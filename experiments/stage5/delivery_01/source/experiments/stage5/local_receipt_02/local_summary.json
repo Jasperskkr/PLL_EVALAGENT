@@ -1,0 +1,133 @@
+{
+  "local": [
+    {
+      "scenario": "S0",
+      "cost": {
+        "native_runs": 245,
+        "native_s": 6.859165200148709
+      },
+      "origin": "REUSE_COMPLETED_EVIDENCE_NOT_NEW_SIMULATION",
+      "series_crossing": {
+        "status": "MEASURED_BRACKETED",
+        "UGF_Hz": 168090.25584054468,
+        "PM_deg": 72.24218797625588,
+        "phase_deg": -107.75781202374412,
+        "bracket_Hz": [
+          168003.7779728114,
+          168296.91591084705
+        ],
+        "bracket_relative_width": 0.0017448294411752663,
+        "direction": "downward",
+        "crossings_found": 1,
+        "interpretation": "fundamental phase-port ratio; not a Floquet stability certificate"
+      },
+      "clamp_crossing": {
+        "status": "MEASURED_BRACKETED",
+        "UGF_Hz": 167168.96621590568,
+        "PM_deg": 72.24291401215022,
+        "phase_deg": -107.75708598784978,
+        "bracket_Hz": [
+          167127.4241118538,
+          167419.03296187194
+        ],
+        "bracket_relative_width": 0.0017448294411752663,
+        "direction": "downward",
+        "crossings_found": 1,
+        "interpretation": "fundamental phase-port ratio; not a Floquet stability certificate"
+      },
+      "frequency_gate_pass": true,
+      "step_status": "MEASURED",
+      "step_converged": true,
+      "step_plus": {
+        "M2": {
+          "overshoot_relative": 0.10692900925156978,
+          "undershoot_relative": 0.0,
+          "ringing_amplitude_relative": 0.10692896781403194,
+          "settling_s": 1.3049999999999997e-05,
+          "decay": {
+            "status": "UNKNOWN",
+            "rate_per_s": null,
+            "period_s": null,
+            "peak_count": 1,
+            "reason": "insufficient stable ringing envelope"
+          }
+        },
+        "comparison": {
+          "normalized_RMSE": 0.00037758917565173383,
+          "max_normalized_error": 0.0026649785220113076,
+          "overshoot_absolute_difference": 0.0003988067776214965,
+          "settling_absolute_difference_s": 1.0000000000000243e-07,
+          "supported": true
+        },
+        "lock_retention_recovery": "RECOVERED_WITHIN_LOCAL_WINDOW"
+      }
+    },
+    {
+      "scenario": "S3",
+      "cost": {
+        "native_runs": 245,
+        "native_s": 6.4870517998351716
+      },
+      "origin": "NEW_SIMULATION",
+      "series_crossing": {
+        "status": "MEASURED_BRACKETED",
+        "UGF_Hz": 200682.72055145152,
+        "PM_deg": 65.37325492551037,
+        "phase_deg": -114.62674507448963,
+        "bracket_Hz": [
+          200348.96588823505,
+          200698.5406624259
+        ],
+        "bracket_relative_width": 0.0017448294411754883,
+        "direction": "downward",
+        "crossings_found": 1,
+        "interpretation": "fundamental phase-port ratio; not a Floquet stability certificate"
+      },
+      "clamp_crossing": {
+        "status": "MEASURED_BRACKETED",
+        "UGF_Hz": 199603.4362732901,
+        "PM_deg": 65.37807631097833,
+        "phase_deg": -114.62192368902167,
+        "bracket_Hz": [
+          199303.89064103775,
+          199651.641937169
+        ],
+        "bracket_relative_width": 0.0017448294411752663,
+        "direction": "downward",
+        "crossings_found": 1,
+        "interpretation": "fundamental phase-port ratio; not a Floquet stability certificate"
+      },
+      "frequency_gate_pass": true,
+      "step_status": "MEASURED",
+      "step_converged": true,
+      "step_plus": {
+        "M2": {
+          "overshoot_relative": 0.14796104409393873,
+          "undershoot_relative": 0.0,
+          "ringing_amplitude_relative": 0.14796106499601414,
+          "settling_s": 8.850000000000003e-06,
+          "decay": {
+            "status": "UNKNOWN",
+            "rate_per_s": null,
+            "period_s": null,
+            "peak_count": 1,
+            "reason": "insufficient stable ringing envelope"
+          }
+        },
+        "comparison": {
+          "normalized_RMSE": 0.0003867146782716648,
+          "max_normalized_error": 0.0029625222749438684,
+          "overshoot_absolute_difference": 0.00042720865342804615,
+          "settling_absolute_difference_s": 0.0,
+          "supported": true
+        },
+        "lock_retention_recovery": "RECOVERED_WITHIN_LOCAL_WINDOW"
+      }
+    }
+  ],
+  "total_native_runs": 490,
+  "total_native_s": 13.34621699998388,
+  "new_native_runs_continuation": 245,
+  "prior_cost_only_failure_retained": true,
+  "source_unchanged": true
+}
