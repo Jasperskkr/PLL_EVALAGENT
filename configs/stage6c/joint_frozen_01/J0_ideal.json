@@ -1,0 +1,292 @@
+{
+  "schema_version": "pll-multispec-problem-1.1",
+  "problem_id": "J0_ideal",
+  "version": "stage6c-joint-1.0",
+  "scope": "RESEARCH_ONLY_NO_FULL_CERTIFICATION",
+  "base_bindings": {
+    "model_sha256": "879c2748c1d74d5d05c651f905af6fa818e3f994e97206d93b295ca4b62097c0",
+    "versions": {
+      "formula_version": "stage1_m1_1.0.0",
+      "parameter_domain_version": "stage1_declared_domain_1.0.0",
+      "behavioral_model_version": "reference_python_edge_euler_sha256_f6f550276228"
+    },
+    "system_spec_sha256": "9acdbf00d9b095e3cc23400024628f2301220549a45e8301aa42a08490fa598c",
+    "protocol_sha256": "250f8e4d3f186bfd286028c71a3515d6010876f57fa4a219567c99aa71f69280",
+    "equations_sha256": "fa08cd092b8376f1c4cd2eedc9ed9e137f09b1f54a9f3dfac3fd2c90fb8da6f4",
+    "kernel_sha256": "befdd779cd69c73f1a2fb8667e895f77efff979cb3186d80a83113c0321c9f54"
+  },
+  "research_system_spec": {
+    "version": "0",
+    "draft": true,
+    "source": "User Stage 1 research targets, 2026-11-04; not frozen",
+    "metrics": [
+      {
+        "metric": "output_frequency_Hz",
+        "unit": "Hz",
+        "min": 80000000,
+        "max": 80000000,
+        "tolerance": 1e-06,
+        "evaluator": "M1",
+        "protocol": "conditional_locked_tuning_frequency",
+        "source": "User: 10 MHz x 8; conditional static frequency, not a transient measurement"
+      },
+      {
+        "metric": "BW_Hz",
+        "unit": "Hz",
+        "min": 200000.0,
+        "max": 250000.0,
+        "tolerance": 0,
+        "evaluator": "M1",
+        "protocol": "continuous_normalized_T_first_downward_minus3dB",
+        "source": "User: experimental BW target"
+      },
+      {
+        "metric": "PM_deg",
+        "unit": "deg",
+        "min": 60.0,
+        "tolerance": 0,
+        "evaluator": "M1",
+        "protocol": "180_plus_continuous_L_phase_at_UGF",
+        "source": "User: experimental PM target"
+      }
+    ]
+  },
+  "constraints": [
+    {
+      "metric_name": "BW_Hz",
+      "comparator": "interval",
+      "lower_bound": 200000.0,
+      "upper_bound": 250000.0,
+      "measurement_source": "M2",
+      "measurement_protocol": "track_b_metrics_1.1",
+      "normalization_scale": 25000.0,
+      "strict": false,
+      "model_validity": "ORIGINAL_IDEAL_DECLARED_DOMAIN"
+    },
+    {
+      "metric_name": "PM_deg",
+      "comparator": "lower",
+      "lower_bound": 60.0,
+      "upper_bound": null,
+      "measurement_source": "M1",
+      "measurement_protocol": "180_plus_continuous_L_phase_at_UGF",
+      "normalization_scale": 60.0,
+      "strict": false,
+      "model_validity": "ORIGINAL_IDEAL_DECLARED_DOMAIN"
+    },
+    {
+      "metric_name": "Vctrl_required_V",
+      "comparator": "interval",
+      "lower_bound": 0,
+      "upper_bound": 1.2,
+      "measurement_source": "M1",
+      "measurement_protocol": "linear_vco_static_tuning_solution",
+      "normalization_scale": 0.6,
+      "strict": true,
+      "model_validity": "ORIGINAL_IDEAL_DECLARED_DOMAIN"
+    },
+    {
+      "metric_name": "lock_time_s",
+      "comparator": "upper",
+      "lower_bound": null,
+      "upper_bound": 4e-05,
+      "measurement_source": "M2",
+      "measurement_protocol": "track_b_metrics_1.1:fixed_capture_0.15V_160us",
+      "normalization_scale": 4e-05,
+      "strict": false,
+      "model_validity": "ORIGINAL_IDEAL_DECLARED_DOMAIN"
+    },
+    {
+      "metric_name": "integrated_jitter_s",
+      "comparator": "interval",
+      "lower_bound": null,
+      "upper_bound": 1e-10,
+      "measurement_source": "M2",
+      "measurement_protocol": "pll-noise-verification-1.1",
+      "model_validity": "DECLARED_STAGE6C_RESEARCH_EXTENSION",
+      "normalization_scale": 1e-10,
+      "strict": false
+    },
+    {
+      "metric_name": "stability_diagnostic",
+      "comparator": "interval",
+      "lower_bound": 1.0,
+      "upper_bound": 1.0,
+      "measurement_source": "M1",
+      "measurement_protocol": "original_strict_Routh_continuous_nominal",
+      "model_validity": "DECLARED_STAGE6C_RESEARCH_EXTENSION",
+      "normalization_scale": 1.0,
+      "strict": false
+    },
+    {
+      "metric_name": "nonlinear_recovery_status",
+      "comparator": "interval",
+      "lower_bound": 1.0,
+      "upper_bound": 1.0,
+      "measurement_source": "M2",
+      "measurement_protocol": "phase_burst_0.4rad_100kHz_5cycles_50us_200us_dt_pair",
+      "model_validity": "DECLARED_STAGE6C_RESEARCH_EXTENSION",
+      "normalization_scale": 1.0,
+      "strict": false
+    }
+  ],
+  "objective": "margin_then_capture",
+  "budgets": {
+    "M1_calls": 96,
+    "cheap_calls": 10000,
+    "M2_candidate_slots": 6
+  },
+  "search": {
+    "version": "physical_pattern_1.0",
+    "log_step": 0.08,
+    "voltage_step_V": 0.08,
+    "minimum_log_step": 0.01,
+    "minimum_voltage_step_V": 0.01,
+    "max_no_improvement": 2,
+    "poll_order": [
+      "Vreq_minus",
+      "Vreq_plus",
+      "Kvco_minus",
+      "Kvco_plus",
+      "region_switch"
+    ]
+  },
+  "problem_sha256": "b21617f7ac4f68f15ec34a4d4578408e6acefebe85a702adcd72fce5f909fc81",
+  "behavioral_extension": {
+    "extension_id": "stage6c-joint-behavioral-1.0",
+    "noise_profile": {
+      "schema_version": "pll-noise-profile-1.0",
+      "profile_id": "stage6c-fixed-noise-1.0",
+      "provenance": "docs/stage6c/IMPLEMENTATION_DESIGN.md; not retuned from results",
+      "assumption_level": "RESEARCH_ONLY",
+      "independent_sources": true,
+      "sources": [
+        {
+          "source_id": "reference",
+          "injection_location": "reference_phase",
+          "psd_type": "white",
+          "psd_values": {
+            "level": 1e-13
+          },
+          "unit": "rad^2/Hz",
+          "one_sided_or_two_sided": "one_sided",
+          "frequency_range_Hz": [
+            1.0,
+            5000000.0
+          ],
+          "profile_id": "research-source-reference-1.0",
+          "provenance": "predeclared engineering environment; no device characterization",
+          "assumption_level": "INDEPENDENT_RESEARCH_SOURCE"
+        },
+        {
+          "source_id": "vco",
+          "injection_location": "free_vco_phase",
+          "psd_type": "power_law",
+          "psd_values": {
+            "coefficient": 100.0,
+            "exponent": -2
+          },
+          "unit": "rad^2/Hz",
+          "one_sided_or_two_sided": "one_sided",
+          "frequency_range_Hz": [
+            1.0,
+            1000000000000.0
+          ],
+          "profile_id": "research-source-vco-1.0",
+          "provenance": "predeclared engineering environment; no device characterization",
+          "assumption_level": "INDEPENDENT_RESEARCH_SOURCE"
+        },
+        {
+          "source_id": "cp",
+          "injection_location": "lf_input_current_effective",
+          "psd_type": "white",
+          "psd_values": {
+            "level": 1e-24
+          },
+          "unit": "A^2/Hz",
+          "one_sided_or_two_sided": "one_sided",
+          "frequency_range_Hz": [
+            1.0,
+            1000000000000.0
+          ],
+          "profile_id": "research-source-cp-1.0",
+          "provenance": "predeclared engineering environment; no device characterization",
+          "assumption_level": "INDEPENDENT_RESEARCH_SOURCE"
+        },
+        {
+          "source_id": "resistor",
+          "injection_location": "Rz_series_voltage",
+          "psd_type": "thermal",
+          "psd_values": {
+            "temperature_K": 300.0
+          },
+          "unit": "V^2/Hz",
+          "one_sided_or_two_sided": "one_sided",
+          "frequency_range_Hz": [
+            1.0,
+            1000000000000.0
+          ],
+          "profile_id": "research-source-resistor-1.0",
+          "provenance": "predeclared engineering environment; no device characterization",
+          "assumption_level": "INDEPENDENT_RESEARCH_SOURCE"
+        }
+      ]
+    },
+    "nonideal_profile": {
+      "schema_version": "pll-nonideal-profile-1.0",
+      "profile_id": "ideal-1.0",
+      "provenance": "predeclared engineering environment",
+      "K2_Hz_per_V2": 0.0,
+      "cp_mismatch": 0.0,
+      "leakage_A": 0.0,
+      "reset_delay_s": 0.0,
+      "cp_voltage_coefficient_per_V": 0.0
+    },
+    "noise_protocol": {
+      "protocol_id": "pll-noise-verification-1.1",
+      "warmup_s": 0.0002,
+      "observation_s": 0.004,
+      "record_interval_s": 2e-08,
+      "band_Hz": [
+        10000.0,
+        1000000.0
+      ],
+      "nperseg": 16384,
+      "overlap_fraction": 0.5,
+      "window": "hann",
+      "detrend": "constant",
+      "seeds": [
+        11,
+        23,
+        47,
+        71,
+        101
+      ],
+      "dt_pair_s": [
+        4e-10,
+        2e-10
+      ],
+      "confidence": 0.95,
+      "max_dt_variance_relative_difference": 0.2,
+      "max_seed_relative_CI_halfwidth": 0.35,
+      "minimum_seeds": 5,
+      "minimum_segments": 8,
+      "carrier_Hz": 80000000.0,
+      "phase_residual": "unwrapped_output_phase_minus_2pi_80MHz_t; mean only",
+      "deterministic_separation": "same_nonideal_noise_off_difference; also report unsubtracted total PSD",
+      "reference_model": "iid_phase_at_fref_linear_interpolation_sinc4; valid_band_max_0.1fref",
+      "cp_model": "continuous_effective; gated UP/DOWN separate experiment, no automatic M1 equivalence",
+      "noise_settle_s": 0.0001,
+      "stochastic_tracking": "unchanged_coldcapture_gate; no_slip_clamp_rails; original_phase_and_control_bounds; halfobservation_mean_frequency_bound",
+      "legacy_1us_capture_frequency": "DIAGNOSTIC_ONLY_NOT_RANDOM_LOCK_IDENTIFICATION",
+      "revision_reason": "independent source variance and ten saved trajectories show v1 misclassifies stationary frequency noise as loss of lock",
+      "baseline_protocol": "configs/stage6c/frozen_01/noise_protocol.json"
+    },
+    "jitter_limit_s": 1e-10,
+    "source_profile_hashes": {
+      "noise_profile": "211b9ec7cccd0ef6b2ee270d7640f6b20794d21294f22cdd6858a65bcc25c750",
+      "nonideal_profile": "6974e7c5a39a651122cecc4ed48f75a6d8024c55693a8d26bb5d58cf8b436b02",
+      "noise_protocol": "2104c3a9778f6078a7bb5797920b316feead754911d171fa06f042076db490ca"
+    }
+  }
+}

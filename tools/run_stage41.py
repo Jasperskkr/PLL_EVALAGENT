@@ -22,6 +22,17 @@ CANDIDATES = ROOT/'docs/stage4_2/M2_VALIDATION_CANDIDATES.json'
 REGISTRY = ROOT/'docs/stage4_2/PHYSICS_MAPPING_REGISTRY.json'
 
 
+def checkout_identity():
+    """Git is optional metadata in exported source; source bindings remain mandatory."""
+    try:
+        result = subprocess.run(['git', 'rev-parse', 'HEAD'], cwd=ROOT, capture_output=True, text=True)
+    except FileNotFoundError:
+        return {'HEAD': None, 'checkout_kind': 'SOURCE_ARCHIVE_NO_GIT'}
+    if result.returncode:
+        return {'HEAD': None, 'checkout_kind': 'SOURCE_ARCHIVE_NO_GIT'}
+    return {'HEAD': result.stdout.strip(), 'checkout_kind': 'GIT_CHECKOUT'}
+
+
 def bindings():
     paths = [CANDIDATES, REGISTRY, ROOT/'configs/verification/closed_loop_stage4_1_v0_1.json']
     paths += list((ROOT/'pll_allocation/verification').glob('*.py'))
@@ -138,7 +149,7 @@ def main(args):
     candidates, registry = inputs(); out = Path(args.out).resolve()
     out.mkdir(parents=True, exist_ok=False)
     write(out/'source_bindings.json', bindings())
-    write(out/'run_manifest.json', {'HEAD': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT).decode().strip(),
+    write(out/'run_manifest.json', {**checkout_identity(),
           'mode': args.mode, 'registry_binding_checks': registry['runtime_binding_checks'],
           'new_LLM_calls': 0, 'started_unix': time.time(), 'protocol': protocol()})
     if args.mode == 'anchors':

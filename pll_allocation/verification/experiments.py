@@ -34,7 +34,7 @@ def candidate(overrides=None):
     return make_candidate(load_model(CONFIGS/'BLOCK_SPACE_MODEL_V1.json'),overrides)
 
 
-def save_run(folder,parameters,settings,kind,*,protocol_document=None):
+def save_run(folder,parameters,settings,kind,*,protocol_document=None,simulate_fn=None):
     folder=Path(folder); folder.mkdir(parents=True,exist_ok=False)
     doc=protocol_document if protocol_document is not None else protocol()
     protocol_hash=hashlib.sha256(json.dumps(doc,sort_keys=True,separators=(',',':'),allow_nan=False).encode()).hexdigest() if protocol_document is not None else hashlib.sha256((CONFIGS/'verification/protocol_v1_1.json').read_bytes()).hexdigest()
@@ -43,7 +43,7 @@ def save_run(folder,parameters,settings,kind,*,protocol_document=None):
         'protocol_hash_encoding':'sorted_compact_json_utf8' if protocol_document is not None else 'raw_protocol_json_file_bytes'})
     start=time.perf_counter()
     try:
-        run=simulate(parameters,**settings)
+        run=(simulate_fn or simulate)(parameters,**settings)
         np.savez_compressed(folder/'trajectory.npz',trace=run['trace'],ref_edges=run['ref_edges'],div_edges=run['div_edges'])
         write(folder/'summary.json',{'summary':run['summary'],'actual_settings':run['settings']})
         if kind=='capture':
@@ -63,17 +63,17 @@ def save_run(folder,parameters,settings,kind,*,protocol_document=None):
         raise
 
 
-def response_point(folder,p,freq,*,amplitude=.01,dt=.4e-9,cycles=12,protocol_document=None):
+def response_point(folder,p,freq,*,amplitude=.01,dt=.4e-9,cycles=12,protocol_document=None,simulate_fn=None):
     cfg=(protocol_document or protocol())['frequency_response']
     # Initialization from static frequency law only, not M1 loop predictions.
     v=p['values']; vreq=(v['N']['value']*v['f_ref']['value']-v['f0']['value'])/v['Kvco']['value']
     settings={'duration_s':cfg['onset_s']+max(cfg['minimum_discard_s'],cfg['discard_cycles']/freq)+cycles/freq,
         'dt_s':dt,'initial_control_V':vreq,'phase_amplitude_rad':amplitude,'modulation_Hz':freq,
         'onset_s':cfg['onset_s'],'record_interval_s':cfg['record_interval_s']}
-    return save_run(folder,p,settings,'response',protocol_document=protocol_document)
+    return save_run(folder,p,settings,'response',protocol_document=protocol_document,simulate_fn=simulate_fn)
 
 
-def response_sweep(folder,p,*,amplitude=.01,dt=.4e-9,cycles=12,protocol_document=None):
+def response_sweep(folder,p,*,amplitude=.01,dt=.4e-9,cycles=12,protocol_document=None,simulate_fn=None):
     folder=Path(folder); folder.mkdir(parents=True,exist_ok=False)
     cfg=(protocol_document or protocol())['frequency_response']
     plan={'parameters':p,'amplitude_rad':amplitude,'dt_s':dt,'cycles':cycles,
@@ -83,17 +83,17 @@ def response_sweep(folder,p,*,amplitude=.01,dt=.4e-9,cycles=12,protocol_document
     write(folder/'plan.json',plan)
     points=[]
     for i,freq in enumerate(cfg['grid_Hz']):
-        points.append(response_point(folder/f'f{i:02d}',p,freq,amplitude=amplitude,dt=dt,cycles=cycles,protocol_document=protocol_document))
+        points.append(response_point(folder/f'f{i:02d}',p,freq,amplitude=amplitude,dt=dt,cycles=cycles,protocol_document=protocol_document,simulate_fn=simulate_fn))
     for j,freq in enumerate((5000,2000)):
         first=min((x for x in points if x['status']=='MEASURED'),key=lambda x:x['frequency_Hz'],default=None)
         if first is not None and abs(first['magnitude']-1)>.03:
-            points.append(response_point(folder/f'anchor{j}',p,freq,amplitude=amplitude,dt=dt,cycles=cycles,protocol_document=protocol_document))
+            points.append(response_point(folder/f'anchor{j}',p,freq,amplitude=amplitude,dt=dt,cycles=cycles,protocol_document=protocol_document,simulate_fn=simulate_fn))
     bw=bandwidth_from_response(points)
     for i in range(16):
         if bw['status']!='MEASURED_BRACKETED' or bw['bracket_relative_width']<=cfg['frequency_bracket_relative_width_limit']:
             break
         a,b=bw['bracket_Hz']; freq=math.sqrt(a*b)
-        points.append(response_point(folder/f'refine{i:02d}',p,freq,amplitude=amplitude,dt=dt,cycles=cycles,protocol_document=protocol_document))
+        points.append(response_point(folder/f'refine{i:02d}',p,freq,amplitude=amplitude,dt=dt,cycles=cycles,protocol_document=protocol_document,simulate_fn=simulate_fn))
         bw=bandwidth_from_response(points)
     result={'bandwidth':bw,'points':points,'PM':pm_identification_prototype(points),
             'M1_used_for_measurement':False,'settings':plan}

@@ -1,0 +1,275 @@
+# Stage 7 — Physics-Guided PLL Noise Mapping and Nonideal Behavioral Verification
+
+## 0. 角色与项目目标
+
+你是本项目的 PLL 行为级建模工程师、数值仿真工程师和确定性优化算法研究工程师。
+
+本阶段目标是在已有 Stage 6B 确定性分配主线上，建立支持 **BW、PM、Loop Stability、Integrated RMS Jitter** 的行为级多指标分配、验证与反馈体系。
+
+研究重点是方法学，而不是晶体管级设计。本阶段禁止引入 PDK、晶体管 Sizing、SPICE 仿真或真实 IP Characterization 作为必要依赖。
+
+总体流程：
+
+SystemSpec → Block Space → M1 Physics/Noise Mapping → Analytical/SLSQP Allocation → Nonideal M2 Verification → Sensitivity/Feedback Search → Joint BlockSpec。
+
+需要形成真实运行、可复现、有实验依据的代码和结果。不能仅提交设计报告，也不能为了得到算法改善而人为调整噪声公式或非理想参数。
+
+## 1. 研究基线与工程保护（P0）
+
+首先只读检查当前 Git 分支、HEAD、工作树，以及 Stage 6B 源码和实验是否完整存在。
+
+必须优先审查：
+
+* `pll_allocation/physics_mapping/model.py`
+* `pll_allocation/physics_mapping/registry.py`
+* `pll_allocation/block_space/contracts.py`
+* `pll_allocation/allocation/allocate.py`
+* `pll_allocation/allocation/multispec_constraints.py`
+* `pll_allocation/allocation/multispec_search.py`
+* `pll_allocation/verification/kernel.cpp`
+* `pll_allocation/verification/closed_loop_kernel.cpp`
+* `pll_allocation/verification/simulator.py`
+* `pll_allocation/verification/verify.py`
+* `pll_allocation/pipeline.py`
+* `configs/verification/protocol_v1_1.json`
+
+当前 Stage 6B 已实现 Analytical、M1 Sensitivity、SLSQP、M2 BW/Conditional Capture 及确定性反馈搜索。务必复用，不要创建第二套正式 PLL Model、Verifier 或 Pipeline。
+
+Stage 6B 原有 `model.py` 使用严格参数封套，非零 `Kvco2`、CP mismatch 等会返回 `UNSUPPORTED`。不能擅自改变其冻结语义。
+
+工程规则：
+
+1. 保留 Stage 5/6A/6B 原始源码、配置、数据、测试和历史证据。
+2. 禁止 `reset --hard`、`git clean`、强制推送、擅自 stash 或合并 master。
+3. 在检查完整基线后建立独立 Stage 7 工作分支或工作树。
+4. 记录复用源码的路径、SHA256、模型适用域及相关协议版本。
+5. 新模型使用显式版本号、独立配置和可选扩展接口。
+6. 所有新增实验写入新目录，禁止覆盖历史结果。
+7. 默认关闭所有 Stage 7 新特性时，旧 Stage 6B 数值与行为必须保持一致。
+
+先生成 `docs/stage7/IMPLEMENTATION_DESIGN.md`，再按以下阶段实际实现和验证。
+
+## 2. M1：建立可追溯的 Noise Physics Mapping（P1）
+
+### 2.1 基础物理模型
+
+保持 Integer-N CPPLL、10 MHz Reference、N=8、80 MHz Target Output 及原六参数 Block Space。
+
+复用：
+
+L(s) = Icp · Kvco · ZLF(s) / (N · s)
+
+ZLF(s) = (1+s·Rz·C2) / [s(C1+C2)+s²·Rz·C1·C2]
+
+其中 Kvco 为 Hz/V。
+
+定义 K0=2πKvco，单位 rad/(s·V)。
+
+增加独立噪声配置 `NoiseProfile`，不要把未经证明的器件噪声系数强行写成 Icp 或 Kvco 的经验函数。
+
+### 2.2 必须支持的噪声源
+
+第一版 M1 支持：
+
+* Reference Phase Noise：rad²/Hz。
+* VCO Intrinsic Phase Noise：rad²/Hz。
+* CP Output-Referred Effective Current Noise：A²/Hz。
+* LF Rz Thermal Noise：V²/Hz。
+
+使用以下基本传递函数：
+
+H_ref = N·L/(1+L)
+
+H_vco = 1/(1+L)
+
+H_cp = [2πKvco·ZLF/s]/(1+L)
+
+H_R = [2πKvco·D_R/s]/(1+L)
+
+D_R = C2/(C1+C2+s·Rz·C1·C2)
+
+对 LF 电阻使用单边热噪声 PSD：
+
+S_vR = 4k_B T Rz
+
+以上关系需要在代码中注明噪声注入位置、相位单位及适用假设，并通过独立电路节点方程或数值参考检查。
+
+采用互不相关噪声源假设时：
+
+S_phi,out(f) = Σ |H_i(j2πf)|² S_i(f)
+
+Integrated RMS Jitter：
+
+J_rms = sqrt[∫S_phi,out(f)df] / (2πf_out)
+
+必须显式规定积分频率上下限，禁止默认为任意范围。
+
+### 2.3 PSD 配置与数值合同
+
+实现一个有版本号的噪声配置接口，至少包含：
+
+* `source_id`
+* `injection_location`
+* `psd_type`
+* `psd_values`
+* `unit`
+* `one_sided_or_two_sided`
+* `frequency_range_Hz`
+* `profile_id`
+* `provenance`
+* `assumption_level`
+
+允许白噪声、规定的幂律 PSD 以及频率–PSD 数据表插值。
+
+VCO 可支持 1/f² 和 1/f³ 形式的自由运行相位噪声谱，但它们的系数必须是显式声明的研究参数。不得捏造 Kvco–Noise 依赖。
+
+需要支持 dBc/Hz 与 rad²/Hz 的明确转换，在小相位噪声近似下采用：
+
+S_phi,one-sided = 2 × 10^(L_dBc/Hz / 10)
+
+要求拒绝非法单位、负 PSD、无穷值、零频奇异积分、超出数据有效频段的未经授权外推，以及不能被当前模型支持的相关噪声配置。
+
+### 2.4 输出及敏感度
+
+M1 必须返回：
+
+* BW、PM、UGF。
+* Output Phase Noise PSD 曲线。
+* 各噪声源独立贡献曲线。
+* Integrated RMS Jitter。
+* 各噪声源的积分相位方差贡献。
+* Noise Model Validity、配置指纹和计算协议。
+* 连续 BlockSpec 对 BW/PM/Jitter 的归一化敏感度。
+
+敏感度必须区分：
+
+A. 环路传递函数随 BlockSpec 的变化；
+
+B. 噪声源本身随 BlockSpec 的变化。
+
+在没有独立物理关系支持时，只计算 A，明确将 B 标记为未建模或固定 Noise Profile，不得暗中假设 B=某个任意函数。
+
+C1/C2 继续通过离散枚举处理，不强行做离散参数导数。
+
+### 2.5 M1 测试
+
+至少包括：
+
+1. Reference 低频传递增益趋近 N。
+2. VCO 高频噪声传递趋近 1。
+3. CP 深环路带内相位噪声传递幅度趋近 2πN/Icp。
+4. LF 电阻噪声与正确 RC 节点方程一致。
+5. 零噪声输入返回零积分 Jitter。
+6. 独立噪声源叠加满足相位方差可加性，而不是 RMS Jitter 简单相加。
+7. 输入单边/双边 PSD 及 dBc/Hz 单位换算正确。
+8. 积分频率网格加密后结果收敛。
+9. 修改环路带宽时，Reference 与 VCO 噪声传递展现合理的低通/高通变化。
+10. 关闭 Noise 功能时，原 M1 BW/PM 数值完全保持兼容。
+
+不得只检查返回值非空或程序成功运行。
+
+## 3. M2：增强非理想大信号模型（P2）
+
+在现有事件级 M2 内核基础上增加版本化的 Nonideal Profile。
+
+优先实现：
+
+### 3.1 非线性 VCO
+
+f_vco(V) = f0 + Kvco·V + Kvco2·V²
+
+要求：
+
+* Kvco2=0 时严格退化为当前线性 VCO。
+* 非零 Kvco2 时检查有效调谐范围和频率正值。
+* 对实际锁定工作点数值求根，并计算局部 Kvco。
+* 在 VCO 相位积分中真实使用非线性频率，而不是只修改输出评价。
+* 记录电压限幅、局部增益变化和捕获轨迹。
+
+### 3.2 非理想 Charge Pump
+
+至少增加：
+
+Iup = Icp(1+δ/2)
+
+Idown = Icp(1−δ/2)
+
+以及显式 CP Leakage。
+
+注意保持原 CP 电流与滤波器状态方程的符号、单位、脉冲宽度及电荷守恒。
+
+额外的 PFD Reset Delay、CP 电流–控制电压依赖可以作为后续增强；如果实现，应分别开关、独立测试，不得混合成不可解释的经验修正。
+
+### 3.3 机制验证
+
+对每一项新机制：
+
+* 零非理想回归原 M2。
+* 单项激活测试。
+* 正负参数扰动测试。
+* 多时间步长数值收敛。
+* 对照预期的解析极限或状态方程结果。
+* 对采样事件、Rail Clamp、LF 电荷和 VCO 相位连续性进行检查。
+
+不要通过改变原 BW、PM 或 Locking Time 测量协议来让新模型通过。
+
+## 4. M2：随机噪声注入与独立 Jitter 测量（P3）
+
+本部分必须使用真实的行为级随机过程和独立谱估计，不能通过调用 M1 的噪声传递公式伪造 M2 验证。
+
+### 4.1 Noise Sources
+
+优先实现四类基础来源：
+
+**Reference：**
+
+通过参考相位或边缘时间扰动注入，噪声统计必须与配置的 Reference PSD 一致。正确处理同步边缘噪声与时间单位转换。
+
+**VCO：**
+
+在 VCO 相位演化中注入随机频率扰动。第一版支持白频率噪声产生的 1/f² 相位噪声。
+
+采用单边频率噪声 PSD Sν（Hz²/Hz）时，相位增量方差应符合：
+
+Var(Δφ) = (2π)² Sν Δt / 2
+
+这里 Δφ 的单位为 rad。
+
+通过自由运行 VCO 独立验证相位噪声谱斜率及幅度。1/f³ 相关噪声必须在有正确相关随机过程和测试后才能启用。
+
+**CP：**
+
+第一版可实现输出端连续等效白电流噪声，并明确其为 Effective Output-Referred Model。
+
+如果实现脉冲门控 CP 噪声，必须区分导通状态 PSD、占空比和折叠效应。禁止直接把持续导通电流 PSD 当作脉冲 CP 的等效输出 PSD。
+
+**LF：**
+
+在 Rz 支路注入正确的电阻热噪声，并通过实际 LF 状态方程传播到 VCO。
+
+每类噪声使用独立随机流，具有可复现的种子和完整配置记录。
+
+### 4.2 数值可靠性
+
+必须检查：
+
+* 白噪声采样幅度随 Δt 正确缩放。
+* VCO phase diffusion 的方差随时间正确累积。
+* 随机事件不能产生非物理的重复、反向或跳过边缘。
+* 固定 Seed 的实验可复现。
+* 不同 Seed 的结果存在合理统计波动。
+* 零噪声配置与旧 M2 完全兼容。
+* 改变 Δt 后，统计结果在预先定义的不确定度范围内收敛。
+
+针对不同步长，不应要求独立随机轨迹逐点相同；应比较统计量，必要时使用共享随机路径的精细化方法。
+
+### 4.3 Jitter Measurement Protocol
+
+创建独立的 `Noise Verification Protocol`，不能简单复用 160 µs 捕获窗口。
+
+必须：
+
+1. 首先确认候选已经进入规定的锁定状态。
+2. 独立运行稳态随机噪声观测。
+3. 保存输出相位或等效时间误差序列。
+4. 明确去除的名义载

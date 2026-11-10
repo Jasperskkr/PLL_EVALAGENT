@@ -40,15 +40,46 @@ def load_inputs(config_path=None):
 def check_result(item, proposal, protocol):
     if item.get('schema_version') != RESULT_SCHEMA or item.get('overall_status') not in ('PASS', 'FAIL', 'UNKNOWN'):
         raise ValueError('unsupported BehavioralVerificationResult')
+    if proposal.get('research_scenario') is not None:
+        from .scenarios import validate_proposal_scenario
+        binding = validate_proposal_scenario(proposal)[4]
+        if item.get('scenario_binding') != binding or item.get('research_scenario') != proposal['research_scenario']:
+            raise ValueError('M2 scenario binding mismatch')
     if item.get('validation_level') == 'NOT_VALIDATED' and item['overall_status'] == 'UNKNOWN':
         if not item.get('failure_reasons') or item.get('metrics'):
             raise ValueError('invalid failure result')
         return
+    expected_model=MODEL_VERSION
+    if proposal.get('behavioral_extension'):
+        from .verification.stage6c_native import MODEL_ID
+        from .verification.stage6c import validate_extension
+        ext=validate_extension(proposal['behavioral_extension']);expected_model=MODEL_ID
+        actual=item.get('extension',{})
+        if actual.get('extension_id')!=ext['extension_id'] or actual.get('profile_hashes')!=ext['source_profile_hashes']:
+            raise ValueError('Stage6C profile result binding mismatch')
+        from .verification.stage6c_identity import check_build
+        if actual.get('native_build_identity')!=check_build():raise ValueError('Stage6C native result identity mismatch')
+        nr=actual.get('noise_result')
+        if nr is not None:
+            if (nr.get('candidate_sha256')!=proposal['parameter_sha256']
+                or nr.get('noise_profile_sha256')!=ext['source_profile_hashes']['noise_profile']
+                or nr.get('protocol_sha256')!=ext['source_profile_hashes']['noise_protocol']):
+                raise ValueError('Stage6C actual noise measurement binding mismatch')
+            from .verification.noise import aggregate
+            measured=item.get('metrics',{}).get('integrated_jitter_s',{})
+            if nr.get('status')=='STATISTICALLY_RESOLVED_CONDITIONAL':
+                rebuilt=aggregate(nr['measurements'],ext['noise_protocol'],ext['jitter_limit_s'])
+                for name in ('status','integrated_jitter_s','jitter_interval_s','jitter_constraint_status'):
+                    if rebuilt[name]!=nr[name]:raise ValueError('Stage6C statistical evidence mismatch:'+name)
+                if not nr.get('all_observations_locked') or not all(r.get('locked_during_observation')is True for r in nr['measurements']):
+                    raise ValueError('Stage6C unresolved stochastic tracking')
+                if (measured.get('status')!=nr['status'] or measured.get('value')!=nr['integrated_jitter_s']
+                    or measured.get('statistical_interval_s')!=nr['jitter_interval_s']):raise ValueError('Stage6C scalar jitter differs from raw-seed evidence')
     for actual, expected in [('candidate_id', proposal['candidate_id']),
                              ('parameter_sha256', proposal['parameter_sha256']),
                              ('joint_block_spec', proposal['joint_block_spec']),
                              ('proposal_versions', proposal['versions']),
-                             ('model_version', MODEL_VERSION),
+                             ('model_version', expected_model),
                              ('fixed_system_spec_sha256', proposal['system_spec_sha256']),
                              ('protocol_id', protocol['protocol_id']),
                              ('protocol_sha256', fingerprint(protocol))]:
@@ -67,6 +98,12 @@ def check_result(item, proposal, protocol):
     for check in checks:
         if check['target'] != by_name[check['metric']] or check['status'] not in ('PASS', 'FAIL', 'UNKNOWN'):
             raise ValueError('M2 target/status mismatch')
+        if proposal.get('research_scenario') is not None and check['metric'] == 'BW_Hz':
+            from .verification.verify import interval_judgment
+            bw = item['metrics']['BW_Hz']
+            expected_bw = interval_judgment(bw.get('numerical_envelope'), check['target']) if bw['status'] == 'MEASURED_CONVERGED' else 'UNKNOWN'
+            if check['status'] != expected_bw:
+                raise ValueError('M2 research BW judgment mismatch')
     if any(c['status'] == 'PASS' and c['metric'] in ('PM_deg', 'output_frequency_Hz') for c in checks):
         raise ValueError('unsupported precision/PM cannot pass current M2')
     expected = 'FAIL' if any(c['status'] == 'FAIL' for c in checks) else 'PASS' if all(c['status'] == 'PASS' for c in checks) else 'UNKNOWN'
@@ -100,7 +137,8 @@ def make_feedback(proposal, result, protocol, remaining):
     measurements = deepcopy(result.get('metrics', {}))
     if 'BW_Hz' in measurements:
         measurements['BW_Hz']['reliable'] = bw.get('status') == 'MEASURED_CONVERGED'
-    return {'schema_version': 'allocation-feedback-1.0', 'source': 'M2',
+    return {**({'scenario_binding': deepcopy(proposal['scenario_binding'])} if 'scenario_binding' in proposal else {}),
+            'schema_version': 'allocation-feedback-1.0', 'source': 'M2',
             'parameter_sha256': proposal['parameter_sha256'], 'candidate_id': proposal['candidate_id'],
             'system_spec_sha256': proposal['system_spec_sha256'], 'block_space_sha256': proposal['block_space_sha256'],
             'protocol_id': protocol['protocol_id'], 'protocol_sha256': fingerprint(protocol),

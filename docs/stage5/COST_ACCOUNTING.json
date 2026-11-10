@@ -1,0 +1,89 @@
+{
+  "scope": "Stage5 actual experiment phases incl pre-edit and post-interface baseline. Consolidation subtask and test kernels separately scoped. Active subprocess wall sums, not elapsed calendar time across user pause.",
+  "study": {
+    "complete_M2": 31,
+    "native_runs": 3840,
+    "native_s": 102.70187299896497,
+    "wall_s_including_failed_bookkeeping": 576.121263100009
+  },
+  "phase_wall_receipts": [
+    {
+      "phase": "firstshot",
+      "receipt": "experiments\\stage5\\firstshot_receipt_01\\execution.json",
+      "wall_s": 365.539743500005,
+      "returncode": 0
+    },
+    {
+      "phase": "repair",
+      "receipt": "experiments\\stage5\\repair_receipt_01\\execution.json",
+      "wall_s": 138.54776099999435,
+      "returncode": 0
+    },
+    {
+      "phase": "local",
+      "receipt": "experiments\\stage5\\local_receipt_01\\execution.json",
+      "wall_s": 36.63670169998659,
+      "returncode": 1
+    },
+    {
+      "phase": "local",
+      "receipt": "experiments\\stage5\\local_receipt_02\\execution.json",
+      "wall_s": 35.39705690002302,
+      "returncode": 0
+    }
+  ],
+  "baseline_regressions": [
+    {
+      "phase": "baseline_frozen_01",
+      "wall_s": 10.083635699993465,
+      "complete_M2": 1,
+      "native_runs": 106,
+      "native_s": 2.9582089001778513,
+      "native_points": 95090315
+    },
+    {
+      "phase": "interface_baseline_01",
+      "wall_s": 10.435221099993214,
+      "complete_M2": 1,
+      "native_runs": 106,
+      "native_s": 2.935317899857182,
+      "native_points": 95090315
+    }
+  ],
+  "tests": [
+    {
+      "phase": "interface_tests_01",
+      "wall_s": 26.39448000001721,
+      "passed": 351,
+      "failed": 0,
+      "native_count": "NOT_COMPREHENSIVELY_METERED; tests include direct simulated kernels and injected failure fixtures; not strategy arms"
+    },
+    {
+      "phase": "final_tests_01",
+      "wall_s": 25.579648300015833,
+      "passed": 351,
+      "failed": 0,
+      "native_count": "NOT_COMPREHENSIVELY_METERED; tests include direct simulated kernels and injected failure fixtures; not strategy arms"
+    }
+  ],
+  "all_recorded_stage5_experiments": {
+    "complete_M2": 33,
+    "native_runs": 4052,
+    "native_s": 108.595399799,
+    "process_wall_s": 596.6401198999956
+  },
+  "LLM": {
+    "network_requests": 10,
+    "valid_tool_actions": 9,
+    "failed_JSON_requests": 1,
+    "usage": {
+      "input_tokens": 12368,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 11392,
+      "output_tokens": 9111
+    },
+    "price": null
+  },
+  "consolidation_subtask": "Separate experiments/mainline_consolidation_20261105_01 records; not charged to Stage5 strategy comparisons",
+  "other_costs": "collector/audit/package process overhead in their receipts; uninstrumented interactive analysis/file reads not included in measured subprocess totals"
+}

@@ -1,0 +1,91 @@
+{
+  "schema_version": "pll-stage6a-final-receipt-1.0",
+  "status": "STAGE6A_COMPLETE_PENDING_REVIEW",
+  "date": "2026-11-09 Asia/Shanghai",
+  "research_root": "C:\\Users\\Lenovo\\.codex\\worktrees\\stage6a-multispec-feasibility\\PLL_allocation",
+  "research_branch": "codex/stage6a-multispec-feasibility",
+  "HEAD": "cd70cf445d2ac6789550b7df2da6736221262045",
+  "baseline": "master HEAD plus exact 14709-file dirty source/evidence snapshot; Stage5 not committed",
+  "original_root": "F:\\LJP\\概伦AI\\PLL_allocation",
+  "original_master_unchanged": true,
+  "original_files_sha256_checked": 14709,
+  "original_file_changes": [],
+  "core_runtime_changes": [],
+  "new_work": [
+    "docs/stage6a",
+    "experiments/stage6a",
+    "tests/test_stage6a_joint.py"
+  ],
+  "append_only_status_docs": [
+    "docs/DECISIONS.md",
+    "docs/PROJECT_STATUS.md"
+  ],
+  "formal_entry": "python -m pll_allocation pipeline",
+  "frozen_plan_sha256": "c3d017a6fb3eac69e362aa42e400a6a244de91b0e5074d9617ed7ec08026162f",
+  "firstshot_candidates": 7,
+  "firstshot_research_joint_feasible": 6,
+  "repair_candidates": 1,
+  "all_candidate_evaluations": 8,
+  "all_M1_predicted_feasible": 8,
+  "M2_BW_pass": 7,
+  "M2_BW_fail": 1,
+  "research_joint_feasible_including_repair": 7,
+  "E1_feedback": "real boundary BW FAIL 301453.584583Hz; existing deterministic repair ->294926.116949Hz; all research constraints rechecked",
+  "E2": "matched M1 BW/PM, measured conditional capture33/36/38us, all frozen40us deadline pass; repeated pair identical; no capture failure/repair claimed",
+  "Stage5_S3_random11": "historical M2 BW pass but M1 PM fail -> research joint FAIL",
+  "certification": {
+    "original_M2_overall": {
+      "UNKNOWN": 7,
+      "FAIL": 1
+    },
+    "strict_periodic_PM": "UNKNOWN",
+    "strict_1microHz_frequency": "UNKNOWN",
+    "FULL_SYSTEMSPEC_CERTIFIED": 0,
+    "jitter_power_RUR": "UNSUPPORTED"
+  },
+  "cost": {
+    "complete_M2": 8,
+    "native_runs": 854,
+    "native_s": 23.279037299915217,
+    "pipeline_internal_wall_s": 77.27617929992266,
+    "pipeline_process_wall_s": 84.34778779989574,
+    "extra_repeat_capture_native_runs": 2,
+    "LLM_calls": 0,
+    "accounted_non_test_M1_calls": 140,
+    "monetary_cost": null,
+    "test_native_calls": "not comprehensively instrumented; separate test wall time"
+  },
+  "validation": {
+    "pretests": 364,
+    "judgment_tests": 12,
+    "final_tests": 376,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "final_formal_and_frozen_sources_checked": 81,
+    "source_changes": [],
+    "root_final_audit_checks": 191,
+    "independent_result_checks": 88,
+    "independent_report_checks": 74
+  },
+  "authoritative_results": "experiments/stage6a/summary_01",
+  "protected_snapshot_manifest": "experiments/stage6a/safety_01/baseline_files.json",
+  "delivery_manifest": "experiments/stage6a/DELIVERY_SHA256.json",
+  "delivery_manifest_sha256": "ea0faca6c3bbffbc08b74079be837b55a7a51d87b5307ea34b56c4d5430fc857",
+  "delivery_files": 4704,
+  "delivery_bytes": 379836472,
+  "preserved_failures": [
+    "compiler version probe quoting error / expected no-source cl exit",
+    "canonical versus raw proposal SHA driver preflight; zero M2 before correction, preflight elapsed unmeasured",
+    "E1_upper_shape independent measured BW FAIL"
+  ],
+  "limitations": [
+    "single frozen topology/ideal declared domain",
+    "finite selected witnesses, not global/statistical guarantee",
+    "one fixed cold-start condition/window",
+    "no strict periodic PM/frequency precision certification",
+    "no wheel install/cross-platform acceptance",
+    "Stage5 and Stage6A remain uncommitted; do not merge dirty inherited work blindly"
+  ],
+  "stop_condition": "STOP_AFTER_STAGE6A; no merge/master changes/new phase"
+}

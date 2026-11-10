@@ -1,0 +1,40 @@
+{
+  "protocol_id": "pll-noise-verification-1.1",
+  "warmup_s": 0.0002,
+  "observation_s": 0.004,
+  "record_interval_s": 2e-08,
+  "band_Hz": [
+    10000.0,
+    1000000.0
+  ],
+  "nperseg": 16384,
+  "overlap_fraction": 0.5,
+  "window": "hann",
+  "detrend": "constant",
+  "seeds": [
+    11,
+    23,
+    47,
+    71,
+    101
+  ],
+  "dt_pair_s": [
+    4e-10,
+    2e-10
+  ],
+  "confidence": 0.95,
+  "max_dt_variance_relative_difference": 0.2,
+  "max_seed_relative_CI_halfwidth": 0.35,
+  "minimum_seeds": 5,
+  "minimum_segments": 8,
+  "carrier_Hz": 80000000.0,
+  "phase_residual": "unwrapped_output_phase_minus_2pi_80MHz_t; mean only",
+  "deterministic_separation": "same_nonideal_noise_off_difference; also report unsubtracted total PSD",
+  "reference_model": "iid_phase_at_fref_linear_interpolation_sinc4; valid_band_max_0.1fref",
+  "cp_model": "continuous_effective; gated UP/DOWN separate experiment, no automatic M1 equivalence",
+  "noise_settle_s": 0.0001,
+  "stochastic_tracking": "unchanged_coldcapture_gate; no_slip_clamp_rails; original_phase_and_control_bounds; halfobservation_mean_frequency_bound",
+  "legacy_1us_capture_frequency": "DIAGNOSTIC_ONLY_NOT_RANDOM_LOCK_IDENTIFICATION",
+  "revision_reason": "independent source variance and ten saved trajectories show v1 misclassifies stationary frequency noise as loss of lock",
+  "baseline_protocol": "configs/stage6c/frozen_01/noise_protocol.json"
+}

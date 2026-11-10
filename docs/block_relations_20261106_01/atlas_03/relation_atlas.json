@@ -1,0 +1,2065 @@
+{
+  "schema_version": "pll-block-relation-atlas-1.0",
+  "status": "READ_ONLY_RESEARCH",
+  "model_sha256": "879c2748c1d74d5d05c651f905af6fa818e3f994e97206d93b295ca4b62097c0",
+  "system_spec_sha256": "9acdbf00d9b095e3cc23400024628f2301220549a45e8301aa42a08490fa598c",
+  "versions": {
+    "formula_version": "stage1_m1_1.0.0",
+    "parameter_domain_version": "stage1_declared_domain_1.0.0",
+    "behavioral_model_version": "reference_python_edge_euler_sha256_f6f550276228"
+  },
+  "system_spec": {
+    "version": "0",
+    "draft": true,
+    "source": "User Stage 1 research targets, 2026-11-04; not frozen",
+    "metrics": [
+      {
+        "metric": "output_frequency_Hz",
+        "unit": "Hz",
+        "min": 80000000,
+        "max": 80000000,
+        "tolerance": 1e-06,
+        "evaluator": "M1",
+        "protocol": "conditional_locked_tuning_frequency",
+        "source": "User: 10 MHz x 8; conditional static frequency, not a transient measurement"
+      },
+      {
+        "metric": "BW_Hz",
+        "unit": "Hz",
+        "min": 150000,
+        "max": 300000,
+        "tolerance": 0,
+        "evaluator": "M1",
+        "protocol": "continuous_normalized_T_first_downward_minus3dB",
+        "source": "User: experimental BW target"
+      },
+      {
+        "metric": "PM_deg",
+        "unit": "deg",
+        "min": 50,
+        "tolerance": 0,
+        "evaluator": "M1",
+        "protocol": "180_plus_continuous_L_phase_at_UGF",
+        "source": "User: experimental PM target"
+      }
+    ]
+  },
+  "axes": {
+    "f_ref": {
+      "block": "Reference",
+      "role": "Context",
+      "unit": "Hz",
+      "fixed": 10000000,
+      "default": 10000000,
+      "source": "User Stage 1",
+      "validity": "positive reference frequency",
+      "kind": "fixed_condition",
+      "participates_in_calculation": true,
+      "domain_mode": "fixed",
+      "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+      "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+    },
+    "N": {
+      "block": "Divider",
+      "role": "BlockSpec",
+      "unit": "1",
+      "fixed": 8,
+      "default": 8,
+      "source": "User Stage 1",
+      "validity": "positive integer",
+      "kind": "fixed_condition",
+      "participates_in_calculation": true,
+      "domain_mode": "fixed",
+      "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+      "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+    },
+    "Icp": {
+      "block": "CP",
+      "role": "BlockSpec",
+      "unit": "A",
+      "range": {
+        "min": 5e-05,
+        "max": 0.0002
+      },
+      "default": 0.0001,
+      "source": "Stage 1 declared local domain about MATLAB pll_params; not a measured capability",
+      "validity": "positive symmetric ideal current",
+      "kind": "free_allocation_parameter",
+      "participates_in_calculation": true,
+      "domain_mode": "range",
+      "range_provenance": "MANUALLY_DECLARED_BEHAVIORAL_EXPERIMENT",
+      "range_rationale": "Factor-of-two local gain exploration about 100uA; preserve Stage 1 declared bounds, not device evidence."
+    },
+    "Rz": {
+      "block": "LF",
+      "role": "BlockSpec",
+      "unit": "Ohm",
+      "range": {
+        "min": 2000,
+        "max": 8000
+      },
+      "default": 3820,
+      "source": "Stage 1 declared local domain; default MATLAB pll_params",
+      "validity": "positive ideal series resistance",
+      "kind": "free_allocation_parameter",
+      "participates_in_calculation": true,
+      "domain_mode": "range",
+      "range_provenance": "MANUALLY_DECLARED_BEHAVIORAL_EXPERIMENT",
+      "range_rationale": "Probe zero/pole and damping tradeoff around 3820 Ohm without changing Stage 1 bounds."
+    },
+    "C1": {
+      "block": "LF",
+      "role": "BlockSpec",
+      "unit": "F",
+      "choices": [
+        5e-11,
+        1e-10,
+        2e-10
+      ],
+      "default": 1e-10,
+      "source": "Stage 1 declared choices; default MATLAB pll_params",
+      "validity": "positive shunt capacitance",
+      "kind": "free_allocation_parameter",
+      "participates_in_calculation": true,
+      "domain_mode": "choices",
+      "range_provenance": "MANUALLY_DECLARED_BEHAVIORAL_EXPERIMENT",
+      "range_rationale": "Three declared shunt capacitances, spanning 0.5x to 2x nominal."
+    },
+    "C2": {
+      "block": "LF",
+      "role": "BlockSpec",
+      "unit": "F",
+      "choices": [
+        5e-10,
+        1e-09,
+        2e-09
+      ],
+      "default": 1e-09,
+      "source": "Stage 1 declared choices; default MATLAB pll_params",
+      "validity": "positive series-branch capacitance",
+      "kind": "free_allocation_parameter",
+      "participates_in_calculation": true,
+      "domain_mode": "choices",
+      "range_provenance": "MANUALLY_DECLARED_BEHAVIORAL_EXPERIMENT",
+      "range_rationale": "Three declared branch capacitances, spanning 0.5x to 2x nominal."
+    },
+    "f0": {
+      "block": "VCO",
+      "role": "BlockSpec",
+      "unit": "Hz",
+      "range": {
+        "min": 60000000,
+        "max": 76000000
+      },
+      "default": 72000000,
+      "source": "Stage 1 declared local domain; default MATLAB pll_params",
+      "validity": "zero-voltage intercept; positive f(V) on full domain; candidate tuning must be checked",
+      "kind": "free_allocation_parameter",
+      "participates_in_calculation": true,
+      "domain_mode": "range",
+      "range_provenance": "MANUALLY_DECLARED_BEHAVIORAL_EXPERIMENT",
+      "range_rationale": "Zero-volt intercept choices permit both interior tuning and unreachable cases."
+    },
+    "Kvco": {
+      "block": "VCO",
+      "role": "BlockSpec",
+      "unit": "Hz/V",
+      "range": {
+        "min": 10000000,
+        "max": 40000000
+      },
+      "default": 20000000,
+      "source": "Stage 1 declared local domain; default MATLAB pll_params",
+      "validity": "positive linear frequency slope, not angular gain",
+      "kind": "free_allocation_parameter",
+      "participates_in_calculation": true,
+      "domain_mode": "range",
+      "range_provenance": "MANUALLY_DECLARED_BEHAVIORAL_EXPERIMENT",
+      "range_rationale": "Positive frequency slope spanning 0.5x to 2x nominal; jointly constrained by tuning."
+    },
+    "Vctrl_min": {
+      "block": "VCO",
+      "role": "BlockSpec",
+      "unit": "V",
+      "fixed": 0,
+      "default": 0,
+      "source": "User / MATLAB ideal point",
+      "validity": "strictly below Vctrl_max; M1 lock point interior",
+      "kind": "fixed_condition",
+      "participates_in_calculation": true,
+      "domain_mode": "fixed",
+      "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+      "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+    },
+    "Vctrl_max": {
+      "block": "VCO",
+      "role": "BlockSpec",
+      "unit": "V",
+      "fixed": 1.2,
+      "default": 1.2,
+      "source": "User / MATLAB ideal point",
+      "validity": "declared functional limit, not CP compliance from PDK",
+      "kind": "fixed_condition",
+      "participates_in_calculation": true,
+      "domain_mode": "fixed",
+      "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+      "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+    },
+    "Kvco2": {
+      "block": "VCO",
+      "role": "Context",
+      "unit": "Hz/V^2",
+      "fixed": 0,
+      "default": 0,
+      "source": "MATLAB pll_params; Stage 1 supported subset",
+      "validity": "nonzero is UNSUPPORTED",
+      "kind": "model_assumption",
+      "participates_in_calculation": true,
+      "domain_mode": "fixed",
+      "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+      "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+    },
+    "CP_mismatch": {
+      "block": "CP",
+      "role": "Context",
+      "unit": "1",
+      "fixed": 0,
+      "default": 0,
+      "source": "MATLAB pll_params; Stage 1 supported subset",
+      "validity": "(Iup-Idown)/Icp; nonzero is UNSUPPORTED",
+      "kind": "model_assumption",
+      "participates_in_calculation": true,
+      "domain_mode": "fixed",
+      "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+      "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+    },
+    "CP_leakage": {
+      "block": "CP",
+      "role": "Context",
+      "unit": "A",
+      "fixed": 0,
+      "default": 0,
+      "source": "MATLAB pll_params; Stage 1 supported subset",
+      "validity": "positive injection; nonzero is UNSUPPORTED",
+      "kind": "model_assumption",
+      "participates_in_calculation": true,
+      "domain_mode": "fixed",
+      "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+      "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+    },
+    "q0": {
+      "block": "CP",
+      "role": "Context",
+      "unit": "C",
+      "fixed": 0,
+      "default": 0,
+      "source": "Python v1 semantic audit; explicit zero for M1",
+      "validity": "balance charge including proxy demand; nonzero is UNSUPPORTED",
+      "kind": "model_assumption",
+      "participates_in_calculation": true,
+      "domain_mode": "fixed",
+      "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+      "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+    },
+    "PFD_reset_delay": {
+      "block": "PFD",
+      "role": "Context",
+      "unit": "s",
+      "fixed": 0,
+      "default": 0,
+      "source": "MATLAB pll_params; Stage 1 supported subset",
+      "validity": "nonzero is UNSUPPORTED; negative or >= reference period is OUT_OF_DOMAIN",
+      "kind": "model_assumption",
+      "participates_in_calculation": true,
+      "domain_mode": "fixed",
+      "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+      "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+    },
+    "Cload": {
+      "block": "LF",
+      "role": "Context",
+      "unit": "F",
+      "fixed": 0,
+      "default": 0,
+      "source": "Python v1 semantic audit; no proxy load migrated",
+      "validity": "nonzero is UNSUPPORTED",
+      "kind": "model_assumption",
+      "participates_in_calculation": true,
+      "domain_mode": "fixed",
+      "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+      "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+    },
+    "Gload": {
+      "block": "LF",
+      "role": "Context",
+      "unit": "S",
+      "fixed": 0,
+      "default": 0,
+      "source": "Explicit unloaded ideal LF; not inferred from v1 Rload",
+      "validity": "nonzero is UNSUPPORTED",
+      "kind": "model_assumption",
+      "participates_in_calculation": true,
+      "domain_mode": "fixed",
+      "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+      "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+    }
+  },
+  "relations": [
+    {
+      "id": "R_SYSTEM",
+      "block": "System-level",
+      "variable_ids": [
+        "f_ref",
+        "N",
+        "f_target",
+        "spec_output_frequency_Hz",
+        "spec_BW_Hz",
+        "spec_PM_deg"
+      ],
+      "formula": "F = N·f_ref = 80 MHz; 150 ≤ BW ≤ 300 kHz; PM ≥ 50°",
+      "domain": "f_ref = 10 MHz；N = 8；频率容差 1 µHz。SystemSpec 原 draft 元数据保留；Stage5 研究场景另有显式绑定。",
+      "inverse": "",
+      "evidence": "输入快照 / 正式判决仅三项",
+      "equation_ids": [
+        "E_FREQ_PLAN"
+      ]
+    },
+    {
+      "id": "R_ASSUMPTIONS",
+      "block": "固定模型假设",
+      "variable_ids": [
+        "Kvco2",
+        "CP_mismatch",
+        "CP_leakage",
+        "q0",
+        "PFD_reset_delay",
+        "Cload",
+        "Gload"
+      ],
+      "formula": "Kvco2 = CP_mismatch = CP_leakage = q0 = PFD_reset_delay = Cload = Gload = 0",
+      "domain": "各量分别按原单位等于零；非零为 UNSUPPORTED。无器件、噪声、延时和动态负载能力承诺。",
+      "inverse": "",
+      "evidence": "原 M1 parser / J_IDEAL",
+      "equation_ids": []
+    },
+    {
+      "id": "R_PFD",
+      "block": "PFD",
+      "variable_ids": [
+        "phase_err",
+        "PFD_reset_delay",
+        "f_ref"
+      ],
+      "formula": "φe = wrap(φref − φdiv); Δt = φe / (2π·f_ref)",
+      "domain": "phase_err 约定 [−π, π) rad；关系用于理想局部平均化；reset = 0。φe 不是新的分配轴。",
+      "inverse": "",
+      "evidence": "语义约定 / 小信号推导",
+      "equation_ids": [
+        "E_KPFD"
+      ]
+    },
+    {
+      "id": "R_CP",
+      "block": "Charge Pump",
+      "variable_ids": [
+        "Icp",
+        "Iup",
+        "Idown",
+        "Kpfd"
+      ],
+      "formula": "Iup = Idown = Icp; Kpfd = Icp/(2π); īCP = Kpfd·φe",
+      "domain": "Icp ∈ [50, 200] µA；Kpfd ∈ [7.957747, 31.830989] µA/rad。",
+      "inverse": "Icp = 2π·Kpfd；与 Kvco 必须按乘积联合分配。",
+      "evidence": "已实现 M1 / 公式注册",
+      "equation_ids": [
+        "E_KPFD"
+      ]
+    },
+    {
+      "id": "R_LF",
+      "block": "Loop Filter",
+      "variable_ids": [
+        "Rz",
+        "C1",
+        "C2",
+        "Zlf",
+        "Cload",
+        "Gload"
+      ],
+      "formula": "Z(s) = (1+s·Rz·C2) / [s·(C1+C2)+s²·Rz·C1·C2]",
+      "domain": "Rz ∈ [2, 8] kΩ；C1 ∈ {50,100,200} pF；C2 ∈ {0.5,1,2} nF。C1 对地，并联串联 Rz–C2 支路。",
+      "inverse": "",
+      "evidence": "已实现 M1 / KCL 数值核验",
+      "equation_ids": [
+        "E_LF"
+      ]
+    },
+    {
+      "id": "R_LF_SHAPE",
+      "block": "LF 零极点",
+      "variable_ids": [
+        "Rz",
+        "C1",
+        "C2",
+        "fz",
+        "fp"
+      ],
+      "formula": "fz = 1/(2π·Rz·C2); fp = (C1+C2)/(2π·Rz·C1·C2); q = fp/fz = 1+C2/C1",
+      "domain": "s 平面极点为 0 与 −2π·fp；fz、fp 是正的频率幅值。离散电容对决定 q。",
+      "inverse": "给定 C1,C2 及 fz 或形状 x、ωu，可反解 Rz；不得独立选 fz 和 fp。",
+      "evidence": "已实现 M1 / 精确代数",
+      "equation_ids": [
+        "E_LF_ZP"
+      ]
+    },
+    {
+      "id": "R_VCO",
+      "block": "VCO",
+      "variable_ids": [
+        "f0",
+        "Kvco",
+        "Vctrl_min",
+        "Vctrl_max",
+        "Vctrl_required",
+        "tuning_feasible",
+        "Kvco_local",
+        "Kvco_angular"
+      ],
+      "formula": "f(V) = f0+Kvco·V; Vreq = (F−f0)/Kvco; Kvco_angular = 2π·Kvco",
+      "domain": "f0 ∈ [60,76] MHz；Kvco ∈ [10,40] MHz/V；0 < Vreq < 1.2 V。f0 为零伏截距，非中心电压频率。",
+      "inverse": "f0 ∈ [60,76] MHz ∩ (F−1.2·Kvco, F)；Kvco_local = Kvco。开端点必须保留。",
+      "evidence": "条件调谐解析 / 有限事件点支持",
+      "equation_ids": [
+        "E_TUNING"
+      ]
+    },
+    {
+      "id": "R_DIVIDER",
+      "block": "Divider",
+      "variable_ids": [
+        "N",
+        "f_ref",
+        "f_target"
+      ],
+      "formula": "f_div = f_out/N; H_div = 1/N; N = 8",
+      "domain": "理想整数分频、无分配自由度；无 delay/jitter/power 模型。",
+      "inverse": "",
+      "evidence": "固定拓扑 / 已实现模型",
+      "equation_ids": [
+        "E_FREQ_PLAN",
+        "E_OPEN"
+      ]
+    },
+    {
+      "id": "R_LOOP",
+      "block": "Loop 动态",
+      "variable_ids": [
+        "Kpfd",
+        "Kvco_angular",
+        "Zlf",
+        "L",
+        "T"
+      ],
+      "formula": "P = Icp·Kvco; K = P/N; L(s) = K·Z(s)/s; T(s) = L(s)/(1+L(s)); Href = N·T",
+      "domain": "s = j2πf；2π 在 CP 与 VCO 增益间相消。P ∈ [500,8000] A·Hz/V 为声明轴乘积范围。",
+      "inverse": "同 RC 和相同 P 保持理想动态；f0/Kvco 仍需满足调谐。",
+      "evidence": "已实现 M1；历史局部 M2 支持",
+      "equation_ids": [
+        "E_OPEN",
+        "E_CLOSED"
+      ]
+    },
+    {
+      "id": "R_BW",
+      "block": "Bandwidth",
+      "variable_ids": [
+        "BW",
+        "T"
+      ],
+      "formula": "|T(j2π·BW)| = 1/√2; BW = β(q,x)·UGF",
+      "domain": "归一化 T 唯一向下半功率交越；BW ∈ [150,300] kHz。β 需要数值正根，BW 不等于 UGF。",
+      "inverse": "电容枚举 + x 形状 + β 数值根，再反解 Rz 与 P 并求交。",
+      "evidence": "M1 可解 / Protocol1.1 独立事件 BW",
+      "equation_ids": [
+        "E_BW",
+        "E_CLOSED"
+      ]
+    },
+    {
+      "id": "R_PM",
+      "block": "Phase Margin",
+      "variable_ids": [
+        "PM",
+        "UGF",
+        "L"
+      ],
+      "formula": "x = ωu·Rz·C2; PM = atan(x)−atan(x/q); PMmax = asin((q−1)/(q+1))",
+      "domain": "ωu = 2π·UGF；x>0；相位最终转为度。PM≥50° ⇒ C2/C1≥6.548632。全域理想上界72.247210°。",
+      "inverse": "tanφ·x² − (q−1)·x + q·tanφ ≤ 0；判别式与 x 根区间给出必要形状域。",
+      "evidence": "M1 精确形状 / M2 正式 PM UNKNOWN",
+      "equation_ids": [
+        "E_PM",
+        "E_UGF"
+      ]
+    },
+    {
+      "id": "R_UGF",
+      "block": "Unity-gain 诊断",
+      "variable_ids": [
+        "UGF",
+        "L"
+      ],
+      "formula": "|L(j·ωu)| = 1; P = N·(C1+C2)·ωu²·h; h = √[(1+(x/q)²)/(1+x²)]",
+      "domain": "UGF 是诊断量，当前没有 UGF/RUR 硬目标。存在一个有限向下交越；数值失败不判通过。",
+      "inverse": "Rz = x/(ωu·C2)；正式周期 UGF/PM 尚未认证。",
+      "evidence": "M1 正向 / 条件代数逆解",
+      "equation_ids": [
+        "E_UGF"
+      ]
+    },
+    {
+      "id": "R_STABILITY",
+      "block": "连续稳定性",
+      "variable_ids": [
+        "Icp",
+        "Kvco",
+        "Rz",
+        "C1",
+        "C2"
+      ],
+      "formula": "a·s³+b·s²+c·s+d = 0; b·c−a·d = K·Rz·C2² > 0",
+      "domain": "a=Rz·C1·C2，b=C1+C2，c=K·Rz·C2，d=K。原正值域下 Routh 恒成立，仍须满足 PM/BW。",
+      "inverse": "",
+      "evidence": "E_STABILITY / 非事件捕获证明",
+      "equation_ids": [
+        "E_STABILITY"
+      ]
+    },
+    {
+      "id": "R_JOINT",
+      "block": "联合条件可行域",
+      "variable_ids": [
+        "Icp",
+        "Rz",
+        "C1",
+        "C2",
+        "f0",
+        "Kvco",
+        "BW",
+        "PM"
+      ],
+      "formula": "D_M1 = D_declared ∩ D_ideal ∩ D_tuning ∩ {150≤BW≤300 kHz, PM≥50°}",
+      "domain": "给定 C1,C2,x：B ∈ [Bmin,Bmax] ∩ [aR/Rmax,aR/Rmin] ∩ [√(Pmin/aP),√(Pmax/aP)]。",
+      "inverse": "aR=x·β/(2π·C2)，aP=N·(C1+C2)·(2π/β)²·h；Rz=aR/B，P=aP·B²。见推导。",
+      "evidence": "本轮条件域推导 / 正式 M1 核验",
+      "equation_ids": [
+        "E_TUNING",
+        "E_BW",
+        "E_PM"
+      ]
+    },
+    {
+      "id": "R_SPLIT",
+      "block": "CP ↔ VCO 分摊",
+      "variable_ids": [
+        "Icp",
+        "Kvco",
+        "f0",
+        "Vctrl_required"
+      ],
+      "formula": "Kvco ∈ [Kvco_min,Kvco_max] ∩ [P/Icp_max,P/Icp_min]; Icp = P/Kvco",
+      "domain": "若 f0 已定，再交 Kvco > (F−f0)/1.2 V；若 Kvco 已定，再交严格 f0 调谐区间。",
+      "inverse": "本声明域任一合法 Kvco 均可选到至少一个调谐 f0；不表示给定 f0 总合法。",
+      "evidence": "条件解析 / 同产品局部 M2 支持",
+      "equation_ids": [
+        "E_TUNING",
+        "E_OPEN"
+      ]
+    },
+    {
+      "id": "R_CONTEXT",
+      "block": "上下文 / 非执行量",
+      "variable_ids": [
+        "V0",
+        "f_offset",
+        "Vctrl0",
+        "Rload"
+      ],
+      "formula": "s = j2π·f_offset; f0 使用 V=0 截距；V0 仅旧上下文; Gload = 0",
+      "domain": "f_offset>0 为测量扫描；Vctrl0 为事件初值上下文；旧 V0/Rload 不能变成当前自由轴。",
+      "inverse": "",
+      "evidence": "原 41 项目录 / 语义兼容边界",
+      "equation_ids": []
+    },
+    {
+      "id": "R_VERIFICATION",
+      "block": "行为验收",
+      "variable_ids": [
+        "BW",
+        "PM",
+        "UGF",
+        "Vctrl0",
+        "phase_err"
+      ],
+      "formula": "D_verified ⊆ {逐个完整候选按冻结协议全部必需指标 PASS}",
+      "domain": "捕获/lock time 是初值与160µs窗口条件测量。正式PM、1µHz频率认证仍 UNKNOWN；完整已认证域未建立。",
+      "inverse": "",
+      "evidence": "Stage4.1 十个局部点 / Stage5 当前结论",
+      "equation_ids": []
+    },
+    {
+      "id": "R_GAPS",
+      "block": "尚缺映射",
+      "variable_ids": [],
+      "formula": "Jitter / Phase Noise / Power / RUR：当前无可信数值可行域",
+      "domain": "补噪声源与频带、功耗定义与模块模型、RUR定义及协议后才能版本化扩展。Icp 不能当总电源电流。",
+      "inverse": "",
+      "evidence": "UNSUPPORTED / 未增设 SystemSpec",
+      "equation_ids": []
+    }
+  ],
+  "variables": [
+    {
+      "id": "f_ref",
+      "block": "Reference",
+      "kind": "fixed_condition",
+      "unit": "Hz",
+      "participation": "M1_input_or_domain_gate",
+      "declared_axis": {
+        "block": "Reference",
+        "role": "Context",
+        "unit": "Hz",
+        "fixed": 10000000,
+        "default": 10000000,
+        "source": "User Stage 1",
+        "validity": "positive reference frequency",
+        "kind": "fixed_condition",
+        "participates_in_calculation": true,
+        "domain_mode": "fixed",
+        "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+        "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+      },
+      "semantic_definition": "values.f_ref",
+      "range_text": "{\"fixed\": 10000000}",
+      "validity": "positive reference frequency",
+      "semantic_conflict": "registry calls it block_design; this experiment fixes it as Context",
+      "relation_ids": [
+        "R_SYSTEM",
+        "R_PFD",
+        "R_DIVIDER"
+      ],
+      "co_variables": [
+        "N",
+        "PFD_reset_delay",
+        "f_target",
+        "phase_err",
+        "spec_BW_Hz",
+        "spec_PM_deg",
+        "spec_output_frequency_Hz"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/f_ref"
+    },
+    {
+      "id": "N",
+      "block": "Divider",
+      "kind": "fixed_condition",
+      "unit": "1",
+      "participation": "M1_input_or_domain_gate",
+      "declared_axis": {
+        "block": "Divider",
+        "role": "BlockSpec",
+        "unit": "1",
+        "fixed": 8,
+        "default": 8,
+        "source": "User Stage 1",
+        "validity": "positive integer",
+        "kind": "fixed_condition",
+        "participates_in_calculation": true,
+        "domain_mode": "fixed",
+        "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+        "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+      },
+      "semantic_definition": "values.N",
+      "range_text": "{\"fixed\": 8}",
+      "validity": "positive integer",
+      "semantic_conflict": "none; v1 hard domain N=8 remains untouched",
+      "relation_ids": [
+        "R_SYSTEM",
+        "R_DIVIDER"
+      ],
+      "co_variables": [
+        "f_ref",
+        "f_target",
+        "spec_BW_Hz",
+        "spec_PM_deg",
+        "spec_output_frequency_Hz"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/N"
+    },
+    {
+      "id": "Icp",
+      "block": "CP",
+      "kind": "free_allocation_parameter",
+      "unit": "A",
+      "participation": "M1_input_or_domain_gate",
+      "declared_axis": {
+        "block": "CP",
+        "role": "BlockSpec",
+        "unit": "A",
+        "range": {
+          "min": 5e-05,
+          "max": 0.0002
+        },
+        "default": 0.0001,
+        "source": "Stage 1 declared local domain about MATLAB pll_params; not a measured capability",
+        "validity": "positive symmetric ideal current",
+        "kind": "free_allocation_parameter",
+        "participates_in_calculation": true,
+        "domain_mode": "range",
+        "range_provenance": "MANUALLY_DECLARED_BEHAVIORAL_EXPERIMENT",
+        "range_rationale": "Factor-of-two local gain exploration about 100uA; preserve Stage 1 declared bounds, not device evidence."
+      },
+      "semantic_definition": "values.Icp",
+      "range_text": "{\"range\": {\"min\": 5e-05, \"max\": 0.0002}}",
+      "validity": "positive symmetric ideal current",
+      "semantic_conflict": "directional timing slopes require explicit equal-current assumption",
+      "relation_ids": [
+        "R_CP",
+        "R_STABILITY",
+        "R_JOINT",
+        "R_SPLIT"
+      ],
+      "co_variables": [
+        "BW",
+        "C1",
+        "C2",
+        "Idown",
+        "Iup",
+        "Kpfd",
+        "Kvco",
+        "PM",
+        "Rz",
+        "Vctrl_required",
+        "f0"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/Icp"
+    },
+    {
+      "id": "Rz",
+      "block": "LF",
+      "kind": "free_allocation_parameter",
+      "unit": "Ohm",
+      "participation": "M1_input_or_domain_gate",
+      "declared_axis": {
+        "block": "LF",
+        "role": "BlockSpec",
+        "unit": "Ohm",
+        "range": {
+          "min": 2000,
+          "max": 8000
+        },
+        "default": 3820,
+        "source": "Stage 1 declared local domain; default MATLAB pll_params",
+        "validity": "positive ideal series resistance",
+        "kind": "free_allocation_parameter",
+        "participates_in_calculation": true,
+        "domain_mode": "range",
+        "range_provenance": "MANUALLY_DECLARED_BEHAVIORAL_EXPERIMENT",
+        "range_rationale": "Probe zero/pole and damping tradeoff around 3820 Ohm without changing Stage 1 bounds."
+      },
+      "semantic_definition": "values.Rz",
+      "range_text": "{\"range\": {\"min\": 2000, \"max\": 8000}}",
+      "validity": "positive ideal series resistance",
+      "semantic_conflict": "none in ideal topology",
+      "relation_ids": [
+        "R_LF",
+        "R_LF_SHAPE",
+        "R_STABILITY",
+        "R_JOINT"
+      ],
+      "co_variables": [
+        "BW",
+        "C1",
+        "C2",
+        "Cload",
+        "Gload",
+        "Icp",
+        "Kvco",
+        "PM",
+        "Zlf",
+        "f0",
+        "fp",
+        "fz"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/Rz"
+    },
+    {
+      "id": "C1",
+      "block": "LF",
+      "kind": "free_allocation_parameter",
+      "unit": "F",
+      "participation": "M1_input_or_domain_gate",
+      "declared_axis": {
+        "block": "LF",
+        "role": "BlockSpec",
+        "unit": "F",
+        "choices": [
+          5e-11,
+          1e-10,
+          2e-10
+        ],
+        "default": 1e-10,
+        "source": "Stage 1 declared choices; default MATLAB pll_params",
+        "validity": "positive shunt capacitance",
+        "kind": "free_allocation_parameter",
+        "participates_in_calculation": true,
+        "domain_mode": "choices",
+        "range_provenance": "MANUALLY_DECLARED_BEHAVIORAL_EXPERIMENT",
+        "range_rationale": "Three declared shunt capacitances, spanning 0.5x to 2x nominal."
+      },
+      "semantic_definition": "values.C1",
+      "range_text": "{\"choices\": [5e-11, 1e-10, 2e-10]}",
+      "validity": "positive shunt capacitance",
+      "semantic_conflict": "v1 effective shunt includes Cload; v2 rejects nonzero load",
+      "relation_ids": [
+        "R_LF",
+        "R_LF_SHAPE",
+        "R_STABILITY",
+        "R_JOINT"
+      ],
+      "co_variables": [
+        "BW",
+        "C2",
+        "Cload",
+        "Gload",
+        "Icp",
+        "Kvco",
+        "PM",
+        "Rz",
+        "Zlf",
+        "f0",
+        "fp",
+        "fz"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/C1"
+    },
+    {
+      "id": "C2",
+      "block": "LF",
+      "kind": "free_allocation_parameter",
+      "unit": "F",
+      "participation": "M1_input_or_domain_gate",
+      "declared_axis": {
+        "block": "LF",
+        "role": "BlockSpec",
+        "unit": "F",
+        "choices": [
+          5e-10,
+          1e-09,
+          2e-09
+        ],
+        "default": 1e-09,
+        "source": "Stage 1 declared choices; default MATLAB pll_params",
+        "validity": "positive series-branch capacitance",
+        "kind": "free_allocation_parameter",
+        "participates_in_calculation": true,
+        "domain_mode": "choices",
+        "range_provenance": "MANUALLY_DECLARED_BEHAVIORAL_EXPERIMENT",
+        "range_rationale": "Three declared branch capacitances, spanning 0.5x to 2x nominal."
+      },
+      "semantic_definition": "values.C2",
+      "range_text": "{\"choices\": [5e-10, 1e-09, 2e-09]}",
+      "validity": "positive series-branch capacitance",
+      "semantic_conflict": "none; must not swap with C1",
+      "relation_ids": [
+        "R_LF",
+        "R_LF_SHAPE",
+        "R_STABILITY",
+        "R_JOINT"
+      ],
+      "co_variables": [
+        "BW",
+        "C1",
+        "Cload",
+        "Gload",
+        "Icp",
+        "Kvco",
+        "PM",
+        "Rz",
+        "Zlf",
+        "f0",
+        "fp",
+        "fz"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/C2"
+    },
+    {
+      "id": "f0",
+      "block": "VCO",
+      "kind": "free_allocation_parameter",
+      "unit": "Hz",
+      "participation": "M1_input_or_domain_gate",
+      "declared_axis": {
+        "block": "VCO",
+        "role": "BlockSpec",
+        "unit": "Hz",
+        "range": {
+          "min": 60000000,
+          "max": 76000000
+        },
+        "default": 72000000,
+        "source": "Stage 1 declared local domain; default MATLAB pll_params",
+        "validity": "zero-voltage intercept; positive f(V) on full domain; candidate tuning must be checked",
+        "kind": "free_allocation_parameter",
+        "participates_in_calculation": true,
+        "domain_mode": "range",
+        "range_provenance": "MANUALLY_DECLARED_BEHAVIORAL_EXPERIMENT",
+        "range_rationale": "Zero-volt intercept choices permit both interior tuning and unreachable cases."
+      },
+      "semantic_definition": "values.f0",
+      "range_text": "{\"range\": {\"min\": 60000000, \"max\": 76000000}}",
+      "validity": "zero-voltage intercept; positive f(V) on full domain; candidate tuning must be checked",
+      "semantic_conflict": "YES: f0_v2=f0_v1-Kvco*V0 for linear VCO",
+      "relation_ids": [
+        "R_VCO",
+        "R_JOINT",
+        "R_SPLIT"
+      ],
+      "co_variables": [
+        "BW",
+        "C1",
+        "C2",
+        "Icp",
+        "Kvco",
+        "Kvco_angular",
+        "Kvco_local",
+        "PM",
+        "Rz",
+        "Vctrl_max",
+        "Vctrl_min",
+        "Vctrl_required",
+        "tuning_feasible"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/f0"
+    },
+    {
+      "id": "Kvco",
+      "block": "VCO",
+      "kind": "free_allocation_parameter",
+      "unit": "Hz/V",
+      "participation": "M1_input_or_domain_gate",
+      "declared_axis": {
+        "block": "VCO",
+        "role": "BlockSpec",
+        "unit": "Hz/V",
+        "range": {
+          "min": 10000000,
+          "max": 40000000
+        },
+        "default": 20000000,
+        "source": "Stage 1 declared local domain; default MATLAB pll_params",
+        "validity": "positive linear frequency slope, not angular gain",
+        "kind": "free_allocation_parameter",
+        "participates_in_calculation": true,
+        "domain_mode": "range",
+        "range_provenance": "MANUALLY_DECLARED_BEHAVIORAL_EXPERIMENT",
+        "range_rationale": "Positive frequency slope spanning 0.5x to 2x nominal; jointly constrained by tuning."
+      },
+      "semantic_definition": "values.Kvco",
+      "range_text": "{\"range\": {\"min\": 10000000, \"max\": 40000000}}",
+      "validity": "positive linear frequency slope, not angular gain",
+      "semantic_conflict": "both Hz/V; angular gain requires explicit 2*pi",
+      "relation_ids": [
+        "R_VCO",
+        "R_STABILITY",
+        "R_JOINT",
+        "R_SPLIT"
+      ],
+      "co_variables": [
+        "BW",
+        "C1",
+        "C2",
+        "Icp",
+        "Kvco_angular",
+        "Kvco_local",
+        "PM",
+        "Rz",
+        "Vctrl_max",
+        "Vctrl_min",
+        "Vctrl_required",
+        "f0",
+        "tuning_feasible"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/Kvco"
+    },
+    {
+      "id": "Vctrl_min",
+      "block": "VCO",
+      "kind": "fixed_condition",
+      "unit": "V",
+      "participation": "M1_input_or_domain_gate",
+      "declared_axis": {
+        "block": "VCO",
+        "role": "BlockSpec",
+        "unit": "V",
+        "fixed": 0,
+        "default": 0,
+        "source": "User / MATLAB ideal point",
+        "validity": "strictly below Vctrl_max; M1 lock point interior",
+        "kind": "fixed_condition",
+        "participates_in_calculation": true,
+        "domain_mode": "fixed",
+        "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+        "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+      },
+      "semantic_definition": "values.Vctrl_min",
+      "range_text": "{\"fixed\": 0}",
+      "validity": "strictly below Vctrl_max; M1 lock point interior",
+      "semantic_conflict": "v2 ideal default 0 V cannot pass v1; separate contract",
+      "relation_ids": [
+        "R_VCO"
+      ],
+      "co_variables": [
+        "Kvco",
+        "Kvco_angular",
+        "Kvco_local",
+        "Vctrl_max",
+        "Vctrl_required",
+        "f0",
+        "tuning_feasible"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/Vctrl_min"
+    },
+    {
+      "id": "Vctrl_max",
+      "block": "VCO",
+      "kind": "fixed_condition",
+      "unit": "V",
+      "participation": "M1_input_or_domain_gate",
+      "declared_axis": {
+        "block": "VCO",
+        "role": "BlockSpec",
+        "unit": "V",
+        "fixed": 1.2,
+        "default": 1.2,
+        "source": "User / MATLAB ideal point",
+        "validity": "declared functional limit, not CP compliance from PDK",
+        "kind": "fixed_condition",
+        "participates_in_calculation": true,
+        "domain_mode": "fixed",
+        "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+        "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+      },
+      "semantic_definition": "values.Vctrl_max",
+      "range_text": "{\"fixed\": 1.2}",
+      "validity": "declared functional limit, not CP compliance from PDK",
+      "semantic_conflict": "v2 has no fabricated VDD/PDK condition",
+      "relation_ids": [
+        "R_VCO"
+      ],
+      "co_variables": [
+        "Kvco",
+        "Kvco_angular",
+        "Kvco_local",
+        "Vctrl_min",
+        "Vctrl_required",
+        "f0",
+        "tuning_feasible"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/Vctrl_max"
+    },
+    {
+      "id": "Kvco2",
+      "block": "VCO",
+      "kind": "model_assumption",
+      "unit": "Hz/V^2",
+      "participation": "M1_input_or_domain_gate",
+      "declared_axis": {
+        "block": "VCO",
+        "role": "Context",
+        "unit": "Hz/V^2",
+        "fixed": 0,
+        "default": 0,
+        "source": "MATLAB pll_params; Stage 1 supported subset",
+        "validity": "nonzero is UNSUPPORTED",
+        "kind": "model_assumption",
+        "participates_in_calculation": true,
+        "domain_mode": "fixed",
+        "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+        "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+      },
+      "semantic_definition": "values.Kvco2",
+      "range_text": "{\"fixed\": 0}",
+      "validity": "nonzero is UNSUPPORTED",
+      "semantic_conflict": "nonzero UNSUPPORTED; no silent linearization",
+      "relation_ids": [
+        "R_ASSUMPTIONS"
+      ],
+      "co_variables": [
+        "CP_leakage",
+        "CP_mismatch",
+        "Cload",
+        "Gload",
+        "PFD_reset_delay",
+        "q0"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/Kvco2"
+    },
+    {
+      "id": "CP_mismatch",
+      "block": "CP",
+      "kind": "model_assumption",
+      "unit": "1",
+      "participation": "M1_input_or_domain_gate",
+      "declared_axis": {
+        "block": "CP",
+        "role": "Context",
+        "unit": "1",
+        "fixed": 0,
+        "default": 0,
+        "source": "MATLAB pll_params; Stage 1 supported subset",
+        "validity": "(Iup-Idown)/Icp; nonzero is UNSUPPORTED",
+        "kind": "model_assumption",
+        "participates_in_calculation": true,
+        "domain_mode": "fixed",
+        "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+        "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+      },
+      "semantic_definition": "values.CP_mismatch",
+      "range_text": "{\"fixed\": 0}",
+      "validity": "(Iup-Idown)/Icp; nonzero is UNSUPPORTED",
+      "semantic_conflict": "mismatch has one-sided slopes; nonzero UNSUPPORTED",
+      "relation_ids": [
+        "R_ASSUMPTIONS"
+      ],
+      "co_variables": [
+        "CP_leakage",
+        "Cload",
+        "Gload",
+        "Kvco2",
+        "PFD_reset_delay",
+        "q0"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/CP_mismatch"
+    },
+    {
+      "id": "CP_leakage",
+      "block": "CP",
+      "kind": "model_assumption",
+      "unit": "A",
+      "participation": "M1_input_or_domain_gate",
+      "declared_axis": {
+        "block": "CP",
+        "role": "Context",
+        "unit": "A",
+        "fixed": 0,
+        "default": 0,
+        "source": "MATLAB pll_params; Stage 1 supported subset",
+        "validity": "positive injection; nonzero is UNSUPPORTED",
+        "kind": "model_assumption",
+        "participates_in_calculation": true,
+        "domain_mode": "fixed",
+        "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+        "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+      },
+      "semantic_definition": "values.CP_leakage",
+      "range_text": "{\"fixed\": 0}",
+      "validity": "positive injection; nonzero is UNSUPPORTED",
+      "semantic_conflict": "YES: signed current is not net proxy balance charge",
+      "relation_ids": [
+        "R_ASSUMPTIONS"
+      ],
+      "co_variables": [
+        "CP_mismatch",
+        "Cload",
+        "Gload",
+        "Kvco2",
+        "PFD_reset_delay",
+        "q0"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/CP_leakage"
+    },
+    {
+      "id": "q0",
+      "block": "CP",
+      "kind": "model_assumption",
+      "unit": "C",
+      "participation": "M1_input_or_domain_gate",
+      "declared_axis": {
+        "block": "CP",
+        "role": "Context",
+        "unit": "C",
+        "fixed": 0,
+        "default": 0,
+        "source": "Python v1 semantic audit; explicit zero for M1",
+        "validity": "balance charge including proxy demand; nonzero is UNSUPPORTED",
+        "kind": "model_assumption",
+        "participates_in_calculation": true,
+        "domain_mode": "fixed",
+        "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+        "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+      },
+      "semantic_definition": "values.q0",
+      "range_text": "{\"fixed\": 0}",
+      "validity": "balance charge including proxy demand; nonzero is UNSUPPORTED",
+      "semantic_conflict": "YES: cannot subtract leakage again; nonzero UNSUPPORTED",
+      "relation_ids": [
+        "R_ASSUMPTIONS"
+      ],
+      "co_variables": [
+        "CP_leakage",
+        "CP_mismatch",
+        "Cload",
+        "Gload",
+        "Kvco2",
+        "PFD_reset_delay"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/q0"
+    },
+    {
+      "id": "PFD_reset_delay",
+      "block": "PFD",
+      "kind": "model_assumption",
+      "unit": "s",
+      "participation": "M1_input_or_domain_gate",
+      "declared_axis": {
+        "block": "PFD",
+        "role": "Context",
+        "unit": "s",
+        "fixed": 0,
+        "default": 0,
+        "source": "MATLAB pll_params; Stage 1 supported subset",
+        "validity": "nonzero is UNSUPPORTED; negative or >= reference period is OUT_OF_DOMAIN",
+        "kind": "model_assumption",
+        "participates_in_calculation": true,
+        "domain_mode": "fixed",
+        "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+        "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+      },
+      "semantic_definition": "values.PFD_reset_delay",
+      "range_text": "{\"fixed\": 0}",
+      "validity": "nonzero is UNSUPPORTED; negative or >= reference period is OUT_OF_DOMAIN",
+      "semantic_conflict": "YES: event delay and charge timing clip are different models",
+      "relation_ids": [
+        "R_ASSUMPTIONS",
+        "R_PFD"
+      ],
+      "co_variables": [
+        "CP_leakage",
+        "CP_mismatch",
+        "Cload",
+        "Gload",
+        "Kvco2",
+        "f_ref",
+        "phase_err",
+        "q0"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/PFD_reset_delay"
+    },
+    {
+      "id": "Cload",
+      "block": "LF",
+      "kind": "model_assumption",
+      "unit": "F",
+      "participation": "M1_input_or_domain_gate",
+      "declared_axis": {
+        "block": "LF",
+        "role": "Context",
+        "unit": "F",
+        "fixed": 0,
+        "default": 0,
+        "source": "Python v1 semantic audit; no proxy load migrated",
+        "validity": "nonzero is UNSUPPORTED",
+        "kind": "model_assumption",
+        "participates_in_calculation": true,
+        "domain_mode": "fixed",
+        "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+        "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+      },
+      "semantic_definition": "values.Cload",
+      "range_text": "{\"fixed\": 0}",
+      "validity": "nonzero is UNSUPPORTED",
+      "semantic_conflict": "v1 50fF proxy is not measured admittance; nonzero UNSUPPORTED",
+      "relation_ids": [
+        "R_ASSUMPTIONS",
+        "R_LF"
+      ],
+      "co_variables": [
+        "C1",
+        "C2",
+        "CP_leakage",
+        "CP_mismatch",
+        "Gload",
+        "Kvco2",
+        "PFD_reset_delay",
+        "Rz",
+        "Zlf",
+        "q0"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/Cload"
+    },
+    {
+      "id": "Gload",
+      "block": "LF",
+      "kind": "model_assumption",
+      "unit": "S",
+      "participation": "M1_input_or_domain_gate",
+      "declared_axis": {
+        "block": "LF",
+        "role": "Context",
+        "unit": "S",
+        "fixed": 0,
+        "default": 0,
+        "source": "Explicit unloaded ideal LF; not inferred from v1 Rload",
+        "validity": "nonzero is UNSUPPORTED",
+        "kind": "model_assumption",
+        "participates_in_calculation": true,
+        "domain_mode": "fixed",
+        "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+        "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+      },
+      "semantic_definition": "values.Gload",
+      "range_text": "{\"fixed\": 0}",
+      "validity": "nonzero is UNSUPPORTED",
+      "semantic_conflict": "YES: do not claim v1 Rload was dynamically integrated",
+      "relation_ids": [
+        "R_ASSUMPTIONS",
+        "R_LF"
+      ],
+      "co_variables": [
+        "C1",
+        "C2",
+        "CP_leakage",
+        "CP_mismatch",
+        "Cload",
+        "Kvco2",
+        "PFD_reset_delay",
+        "Rz",
+        "Zlf",
+        "q0"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/Gload"
+    },
+    {
+      "id": "f_target",
+      "block": "System",
+      "kind": "derived_parameter",
+      "unit": "Hz",
+      "participation": "M1_derived",
+      "declared_axis": null,
+      "semantic_definition": "F_FREQ_PLAN.f_target_Hz",
+      "range_text": "derived; no independent axis",
+      "validity": "N positive integer; fref>0",
+      "semantic_conflict": "derived target is not a transient measurement",
+      "relation_ids": [
+        "R_SYSTEM",
+        "R_DIVIDER"
+      ],
+      "co_variables": [
+        "N",
+        "f_ref",
+        "spec_BW_Hz",
+        "spec_PM_deg",
+        "spec_output_frequency_Hz"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/f_target"
+    },
+    {
+      "id": "Vctrl_required",
+      "block": "VCO",
+      "kind": "derived_parameter",
+      "unit": "V",
+      "participation": "M1_derived",
+      "declared_axis": null,
+      "semantic_definition": "F_TUNING.Vctrl_required_V=(N*fref-f0)/Kvco",
+      "range_text": "derived; no independent axis",
+      "validity": "interior voltage point required for M1",
+      "semantic_conflict": "v1 V0 anchor differs",
+      "relation_ids": [
+        "R_VCO",
+        "R_SPLIT"
+      ],
+      "co_variables": [
+        "Icp",
+        "Kvco",
+        "Kvco_angular",
+        "Kvco_local",
+        "Vctrl_max",
+        "Vctrl_min",
+        "f0",
+        "tuning_feasible"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/Vctrl_required"
+    },
+    {
+      "id": "tuning_feasible",
+      "block": "VCO",
+      "kind": "derived_parameter",
+      "unit": "1",
+      "participation": "M1_derived",
+      "declared_axis": null,
+      "semantic_definition": "F_TUNING.feasible",
+      "range_text": "derived; no independent axis",
+      "validity": "positive monotonic linear VCO",
+      "semantic_conflict": "YES: endpoint feasible is not valid two-sided M1",
+      "relation_ids": [
+        "R_VCO"
+      ],
+      "co_variables": [
+        "Kvco",
+        "Kvco_angular",
+        "Kvco_local",
+        "Vctrl_max",
+        "Vctrl_min",
+        "Vctrl_required",
+        "f0"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/tuning_feasible"
+    },
+    {
+      "id": "Kvco_local",
+      "block": "VCO",
+      "kind": "derived_parameter",
+      "unit": "Hz/V",
+      "participation": "M1_derived",
+      "declared_axis": null,
+      "semantic_definition": "F_TUNING.Kvco_local_Hz_per_V",
+      "range_text": "derived; no independent axis",
+      "validity": "Stage 1 Kvco2=0",
+      "semantic_conflict": "nonzero curvature deferred",
+      "relation_ids": [
+        "R_VCO"
+      ],
+      "co_variables": [
+        "Kvco",
+        "Kvco_angular",
+        "Vctrl_max",
+        "Vctrl_min",
+        "Vctrl_required",
+        "f0",
+        "tuning_feasible"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/Kvco_local"
+    },
+    {
+      "id": "Kvco_angular",
+      "block": "VCO",
+      "kind": "derived_parameter",
+      "unit": "rad/s/V",
+      "participation": "M1_derived",
+      "declared_axis": null,
+      "semantic_definition": "explicit internal 2*pi*Kvco",
+      "range_text": "derived; no independent axis",
+      "validity": "do not accept as Hz/V input",
+      "semantic_conflict": "unit conversion explicit",
+      "relation_ids": [
+        "R_VCO",
+        "R_LOOP"
+      ],
+      "co_variables": [
+        "Kpfd",
+        "Kvco",
+        "Kvco_local",
+        "L",
+        "T",
+        "Vctrl_max",
+        "Vctrl_min",
+        "Vctrl_required",
+        "Zlf",
+        "f0",
+        "tuning_feasible"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/Kvco_angular"
+    },
+    {
+      "id": "Iup",
+      "block": "CP",
+      "kind": "derived_parameter",
+      "unit": "A",
+      "participation": "M1_derived",
+      "declared_axis": null,
+      "semantic_definition": "F_KPFD.Iup_A",
+      "range_text": "derived; no independent axis",
+      "validity": "M1 m=0",
+      "semantic_conflict": "v1 declared slope not observed device current",
+      "relation_ids": [
+        "R_CP"
+      ],
+      "co_variables": [
+        "Icp",
+        "Idown",
+        "Kpfd"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/Iup"
+    },
+    {
+      "id": "Idown",
+      "block": "CP",
+      "kind": "derived_parameter",
+      "unit": "A",
+      "participation": "M1_derived",
+      "declared_axis": null,
+      "semantic_definition": "F_KPFD.Idown_A",
+      "range_text": "derived; no independent axis",
+      "validity": "M1 m=0",
+      "semantic_conflict": "DOWN current subtracted by state logic",
+      "relation_ids": [
+        "R_CP"
+      ],
+      "co_variables": [
+        "Icp",
+        "Iup",
+        "Kpfd"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/Idown"
+    },
+    {
+      "id": "Kpfd",
+      "block": "PFD/CP",
+      "kind": "derived_parameter",
+      "unit": "A/rad",
+      "participation": "M1_derived",
+      "declared_axis": null,
+      "semantic_definition": "F_KPFD.Kpfd_A_per_rad",
+      "range_text": "derived; no independent axis",
+      "validity": "symmetric ideal zero-leakage/reset CP",
+      "semantic_conflict": "do not infer gain from event reset approximation",
+      "relation_ids": [
+        "R_CP",
+        "R_LOOP"
+      ],
+      "co_variables": [
+        "Icp",
+        "Idown",
+        "Iup",
+        "Kvco_angular",
+        "L",
+        "T",
+        "Zlf"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/Kpfd"
+    },
+    {
+      "id": "Zlf",
+      "block": "LF",
+      "kind": "derived_parameter",
+      "unit": "Ohm",
+      "participation": "M1_derived",
+      "declared_axis": null,
+      "semantic_definition": "response.Zlf_Ohm [real,imag]",
+      "range_text": "derived; no independent axis",
+      "validity": "s=j*2*pi*f; f>0; positive ideal RC; no load",
+      "semantic_conflict": "Cload/proxy semantics differ",
+      "relation_ids": [
+        "R_LF",
+        "R_LOOP"
+      ],
+      "co_variables": [
+        "C1",
+        "C2",
+        "Cload",
+        "Gload",
+        "Kpfd",
+        "Kvco_angular",
+        "L",
+        "Rz",
+        "T"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/Zlf"
+    },
+    {
+      "id": "fz",
+      "block": "LF",
+      "kind": "derived_parameter",
+      "unit": "Hz",
+      "participation": "M1_derived",
+      "declared_axis": null,
+      "semantic_definition": "F_LF_TF.zero_Hz",
+      "range_text": "derived; no independent axis",
+      "validity": "positive RC",
+      "semantic_conflict": "none",
+      "relation_ids": [
+        "R_LF_SHAPE"
+      ],
+      "co_variables": [
+        "C1",
+        "C2",
+        "Rz",
+        "fp"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/fz"
+    },
+    {
+      "id": "fp",
+      "block": "LF",
+      "kind": "derived_parameter",
+      "unit": "Hz",
+      "participation": "M1_derived",
+      "declared_axis": null,
+      "semantic_definition": "F_LF_TF.nonzero_pole_Hz",
+      "range_text": "derived; no independent axis",
+      "validity": "positive RC; also integrator at 0",
+      "semantic_conflict": "proxy load not carried over",
+      "relation_ids": [
+        "R_LF_SHAPE"
+      ],
+      "co_variables": [
+        "C1",
+        "C2",
+        "Rz",
+        "fz"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/fp"
+    },
+    {
+      "id": "L",
+      "block": "Loop",
+      "kind": "derived_parameter",
+      "unit": "1",
+      "participation": "M1_derived",
+      "declared_axis": null,
+      "semantic_definition": "response.L [real,imag]",
+      "range_text": "derived; no independent axis",
+      "validity": "locked continuous small signal; ideal subset",
+      "semantic_conflict": "no sampled-loop equivalence established",
+      "relation_ids": [
+        "R_LOOP",
+        "R_PM",
+        "R_UGF"
+      ],
+      "co_variables": [
+        "Kpfd",
+        "Kvco_angular",
+        "PM",
+        "T",
+        "UGF",
+        "Zlf"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/L"
+    },
+    {
+      "id": "T",
+      "block": "Loop",
+      "kind": "derived_parameter",
+      "unit": "1",
+      "participation": "M1_derived",
+      "declared_axis": null,
+      "semantic_definition": "response.T [real,imag]",
+      "range_text": "derived; no independent axis",
+      "validity": "normalized; H_ref=N*T",
+      "semantic_conflict": "BW from normalized T not absolute H_ref",
+      "relation_ids": [
+        "R_LOOP",
+        "R_BW"
+      ],
+      "co_variables": [
+        "BW",
+        "Kpfd",
+        "Kvco_angular",
+        "L",
+        "Zlf"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/T"
+    },
+    {
+      "id": "UGF",
+      "block": "Loop",
+      "kind": "system_measurement",
+      "unit": "Hz",
+      "participation": "M1_derived",
+      "declared_axis": null,
+      "semantic_definition": "metrics.UGF_Hz",
+      "range_text": "derived; no independent axis",
+      "validity": "finite bracketed unique crossing; diagnostic only",
+      "semantic_conflict": "frequency-domain derived measurement, not M2 measurement",
+      "relation_ids": [
+        "R_PM",
+        "R_UGF",
+        "R_VERIFICATION"
+      ],
+      "co_variables": [
+        "BW",
+        "L",
+        "PM",
+        "Vctrl0",
+        "phase_err"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/UGF"
+    },
+    {
+      "id": "BW",
+      "block": "Loop",
+      "kind": "system_measurement",
+      "unit": "Hz",
+      "participation": "M1_derived",
+      "declared_axis": null,
+      "semantic_definition": "metrics.BW_Hz",
+      "range_text": "derived; no independent axis",
+      "validity": "stable continuous M1; finite bracket",
+      "semantic_conflict": "not UGF; not sampled bandwidth",
+      "relation_ids": [
+        "R_BW",
+        "R_JOINT",
+        "R_VERIFICATION"
+      ],
+      "co_variables": [
+        "C1",
+        "C2",
+        "Icp",
+        "Kvco",
+        "PM",
+        "Rz",
+        "T",
+        "UGF",
+        "Vctrl0",
+        "f0",
+        "phase_err"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/BW"
+    },
+    {
+      "id": "PM",
+      "block": "Loop",
+      "kind": "system_measurement",
+      "unit": "deg",
+      "participation": "M1_derived",
+      "declared_axis": null,
+      "semantic_definition": "metrics.PM_deg",
+      "range_text": "derived; no independent axis",
+      "validity": "valid UGF; stable continuous M1",
+      "semantic_conflict": "radians converted once",
+      "relation_ids": [
+        "R_PM",
+        "R_JOINT",
+        "R_VERIFICATION"
+      ],
+      "co_variables": [
+        "BW",
+        "C1",
+        "C2",
+        "Icp",
+        "Kvco",
+        "L",
+        "Rz",
+        "UGF",
+        "Vctrl0",
+        "f0",
+        "phase_err"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/PM"
+    },
+    {
+      "id": "V0",
+      "block": "VCO",
+      "kind": "context_not_executed",
+      "unit": "V",
+      "participation": "semantic_reference_not_executed",
+      "declared_axis": null,
+      "semantic_definition": "no v2 independent anchor",
+      "range_text": "not a v2 axis",
+      "validity": "linear conversion only",
+      "semantic_conflict": "YES: f0 offset required",
+      "relation_ids": [
+        "R_CONTEXT"
+      ],
+      "co_variables": [
+        "Rload",
+        "Vctrl0",
+        "f_offset"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/V0"
+    },
+    {
+      "id": "phase_err",
+      "block": "PFD",
+      "kind": "derived_parameter",
+      "unit": "rad",
+      "participation": "semantic_reference_not_executed",
+      "declared_axis": null,
+      "semantic_definition": "reference-minus-feedback radians",
+      "range_text": "[-pi,pi)",
+      "validity": "no time-domain M1 waveform",
+      "semantic_conflict": "YES: e_v2_rad=-e_v1_deg*pi/180",
+      "relation_ids": [
+        "R_PFD",
+        "R_VERIFICATION"
+      ],
+      "co_variables": [
+        "BW",
+        "PFD_reset_delay",
+        "PM",
+        "UGF",
+        "Vctrl0",
+        "f_ref"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/phase_err"
+    },
+    {
+      "id": "f_offset",
+      "block": "Loop",
+      "kind": "context_not_executed",
+      "unit": "Hz",
+      "participation": "semantic_reference_not_executed",
+      "declared_axis": null,
+      "semantic_definition": "FrequencyScan; response_frequencies_Hz",
+      "range_text": "positive; custom scan explicit",
+      "validity": "missing crossing => NUMERICAL_FAILURE",
+      "semantic_conflict": "no units hidden in angular axis",
+      "relation_ids": [
+        "R_CONTEXT"
+      ],
+      "co_variables": [
+        "Rload",
+        "V0",
+        "Vctrl0"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/f_offset"
+    },
+    {
+      "id": "Vctrl0",
+      "block": "VCO",
+      "kind": "context_not_executed",
+      "unit": "V",
+      "participation": "semantic_reference_not_executed",
+      "declared_axis": null,
+      "semantic_definition": "not executed in M1",
+      "range_text": "no Stage 1 axis",
+      "validity": "M2 only; initial lock not assumed proven",
+      "semantic_conflict": "different initial conditions in v1 history",
+      "relation_ids": [
+        "R_CONTEXT",
+        "R_VERIFICATION"
+      ],
+      "co_variables": [
+        "BW",
+        "PM",
+        "Rload",
+        "UGF",
+        "V0",
+        "f_offset",
+        "phase_err"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/Vctrl0"
+    },
+    {
+      "id": "Rload",
+      "block": "LF",
+      "kind": "context_not_executed",
+      "unit": "Ohm",
+      "participation": "semantic_reference_not_executed",
+      "declared_axis": null,
+      "semantic_definition": "no proxy resistance axis; Gload=0",
+      "range_text": "no Stage 1 axis",
+      "validity": "nonzero Gload unsupported",
+      "semantic_conflict": "YES: finite stored Rload not a dynamic shunt",
+      "relation_ids": [
+        "R_CONTEXT"
+      ],
+      "co_variables": [
+        "V0",
+        "Vctrl0",
+        "f_offset"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/Rload"
+    },
+    {
+      "id": "spec_output_frequency_Hz",
+      "block": "System",
+      "kind": "system_requirement",
+      "unit": "Hz",
+      "participation": "acceptance_bound",
+      "declared_axis": null,
+      "semantic_definition": "conditional_locked_tuning_frequency",
+      "range_text": "draft v0 fixed experiment bounds",
+      "validity": "research target; continuous M1 only",
+      "semantic_conflict": "new experimental targets are not old v1 constraints",
+      "relation_ids": [
+        "R_SYSTEM"
+      ],
+      "co_variables": [
+        "N",
+        "f_ref",
+        "f_target",
+        "spec_BW_Hz",
+        "spec_PM_deg"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/spec_output_frequency_Hz"
+    },
+    {
+      "id": "spec_BW_Hz",
+      "block": "System",
+      "kind": "system_requirement",
+      "unit": "Hz",
+      "participation": "acceptance_bound",
+      "declared_axis": null,
+      "semantic_definition": "continuous_normalized_T_first_downward_minus3dB",
+      "range_text": "draft v0 fixed experiment bounds",
+      "validity": "research target; continuous M1 only",
+      "semantic_conflict": "new experimental targets are not old v1 constraints",
+      "relation_ids": [
+        "R_SYSTEM"
+      ],
+      "co_variables": [
+        "N",
+        "f_ref",
+        "f_target",
+        "spec_PM_deg",
+        "spec_output_frequency_Hz"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/spec_BW_Hz"
+    },
+    {
+      "id": "spec_PM_deg",
+      "block": "System",
+      "kind": "system_requirement",
+      "unit": "deg",
+      "participation": "acceptance_bound",
+      "declared_axis": null,
+      "semantic_definition": "180_plus_continuous_L_phase_at_UGF",
+      "range_text": "draft v0 fixed experiment bounds",
+      "validity": "research target; continuous M1 only",
+      "semantic_conflict": "new experimental targets are not old v1 constraints",
+      "relation_ids": [
+        "R_SYSTEM"
+      ],
+      "co_variables": [
+        "N",
+        "f_ref",
+        "f_target",
+        "spec_BW_Hz",
+        "spec_output_frequency_Hz"
+      ],
+      "traceability": "configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/spec_PM_deg"
+    }
+  ],
+  "derived_marginal_ranges": [
+    {
+      "id": "Kpfd",
+      "unit": "A/rad",
+      "range": [
+        7.957747154594767e-06,
+        3.183098861837907e-05
+      ],
+      "expression": "Icp/(2π)",
+      "scope": "declared projection"
+    },
+    {
+      "id": "Kvco_angular",
+      "unit": "rad/s/V",
+      "range": [
+        62831853.071795866,
+        251327412.28718346
+      ],
+      "expression": "2π·Kvco",
+      "scope": "declared projection"
+    },
+    {
+      "id": "P",
+      "unit": "A*Hz/V",
+      "range": [
+        500.0,
+        8000.0
+      ],
+      "expression": "Icp·Kvco",
+      "scope": "declared projection; supplementary derived symbol"
+    },
+    {
+      "id": "K",
+      "unit": "A*Hz/V",
+      "range": [
+        62.5,
+        1000.0
+      ],
+      "expression": "P/N",
+      "scope": "declared projection; supplementary derived symbol"
+    },
+    {
+      "id": "C_sum",
+      "unit": "F",
+      "choices": [
+        5.500000000000001e-10,
+        6e-10,
+        7.000000000000001e-10,
+        1.05e-09,
+        1.1000000000000001e-09,
+        1.2e-09,
+        2.05e-09,
+        2.1e-09,
+        2.2000000000000003e-09
+      ],
+      "expression": "C1+C2",
+      "scope": "discrete derived choices; supplementary symbol"
+    },
+    {
+      "id": "q",
+      "unit": "1",
+      "choices": [
+        3.5,
+        6.0,
+        11.0,
+        21.0,
+        41.0
+      ],
+      "expression": "1+C2/C1",
+      "scope": "discrete derived choices; supplementary symbol"
+    },
+    {
+      "id": "fz",
+      "unit": "Hz",
+      "range": [
+        9947.183943243459,
+        159154.94309189534
+      ],
+      "expression": "1/(2π·Rz·C2)",
+      "scope": "declared marginal extrema; coupled to fp"
+    },
+    {
+      "id": "fp",
+      "unit": "Hz",
+      "range": [
+        109419.02337567805,
+        1750704.3740108488
+      ],
+      "expression": "(1/C1+1/C2)/(2π·Rz)",
+      "scope": "declared marginal extrema; coupled to fz"
+    },
+    {
+      "id": "Vctrl_required",
+      "unit": "V",
+      "range": [
+        0.1,
+        2.0
+      ],
+      "validity_intersection": [
+        0,
+        1.2
+      ],
+      "validity_endpoints": "strictly interior",
+      "expression": "(F−f0)/Kvco",
+      "scope": "declared [0.1,2] V; model-valid projection [0.1,1.2) V"
+    }
+  ],
+  "formal_metrics": [
+    "output_frequency_Hz",
+    "BW_Hz",
+    "PM_deg"
+  ],
+  "layers": [
+    "DECLARED",
+    "MODEL_VALIDITY",
+    "M1_SPEC_FEASIBLE",
+    "FULL_TB_VERIFIED"
+  ],
+  "may_issue_behavioral_PASS": false,
+  "automatic_agent_integration": false,
+  "exact_conditional_domain": "legal C1,C2; x in PM interval; B in three-way interval; P=a_P B^2; R=a_R/B; Kvco/f0 split with strict tuning",
+  "full_TB_certified_continuous_domain": "NOT_ESTABLISHED",
+  "unavailable": [
+    "periodic_PM_certification",
+    "1uHz_frequency_certification",
+    "RUR_definition",
+    "jitter",
+    "phase_noise",
+    "power"
+  ]
+}

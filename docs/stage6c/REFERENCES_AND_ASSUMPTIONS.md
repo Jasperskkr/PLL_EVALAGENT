@@ -1,0 +1,13 @@
+# Primary references and model assumptions
+
+Retrieval receipts and SHA: experiments/stage6c/references_01. Web tool was blocked by Cloudflare403; direct HTTPS from original designers-guide.org retrieved complete PDFs and read-only PyMuPDF text extraction. Actual DOI redirects for Hanumolu/Homayoun returned empty bodies; Wang/Zou403. Those four full texts were not read and no physical claim is attributed to their unseen contents. SciPy docs TLS timeout; installed scipy.signal.welch implementation/docstring is the executable reference.
+
+Reviewed primary texts:
+
+1. Ken Kundert, *Predicting the Phase Noise and Jitter of PLL-Based Frequency Synthesizers*, original PDF https://designers-guide.org/analysis/PLLnoise%2Bjitter.pdf . PDF page11 §2.3 explains obtaining block noise strengths independently and propagating each source; correlation must be treated explicitly. PDF page18 §5 describes CP on-time-dependent noise and simultaneous UP/DOWN current cancellation while independent noise remains. Footnote3 explicitly identifies continuous phase-domain model as ignoring detector sampling. This supports separating nominal M1 and sampled/gated behavioral M2; it does not characterize this project's numerical coefficients or error bound.
+
+2. Ken Kundert, *Modeling Jitter in PLL-based Frequency Synthesizers*, original PDF https://designers-guide.org/forum/Attachments/PLLjitter.pdf . Page8 distinguishes synchronous driven-block jitter with independent event timing from accumulated autonomous oscillator jitter; various jitter definitions have distinct correlation/observation meanings. This supports a specified process/metric/band rather than calling any trace RMS jitter. It does not establish our exact finite-step discretization or CI validity.
+
+Project-supplied equations independently checked: four noise transfers, 4kTR one-sided, SI/2π, uncorrelated variances, white-frequency diffusion, pulsed-current charge variance. Independent nodal matrix/integration evidence in PhaseA. Anchored K2 law supplied by complete Stage6C request, replaces original truncated Stage7 unanchored law without changing frozen ideal model.
+
+Project engineering assumptions (not derived from these references): fixed source coefficients, 300K, 2ns reset, ±4MHz/V² K2, ±0.1 mismatch, fixed frequency band/warmup/seeds/budgets/100ps study bound; reference iid-sample linear interpolation sinc^4 reconstruction; explicit Euler noise propagation; source-global continuous effective CP versus separately gated UP/DOWN; matched noise-off subtraction; approximate independent-seed Student-t interval; 20% variance dt test. Each requires actual experiments and may fail. No claimed IP/device accuracy, no hidden noise coefficient optimization.

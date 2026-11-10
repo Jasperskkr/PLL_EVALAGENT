@@ -1,0 +1,533 @@
+{
+  "status": "PASS_F_INTEGRATION_AND_INDEPENDENT_EXPORT",
+  "evidence": {
+    "pre": {
+      "path": "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\pre_verification\\pre_receipt.json",
+      "sha256": "7a34fe72d440c8377875afd4ae9e0c7b80e69cc68fc8fd5972824554e1a11ef8",
+      "receipt": {
+        "status": "PASS_PRE_INTEGRATION_IDEAL_CLI_BASELINE",
+        "root": "F:\\LJP\\概伦AI\\PLL_allocation",
+        "commands": [
+          {
+            "argv": [
+              "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+              "-B",
+              "-m",
+              "pll_allocation",
+              "pipeline",
+              "--strategy",
+              "analytical",
+              "--out",
+              "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\pre_verification\\before_analytical"
+            ],
+            "cwd": "F:\\LJP\\概伦AI\\PLL_allocation",
+            "started_utc": "2026-11-10T07:18:18.782040+00:00",
+            "wall_s": 10.080201299977489,
+            "returncode": 0,
+            "package_import_root": "F:\\LJP\\概伦AI\\PLL_allocation",
+            "output": "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\pre_verification\\before_analytical"
+          },
+          {
+            "argv": [
+              "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+              "-B",
+              "-m",
+              "pll_allocation",
+              "pipeline",
+              "--strategy",
+              "random",
+              "--seed",
+              "23",
+              "--m2-budget",
+              "2",
+              "--repair-budget",
+              "1",
+              "--out",
+              "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\pre_verification\\before_repair"
+            ],
+            "cwd": "F:\\LJP\\概伦AI\\PLL_allocation",
+            "started_utc": "2026-11-10T07:18:28.956918+00:00",
+            "wall_s": 23.71106509992387,
+            "returncode": 0,
+            "package_import_root": "F:\\LJP\\概伦AI\\PLL_allocation",
+            "output": "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\pre_verification\\before_repair"
+          }
+        ],
+        "source_files_checked": 158,
+        "source_changes": [],
+        "HEAD": "cd70cf445d2ac6789550b7df2da6736221262045",
+        "branch": "master",
+        "tracked_and_index_unchanged": true,
+        "package_import": "F:\\LJP\\概伦AI\\PLL_allocation\\pll_allocation\\__init__.py",
+        "pipeline_import": "F:\\LJP\\概伦AI\\PLL_allocation\\pll_allocation\\pipeline.py",
+        "original_native_binary_sha256": "d3374c6da78b8e6ae7e6721492cc8e9d9e9267f65b1fff68b513de1f110d85e2",
+        "original_native_identity_file": {
+          "sha256": {
+            "kernel.cpp": "befdd779cd69c73f1a2fb8667e895f77efff979cb3186d80a83113c0321c9f54",
+            "build/kernel.dll": "d3374c6da78b8e6ae7e6721492cc8e9d9e9267f65b1fff68b513de1f110d85e2"
+          },
+          "compiler": "MSVC C++17 /O2 /EHsc /LD",
+          "origin": "explicit build or audited byte-identical Track B DLL"
+        },
+        "analytical_status": "M2_PARTIAL_PASS",
+        "analytical_M2_calls": 1,
+        "random_repair_status": "M2_PARTIAL_PASS",
+        "random_repair_BW_statuses": [
+          "FAIL",
+          "PASS"
+        ],
+        "random_repair_BW_values": [
+          713783.7917007345,
+          205385.56797859407
+        ],
+        "random_repair_M2_calls": 2,
+        "real_BW_failure_and_new_repaired_candidate_reverification": true,
+        "new_M2_calls": 3,
+        "native_completed": 326,
+        "new_LLM_calls": 0,
+        "scientific_summary_files": [
+          "before_analytical.scientific_summary.json",
+          "before_repair.scientific_summary.json"
+        ],
+        "full_SystemSpec_certified": false,
+        "ready_for_parent_source_integration": true,
+        "scope": "Actual pre-integration ideal default CLI runs from F package and original native binary; no Stage6B/C or full-test execution."
+      }
+    },
+    "post": {
+      "path": "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\post_verification\\post_receipt.json",
+      "sha256": "8ad88aad3c2755587384f7686b626712591548d7ff9a2c403a195ef47053c6fe",
+      "receipt": {
+        "status": "PASS_POST_INTEGRATION_F_MAINLINE",
+        "root": "F:\\LJP\\概伦AI\\PLL_allocation",
+        "commands": [
+          {
+            "name": "fresh_stage6c_build",
+            "argv": [
+              "cmd.exe",
+              "/d",
+              "/c",
+              "F:\\LJP\\概伦AI\\PLL_allocation\\pll_allocation\\verification\\build_stage6c.cmd"
+            ],
+            "cwd": "F:\\LJP\\概伦AI\\PLL_allocation",
+            "started_utc": "2026-11-10T07:30:38.803260+00:00",
+            "returncode": 0,
+            "wall_s": 5.760653999983333,
+            "process_CPU": {
+              "kernel_s": 1.609375,
+              "user_s": 0.203125,
+              "total_s": 1.8125
+            },
+            "CPU_scope": "Only launched process CPU; pipeline native DLL is in-process, cmd compiler children are excluded.",
+            "PLL_STAGE6C_BUILD_DIR": "UNSET_DEFAULT_F_NATIVE",
+            "PYTHONPATH": "F:\\LJP\\概伦AI\\PLL_allocation"
+          },
+          {
+            "name": "full_tests",
+            "argv": [
+              "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+              "-B",
+              "-m",
+              "pytest",
+              "-q",
+              "tests",
+              "-p",
+              "no:cacheprovider",
+              "--basetemp=F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\post_verification\\full_tests_01\\tmp",
+              "--junitxml=F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\post_verification\\full_tests_01\\tests.xml"
+            ],
+            "cwd": "F:\\LJP\\概伦AI\\PLL_allocation",
+            "started_utc": "2026-11-10T07:30:45.308138+00:00",
+            "returncode": 0,
+            "wall_s": 38.41515410004649,
+            "process_CPU": {
+              "kernel_s": 7.046875,
+              "user_s": 25.75,
+              "total_s": 32.796875
+            },
+            "CPU_scope": "Only launched process CPU; pipeline native DLL is in-process, cmd compiler children are excluded.",
+            "PLL_STAGE6C_BUILD_DIR": "UNSET_DEFAULT_F_NATIVE",
+            "PYTHONPATH": "F:\\LJP\\概伦AI\\PLL_allocation"
+          },
+          {
+            "name": "after_analytical",
+            "argv": [
+              "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+              "-B",
+              "-m",
+              "pll_allocation",
+              "pipeline",
+              "--strategy",
+              "analytical",
+              "--out",
+              "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\post_verification\\after_analytical"
+            ],
+            "cwd": "F:\\LJP\\概伦AI\\PLL_allocation",
+            "started_utc": "2026-11-10T07:31:23.735671+00:00",
+            "returncode": 0,
+            "wall_s": 9.726936000050046,
+            "process_CPU": {
+              "kernel_s": 1.375,
+              "user_s": 7.4375,
+              "total_s": 8.8125
+            },
+            "CPU_scope": "Only launched process CPU; pipeline native DLL is in-process, cmd compiler children are excluded.",
+            "PLL_STAGE6C_BUILD_DIR": "UNSET_DEFAULT_F_NATIVE",
+            "PYTHONPATH": "F:\\LJP\\概伦AI\\PLL_allocation"
+          },
+          {
+            "name": "after_repair",
+            "argv": [
+              "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+              "-B",
+              "-m",
+              "pll_allocation",
+              "pipeline",
+              "--strategy",
+              "random",
+              "--seed",
+              "23",
+              "--m2-budget",
+              "2",
+              "--repair-budget",
+              "1",
+              "--out",
+              "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\post_verification\\after_repair"
+            ],
+            "cwd": "F:\\LJP\\概伦AI\\PLL_allocation",
+            "started_utc": "2026-11-10T07:34:06.024619+00:00",
+            "returncode": 0,
+            "wall_s": 20.201053700060584,
+            "process_CPU": {
+              "kernel_s": 2.484375,
+              "user_s": 15.328125,
+              "total_s": 17.8125
+            },
+            "CPU_scope": "Only launched process CPU; pipeline native DLL is in-process, cmd compiler children are excluded.",
+            "PLL_STAGE6C_BUILD_DIR": "UNSET_DEFAULT_F_NATIVE",
+            "PYTHONPATH": "F:\\LJP\\概伦AI\\PLL_allocation"
+          },
+          {
+            "name": "stage6b_B1_C",
+            "argv": [
+              "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+              "-B",
+              "-m",
+              "pll_allocation",
+              "pipeline",
+              "--multispec",
+              "configs/stage6b/B1.json",
+              "--method",
+              "C",
+              "--out",
+              "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\post_verification\\stage6b_B1_C"
+            ],
+            "cwd": "F:\\LJP\\概伦AI\\PLL_allocation",
+            "started_utc": "2026-11-10T07:34:26.360832+00:00",
+            "returncode": 0,
+            "wall_s": 42.22425660002045,
+            "process_CPU": {
+              "kernel_s": 4.765625,
+              "user_s": 25.046875,
+              "total_s": 29.8125
+            },
+            "CPU_scope": "Only launched process CPU; pipeline native DLL is in-process, cmd compiler children are excluded.",
+            "PLL_STAGE6C_BUILD_DIR": "UNSET_DEFAULT_F_NATIVE",
+            "PYTHONPATH": "F:\\LJP\\概伦AI\\PLL_allocation"
+          },
+          {
+            "name": "stage6c_J0_A",
+            "argv": [
+              "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+              "-B",
+              "-m",
+              "pll_allocation",
+              "pipeline",
+              "--multispec",
+              "configs/stage6c/joint_frozen_01/J0_ideal.json",
+              "--method",
+              "A",
+              "--out",
+              "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\post_verification\\stage6c_J0_A"
+            ],
+            "cwd": "F:\\LJP\\概伦AI\\PLL_allocation",
+            "started_utc": "2026-11-10T07:36:52.193336+00:00",
+            "returncode": 0,
+            "wall_s": 45.41858399997,
+            "process_CPU": {
+              "kernel_s": 3.546875,
+              "user_s": 37.34375,
+              "total_s": 40.890625
+            },
+            "CPU_scope": "Only launched process CPU; pipeline native DLL is in-process, cmd compiler children are excluded.",
+            "PLL_STAGE6C_BUILD_DIR": "UNSET_DEFAULT_F_NATIVE",
+            "PYTHONPATH": "F:\\LJP\\概伦AI\\PLL_allocation"
+          }
+        ],
+        "tests": {
+          "tests": 478,
+          "errors": 0,
+          "failures": 0,
+          "skipped": 0
+        },
+        "source_files_checked": 211,
+        "source_changes": [],
+        "original_ideal_DLL_unchanged": true,
+        "original_ideal_DLL_sha256": "d3374c6da78b8e6ae7e6721492cc8e9d9e9267f65b1fff68b513de1f110d85e2",
+        "fresh_Stage6C_build": "F default build_stage6c; fresh verified native identity; PLL_STAGE6C_BUILD_DIR unset",
+        "package_import": "F:\\LJP\\概伦AI\\PLL_allocation\\pll_allocation\\__init__.py",
+        "pipeline_import": "F:\\LJP\\概伦AI\\PLL_allocation\\pll_allocation\\pipeline.py",
+        "ideal_pre_post_scientific_payload_exact": true,
+        "stage6b_reference_sequence_and_all_constraints_exact": true,
+        "stage6c_reference_metrics_seed_statistics_dt_envelopes_exact": true,
+        "new_M2_calls": 7,
+        "native_completed": 764,
+        "native_elapsed_s": 36.00191440107301,
+        "integration_points": 861852113,
+        "new_LLM_calls": 0,
+        "HEAD": "cd70cf445d2ac6789550b7df2da6736221262045",
+        "branch": "codex/f-mainline-consolidation",
+        "Git_index_unchanged": false,
+        "concurrent_parent_authorized_staging": true,
+        "concurrent_Git_scope_review": "concurrent_git_scope_review.json",
+        "full_SystemSpec_certified": false,
+        "ideal_overall": "M2_PARTIAL_PASS_WITH_STRICT_PM_AND_FREQUENCY_UNKNOWN",
+        "random_BW_failure_then_repair_values_Hz": [
+          713783.7917007345,
+          205385.56797859407
+        ],
+        "stage6b_final": "RESEARCH_JOINT_FEASIBLE_WITH_RETAINED_THIRD_CANDIDATE_UNKNOWN",
+        "stage6c_final": "RESEARCH_JOINT_FEASIBLE",
+        "measurement_duration_preserved": true,
+        "all_first_candidates_written_before_TB": true,
+        "audit_failures_retained": [
+          "post_failure.json",
+          "resume_failure_01.json",
+          "continue_final_failure.json"
+        ],
+        "failure_scope": "Audit-only expectations corrected by explicit new review scripts: run identity, v1.0 evidence location, concurrent authorized index staging. Runtime/tests/contracts never edited to pass.",
+        "successful_work_not_repeated": true,
+        "cost_scope": "CLI experiments only; tests separate and not independent optimization samples",
+        "ready_for_parent_review": true
+      }
+    },
+    "export": {
+      "path": "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\export_verification\\export_receipt.json",
+      "sha256": "e14cdf674e48a717237b5fb60a19d687e2eb87d022ba6fc14203a0c1f8be1016",
+      "receipt": {
+        "status": "PASS_CLEAN_GIT_INDEX_EXPORT_FRESH_BUILD_TESTS_AND_REAL_CLI",
+        "export_root": "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\clean_export_02\\repo",
+        "original_index_tree": "621eae37c512437b5d149d9bb358488098b5a959",
+        "commands": [
+          {
+            "name": "build_kernel",
+            "argv": [
+              "cmd.exe",
+              "/d",
+              "/c",
+              "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\clean_export_02\\repo\\pll_allocation\\verification\\build_kernel.cmd"
+            ],
+            "cwd": "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\clean_export_02\\repo",
+            "started_utc": "2026-11-10T07:42:53.596755+00:00",
+            "returncode": 0,
+            "wall_s": 4.943507099989802,
+            "CPU": {
+              "kernel_s": 1.625,
+              "user_s": 0.171875,
+              "total_s": 1.796875
+            },
+            "CPU_scope": "Direct process only; native DLL runs within CLI Python; build cmd child compilers excluded.",
+            "PYTHONPATH": "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\export_verification\\audit_guard;F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\clean_export_02\\repo",
+            "PLL_STAGE6C_BUILD_DIR": "UNSET_FRESH_EXPORT_DEFAULT",
+            "external_project_read_guard": true
+          },
+          {
+            "name": "build_return_ratio",
+            "argv": [
+              "cmd.exe",
+              "/d",
+              "/c",
+              "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\clean_export_02\\repo\\pll_allocation\\verification\\build_return_ratio.cmd"
+            ],
+            "cwd": "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\clean_export_02\\repo",
+            "started_utc": "2026-11-10T07:42:58.541617+00:00",
+            "returncode": 0,
+            "wall_s": 4.798101100022905,
+            "CPU": {
+              "kernel_s": 1.53125,
+              "user_s": 0.140625,
+              "total_s": 1.671875
+            },
+            "CPU_scope": "Direct process only; native DLL runs within CLI Python; build cmd child compilers excluded.",
+            "PYTHONPATH": "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\export_verification\\audit_guard;F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\clean_export_02\\repo",
+            "PLL_STAGE6C_BUILD_DIR": "UNSET_FRESH_EXPORT_DEFAULT",
+            "external_project_read_guard": true
+          },
+          {
+            "name": "build_closed_loop",
+            "argv": [
+              "cmd.exe",
+              "/d",
+              "/c",
+              "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\clean_export_02\\repo\\pll_allocation\\verification\\build_closed_loop.cmd"
+            ],
+            "cwd": "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\clean_export_02\\repo",
+            "started_utc": "2026-11-10T07:43:03.341570+00:00",
+            "returncode": 0,
+            "wall_s": 4.755697400076315,
+            "CPU": {
+              "kernel_s": 1.625,
+              "user_s": 0.109375,
+              "total_s": 1.734375
+            },
+            "CPU_scope": "Direct process only; native DLL runs within CLI Python; build cmd child compilers excluded.",
+            "PYTHONPATH": "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\export_verification\\audit_guard;F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\clean_export_02\\repo",
+            "PLL_STAGE6C_BUILD_DIR": "UNSET_FRESH_EXPORT_DEFAULT",
+            "external_project_read_guard": true
+          },
+          {
+            "name": "build_stage6c",
+            "argv": [
+              "cmd.exe",
+              "/d",
+              "/c",
+              "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\clean_export_02\\repo\\pll_allocation\\verification\\build_stage6c.cmd"
+            ],
+            "cwd": "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\clean_export_02\\repo",
+            "started_utc": "2026-11-10T07:43:08.098180+00:00",
+            "returncode": 0,
+            "wall_s": 4.372033099993132,
+            "CPU": {
+              "kernel_s": 1.5625,
+              "user_s": 0.140625,
+              "total_s": 1.703125
+            },
+            "CPU_scope": "Direct process only; native DLL runs within CLI Python; build cmd child compilers excluded.",
+            "PYTHONPATH": "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\export_verification\\audit_guard;F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\clean_export_02\\repo",
+            "PLL_STAGE6C_BUILD_DIR": "UNSET_FRESH_EXPORT_DEFAULT",
+            "external_project_read_guard": true
+          },
+          {
+            "name": "import_provenance",
+            "argv": [
+              "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+              "-B",
+              "-c",
+              "import json; from pathlib import Path; import pll_allocation,pll_allocation.pipeline; from pll_allocation.verification.resources import CONFIGS; from pll_allocation.pipeline_contracts import load_inputs; from pll_allocation.verification.stage6c_identity import default_build,check_build; c,m,s,p=load_inputs(); print(json.dumps({'package':pll_allocation.__file__,'pipeline':pll_allocation.pipeline.__file__,'configs':str(CONFIGS),'native':str(default_build()),'protocol':p['protocol_id'],'optional_build':check_build()}))"
+            ],
+            "cwd": "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\clean_export_02\\repo",
+            "started_utc": "2026-11-10T07:43:12.497399+00:00",
+            "returncode": 0,
+            "wall_s": 0.8271513000363484,
+            "CPU": {
+              "kernel_s": 0.5,
+              "user_s": 0.125,
+              "total_s": 0.625
+            },
+            "CPU_scope": "Direct process only; native DLL runs within CLI Python; build cmd child compilers excluded.",
+            "PYTHONPATH": "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\export_verification\\audit_guard;F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\clean_export_02\\repo",
+            "PLL_STAGE6C_BUILD_DIR": "UNSET_FRESH_EXPORT_DEFAULT",
+            "external_project_read_guard": true
+          },
+          {
+            "name": "full_tests",
+            "argv": [
+              "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+              "-B",
+              "-m",
+              "pytest",
+              "-q",
+              "tests",
+              "-p",
+              "no:cacheprovider",
+              "--basetemp=F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\export_verification\\full_tests_01\\tmp",
+              "--junitxml=F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\export_verification\\full_tests_01\\tests.xml"
+            ],
+            "cwd": "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\clean_export_02\\repo",
+            "started_utc": "2026-11-10T07:43:13.342736+00:00",
+            "returncode": 0,
+            "wall_s": 37.460072799935006,
+            "CPU": {
+              "kernel_s": 7.140625,
+              "user_s": 26.9375,
+              "total_s": 34.078125
+            },
+            "CPU_scope": "Direct process only; native DLL runs within CLI Python; build cmd child compilers excluded.",
+            "PYTHONPATH": "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\export_verification\\audit_guard;F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\clean_export_02\\repo",
+            "PLL_STAGE6C_BUILD_DIR": "UNSET_FRESH_EXPORT_DEFAULT",
+            "external_project_read_guard": true
+          },
+          {
+            "name": "export_analytical",
+            "argv": [
+              "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+              "-B",
+              "-m",
+              "pll_allocation",
+              "pipeline",
+              "--strategy",
+              "analytical",
+              "--out",
+              "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\export_verification\\export_analytical"
+            ],
+            "cwd": "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\clean_export_02\\repo",
+            "started_utc": "2026-11-10T07:43:50.812425+00:00",
+            "returncode": 0,
+            "wall_s": 9.844423600006849,
+            "CPU": {
+              "kernel_s": 1.4375,
+              "user_s": 7.421875,
+              "total_s": 8.859375
+            },
+            "CPU_scope": "Direct process only; native DLL runs within CLI Python; build cmd child compilers excluded.",
+            "PYTHONPATH": "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\export_verification\\audit_guard;F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_integration_20261110_01\\clean_export_02\\repo",
+            "PLL_STAGE6C_BUILD_DIR": "UNSET_FRESH_EXPORT_DEFAULT",
+            "external_project_read_guard": true
+          }
+        ],
+        "four_backends_freshly_rebuilt": true,
+        "tests": {
+          "tests": 478,
+          "errors": 0,
+          "failures": 0,
+          "skipped": 0
+        },
+        "original_exported_files_unchanged": 5939,
+        "initial_export_no_Git_or_native_binaries": true,
+        "import_config_and_native_all_from_export": true,
+        "external_project_read_guard": "Python audit open/ctypes.dlopen rejects mother project inputs and C Codex worktree reads; verifier outputs and Python/OS libraries allowed",
+        "audited_python_processes": 9,
+        "denied_external_project_reads": [],
+        "pre_vs_export_scientific_payload_exact": true,
+        "scientific_window_and_duration_preserved": true,
+        "actual_cost": {
+          "analytic_calls": 11,
+          "M1_calls": 1,
+          "candidate_generations": 6,
+          "M2_calls": 1,
+          "LLM_calls": 0,
+          "native_completed_runs": 106,
+          "native_failed_attempts": 0,
+          "integration_points": 95090315,
+          "native_elapsed_s": 2.7693386001046747,
+          "native_failure_elapsed_s": 0,
+          "M1_posthoc_calls": 1,
+          "M1_total_calls": 2,
+          "total_elapsed_s": 9.006677700090222,
+          "monetary_cost": null
+        },
+        "new_M2_calls": 1,
+        "native_completed": 106,
+        "new_LLM_calls": 0,
+        "overall_status": "M2_PARTIAL_PASS",
+        "full_SystemSpec_certified": false,
+        "scope": "Git index exported source needs no C worktree or mother-project input; four-build/full478tests/one real ideal fullM2 independently executed. Historical evidence paths are not new calls."
+      }
+    }
+  },
+  "new_LLM_calls": 0,
+  "CLI_M2_calls": 11,
+  "CLI_native_completed": 1196,
+  "tests_separate": true,
+  "full_SystemSpec_certified": false
+}

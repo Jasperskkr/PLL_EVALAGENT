@@ -1,0 +1,26 @@
+{
+  "schema_version": "pll-noise-profile-1.0",
+  "profile_id": "stage6c-noise-cp-1.0",
+  "provenance": "docs/stage6c/IMPLEMENTATION_DESIGN.md; not retuned from results",
+  "assumption_level": "RESEARCH_ONLY",
+  "independent_sources": true,
+  "sources": [
+    {
+      "source_id": "cp",
+      "injection_location": "lf_input_current_effective",
+      "psd_type": "white",
+      "psd_values": {
+        "level": 1e-24
+      },
+      "unit": "A^2/Hz",
+      "one_sided_or_two_sided": "one_sided",
+      "frequency_range_Hz": [
+        1.0,
+        1000000000000.0
+      ],
+      "profile_id": "research-source-cp-1.0",
+      "provenance": "predeclared engineering environment; no device characterization",
+      "assumption_level": "INDEPENDENT_RESEARCH_SOURCE"
+    }
+  ]
+}
