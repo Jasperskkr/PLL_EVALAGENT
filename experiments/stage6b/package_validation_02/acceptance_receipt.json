@@ -1,0 +1,41 @@
+{
+  "status": "PASS_REQUIRED_CHECKS_WITH_DOCUMENTED_EXTERNAL_TRACE_REFERENCE",
+  "archive": "C:\\Users\\Lenovo\\.codex\\worktrees\\stage6b-sensitivity-allocation\\PLL_allocation\\delivery\\stage6b_20261109_02\\PLL_Stage6B_reproducible_bundle.zip",
+  "archive_sha256": "c22e37c83b6308c638d9dbaa9c543f50f18bbab439b89a5f03ac6cb3b5d60733",
+  "archive_bytes": 909348223,
+  "archive_entries": 12492,
+  "manifest_files_verified": 12491,
+  "CRC": "PASS",
+  "without_git": true,
+  "extraction_root": "C:\\Users\\Lenovo\\.codex\\worktrees\\stage6b-bundlecheck-02",
+  "native_fresh_rebuilds": 3,
+  "tests": {
+    "passed": 407,
+    "failed": 0,
+    "errors": 0,
+    "pytest_time_s": 31.892,
+    "process_elapsed_s": 33.260374700068496
+  },
+  "trace_events": 3938,
+  "runtime_events_preserved": 1610,
+  "native_evidence_records": 2120,
+  "method_trace_chains": 12,
+  "missing_external_historical_trace_references": [
+    {
+      "artifact": "delivery/stage6b_20261109_01/stage6b_candidate_01.zip.receipt.json",
+      "sha256": "53712e04e6d4e02553be63aee9022c7931328b9c09d72662cd44455a5470e7f6",
+      "event": "CANDIDATE_PACKAGE_VALIDATED",
+      "event_index": 3937
+    }
+  ],
+  "runtime_and_frozen_sources_identical_to_already_exact_reproduced_candidate01": true,
+  "all_six_repeated_here": false,
+  "rationale": "unchanged frozen runtime already fully reproduced from candidate01; no duplicate study required",
+  "new_LLM_calls": 0,
+  "new_complete_M2_study_calls": 0,
+  "elapsed_s": 101.45702830003574,
+  "started_utc": "2026-11-09T08:19:37.974470+00:00",
+  "completed_utc": "2026-11-09T08:21:19.431590+00:00",
+  "logs_root": "C:\\Users\\Lenovo\\.codex\\worktrees\\stage6b-sensitivity-allocation\\PLL_allocation\\experiments\\stage6b\\package_validation_02",
+  "immutable_archive_and_sources_modified": false
+}

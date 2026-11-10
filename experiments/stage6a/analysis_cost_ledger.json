@@ -1,0 +1,88 @@
+{
+  "entries": [
+    {
+      "phase": "analysis_01",
+      "formal_M1_timing_calls": 21,
+      "formal_M1_timing_elapsed_s": 0.7213481998769566,
+      "representative_M1_calls": 7,
+      "sensitivity_M1_calls": 9,
+      "policy_counts": {
+        "E0_analytical": {
+          "analytic_calls": 11,
+          "M1_calls": 0,
+          "candidate_generations": 6,
+          "M2_calls": 0,
+          "LLM_calls": 0
+        },
+        "E0_slsqp": {
+          "analytic_calls": 160,
+          "M1_calls": 9,
+          "candidate_generations": 14,
+          "M2_calls": 0,
+          "LLM_calls": 0
+        },
+        "E1_analytical": {
+          "analytic_calls": 2,
+          "M1_calls": 0,
+          "candidate_generations": 1,
+          "M2_calls": 0,
+          "LLM_calls": 0
+        }
+      },
+      "factorial_equation_calls": 4725,
+      "conditional_shape_rows": 578,
+      "factorial_process_section_s": 0.5052673999452963,
+      "M2_calls": 0,
+      "LLM_calls": 0
+    },
+    {
+      "phase": "analysis_02",
+      "formal_M1_timing_calls": 24,
+      "formal_M1_timing_elapsed_s": 0.8266408996423706,
+      "representative_M1_calls": 8,
+      "sensitivity_M1_calls": 9,
+      "policy_counts": {
+        "E0_analytical": {
+          "analytic_calls": 11,
+          "M1_calls": 0,
+          "candidate_generations": 6,
+          "M2_calls": 0,
+          "LLM_calls": 0
+        },
+        "E0_slsqp": {
+          "analytic_calls": 160,
+          "M1_calls": 9,
+          "candidate_generations": 14,
+          "M2_calls": 0,
+          "LLM_calls": 0
+        },
+        "E1_analytical": {
+          "analytic_calls": 2,
+          "M1_calls": 0,
+          "candidate_generations": 1,
+          "M2_calls": 0,
+          "LLM_calls": 0
+        }
+      },
+      "factorial_equation_calls": 4725,
+      "conditional_shape_rows": 578,
+      "factorial_process_section_s": 0.5391967999748886,
+      "M2_calls": 0,
+      "LLM_calls": 0
+    }
+  ],
+  "frozen_proposal_formal_M1_calls": 7,
+  "judgment_tests_01": "12 tests; direct M1 evaluations only, not new study samples; pytest wall .84s",
+  "exploratory_console_checks": "one pre-scan E1 conditional-domain lookup for3 shapes; one candidate metadata read. No M2/LLM. Small unmetered cheap algebra not retrospectively assigned a runtime.",
+  "scan_semantics": "analysis_01+02 repeated same factorial design during premeasurement development; not independent samples",
+  "remaining_costs": "Pipeline/posthoc/collection/report/audit and tests accounted separately in final records",
+  "repair_parent_rejudgment_M1_calls": 1,
+  "repair_candidate_formal_M1_calls": 2,
+  "verifier_measurement_summary_M1_calls": 8,
+  "main_pipeline_pre_and_posthoc_M1_calls": 16,
+  "root_collection_M1_calls": 10,
+  "accounted_non_test_formal_M1_calls": 140,
+  "accounted_M1_scope": "96 analysis1+2;7 frozen proposals;3 parent/repair checks;16 pipeline;10 collection;8 verifier rejudgments. Tests are separate, internally incompletely metered.",
+  "driver_preflight_wall_s": null,
+  "driver_preflight_cost_note": "canonical/raw proposal-hash preflight failed before any M2; unmeasured local overhead retained, no fabricated elapsed time"
+}

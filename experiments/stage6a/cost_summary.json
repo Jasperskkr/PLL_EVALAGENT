@@ -1,0 +1,138 @@
+{
+  "per_candidate": [
+    {
+      "candidate": "E0_alternative_capacitors",
+      "full_M1_s": [
+        0.033523399964906275,
+        0.03438670001924038
+      ],
+      "capture_pair_wall_s": 0.1181914999615401,
+      "four_BW_sweeps_wall_s": 8.119180800043978,
+      "one_base_BW_sweep_wall_s": 1.6848390999948606,
+      "M1_posthoc_comparison_wall_s": 0.03480100003071129,
+      "decision_wall_s": 0.00288759998511523,
+      "module_wall_s": 9.896343000000343
+    },
+    {
+      "candidate": "E0_analytical",
+      "full_M1_s": [
+        0.034043599967844784,
+        0.039574700058437884
+      ],
+      "capture_pair_wall_s": 0.11571729998104274,
+      "four_BW_sweeps_wall_s": 8.488070799969137,
+      "one_base_BW_sweep_wall_s": 1.7111956999870017,
+      "M1_posthoc_comparison_wall_s": 0.04006620007567108,
+      "decision_wall_s": 0.0033412999473512173,
+      "module_wall_s": 10.290533100022003
+    },
+    {
+      "candidate": "E0_slsqp",
+      "full_M1_s": [
+        0.0338186000008136,
+        0.034450899926014245
+      ],
+      "capture_pair_wall_s": 0.1121547999791801,
+      "four_BW_sweeps_wall_s": 8.097521799965762,
+      "one_base_BW_sweep_wall_s": 1.6976971999974921,
+      "M1_posthoc_comparison_wall_s": 0.03485129994805902,
+      "decision_wall_s": 0.0029004999669268727,
+      "module_wall_s": 9.759012799942866
+    },
+    {
+      "candidate": "E1_analytical",
+      "full_M1_s": [
+        0.03377790004014969,
+        0.03471209993585944
+      ],
+      "capture_pair_wall_s": 0.12078919995110482,
+      "four_BW_sweeps_wall_s": 8.058172200107947,
+      "one_base_BW_sweep_wall_s": 1.7876731000142172,
+      "M1_posthoc_comparison_wall_s": 0.03510780003853142,
+      "decision_wall_s": 0.002942599938251078,
+      "module_wall_s": 9.714387299958616
+    },
+    {
+      "candidate": "E1_upper_shape",
+      "full_M1_s": [
+        0.03760909999255091,
+        0.033502800040878356
+      ],
+      "capture_pair_wall_s": 0.11613159999251366,
+      "four_BW_sweeps_wall_s": 8.125421000178903,
+      "one_base_BW_sweep_wall_s": 1.7281287000514567,
+      "M1_posthoc_comparison_wall_s": 0.03390209993813187,
+      "decision_wall_s": 0.0029209000058472157,
+      "module_wall_s": 9.828449500026181
+    },
+    {
+      "candidate": "E2_far_operating_point",
+      "full_M1_s": [
+        0.034177000052295625,
+        0.03508260007947683
+      ],
+      "capture_pair_wall_s": 0.12296569999307394,
+      "four_BW_sweeps_wall_s": 8.14183149987366,
+      "one_base_BW_sweep_wall_s": 1.677947099902667,
+      "M1_posthoc_comparison_wall_s": 0.035502800019457936,
+      "decision_wall_s": 0.002949699992313981,
+      "module_wall_s": 9.915160999982618
+    },
+    {
+      "candidate": "E2_high_Kvco_center",
+      "full_M1_s": [
+        0.03495429991744459,
+        0.03382639994379133
+      ],
+      "capture_pair_wall_s": 0.12877249997109175,
+      "four_BW_sweeps_wall_s": 8.11425120010972,
+      "one_base_BW_sweep_wall_s": 1.6738222000421956,
+      "M1_posthoc_comparison_wall_s": 0.0342239000601694,
+      "decision_wall_s": 0.002770099905319512,
+      "module_wall_s": 9.80115559999831
+    },
+    {
+      "candidate": "E1_BW_repair",
+      "full_M1_s": [
+        0.03811889991629869,
+        0.034716299967840314
+      ],
+      "capture_pair_wall_s": 0.12290340010076761,
+      "four_BW_sweeps_wall_s": 8.296186199993826,
+      "one_base_BW_sweep_wall_s": 1.6963863000273705,
+      "M1_posthoc_comparison_wall_s": 0.03510810004081577,
+      "decision_wall_s": 0.0030397999798879027,
+      "module_wall_s": 10.045986999990419
+    }
+  ],
+  "study_full_M2": 8,
+  "study_native_runs_including_repeat": 854,
+  "study_native_s_including_repeat": 23.279037299915217,
+  "full_pipeline_wall_s": 77.27617929992266,
+  "full_pipeline_process_wall_s": 84.34778779989574,
+  "repeat_capture_wall_s": 0.1506729000248015,
+  "median_capture_pair_wall_s": 0.11949034995632246,
+  "median_one_base_BW_sweep_wall_s": 1.6970417500124313,
+  "median_four_BW_sweeps_wall_s": 8.12230090011144,
+  "formal_pipeline_pre_and_posthoc_M1_calls": 16,
+  "LLM_calls": 0,
+  "monetary_cost": null,
+  "timing_caveats": [
+    "same Windows host only; timings include IO/extraction where stated",
+    "M1 posthoc is nested in comparison time; do not sum both",
+    "one base BW sweep is not a converged four-variant BW certificate",
+    "complete M2 includes cold capture and four sweeps, unlike a single metric sample",
+    "two pre-M2 scans are development repetitions, not independent evidence",
+    "tests/build/protection/failed driver preflight costs separate"
+  ],
+  "analysis_cost_ledger": "analysis_cost_ledger.json",
+  "builds_tests": "verifier_setup_01/setup_receipt.json; pretests_01; judgment_tests_01; finaltests_01",
+  "retained_failures": [
+    "verifier native version probe first quoting failure, followed by expected no-source cl /Bv exit",
+    "M2 driver canonical fingerprint versus raw SHA preflight assertion; zero M2 before correction",
+    "E1_upper_shape measured BW fail retained, no threshold changes"
+  ],
+  "accounted_non_test_formal_M1_calls": 140,
+  "additional_verifier_rejudgment_M1_calls": 8,
+  "final_regression_process_wall_s": 28.219163000001572
+}

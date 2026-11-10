@@ -1,0 +1,1047 @@
+{
+  "formal_files": 35,
+  "imports": [
+    {
+      "file": "pll_allocation/pipeline.py",
+      "module": "__future__"
+    },
+    {
+      "file": "pll_allocation/pipeline.py",
+      "module": "argparse"
+    },
+    {
+      "file": "pll_allocation/pipeline.py",
+      "module": "copy"
+    },
+    {
+      "file": "pll_allocation/pipeline.py",
+      "module": "datetime"
+    },
+    {
+      "file": "pll_allocation/pipeline.py",
+      "module": "hashlib"
+    },
+    {
+      "file": "pll_allocation/pipeline.py",
+      "module": "importlib.metadata"
+    },
+    {
+      "file": "pll_allocation/pipeline.py",
+      "module": "json"
+    },
+    {
+      "file": "pll_allocation/pipeline.py",
+      "module": "os"
+    },
+    {
+      "file": "pll_allocation/pipeline.py",
+      "module": "pathlib"
+    },
+    {
+      "file": "pll_allocation/pipeline.py",
+      "module": "platform"
+    },
+    {
+      "file": "pll_allocation/pipeline.py",
+      "module": "sys"
+    },
+    {
+      "file": "pll_allocation/pipeline.py",
+      "module": "time"
+    },
+    {
+      "file": "pll_allocation/pipeline.py",
+      "module": "allocation"
+    },
+    {
+      "file": "pll_allocation/pipeline.py",
+      "module": "block_space.contracts"
+    },
+    {
+      "file": "pll_allocation/pipeline.py",
+      "module": "pipeline_contracts"
+    },
+    {
+      "file": "pll_allocation/pipeline.py",
+      "module": "physics_mapping.model"
+    },
+    {
+      "file": "pll_allocation/pipeline.py",
+      "module": "allocation.core"
+    },
+    {
+      "file": "pll_allocation/pipeline.py",
+      "module": "verification"
+    },
+    {
+      "file": "pll_allocation/pipeline.py",
+      "module": "verification.verify"
+    },
+    {
+      "file": "pll_allocation/pipeline.py",
+      "module": "verification.return_ratio_validity"
+    },
+    {
+      "file": "pll_allocation/pipeline_contracts.py",
+      "module": "copy"
+    },
+    {
+      "file": "pll_allocation/pipeline_contracts.py",
+      "module": "hashlib"
+    },
+    {
+      "file": "pll_allocation/pipeline_contracts.py",
+      "module": "pathlib"
+    },
+    {
+      "file": "pll_allocation/pipeline_contracts.py",
+      "module": "block_space.contracts"
+    },
+    {
+      "file": "pll_allocation/pipeline_contracts.py",
+      "module": "physics_mapping.model"
+    },
+    {
+      "file": "pll_allocation/pipeline_contracts.py",
+      "module": "allocation.core"
+    },
+    {
+      "file": "pll_allocation/pipeline_contracts.py",
+      "module": "verification.resources"
+    },
+    {
+      "file": "pll_allocation/pipeline_contracts.py",
+      "module": "verification.simulator"
+    },
+    {
+      "file": "pll_allocation/allocation/__init__.py",
+      "module": "copy"
+    },
+    {
+      "file": "pll_allocation/allocation/__init__.py",
+      "module": "typing"
+    },
+    {
+      "file": "pll_allocation/allocation/__init__.py",
+      "module": "agent"
+    },
+    {
+      "file": "pll_allocation/allocation/__init__.py",
+      "module": "allocate"
+    },
+    {
+      "file": "pll_allocation/allocation/__init__.py",
+      "module": "repair"
+    },
+    {
+      "file": "pll_allocation/allocation/agent.py",
+      "module": "__future__"
+    },
+    {
+      "file": "pll_allocation/allocation/agent.py",
+      "module": "copy"
+    },
+    {
+      "file": "pll_allocation/allocation/agent.py",
+      "module": "json"
+    },
+    {
+      "file": "pll_allocation/allocation/agent.py",
+      "module": "os"
+    },
+    {
+      "file": "pll_allocation/allocation/agent.py",
+      "module": "pathlib"
+    },
+    {
+      "file": "pll_allocation/allocation/agent.py",
+      "module": "subprocess"
+    },
+    {
+      "file": "pll_allocation/allocation/agent.py",
+      "module": "sys"
+    },
+    {
+      "file": "pll_allocation/allocation/agent.py",
+      "module": "time"
+    },
+    {
+      "file": "pll_allocation/allocation/agent.py",
+      "module": "allocate"
+    },
+    {
+      "file": "pll_allocation/allocation/agent.py",
+      "module": "core"
+    },
+    {
+      "file": "pll_allocation/allocation/agent.py",
+      "module": "physics"
+    },
+    {
+      "file": "pll_allocation/allocation/allocate.py",
+      "module": "__future__"
+    },
+    {
+      "file": "pll_allocation/allocation/allocate.py",
+      "module": "itertools"
+    },
+    {
+      "file": "pll_allocation/allocation/allocate.py",
+      "module": "math"
+    },
+    {
+      "file": "pll_allocation/allocation/allocate.py",
+      "module": "random"
+    },
+    {
+      "file": "pll_allocation/allocation/allocate.py",
+      "module": "core"
+    },
+    {
+      "file": "pll_allocation/allocation/allocate.py",
+      "module": "physics"
+    },
+    {
+      "file": "pll_allocation/allocation/allocate.py",
+      "module": "numpy"
+    },
+    {
+      "file": "pll_allocation/allocation/allocate.py",
+      "module": "scipy.optimize"
+    },
+    {
+      "file": "pll_allocation/allocation/core.py",
+      "module": "__future__"
+    },
+    {
+      "file": "pll_allocation/allocation/core.py",
+      "module": "copy"
+    },
+    {
+      "file": "pll_allocation/allocation/core.py",
+      "module": "dataclasses"
+    },
+    {
+      "file": "pll_allocation/allocation/core.py",
+      "module": "hashlib"
+    },
+    {
+      "file": "pll_allocation/allocation/core.py",
+      "module": "json"
+    },
+    {
+      "file": "pll_allocation/allocation/core.py",
+      "module": "pathlib"
+    },
+    {
+      "file": "pll_allocation/allocation/core.py",
+      "module": "time"
+    },
+    {
+      "file": "pll_allocation/allocation/core.py",
+      "module": "pll_allocation.block_space.contracts"
+    },
+    {
+      "file": "pll_allocation/allocation/core.py",
+      "module": "pll_allocation.physics_mapping.experiment"
+    },
+    {
+      "file": "pll_allocation/allocation/core.py",
+      "module": "pll_allocation.physics_mapping.model"
+    },
+    {
+      "file": "pll_allocation/allocation/feedback_agent.py",
+      "module": "__future__"
+    },
+    {
+      "file": "pll_allocation/allocation/feedback_agent.py",
+      "module": "copy"
+    },
+    {
+      "file": "pll_allocation/allocation/feedback_agent.py",
+      "module": "json"
+    },
+    {
+      "file": "pll_allocation/allocation/feedback_agent.py",
+      "module": "pathlib"
+    },
+    {
+      "file": "pll_allocation/allocation/feedback_agent.py",
+      "module": "allocate"
+    },
+    {
+      "file": "pll_allocation/allocation/feedback_agent.py",
+      "module": "core"
+    },
+    {
+      "file": "pll_allocation/allocation/feedback_agent.py",
+      "module": "repair"
+    },
+    {
+      "file": "pll_allocation/allocation/physics.py",
+      "module": "__future__"
+    },
+    {
+      "file": "pll_allocation/allocation/physics.py",
+      "module": "itertools"
+    },
+    {
+      "file": "pll_allocation/allocation/physics.py",
+      "module": "math"
+    },
+    {
+      "file": "pll_allocation/allocation/physics.py",
+      "module": "core"
+    },
+    {
+      "file": "pll_allocation/allocation/physics.py",
+      "module": "pll_allocation.block_space.contracts"
+    },
+    {
+      "file": "pll_allocation/allocation/repair.py",
+      "module": "__future__"
+    },
+    {
+      "file": "pll_allocation/allocation/repair.py",
+      "module": "copy"
+    },
+    {
+      "file": "pll_allocation/allocation/repair.py",
+      "module": "math"
+    },
+    {
+      "file": "pll_allocation/allocation/repair.py",
+      "module": "allocate"
+    },
+    {
+      "file": "pll_allocation/allocation/repair.py",
+      "module": "core"
+    },
+    {
+      "file": "pll_allocation/verification/__init__.py",
+      "module": "verify"
+    },
+    {
+      "file": "pll_allocation/verification/build_identity.py",
+      "module": "hashlib"
+    },
+    {
+      "file": "pll_allocation/verification/build_identity.py",
+      "module": "json"
+    },
+    {
+      "file": "pll_allocation/verification/build_identity.py",
+      "module": "pathlib"
+    },
+    {
+      "file": "pll_allocation/verification/build_identity.py",
+      "module": "argparse"
+    },
+    {
+      "file": "pll_allocation/verification/closed_loop.py",
+      "module": "pathlib"
+    },
+    {
+      "file": "pll_allocation/verification/closed_loop.py",
+      "module": "numpy"
+    },
+    {
+      "file": "pll_allocation/verification/closed_loop.py",
+      "module": "scipy.integrate"
+    },
+    {
+      "file": "pll_allocation/verification/closed_loop.py",
+      "module": "scipy.signal"
+    },
+    {
+      "file": "pll_allocation/verification/closed_loop.py",
+      "module": "experiments"
+    },
+    {
+      "file": "pll_allocation/verification/closed_loop.py",
+      "module": "resources"
+    },
+    {
+      "file": "pll_allocation/verification/closed_loop.py",
+      "module": "pll_allocation.physics_mapping.model"
+    },
+    {
+      "file": "pll_allocation/verification/closed_loop_native.py",
+      "module": "ctypes"
+    },
+    {
+      "file": "pll_allocation/verification/closed_loop_native.py",
+      "module": "hashlib"
+    },
+    {
+      "file": "pll_allocation/verification/closed_loop_native.py",
+      "module": "json"
+    },
+    {
+      "file": "pll_allocation/verification/closed_loop_native.py",
+      "module": "math"
+    },
+    {
+      "file": "pll_allocation/verification/closed_loop_native.py",
+      "module": "pathlib"
+    },
+    {
+      "file": "pll_allocation/verification/closed_loop_native.py",
+      "module": "time"
+    },
+    {
+      "file": "pll_allocation/verification/closed_loop_native.py",
+      "module": "numpy"
+    },
+    {
+      "file": "pll_allocation/verification/closed_loop_native.py",
+      "module": "simulator"
+    },
+    {
+      "file": "pll_allocation/verification/closed_loop_native.py",
+      "module": "resources"
+    },
+    {
+      "file": "pll_allocation/verification/closed_loop_native.py",
+      "module": "pll_allocation.block_space.contracts"
+    },
+    {
+      "file": "pll_allocation/verification/closed_loop_native.py",
+      "module": "argparse"
+    },
+    {
+      "file": "pll_allocation/verification/experiments.py",
+      "module": "copy"
+    },
+    {
+      "file": "pll_allocation/verification/experiments.py",
+      "module": "hashlib"
+    },
+    {
+      "file": "pll_allocation/verification/experiments.py",
+      "module": "json"
+    },
+    {
+      "file": "pll_allocation/verification/experiments.py",
+      "module": "math"
+    },
+    {
+      "file": "pll_allocation/verification/experiments.py",
+      "module": "pathlib"
+    },
+    {
+      "file": "pll_allocation/verification/experiments.py",
+      "module": "resources"
+    },
+    {
+      "file": "pll_allocation/verification/experiments.py",
+      "module": "time"
+    },
+    {
+      "file": "pll_allocation/verification/experiments.py",
+      "module": "numpy"
+    },
+    {
+      "file": "pll_allocation/verification/experiments.py",
+      "module": "simulator"
+    },
+    {
+      "file": "pll_allocation/verification/experiments.py",
+      "module": "measure"
+    },
+    {
+      "file": "pll_allocation/verification/experiments.py",
+      "module": "sys"
+    },
+    {
+      "file": "pll_allocation/verification/experiments.py",
+      "module": "pll_allocation.block_space"
+    },
+    {
+      "file": "pll_allocation/verification/measure.py",
+      "module": "math"
+    },
+    {
+      "file": "pll_allocation/verification/measure.py",
+      "module": "numpy"
+    },
+    {
+      "file": "pll_allocation/verification/resources.py",
+      "module": "pathlib"
+    },
+    {
+      "file": "pll_allocation/verification/resources.py",
+      "module": "sys"
+    },
+    {
+      "file": "pll_allocation/verification/return_ratio.py",
+      "module": "copy"
+    },
+    {
+      "file": "pll_allocation/verification/return_ratio.py",
+      "module": "math"
+    },
+    {
+      "file": "pll_allocation/verification/return_ratio.py",
+      "module": "pathlib"
+    },
+    {
+      "file": "pll_allocation/verification/return_ratio.py",
+      "module": "time"
+    },
+    {
+      "file": "pll_allocation/verification/return_ratio.py",
+      "module": "numpy"
+    },
+    {
+      "file": "pll_allocation/verification/return_ratio.py",
+      "module": "experiments"
+    },
+    {
+      "file": "pll_allocation/verification/return_ratio.py",
+      "module": "resources"
+    },
+    {
+      "file": "pll_allocation/verification/return_ratio.py",
+      "module": "return_ratio_native"
+    },
+    {
+      "file": "pll_allocation/verification/return_ratio_native.py",
+      "module": "ctypes"
+    },
+    {
+      "file": "pll_allocation/verification/return_ratio_native.py",
+      "module": "hashlib"
+    },
+    {
+      "file": "pll_allocation/verification/return_ratio_native.py",
+      "module": "json"
+    },
+    {
+      "file": "pll_allocation/verification/return_ratio_native.py",
+      "module": "math"
+    },
+    {
+      "file": "pll_allocation/verification/return_ratio_native.py",
+      "module": "pathlib"
+    },
+    {
+      "file": "pll_allocation/verification/return_ratio_native.py",
+      "module": "time"
+    },
+    {
+      "file": "pll_allocation/verification/return_ratio_native.py",
+      "module": "numpy"
+    },
+    {
+      "file": "pll_allocation/verification/return_ratio_native.py",
+      "module": "simulator"
+    },
+    {
+      "file": "pll_allocation/verification/return_ratio_native.py",
+      "module": "resources"
+    },
+    {
+      "file": "pll_allocation/verification/return_ratio_native.py",
+      "module": "pll_allocation.block_space.contracts"
+    },
+    {
+      "file": "pll_allocation/verification/return_ratio_native.py",
+      "module": "argparse"
+    },
+    {
+      "file": "pll_allocation/verification/return_ratio_validity.py",
+      "module": "pathlib"
+    },
+    {
+      "file": "pll_allocation/verification/return_ratio_validity.py",
+      "module": "hashlib"
+    },
+    {
+      "file": "pll_allocation/verification/return_ratio_validity.py",
+      "module": "numpy"
+    },
+    {
+      "file": "pll_allocation/verification/return_ratio_validity.py",
+      "module": "experiments"
+    },
+    {
+      "file": "pll_allocation/verification/return_ratio_validity.py",
+      "module": "return_ratio"
+    },
+    {
+      "file": "pll_allocation/verification/return_ratio_validity.py",
+      "module": "resources"
+    },
+    {
+      "file": "pll_allocation/verification/return_ratio_validity.py",
+      "module": "verify"
+    },
+    {
+      "file": "pll_allocation/verification/return_ratio_validity.py",
+      "module": "pll_allocation.physics_mapping.model"
+    },
+    {
+      "file": "pll_allocation/verification/run_suite.py",
+      "module": "pathlib"
+    },
+    {
+      "file": "pll_allocation/verification/run_suite.py",
+      "module": "experiments"
+    },
+    {
+      "file": "pll_allocation/verification/run_suite.py",
+      "module": "pll_allocation.physics_mapping.model"
+    },
+    {
+      "file": "pll_allocation/verification/simulator.py",
+      "module": "ctypes"
+    },
+    {
+      "file": "pll_allocation/verification/simulator.py",
+      "module": "hashlib"
+    },
+    {
+      "file": "pll_allocation/verification/simulator.py",
+      "module": "math"
+    },
+    {
+      "file": "pll_allocation/verification/simulator.py",
+      "module": "pathlib"
+    },
+    {
+      "file": "pll_allocation/verification/simulator.py",
+      "module": "resources"
+    },
+    {
+      "file": "pll_allocation/verification/simulator.py",
+      "module": "time"
+    },
+    {
+      "file": "pll_allocation/verification/simulator.py",
+      "module": "numpy"
+    },
+    {
+      "file": "pll_allocation/verification/simulator.py",
+      "module": "sys"
+    },
+    {
+      "file": "pll_allocation/verification/simulator.py",
+      "module": "pll_allocation.physics_mapping.model"
+    },
+    {
+      "file": "pll_allocation/verification/simulator.py",
+      "module": "build_identity"
+    },
+    {
+      "file": "pll_allocation/verification/verify.py",
+      "module": "argparse"
+    },
+    {
+      "file": "pll_allocation/verification/verify.py",
+      "module": "copy"
+    },
+    {
+      "file": "pll_allocation/verification/verify.py",
+      "module": "hashlib"
+    },
+    {
+      "file": "pll_allocation/verification/verify.py",
+      "module": "json"
+    },
+    {
+      "file": "pll_allocation/verification/verify.py",
+      "module": "pathlib"
+    },
+    {
+      "file": "pll_allocation/verification/verify.py",
+      "module": "resources"
+    },
+    {
+      "file": "pll_allocation/verification/verify.py",
+      "module": "sys"
+    },
+    {
+      "file": "pll_allocation/verification/verify.py",
+      "module": "experiments"
+    },
+    {
+      "file": "pll_allocation/verification/verify.py",
+      "module": "run_suite"
+    },
+    {
+      "file": "pll_allocation/verification/verify.py",
+      "module": "simulator"
+    },
+    {
+      "file": "pll_allocation/verification/verify.py",
+      "module": "pll_allocation.block_space.contracts"
+    },
+    {
+      "file": "pll_allocation/verification/verify.py",
+      "module": "pll_allocation.physics_mapping.model"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/__init__.py",
+      "module": "model"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/__main__.py",
+      "module": "argparse"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/__main__.py",
+      "module": "validation"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/experiment.py",
+      "module": "__future__"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/experiment.py",
+      "module": "copy"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/experiment.py",
+      "module": "json"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/experiment.py",
+      "module": "math"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/experiment.py",
+      "module": "pathlib"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/experiment.py",
+      "module": "model"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/model.py",
+      "module": "__future__"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/model.py",
+      "module": "dataclasses"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/model.py",
+      "module": "enum"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/model.py",
+      "module": "cmath"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/model.py",
+      "module": "hashlib"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/model.py",
+      "module": "json"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/model.py",
+      "module": "math"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/model.py",
+      "module": "typing"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/registry.py",
+      "module": "copy"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/registry.py",
+      "module": "argparse"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/registry.py",
+      "module": "hashlib"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/registry.py",
+      "module": "json"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/registry.py",
+      "module": "pathlib"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/registry.py",
+      "module": "re"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/registry.py",
+      "module": "pll_allocation.block_space.contracts"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/registry.py",
+      "module": "model"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/validation.py",
+      "module": "__future__"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/validation.py",
+      "module": "copy"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/validation.py",
+      "module": "dataclasses"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/validation.py",
+      "module": "datetime"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/validation.py",
+      "module": "hashlib"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/validation.py",
+      "module": "json"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/validation.py",
+      "module": "math"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/validation.py",
+      "module": "pathlib"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/validation.py",
+      "module": "platform"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/validation.py",
+      "module": "sys"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/validation.py",
+      "module": "experiment"
+    },
+    {
+      "file": "pll_allocation/physics_mapping/validation.py",
+      "module": "model"
+    },
+    {
+      "file": "pll_allocation/block_space/__init__.py",
+      "module": "contracts"
+    },
+    {
+      "file": "pll_allocation/block_space/__main__.py",
+      "module": "argparse"
+    },
+    {
+      "file": "pll_allocation/block_space/__main__.py",
+      "module": "json"
+    },
+    {
+      "file": "pll_allocation/block_space/__main__.py",
+      "module": "validation"
+    },
+    {
+      "file": "pll_allocation/block_space/calibration.py",
+      "module": "__future__"
+    },
+    {
+      "file": "pll_allocation/block_space/calibration.py",
+      "module": "math"
+    },
+    {
+      "file": "pll_allocation/block_space/calibration.py",
+      "module": "contracts"
+    },
+    {
+      "file": "pll_allocation/block_space/calibration.py",
+      "module": "pll_allocation.physics_mapping.model"
+    },
+    {
+      "file": "pll_allocation/block_space/contracts.py",
+      "module": "__future__"
+    },
+    {
+      "file": "pll_allocation/block_space/contracts.py",
+      "module": "copy"
+    },
+    {
+      "file": "pll_allocation/block_space/contracts.py",
+      "module": "json"
+    },
+    {
+      "file": "pll_allocation/block_space/contracts.py",
+      "module": "math"
+    },
+    {
+      "file": "pll_allocation/block_space/contracts.py",
+      "module": "pathlib"
+    },
+    {
+      "file": "pll_allocation/block_space/contracts.py",
+      "module": "pll_allocation.physics_mapping.model"
+    },
+    {
+      "file": "pll_allocation/block_space/contracts.py",
+      "module": "pll_allocation.physics_mapping.experiment"
+    },
+    {
+      "file": "pll_allocation/block_space/event_reference.py",
+      "module": "__future__"
+    },
+    {
+      "file": "pll_allocation/block_space/event_reference.py",
+      "module": "ast"
+    },
+    {
+      "file": "pll_allocation/block_space/event_reference.py",
+      "module": "hashlib"
+    },
+    {
+      "file": "pll_allocation/block_space/event_reference.py",
+      "module": "json"
+    },
+    {
+      "file": "pll_allocation/block_space/event_reference.py",
+      "module": "math"
+    },
+    {
+      "file": "pll_allocation/block_space/event_reference.py",
+      "module": "pathlib"
+    },
+    {
+      "file": "pll_allocation/block_space/event_reference.py",
+      "module": "time"
+    },
+    {
+      "file": "pll_allocation/block_space/event_reference.py",
+      "module": "numpy"
+    },
+    {
+      "file": "pll_allocation/block_space/sampling.py",
+      "module": "__future__"
+    },
+    {
+      "file": "pll_allocation/block_space/sampling.py",
+      "module": "copy"
+    },
+    {
+      "file": "pll_allocation/block_space/sampling.py",
+      "module": "itertools"
+    },
+    {
+      "file": "pll_allocation/block_space/sampling.py",
+      "module": "contracts"
+    },
+    {
+      "file": "pll_allocation/block_space/sampling.py",
+      "module": "pll_allocation.physics_mapping.model"
+    },
+    {
+      "file": "pll_allocation/block_space/validation.py",
+      "module": "__future__"
+    },
+    {
+      "file": "pll_allocation/block_space/validation.py",
+      "module": "collections"
+    },
+    {
+      "file": "pll_allocation/block_space/validation.py",
+      "module": "copy"
+    },
+    {
+      "file": "pll_allocation/block_space/validation.py",
+      "module": "datetime"
+    },
+    {
+      "file": "pll_allocation/block_space/validation.py",
+      "module": "csv"
+    },
+    {
+      "file": "pll_allocation/block_space/validation.py",
+      "module": "hashlib"
+    },
+    {
+      "file": "pll_allocation/block_space/validation.py",
+      "module": "json"
+    },
+    {
+      "file": "pll_allocation/block_space/validation.py",
+      "module": "math"
+    },
+    {
+      "file": "pll_allocation/block_space/validation.py",
+      "module": "pathlib"
+    },
+    {
+      "file": "pll_allocation/block_space/validation.py",
+      "module": "platform"
+    },
+    {
+      "file": "pll_allocation/block_space/validation.py",
+      "module": "sys"
+    },
+    {
+      "file": "pll_allocation/block_space/validation.py",
+      "module": "calibration"
+    },
+    {
+      "file": "pll_allocation/block_space/validation.py",
+      "module": "contracts"
+    },
+    {
+      "file": "pll_allocation/block_space/validation.py",
+      "module": "event_reference"
+    },
+    {
+      "file": "pll_allocation/block_space/validation.py",
+      "module": "sampling"
+    },
+    {
+      "file": "pll_allocation/block_space/validation.py",
+      "module": "pll_allocation.physics_mapping.model"
+    },
+    {
+      "file": "pll_allocation/block_space/validation.py",
+      "module": "pll_allocation.physics_mapping.validation"
+    }
+  ],
+  "violations": [],
+  "allocation_preservation": [
+    {
+      "file": "pll_allocation/allocation/core.py",
+      "sha256": "2c04824cc0bf86831050e059ee424c2b8c2ed539751a4971632ba833441a320c",
+      "byte_identical": true
+    },
+    {
+      "file": "pll_allocation/allocation/physics.py",
+      "sha256": "f10aa7d11044d484a18bd6aaa3b420f08f69f1215ce9c7d746132a4e72872860",
+      "byte_identical": true
+    },
+    {
+      "file": "pll_allocation/allocation/allocate.py",
+      "sha256": "bf570c5e05f29afc1f0d75723fca0a1f781fa321a20a4ab459ffe64ee4cb1535",
+      "byte_identical": true
+    },
+    {
+      "file": "pll_allocation/allocation/agent.py",
+      "sha256": "b1c66dc9253ef0c6235d12a088a5538bc8a0744adfd93c3dde9d585cf009b183",
+      "byte_identical": true
+    },
+    {
+      "file": "pll_allocation/allocation/repair.py",
+      "sha256": "4e1b54ae9b5a5b8619f95435c9f9f7994a229a822e39ac58613a865f952c6ea6",
+      "byte_identical": true
+    },
+    {
+      "file": "pll_allocation/allocation/feedback_agent.py",
+      "sha256": "5250fd9de38117c4b1fcd9a761f12d387b56f660d0f92907689a0ca96a9414c2",
+      "byte_identical": true
+    }
+  ],
+  "passed": true
+}

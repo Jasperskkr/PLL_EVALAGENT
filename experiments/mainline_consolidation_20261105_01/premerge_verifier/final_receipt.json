@@ -1,0 +1,34 @@
+{
+  "phase": "PRE_TARGET_BRANCH_MERGE",
+  "HEAD_before": "cd70cf445d2ac6789550b7df2da6736221262045",
+  "HEAD_after": "cd70cf445d2ac6789550b7df2da6736221262045",
+  "branch_after": "codex/stage4-1-engineering-validation",
+  "protected_sources_checked": 81,
+  "protected_sources_changed": [],
+  "git_status_after": " D docs/physics_mapping_stage1.zip\n D docs/stage1_5.zip\n?? docs/stage3a.zip\n?? docs/stage3a/audit_final_01/artifact_hashes.json\n?? docs/stage3a/protected_before.json\n?? docs/stage4_2.zip\n?? docs/stage5/\n?? docs/track_a.zip\n?? experiments/mainline_consolidation_20261105_01/\n?? experiments/stage3a1_isolated_20261104_01/source/\n?? experiments/stage3a_analytical_20261104_01/\n?? experiments/stage3a_baseline_20261104_01/\n?? experiments/stage3a_feedback_repair_20261104_01/\n?? experiments/stage3a_llm_20261104_01/\n?? experiments/stage3a_optimization_20261104_01/\n?? experiments/stage3a_regression_20261104_01/\n?? experiments/stage3a_regression_final_20261104_01/\n?? experiments/stage3a_regression_final_20261104_02/\n?? experiments/stage3a_reverify_20261104_01/\n?? experiments/stage3a_tests_20261104_01/\n?? experiments/stage4_2/commit_receipt.json\n?? experiments/stage4_2/commitcheck_01/source/\n?? experiments/stage4_2/commitcheck_02/source/\n?? experiments/stage4_bundlecheck_20261105_01/\n?? experiments/stage4_figures_20261105_01/\n?? experiments/stage4_figures_20261105_02/\n?? experiments/stage4_finaltests_20261105_01/\n?? experiments/stage4_finaltests_20261105_02/\n?? experiments/stage4_finaltests_20261105_03/\n?? experiments/stage4_finaltests_20261105_04/\n?? experiments/stage4_pipeline_feedback_20261105_01/\n?? experiments/stage4_pipeline_feedback_20261105_02/\n?? experiments/stage4_pipeline_feedback_20261105_03/\n?? experiments/stage4_pretests_20261105_01/\n?? experiments/stage4_prototype_20261105_01/\n?? experiments/stage4_sidebands_20261105_01/\n?? experiments/stage4_study_20261105_01/\n?? experiments/stage4_study_20261105_02/\n?? experiments/stage4_summary_20261105_01/\n?? experiments/stage4_summary_20261105_02/\n?? experiments/stage4_summary_20261105_03/\n?? experiments/stage4_summary_20261105_04/\n?? experiments/stage4_summary_20261105_05/\n?? experiments/stage4_trackbtests_20261105_01/\n?? experiments/stage4_unittests_20261105_01/\n?? experiments/stage5/\n?? frequency_response.csv\n?? m1_m2_ugf_pm_comparison.csv\n",
+  "tests": {
+    "ownership": ".......                                                                  [100%]\n7 passed, 3 deselected in 0.23s\n",
+    "full": "........................................................................ [ 21%]\n........................................................................ [ 43%]\n........................................................................ [ 65%]\n........................................................................ [ 87%]\n........................................                                 [100%]\n328 passed in 23.88s\n"
+  },
+  "full_test_receipt": {
+    "phase": "PRE_TARGET_BRANCH_MERGE",
+    "HEAD": "cd70cf445d2ac6789550b7df2da6736221262045",
+    "command": [
+      "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "-B",
+      "-m",
+      "pytest",
+      "-q",
+      "tests",
+      "-p",
+      "no:cacheprovider",
+      "--basetemp=F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_consolidation_20261105_01\\premerge_verifier\\full_tests\\tmp",
+      "--junitxml=F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\mainline_consolidation_20261105_01\\premerge_verifier\\full_tests\\tests.xml"
+    ],
+    "returncode": 0,
+    "wall_s": 25.180710899992846,
+    "post_HEAD": "cd70cf445d2ac6789550b7df2da6736221262045"
+  },
+  "Stage5_status": "PAUSED; no new Stage5 experiment",
+  "post_merge_baseline": "NOT_EXECUTED; awaiting target-branch merge authorization"
+}

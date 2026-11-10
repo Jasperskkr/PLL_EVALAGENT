@@ -1,0 +1,215 @@
+{
+  "execution_status": "complete",
+  "source_type": "matlab_behavioral_system_TB",
+  "candidate_id": "cp1_R5000",
+  "model_name": "LOADED",
+  "charge_map": {
+    "condition": {
+      "lf_Rz_ohm": 5000,
+      "probe_voltage_V": 1.17552174473848,
+      "ratio": 1.03,
+      "split_role": "reference_fit"
+    },
+    "model_id": "reference",
+    "q0_C": -3.2251230632438916e-15,
+    "slope_down_A": 0.00010081636174464217,
+    "slope_up_A": 0.00010246255140264984,
+    "source_files": {
+      "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\reference_fit\\cp1.03_R5000_d+0ps.json": "49dc3c1f744185491ce47bd3d776b0c7f5c0a5de12330bf1f6458353f00e8743",
+      "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\reference_fit\\cp1.03_R5000_d+100ps.json": "0b17e03961d1e7781f5681614f017ce88b041cc321d660b0eed5c77e21fe5477",
+      "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\reference_fit\\cp1.03_R5000_d-100ps.json": "a7c7356f4bae96e23e5e46c7225e6af46c63e45d01303f263c1d47a381ffc4ee"
+    }
+  },
+  "cfg": {
+    "cp_model": "L1",
+    "cp_L1": {
+      "delta_up": -6.360862861639306e-11,
+      "delta_dn": 0.0,
+      "nodes_V": [
+        1.13,
+        1.21
+      ],
+      "nodes_iup": [
+        0.00010246255140264984,
+        0.00010246255140264984
+      ],
+      "nodes_idn": [
+        0.00010081636174464217,
+        0.00010081636174464217
+      ]
+    },
+    "qualification": "constant local charge slopes; voltage array is numerical support, not measured validity",
+    "vco_model": "L0_cal",
+    "label": "cp1_R5000_LOADED",
+    "Rz": 5000.0,
+    "C1": 1.0005e-10,
+    "C2": 1e-09,
+    "f_ref": 10000000.0,
+    "N": 8,
+    "T_ref": 1e-07,
+    "T_reset": 2e-09,
+    "V_init": 1.1774,
+    "t_stop": 4e-05,
+    "steady_window": 5e-06,
+    "initial_error_cycles": 0.0,
+    "p2_legacy_double_lf": false
+  },
+  "measurement": {
+    "execution_status": "complete",
+    "logical_stop_s": 4e-05,
+    "tail_complete_cycles": 50,
+    "phase_mean_deg": -0.1126332671285643,
+    "phase_abs_mean_deg": 0.1126332671285643,
+    "phase_absmax_deg": 0.11291866679095308,
+    "frequency_mean_Hz": 79999996.94178465,
+    "frequency_mean_error_ppm": -0.03822769191861152,
+    "tail_frequency_absmax_ppm": 0.06039260998368263,
+    "lock_status": "LOCKED",
+    "lock_time_s": 3.9e-06,
+    "vctrl_pre_mean_V": 1.1755218185612275,
+    "vctrl_time_mean_V": 1.1755217245054512,
+    "vctrl_ripple_V": 3.059407200911579e-07,
+    "q_balance_mean_C": -1.9375306908073555e-17,
+    "diagnostics": {
+      "logical_stop_s": 4e-05,
+      "sampling_note": "original solver post-impulse samples; adapter reconstructs pre-impulse state and quadrature cycle frequency without changing engine",
+      "waveform_ripple_definition": "quarter-cycle quadrature extrema including pre/post impulse; not native gate-level ripple"
+    },
+    "SystemSpec": {
+      "phase_abs_mean_max_deg": 0.2,
+      "tail_frequency_absmax_ppm": 100.0,
+      "require_lock": true,
+      "scope": "mechanism demonstration, not formal thesis benchmark",
+      "jitter_noise_spur_power_constraints": false
+    },
+    "width_up_command_s_mean": 2.0312870186468234e-09,
+    "width_down_command_s_mean": 2e-09,
+    "width_up_gate_s_mean": null,
+    "width_down_gate_s_mean": null,
+    "overlap_command_s_mean": 2e-09,
+    "charge_conservation_max_residual_C": null,
+    "numerical_spec_verdict": "PASS",
+    "model_validity": "IN_DECLARED_MODEL_DOMAIN",
+    "validity_unknowns": [
+      "DC constant-current behavior is a prediction, not independently validated dynamic capability"
+    ],
+    "vco_valid": true,
+    "vctrl_range_V": [
+      1.17428540934169,
+      1.1774
+    ],
+    "qualified_verdict": "PASS",
+    "qualification": "behavioral model verdict, never circuit capability acceptance"
+  },
+  "matlab_payload": {
+    "legacy_metrics": {
+      "label": "cp1_R5000_LOADED",
+      "vco_model": "L0_cal",
+      "cp_model": "L1",
+      "T_reset_ns": 2,
+      "range_violation_cycles": 0,
+      "vctrl_mean_V": 1.1755216295314392,
+      "charge_step_fC": 0.018763119522047688,
+      "overlap_term_uV": 32.90733949040827,
+      "vctrl_ripple_mV": 0.03309487691691549,
+      "f_mean_Hz": 79999982.58778861,
+      "f_error_ppm": -0.21765264235436918,
+      "phase_mean_deg": -0.11264686924977632,
+      "phase_absmax_deg": 0.11291866679095303,
+      "pulse_up_mean_ns": 2.0312907970138268,
+      "pulse_dn_mean_ns": 2.0000000000000004,
+      "Kvco_local_Hz_per_V": 151136039.9333628,
+      "Icp_local_A": 0.00010246255140264984,
+      "lock_time_s": 7.3999999999999995e-06,
+      "lock_status": "LOCKED"
+    },
+    "small_signal": {
+      "vop_V": 1.1755216295314392,
+      "Kvco_Hz_per_V": 151136039.9333628,
+      "Icp_A": 0.00010246255140264984,
+      "unity_gain_Hz": 658191.0868169647,
+      "BW_Hz": 1043336.988791839,
+      "PM_deg": 25.232329858800256,
+      "f_ref_over_BW": 9.58463095569896
+    },
+    "engine_elapsed_s": 0.0281898,
+    "matlab_version": "9.10.0.1602886 (R2021a)",
+    "original_source_unchanged": true,
+    "legacy_double_lf": false,
+    "export_note": "P2 execution copy removes redundant LF propagation; originals preserved; no fitted model change"
+  },
+  "source_sha256": {
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\experiments\\system_fidelity_crosscheck\\protocol.json": "8846e5ec91a845f186a328b9f1c2ed255e0950ea27fe5f994f7e9faba98d99b6",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\p1_block_space_20261028\\model_space_release\\manifest.json": "581564b627e40253ce94e43a85caeca403503390bc66ff4863eae4265d6d4534",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\p1_block_space_20261028\\model_space_release\\model_cards.json": "5f2cbe02863abdef040916ac8b5fe874250eaf13e3835cb004fda12e38e45b46",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\p1_block_space_20261028\\model_space_release\\module_registry.json": "2b653094daecc971240db320e66223445405f447c69e6c805ed50feeef4a5b05",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_prepared_20261027\\model_bank.json": "89bb8d7fcd10bfd9ba58364eb2ae052b625d5d62a69a28c81ef1e172c44b6350",
+    "F:\\LJP\\概伦AI\\PLLngspice_vs_matlab\\matlab\\stage7\\cppll_run.m": "69ad930335ad7ddc3fc68cdc6ef31fee0e34620a81bde27b8e3a516718947319",
+    "F:\\LJP\\概伦AI\\PLLngspice_vs_matlab\\matlab\\stage7\\cppll_small_signal.m": "b7ea44baaaa0f8ea38ab64e0dfca71d45024907954f444e7a998c060c6dedeac",
+    "F:\\LJP\\概伦AI\\PLLngspice_vs_matlab\\matlab\\stage7\\run_stage7.m": "d7094fc52f55d6819235e497af0a5cb3c89ba87f91f0697e3165f4c8daa9c4c5",
+    "F:\\LJP\\概伦AI\\PLLngspice_vs_matlab\\spice\\stage3\\cp\\cp_core.inc": "d59b68ea3ca4ada79b0c34d3ee6b9bcfb19cbeb1a7b7834d93772a8cd8ae20b9",
+    "F:\\LJP\\概伦AI\\PLLngspice_vs_matlab\\spice\\vco_stage2\\generic_mos.lib": "cab2e7bc722ac993a89139b5a6b2c58d4736e079f40b3183ce8967d2fdf44790",
+    "F:\\LJP\\概伦AI\\PLLngspice_vs_matlab\\results\\stage4\\vco_model_validity.json": "d8d86927ad1061b8cfb4c2d4fa063ec0721f6691213f0b8b4396038c09644660",
+    "F:\\LJP\\概伦AI\\PLLngspice_vs_matlab\\results\\stage5\\cp_model_validity.json": "6a5442d97f80bebcdf2cfa8e81daf8cf9c6eb2f560af580c8b2d2fbf71a3c025",
+    "F:\\LJP\\概伦AI\\PLLngspice_vs_matlab\\results\\stage6\\lf_model_validity.json": "700966d526e34d18f14ddf27328e974ec4b3c14632ee6361faf15b8269e4ada8",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\experiments\\feedback_allocation\\verification_matlab.py": "e3c92acd0f1a5c9081336cc01bb4e7bec3714180fab15ad05d8cb90691af5fe4",
+    "E:\\matlabR2021a\\bin\\matlab.exe": "c559a63b3e5b4966ec10b5c44a07eff220204195955e8305fd0d9cf3772a5591",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\reference_fit\\cp1_R3820_d+0ps.json": "56a7d81c088c61ece465634aeccb70247308313400c7a1bbd36a492375202992",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\reference_fit\\cp1_R3820_d+100ps.json": "f328f7d08e24c4e03098bcd5ac6f5edbf8d7f64ccace1f9f5739f45a6183bd44",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\reference_fit\\cp1_R3820_d-100ps.json": "438f5ca78e20fc6c5910efd2578a629a84f0214666179dc98af8ee0b53a8a273",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\reference_fit\\cp1_R5000_d+0ps.json": "79355eeada5cccaec592f79aa15f9ea2c955f60d84222c45793df5b86c9dcc9c",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\reference_fit\\cp1_R5000_d+100ps.json": "c593e1e1c3e8f5f94c19be93f08b52b92bd8a5618c7a4fb4aaba4bd5bc6a4c70",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\reference_fit\\cp1_R5000_d-100ps.json": "61e6cd8125c98ae66ac80721223e15db1ffa591e783567dadd6351efb8755581",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\reference_fit\\cp1.03_R3820_d+0ps.json": "29a64fc6f29eb7c5c8a6bd7bf0514de2c43afae18cc29e6488f6096e5f3c07cb",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\reference_fit\\cp1.03_R3820_d+100ps.json": "2a619ceb7b5e45ccb5bf36ada061a7ad088e941b792b1c4448bc8456e33d1a47",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\reference_fit\\cp1.03_R3820_d-100ps.json": "907b0c5d785ece25ea6d3dbaf6bd5ac3fe9bf3a668a44abbb82031e8aff41cd3",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\reference_fit\\cp1.03_R5000_d+0ps.json": "49dc3c1f744185491ce47bd3d776b0c7f5c0a5de12330bf1f6458353f00e8743",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\reference_fit\\cp1.03_R5000_d+100ps.json": "0b17e03961d1e7781f5681614f017ce88b041cc321d660b0eed5c77e21fe5477",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\reference_fit\\cp1.03_R5000_d-100ps.json": "a7c7356f4bae96e23e5e46c7225e6af46c63e45d01303f263c1d47a381ffc4ee",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\reference_fit\\cp1.06_R3820_d+0ps.json": "1742412cd61211daf411c8579653ac8ac3985ffee2600419dfd9fb9e8a9cdd8f",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\reference_fit\\cp1.06_R3820_d+100ps.json": "bb744e5b1ea741baadf93bd0dc62af9b1bfc8365aa990c557fc50db66ae9fcd2",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\reference_fit\\cp1.06_R3820_d-100ps.json": "3480a3317fde813418f001f234733b2179e47268c4dbc4c32c5453172bffbee3",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\reference_fit\\cp1.06_R5000_d+0ps.json": "ff72f71df6eed9818dc4b3b3a59b156b6800d635cbe14887fd83ea00146be66b",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\reference_fit\\cp1.06_R5000_d+100ps.json": "0c067e98778074f0223f98b6658a325a45999f8486499c5812fcd6c2ecad94aa",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\reference_fit\\cp1.06_R5000_d-100ps.json": "dd98c87f49cc37a0807ecbcf78f3de02aa2ffcbdf14994dba7a376bdbc0b0bed",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\reference_fit\\cp1.1_R3820_d+0ps.json": "6a6ee3c4e5731bb7b617c45301576708094523ed9acfda4aac35d239098fdbb5",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\reference_fit\\cp1.1_R3820_d+100ps.json": "172864a9b6c962d15efe3fbe1b6bec41abe87a3cbb92964fc39e86e9dd478747",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\reference_fit\\cp1.1_R3820_d-100ps.json": "3d514da9e51596b6afc92db56c9b10ea9f6fdec7f492947dc6369170913f790d",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\reference_fit\\cp1.1_R5000_d+0ps.json": "9cd9c857f3f500a70a8b1d8e51092c8974c174f375c25ff150ed5977ec228407",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\reference_fit\\cp1.1_R5000_d+100ps.json": "ccfc4548c8fd71a9fea1bc1c145467b8e6545d9ef8e7a472fd78ab34ccd7d9e9",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\reference_fit\\cp1.1_R5000_d-100ps.json": "71bc377913480910576b00b3723a07e1927f3e1405eea39c09c0976071875c43"
+  },
+  "engine_semantics": {
+    "original_sha256": "69ad930335ad7ddc3fc68cdc6ef31fee0e34620a81bde27b8e3a516718947319",
+    "executed_sha256": "24d925387d2081948e0e91fc50f5c748b8d662283952b42aa7e93bc3e60f194b",
+    "single_LF_Tref_correction": true,
+    "initial_phase_override_cycles": 0.0,
+    "model_parameters_changed": false,
+    "original_source_preserved": true
+  },
+  "cost": {
+    "job_wall_s": 0.1353744
+  },
+  "physical_capability_verdict": "UNKNOWN",
+  "scope": "corrected behavioral calculation; not independent transistor or mixed-level evidence",
+  "artifacts": {
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\feedback_allocation_20261029\\verification\\matlab_corrected_loaded\\cp1_R5000_LOADED\\cppll_run_original.m": "69ad930335ad7ddc3fc68cdc6ef31fee0e34620a81bde27b8e3a516718947319",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\feedback_allocation_20261029\\verification\\matlab_corrected_loaded\\cp1_R5000_LOADED\\cycles.csv": "eb99f53848ce9944a57dfa560ec1d1cfaedceeaccdbc9fc666f56f1439a275a8",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\feedback_allocation_20261029\\verification\\matlab_corrected_loaded\\cp1_R5000_LOADED\\cycles_matlab.csv": "df26ce32dcba99abac07866250577360cc697f0ce75516bc46a64c9705c5987c",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\feedback_allocation_20261029\\verification\\matlab_corrected_loaded\\cp1_R5000_LOADED\\engine_semantics.json": "1e1eb54922cfe75c70a0a65d022794214e3af63fb122f1eeba08de9d02979adb",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\feedback_allocation_20261029\\verification\\matlab_corrected_loaded\\cp1_R5000_LOADED\\input_cfg.json": "8dbf4f485f54fd367b72f88e03c4eec73b7201ab0d2b19ee97735ce2f23f9ff0",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\feedback_allocation_20261029\\verification\\matlab_corrected_loaded\\cp1_R5000_LOADED\\job.json": "e07a0613902e487c2fae46c2d2e59ac8b3ef7e9ba11c95f0afade85f07402572",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\feedback_allocation_20261029\\verification\\matlab_corrected_loaded\\cp1_R5000_LOADED\\job_cost.json": "ad04b89b156751d6f2ca0bf4c5a388211792a54cd30b9b80c156ea58d283b76e",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\feedback_allocation_20261029\\verification\\matlab_corrected_loaded\\cp1_R5000_LOADED\\observe.m": "c1a4162ad083b1699f98d5898302acf8dd97311e4e378f4f46b11d9f9f7b0586",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\feedback_allocation_20261029\\verification\\matlab_corrected_loaded\\cp1_R5000_LOADED\\protocol.json": "8846e5ec91a845f186a328b9f1c2ed255e0950ea27fe5f994f7e9faba98d99b6",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\feedback_allocation_20261029\\verification\\matlab_corrected_loaded\\cp1_R5000_LOADED\\result_matlab.json": "f01b4d43120d76f063f792ef8ca0a8155edd8998a94dd09728404ced4c8100ab",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\feedback_allocation_20261029\\verification\\matlab_corrected_loaded\\cp1_R5000_LOADED\\model_source\\cppll_run.m": "24d925387d2081948e0e91fc50f5c748b8d662283952b42aa7e93bc3e60f194b",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\feedback_allocation_20261029\\verification\\matlab_corrected_loaded\\cp1_R5000_LOADED\\model_source\\cppll_small_signal.m": "b7ea44baaaa0f8ea38ab64e0dfca71d45024907954f444e7a998c060c6dedeac"
+  },
+  "calibration_only": true,
+  "independent_validation": false,
+  "visibility": "only after purchase of matching implementation and LF loaded calibration evidence",
+  "validity_unknowns": [
+    "loaded local q(d) calibration input is not an independent system validation; dynamic voltage/timing trajectory requires matching evidence"
+  ]
+}

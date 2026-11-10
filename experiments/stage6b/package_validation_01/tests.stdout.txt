@@ -1,0 +1,111 @@
+........................................................................ [ 17%]
+........................................................................ [ 35%]
+........................................................................ [ 53%]
+........................................................................ [ 71%]
+......................................................................F. [ 89%]
+............................................                             [100%]
+================================== FAILURES ===================================
+__________ test_holdout_rejects_wrong_source_lock_before_simulation ___________
+
+tmp_path = WindowsPath('C:/Users/Lenovo/.codex/worktrees/stage6b-sensitivity-allocation/PLL_allocation/experiments/stage6b/package_validation_01/test_output/tmp/test_holdout_rejects_wrong_sou0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001CCA0FFD0D0>
+
+    def test_holdout_rejects_wrong_source_lock_before_simulation(tmp_path, monkeypatch):
+        import argparse
+        import json
+        import tools.run_stage41 as module
+        lock = tmp_path/'wrong.json'
+        lock.write_text(json.dumps({'source_bindings': {}, 'development_complete': True}), encoding='utf-8')
+        monkeypatch.setattr(module, 'run_case', lambda *a, **k: pytest.fail('M2 must not run'))
+        args = argparse.Namespace(mode='holdout', out=str(tmp_path/'new'), lock=str(lock))
+        with pytest.raises(ValueError, match='lock mismatch'):
+>           module.main(args)
+
+tests\verification\test_closed_loop_stage41.py:96: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tools\run_stage41.py:141: in main
+    write(out/'run_manifest.json', {'HEAD': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT).decode().strip(),
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\subprocess.py:466: in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+input = None, capture_output = False, timeout = None, check = True
+popenargs = (['git', 'rev-parse', 'HEAD'],)
+kwargs = {'stdout': -1, 'cwd': WindowsPath('C:/Users/Lenovo/.codex/worktrees/stage6b-bundlecheck-01/PLL_allocation')}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout (seconds) is given and the process takes too long,
+         a TimeoutExpired exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['git', 'rev-parse', 'HEAD']' returned non-zero exit status 128.
+
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\subprocess.py:571: CalledProcessError
+---------------------------- Captured stderr call -----------------------------
+fatal: not a git repository (or any of the parent directories): .git
+=========================== short test summary info ===========================
+FAILED tests/verification/test_closed_loop_stage41.py::test_holdout_rejects_wrong_source_lock_before_simulation
+1 failed, 403 passed in 39.35s

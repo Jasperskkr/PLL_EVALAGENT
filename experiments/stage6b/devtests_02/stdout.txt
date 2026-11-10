@@ -1,0 +1,31 @@
+........................................................................ [ 17%]
+........................................................................ [ 35%]
+..............F......................................................... [ 53%]
+........................................................................ [ 71%]
+........................................................................ [ 89%]
+............................................                             [100%]
+================================== FAILURES ===================================
+________________ test_runner_cache_budget_trace_and_tampering _________________
+
+tmp_path = WindowsPath('C:/Users/Lenovo/.codex/worktrees/stage6b-sensitivity-allocation/PLL_allocation/experiments/stage6b/devtests_02/tmp/test_runner_cache_budget_trace0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000266212D7CE0>
+
+    def test_runner_cache_budget_trace_and_tampering(tmp_path,monkeypatch):
+        calls=synthetic_child(monkeypatch);cache=tmp_path/'cache';path=ROOT/'experiments/stage6b/frozen_01/B1.json'
+        a=pipeline.run_multispec(tmp_path/'a',path,'A',cache_path=cache)
+        b=pipeline.run_multispec(tmp_path/'b',path,'A',cache_path=cache)
+        assert len(calls)==1 and a['cost']['M2_calls']==1 and b['cost']['M2_calls']==0
+        assert b['cost']['cache_hits']==1 and b['cost']['M2_candidate_slots_used']==1
+        assert assert_chain(tmp_path/'a/allocation_trace.jsonl')==a['trace_final_sha256']
+        next((tmp_path/'a').rglob('BehavioralVerificationResult.json')).write_text('{}',encoding='utf-8')
+        bad=pipeline.run_multispec(tmp_path/'bad',path,'A',cache_path=cache)
+>       assert bad['status']=='PIPELINE_ERROR' and bad['cost']['M2_calls']==0
+E       AssertionError: assert ('RESEARCH_JOINT_FEASIBLE' == 'PIPELINE_ERROR'
+E         
+E         - PIPELINE_ERROR
+E         + RESEARCH_JOINT_FEASIBLE)
+
+tests\test_multispec_stage6b.py:188: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_multispec_stage6b.py::test_runner_cache_budget_trace_and_tampering
+1 failed, 403 passed in 35.02s

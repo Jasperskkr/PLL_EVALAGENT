@@ -1,0 +1,43 @@
+{
+  "status": "SETUP_PASS",
+  "new_native_builds": 3,
+  "build_failure_count": 0,
+  "build_wall_s": 15.21662419999484,
+  "regression": {
+    "command": [
+      "python",
+      "-B",
+      "-m",
+      "pytest",
+      "-q",
+      "tests",
+      "-p",
+      "no:cacheprovider",
+      "--basetemp=experiments/stage6a/pretests_01/tmp",
+      "--junitxml=experiments/stage6a/pretests_01/tests.xml"
+    ],
+    "returncode": 0,
+    "wall_s": 27.4056266999105,
+    "suites": [
+      {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0",
+        "tests": "364",
+        "time": "26.144",
+        "timestamp": "2026-11-09T11:18:21.374320+08:00",
+        "hostname": "LAPTOP-VNAQOC78"
+      }
+    ],
+    "source_checked": 80,
+    "source_changes": []
+  },
+  "formal_source_checked": 80,
+  "formal_source_changes": [],
+  "Stage6A_candidate_M2_calls": 0,
+  "Stage6A_real_LLM_calls": 0,
+  "capture_review": "capture_protocol_review.json",
+  "pending": "Frozen experiment plan from root before Stage6A candidate measurements",
+  "test_cost_scope": "Tests execute direct native checks; no study candidate/full-M2 count attributed. Pytest process wall recorded; uninstrumented internal native calls not retrospectively fabricated."
+}

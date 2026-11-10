@@ -1,0 +1,38 @@
+{
+  "status": "PASS",
+  "archive": "C:\\Users\\Lenovo\\.codex\\worktrees\\stage6b-sensitivity-allocation\\PLL_allocation\\delivery\\stage6b_20261109_03\\PLL_Stage6B_reproducible_bundle.zip",
+  "archive_sha256": "9b1f47b4cadc2b26b97e4bf10f5a80dc487bc4f60c78cc1eb35fa59dbeb927db",
+  "archive_bytes": 909378428,
+  "archive_entries": 12518,
+  "CRC": "PASS_ALL_MEMBERS_STREAMED",
+  "manifest_files_verified": 12517,
+  "full_trace_events": 3938,
+  "artifact_request_payload_refs_verified": 6056,
+  "runtime_events_preserved": 1610,
+  "native_evidence_records": 2120,
+  "method_trace_chains_verified": 12,
+  "missing_references": 0,
+  "source_test_basis": {
+    "archive02_sha256": "c22e37c83b6308c638d9dbaa9c543f50f18bbab439b89a5f03ac6cb3b5d60733",
+    "fresh_native_rebuilds": 3,
+    "tests_passed": 407,
+    "tests_failed": 0,
+    "without_git": true,
+    "source_runtime_config_tests_and_all_other_tools_docs": "BYTE_IDENTICAL",
+    "sole_source_difference": "tools/package_stage6b.py export selection adds historical receipt; no runtime effect"
+  },
+  "six_arm_reproduction_basis": {
+    "candidate01_sha256": "9933ccd0db323149fdb34b1fb4bd1b878cd926776ab1860af1f174a8ba612215",
+    "comparison": "all6candidate order/final/constraints/costs identical;156numeric values exact",
+    "runtime_source": "BYTE_IDENTICAL"
+  },
+  "new_LLM_calls": 0,
+  "new_M2_study_calls": 0,
+  "new_test_runs": 0,
+  "archive_or_sources_modified": false,
+  "started_utc": "2026-11-09T08:27:22.161532+00:00",
+  "completed_utc": "2026-11-09T08:27:29.927755+00:00",
+  "elapsed_s": 7.7667464999249205,
+  "audit_root": "C:\\Users\\Lenovo\\.codex\\worktrees\\stage6b-sensitivity-allocation\\PLL_allocation\\experiments\\stage6b\\package_validation_03",
+  "prior02_failure": "preserved, single missing historical delivery receipt fixed by adding exact original bytes"
+}

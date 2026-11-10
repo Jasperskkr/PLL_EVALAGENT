@@ -1,0 +1,47 @@
+[
+  {
+    "step": 1,
+    "policy": "MOCK_FEEDBACK_POLICY_NOT_LLM",
+    "action": {
+      "tool": "InterpretVerificationFeedback",
+      "args": {},
+      "reason": "Inspect bound failure category before selecting a repair."
+    },
+    "observation": {
+      "kind": "MODEL_OUT_OF_DOMAIN",
+      "source": "SIMULATED",
+      "real_repair_success": "NOT_MEASURED",
+      "remaining_M2_required": true
+    },
+    "decision": "Inspect bound failure category before selecting a repair.",
+    "cost_to_date": {
+      "analytic_calls": 0,
+      "M1_calls": 0,
+      "candidate_generations": 0,
+      "M2_calls": 0,
+      "LLM_calls": 0
+    }
+  },
+  {
+    "step": 2,
+    "policy": "MOCK_FEEDBACK_POLICY_NOT_LLM",
+    "action": {
+      "tool": "RequestDiagnosis",
+      "args": {},
+      "reason": "Unknown applicability or measurement requires evidence before changing blocks."
+    },
+    "observation": {
+      "kind": "MODEL_OUT_OF_DOMAIN",
+      "reason": "Unknown applicability or measurement requires evidence before changing blocks.",
+      "M2_status": "DIAGNOSIS_REQUIRED"
+    },
+    "decision": "Unknown applicability or measurement requires evidence before changing blocks.",
+    "cost_to_date": {
+      "analytic_calls": 0,
+      "M1_calls": 0,
+      "candidate_generations": 0,
+      "M2_calls": 0,
+      "LLM_calls": 0
+    }
+  }
+]

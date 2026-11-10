@@ -1,0 +1,154 @@
+{
+  "status": "PASS",
+  "streamed_members": 12518,
+  "streamed_uncompressed_bytes": 987695613,
+  "manifest_files": 12517,
+  "removed": [],
+  "added": [
+    "delivery/stage6b_20261109_01/stage6b_candidate_01.zip.receipt.json",
+    "experiments/stage6b/package_validation_02/acceptance_receipt.json",
+    "experiments/stage6b/package_validation_02/build_closed_loop.receipt.json",
+    "experiments/stage6b/package_validation_02/build_closed_loop.stderr.txt",
+    "experiments/stage6b/package_validation_02/build_closed_loop.stdout.txt",
+    "experiments/stage6b/package_validation_02/build_kernel.receipt.json",
+    "experiments/stage6b/package_validation_02/build_kernel.stderr.txt",
+    "experiments/stage6b/package_validation_02/build_kernel.stdout.txt",
+    "experiments/stage6b/package_validation_02/build_return_ratio.receipt.json",
+    "experiments/stage6b/package_validation_02/build_return_ratio.stderr.txt",
+    "experiments/stage6b/package_validation_02/build_return_ratio.stdout.txt",
+    "experiments/stage6b/package_validation_02/continue_final_validation.py",
+    "experiments/stage6b/package_validation_02/evidence_checks.json",
+    "experiments/stage6b/package_validation_02/extraction.receipt.json",
+    "experiments/stage6b/package_validation_02/failure.json",
+    "experiments/stage6b/package_validation_02/manifest_after.receipt.json",
+    "experiments/stage6b/package_validation_02/manifest_after.stderr.txt",
+    "experiments/stage6b/package_validation_02/manifest_after.stdout.txt",
+    "experiments/stage6b/package_validation_02/manifest_before.receipt.json",
+    "experiments/stage6b/package_validation_02/manifest_before.stderr.txt",
+    "experiments/stage6b/package_validation_02/manifest_before.stdout.txt",
+    "experiments/stage6b/package_validation_02/run_final_validation.py",
+    "experiments/stage6b/package_validation_02/test_output/tests.xml",
+    "experiments/stage6b/package_validation_02/tests.receipt.json",
+    "experiments/stage6b/package_validation_02/tests.stderr.txt",
+    "experiments/stage6b/package_validation_02/tests.stdout.txt"
+  ],
+  "changed": [
+    "tools/package_stage6b.py"
+  ],
+  "runtime_config_test_files_unchanged": 115,
+  "other_tools_docs_unchanged": 434,
+  "packaging_helper_change": "only export file selection; diff recorded, no runtime/test behavior change",
+  "frozen_plan_sources_verified": 16,
+  "complete_trace": {
+    "path": "experiments/stage6b/trace_01/complete_trace.jsonl",
+    "events": 3938,
+    "final_sha256": "68ff79909b97589ebeebbf2da2af70845f8bfb6d861ad2c010afed7a5c70bdf8"
+  },
+  "artifact_request_payload_refs_verified": 6056,
+  "runtime_events_preserved": 1610,
+  "native_evidence_records": 2120,
+  "method_trace_chains": [
+    {
+      "path": "experiments/stage6b/study_01/runs/B1_A/allocation_trace.jsonl",
+      "events": 34,
+      "final_sha256": "2feedc75934bbf77e80e22d55be6ded127dbd702d9cdb50fe845af61937c9c2d"
+    },
+    {
+      "path": "experiments/stage6b/study_01/runs/B1_B/allocation_trace.jsonl",
+      "events": 243,
+      "final_sha256": "b66160d5d8ae017825da3e6407e2dea6231ac1d7072bf75325c79ef6c3a461d9"
+    },
+    {
+      "path": "experiments/stage6b/study_01/runs/B1_C/allocation_trace.jsonl",
+      "events": 270,
+      "final_sha256": "60b1b838479b7bc1c4556ea9aab1545d108c93cac0a829c29047eea07a25f92f"
+    },
+    {
+      "path": "experiments/stage6b/study_01/runs/B2_A/allocation_trace.jsonl",
+      "events": 20,
+      "final_sha256": "46a4e947a07ab68686c234ef8532aa17be379f3c73caeab30f1ac2291b0dfa68"
+    },
+    {
+      "path": "experiments/stage6b/study_01/runs/B2_B/allocation_trace.jsonl",
+      "events": 63,
+      "final_sha256": "5b68577fa1a14824ba47682ab8cff5b4028560c6beb2eb145191a8c27889a349"
+    },
+    {
+      "path": "experiments/stage6b/study_01/runs/B2_C/allocation_trace.jsonl",
+      "events": 135,
+      "final_sha256": "29ff3a263c7aee2b6b25698dced5e2786326b8f38e55b472b58f5d62513e090f"
+    },
+    {
+      "path": "experiments/stage6b/reproduction_01/runs/B1_A/allocation_trace.jsonl",
+      "events": 34,
+      "final_sha256": "311a04ead340eb849384b787deb1177431edf10477479df06cf66d0a53075072"
+    },
+    {
+      "path": "experiments/stage6b/reproduction_01/runs/B1_B/allocation_trace.jsonl",
+      "events": 243,
+      "final_sha256": "15af75710356fe0009546bda23efc9e61cb4c159a2e5f58aca3846ec48a3369b"
+    },
+    {
+      "path": "experiments/stage6b/reproduction_01/runs/B1_C/allocation_trace.jsonl",
+      "events": 270,
+      "final_sha256": "e181a975068e847c664aa01a192ffcc765999186f561f37e96d8d33c92fbd467"
+    },
+    {
+      "path": "experiments/stage6b/reproduction_01/runs/B2_A/allocation_trace.jsonl",
+      "events": 20,
+      "final_sha256": "945ad6650a7819089e986b427bf8e04c7f7f71f349199d5494b9e49c6c65e013"
+    },
+    {
+      "path": "experiments/stage6b/reproduction_01/runs/B2_B/allocation_trace.jsonl",
+      "events": 63,
+      "final_sha256": "cf8cefacfdc37d5e28c399f648084102a3542b628a7cfb94e0c18751a4c7826a"
+    },
+    {
+      "path": "experiments/stage6b/reproduction_01/runs/B2_C/allocation_trace.jsonl",
+      "events": 135,
+      "final_sha256": "cbe7a451bb6f7342fc2e1b66074c35ae287090c04edc380a763d0a9b1d89a61f"
+    }
+  ],
+  "source02_acceptance": {
+    "status": "PASS_REQUIRED_CHECKS_WITH_DOCUMENTED_EXTERNAL_TRACE_REFERENCE",
+    "archive": "C:\\Users\\Lenovo\\.codex\\worktrees\\stage6b-sensitivity-allocation\\PLL_allocation\\delivery\\stage6b_20261109_02\\PLL_Stage6B_reproducible_bundle.zip",
+    "archive_sha256": "c22e37c83b6308c638d9dbaa9c543f50f18bbab439b89a5f03ac6cb3b5d60733",
+    "archive_bytes": 909348223,
+    "archive_entries": 12492,
+    "manifest_files_verified": 12491,
+    "CRC": "PASS",
+    "without_git": true,
+    "extraction_root": "C:\\Users\\Lenovo\\.codex\\worktrees\\stage6b-bundlecheck-02",
+    "native_fresh_rebuilds": 3,
+    "tests": {
+      "passed": 407,
+      "failed": 0,
+      "errors": 0,
+      "pytest_time_s": 31.892,
+      "process_elapsed_s": 33.260374700068496
+    },
+    "trace_events": 3938,
+    "runtime_events_preserved": 1610,
+    "native_evidence_records": 2120,
+    "method_trace_chains": 12,
+    "missing_external_historical_trace_references": [
+      {
+        "artifact": "delivery/stage6b_20261109_01/stage6b_candidate_01.zip.receipt.json",
+        "sha256": "53712e04e6d4e02553be63aee9022c7931328b9c09d72662cd44455a5470e7f6",
+        "event": "CANDIDATE_PACKAGE_VALIDATED",
+        "event_index": 3937
+      }
+    ],
+    "runtime_and_frozen_sources_identical_to_already_exact_reproduced_candidate01": true,
+    "all_six_repeated_here": false,
+    "rationale": "unchanged frozen runtime already fully reproduced from candidate01; no duplicate study required",
+    "new_LLM_calls": 0,
+    "new_complete_M2_study_calls": 0,
+    "elapsed_s": 101.45702830003574,
+    "started_utc": "2026-11-09T08:19:37.974470+00:00",
+    "completed_utc": "2026-11-09T08:21:19.431590+00:00",
+    "logs_root": "C:\\Users\\Lenovo\\.codex\\worktrees\\stage6b-sensitivity-allocation\\PLL_allocation\\experiments\\stage6b\\package_validation_02",
+    "immutable_archive_and_sources_modified": false
+  },
+  "candidate01_exact_reproduction_comparison_sha256": "d5d318615768095bc0ef2fa9373757225917984bf318199e2092b62a8336f373"
+}

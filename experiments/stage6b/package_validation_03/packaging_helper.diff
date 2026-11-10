@@ -1,0 +1,12 @@
+--- tested02
++++ final03
+@@ -33,6 +33,9 @@
+     for name in historical:
+         p=ROOT/name
+         if p.is_file():found.add(p)
++    # Full-process trace references the candidate archive's receipt, never the large earlier ZIP.
++    p=ROOT/'delivery/stage6b_20261109_01/stage6b_candidate_01.zip.receipt.json'
++    if p.is_file():found.add(p)
+     for name in ('experiments/stage5/scenarios',
+         'experiments/stage5/repair_01/runs/S3__random__11/attempt_001',
+         'experiments/stage5/firstshot_01/runs/S0__analytical/attempt_001',

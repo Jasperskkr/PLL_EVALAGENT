@@ -1,0 +1,100 @@
+{
+  "schema_version": "pll-multispec-evaluation-1.0",
+  "parameter_sha256": "24ba2f99c29fde7de48d53c29a725cdf00b44778feb340a47c4d3d84ed767e6b",
+  "problem_sha256": "d6c1a2f19de6774efd4104a2e323fe49c34cd064ee83e2deffc5188d216a619b",
+  "constraints": [
+    {
+      "metric_name": "BW_Hz",
+      "comparator": "interval",
+      "lower_bound": 290000,
+      "upper_bound": 300000,
+      "measurement_source": "M2",
+      "measurement_protocol": "track_b_metrics_1.1",
+      "normalization_scale": 5000.0,
+      "strict": false,
+      "model_validity": "ORIGINAL_IDEAL_DECLARED_DOMAIN",
+      "measured_or_predicted_value": 298165.94341100333,
+      "numerical_envelope": [
+        298042.8966487683,
+        298196.18963973405
+      ],
+      "normalized_violation": 0.0,
+      "margin": 1803.810360265954,
+      "normalized_margin": 0.3607620720531908,
+      "verification_status": "PASS",
+      "reason": "independently converged original M2 BW envelope"
+    },
+    {
+      "metric_name": "PM_deg",
+      "comparator": "lower",
+      "lower_bound": 70,
+      "upper_bound": null,
+      "measurement_source": "M1",
+      "measurement_protocol": "180_plus_continuous_L_phase_at_UGF",
+      "normalization_scale": 70,
+      "strict": false,
+      "model_validity": "ORIGINAL_IDEAL_DECLARED_DOMAIN",
+      "measured_or_predicted_value": 72.24720983805331,
+      "numerical_envelope": [
+        72.24720983805331,
+        72.24720983805331
+      ],
+      "normalized_violation": 0.0,
+      "margin": 2.2472098380533083,
+      "normalized_margin": 0.032102997686475836,
+      "verification_status": "PASS",
+      "reason": "M1_PREDICTED_ONLY; ideal continuous locked model"
+    },
+    {
+      "metric_name": "Vctrl_required_V",
+      "comparator": "interval",
+      "lower_bound": 0,
+      "upper_bound": 1.2,
+      "measurement_source": "M1",
+      "measurement_protocol": "linear_vco_static_tuning_solution",
+      "normalization_scale": 0.6,
+      "strict": true,
+      "model_validity": "ORIGINAL_IDEAL_DECLARED_DOMAIN",
+      "measured_or_predicted_value": 0.52,
+      "numerical_envelope": [
+        0.52,
+        0.52
+      ],
+      "normalized_violation": 0.0,
+      "margin": 0.52,
+      "normalized_margin": 0.8666666666666667,
+      "verification_status": "PASS",
+      "reason": "M1_PREDICTED_ONLY; ideal continuous locked model"
+    },
+    {
+      "metric_name": "lock_time_s",
+      "comparator": "upper",
+      "lower_bound": null,
+      "upper_bound": 4e-05,
+      "measurement_source": "M2",
+      "measurement_protocol": "track_b_metrics_1.1:fixed_capture_0.15V_160us",
+      "normalization_scale": 4e-05,
+      "strict": false,
+      "model_validity": "ORIGINAL_IDEAL_DECLARED_DOMAIN",
+      "measured_or_predicted_value": 2.3e-05,
+      "numerical_envelope": [
+        2.2e-05,
+        2.4e-05
+      ],
+      "normalized_violation": 0.0,
+      "margin": 1.6000000000000003e-05,
+      "normalized_margin": 0.4,
+      "verification_status": "PASS",
+      "reason": "fixed initial condition/window; paired difference + block resolution; not global lockability"
+    }
+  ],
+  "research_joint_status": "RESEARCH_JOINT_FEASIBLE",
+  "max_normalized_violation": 0.0,
+  "minimum_normalized_margin": 0.032102997686475836,
+  "unresolved_constraints": 0,
+  "M1_predicted_feasible": true,
+  "FULL_SYSTEMSPEC_CERTIFIED": false,
+  "original_M2_status": "UNKNOWN",
+  "strict_periodic_PM_status": "UNKNOWN",
+  "strict_frequency_precision_status": "UNKNOWN"
+}

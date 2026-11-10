@@ -1,0 +1,204 @@
+{
+  "name": "E1_BW_repair",
+  "execution_state": "M2_COMPLETED",
+  "command": [
+    "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "-B",
+    "C:\\Users\\Lenovo\\.codex\\worktrees\\stage6a-multispec-feasibility\\PLL_allocation\\experiments\\stage6a\\verifier_pipeline_timing.py",
+    "C:\\Users\\Lenovo\\.codex\\worktrees\\stage6a-multispec-feasibility\\PLL_allocation\\experiments\\stage6a\\repair_01\\receipts\\E1_BW_repair_timing.json",
+    "pipeline",
+    "--strategy",
+    "analytical",
+    "--proposal",
+    "experiments\\stage6a\\repair_01\\E1_BW_repair_proposal.json",
+    "--m2-budget",
+    "1",
+    "--repair-budget",
+    "0",
+    "--out",
+    "experiments\\stage6a\\repair_01\\runs\\E1_BW_repair"
+  ],
+  "equivalent_formal_command": [
+    "python",
+    "-B",
+    "-m",
+    "pll_allocation",
+    "pipeline",
+    "--strategy",
+    "analytical",
+    "--proposal",
+    "experiments\\stage6a\\repair_01\\E1_BW_repair_proposal.json",
+    "--m2-budget",
+    "1",
+    "--repair-budget",
+    "0",
+    "--out",
+    "experiments\\stage6a\\repair_01\\runs\\E1_BW_repair"
+  ],
+  "returncode": 0,
+  "process_wall_s": 10.636693099979311,
+  "proposal_sha256": "db74bb5f5399891aa8b90fed5e0dc850de4b0905fc9b692014113407fd60b50b",
+  "proposal_raw_sha256": "bde2e3370b05bf12b0b7a5b5f6971e5f014a617d673858ab777a60c76f69dc67",
+  "parameter_sha256": "2f126b85ba466bb2cb9c7e2cf1d6ec26fcfb269abf3850358e676a53ce292d34",
+  "plan_sha256": "c3d017a6fb3eac69e362aa42e400a6a244de91b0e5074d9617ed7ec08026162f",
+  "parent": "E1_upper_shape",
+  "research_SystemSpec": {
+    "version": "0",
+    "draft": true,
+    "source": "User Stage 1 research targets, 2026-11-04; not frozen",
+    "metrics": [
+      {
+        "metric": "output_frequency_Hz",
+        "unit": "Hz",
+        "min": 80000000,
+        "max": 80000000,
+        "tolerance": 1e-06,
+        "evaluator": "M1",
+        "protocol": "conditional_locked_tuning_frequency",
+        "source": "User: 10 MHz x 8; conditional static frequency, not a transient measurement"
+      },
+      {
+        "metric": "BW_Hz",
+        "unit": "Hz",
+        "min": 290000,
+        "max": 300000,
+        "tolerance": 0,
+        "evaluator": "M1",
+        "protocol": "continuous_normalized_T_first_downward_minus3dB",
+        "source": "User: experimental BW target"
+      },
+      {
+        "metric": "PM_deg",
+        "unit": "deg",
+        "min": 70,
+        "tolerance": 0,
+        "evaluator": "M1",
+        "protocol": "180_plus_continuous_L_phase_at_UGF",
+        "source": "User: experimental PM target"
+      }
+    ]
+  },
+  "formal_SystemSpec": {
+    "version": "0",
+    "draft": true,
+    "source": "User Stage 1 research targets, 2026-11-04; not frozen",
+    "metrics": [
+      {
+        "metric": "output_frequency_Hz",
+        "unit": "Hz",
+        "min": 80000000,
+        "max": 80000000,
+        "tolerance": 1e-06,
+        "evaluator": "M1",
+        "protocol": "conditional_locked_tuning_frequency",
+        "source": "User: 10 MHz x 8; conditional static frequency, not a transient measurement"
+      },
+      {
+        "metric": "BW_Hz",
+        "unit": "Hz",
+        "min": 150000,
+        "max": 300000,
+        "tolerance": 0,
+        "evaluator": "M1",
+        "protocol": "continuous_normalized_T_first_downward_minus3dB",
+        "source": "User: experimental BW target"
+      },
+      {
+        "metric": "PM_deg",
+        "unit": "deg",
+        "min": 50,
+        "tolerance": 0,
+        "evaluator": "M1",
+        "protocol": "180_plus_continuous_L_phase_at_UGF",
+        "source": "User: experimental PM target"
+      }
+    ]
+  },
+  "measurement_scope": "Unchanged full M2 runs frozen formal SystemSpec; research thresholds rejudged independently afterward",
+  "pipeline_status": "M2_PARTIAL_PASS",
+  "cost": {
+    "analytic_calls": 0,
+    "M1_calls": 1,
+    "candidate_generations": 0,
+    "M2_calls": 1,
+    "LLM_calls": 0,
+    "native_completed_runs": 106,
+    "native_failed_attempts": 0,
+    "integration_points": 93683281,
+    "native_elapsed_s": 2.985990199726075,
+    "native_failure_elapsed_s": 0,
+    "M1_posthoc_calls": 1,
+    "M1_total_calls": 2,
+    "total_elapsed_s": 9.821609399979934,
+    "monetary_cost": null
+  },
+  "failure": null,
+  "measurements": {
+    "output_frequency_Hz": {
+      "value": 80000000.00131387,
+      "unit": "Hz",
+      "status": "MEASURED_STEADY",
+      "numerical_envelope": [
+        79999999.99131386,
+        80000000.01131387
+      ],
+      "required_precision_validated": false,
+      "uncertainty_basis": "empirical two-step difference with 0.01 Hz reporting floor; not a certified confidence bound",
+      "confidence": "CONDITIONAL_ON_TRACE_WINDOW"
+    },
+    "steady_control_V": {
+      "value": 0.4489256007066886,
+      "unit": "V",
+      "status": "MEASURED_STEADY",
+      "step_difference_V": 7.181216732377038e-11
+    },
+    "capture": {
+      "value": "CAPTURED_WITHIN_WINDOW",
+      "status": "MEASURED_WINDOW_CONDITIONAL",
+      "initial_control_V": 0.15,
+      "duration_s": 0.00016
+    },
+    "lock_time_s": {
+      "value": 3.6e-05,
+      "unit": "s",
+      "status": "MEASURED_WINDOW_CONDITIONAL",
+      "resolution_s": 1e-06,
+      "step_difference_s": 0.0
+    },
+    "BW_Hz": {
+      "value": 294926.11694912234,
+      "unit": "Hz",
+      "status": "MEASURED_CONVERGED",
+      "numerical_envelope": [
+        294812.35841928,
+        294976.9188850535
+      ],
+      "confidence": "LOCAL_WARM_START_SAMPLED_POINTS_ONLY",
+      "observable": "continuous divided VCO phase fundamental / reference phase fundamental",
+      "edge_only_equivalence": "NOT_ESTABLISHED; edge timestamp harmonic fits show different sampled response",
+      "envelope_scope": "bracketing and amplitude/step/window refinements; excludes cross-observable systematic difference"
+    },
+    "PM_deg": {
+      "value": null,
+      "unit": "deg",
+      "status": "PM_M2_UNKNOWN"
+    },
+    "UGF_Hz": {
+      "value": null,
+      "unit": "Hz",
+      "status": "UNKNOWN_NO_DIRECT_LOOP_INJECTION"
+    }
+  },
+  "native_components": {
+    "capture": {
+      "runs": 2,
+      "elapsed_s": 0.021697399904951453,
+      "integration_points": 1200002
+    },
+    "BW_response": {
+      "runs": 104,
+      "elapsed_s": 2.9642927998211235,
+      "integration_points": 92483279
+    }
+  }
+}

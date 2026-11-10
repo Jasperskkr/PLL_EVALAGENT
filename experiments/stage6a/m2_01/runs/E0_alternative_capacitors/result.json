@@ -1,0 +1,319 @@
+{
+  "schema_version": "pll-unified-run-result-1.0",
+  "status": "M2_PARTIAL_PASS",
+  "strategy": "analytical",
+  "candidate_origin": "EXISTING_PROPOSAL_REVERIFICATION",
+  "scenario_binding": null,
+  "feedback_parent": null,
+  "attempts": [
+    {
+      "stage": "FIRST_SHOT",
+      "parameter_sha256": "597f25d17eab0c50c57c6bffe41efb3d16e92150188af939a0d113588f27a290",
+      "validation_level": "M1_VALIDATED",
+      "M1_status": "M1_PASS",
+      "directory": "attempt_001",
+      "M2_status": "M2_PARTIAL_PASS",
+      "generation_elapsed_s": 0.049566200003027916,
+      "scenario_binding": null,
+      "first_shot_kind": "FIRST_SHOT",
+      "M2_overall_status": "UNKNOWN",
+      "metrics": {
+        "output_frequency_Hz": {
+          "value": 80000000.00000764,
+          "unit": "Hz",
+          "status": "MEASURED_STEADY",
+          "numerical_envelope": [
+            79999999.99000764,
+            80000000.01000765
+          ],
+          "required_precision_validated": false,
+          "uncertainty_basis": "empirical two-step difference with 0.01 Hz reporting floor; not a certified confidence bound",
+          "confidence": "CONDITIONAL_ON_TRACE_WINDOW"
+        },
+        "steady_control_V": {
+          "value": 0.47773889354913085,
+          "unit": "V",
+          "status": "MEASURED_STEADY",
+          "step_difference_V": 1.1161999102782261e-10
+        },
+        "capture": {
+          "value": "CAPTURED_WITHIN_WINDOW",
+          "status": "MEASURED_WINDOW_CONDITIONAL",
+          "initial_control_V": 0.15,
+          "duration_s": 0.00016
+        },
+        "lock_time_s": {
+          "value": 1.6e-05,
+          "unit": "s",
+          "status": "MEASURED_WINDOW_CONDITIONAL",
+          "resolution_s": 1e-06,
+          "step_difference_s": 0.0
+        },
+        "BW_Hz": {
+          "value": 225472.3749286234,
+          "unit": "Hz",
+          "status": "MEASURED_CONVERGED",
+          "numerical_envelope": [
+            225448.80396313895,
+            225570.98150865707
+          ],
+          "confidence": "LOCAL_WARM_START_SAMPLED_POINTS_ONLY",
+          "observable": "continuous divided VCO phase fundamental / reference phase fundamental",
+          "edge_only_equivalence": "NOT_ESTABLISHED; edge timestamp harmonic fits show different sampled response",
+          "envelope_scope": "bracketing and amplitude/step/window refinements; excludes cross-observable systematic difference"
+        },
+        "PM_deg": {
+          "value": null,
+          "unit": "deg",
+          "status": "PM_M2_UNKNOWN"
+        },
+        "UGF_Hz": {
+          "value": null,
+          "unit": "Hz",
+          "status": "UNKNOWN_NO_DIRECT_LOOP_INJECTION"
+        }
+      },
+      "constraints": [
+        {
+          "metric": "output_frequency_Hz",
+          "target": {
+            "metric": "output_frequency_Hz",
+            "unit": "Hz",
+            "min": 80000000,
+            "max": 80000000,
+            "tolerance": 1e-06,
+            "evaluator": "M1",
+            "protocol": "conditional_locked_tuning_frequency",
+            "source": "User: 10 MHz x 8; conditional static frequency, not a transient measurement"
+          },
+          "status": "UNKNOWN",
+          "reason": "UNKNOWN_REQUIRED_PRECISION: frozen 1e-6 Hz tolerance not independently validated"
+        },
+        {
+          "metric": "BW_Hz",
+          "target": {
+            "metric": "BW_Hz",
+            "unit": "Hz",
+            "min": 150000,
+            "max": 300000,
+            "tolerance": 0,
+            "evaluator": "M1",
+            "protocol": "continuous_normalized_T_first_downward_minus3dB",
+            "source": "User: experimental BW target"
+          },
+          "status": "PASS",
+          "reason": "converged measured BW envelope"
+        },
+        {
+          "metric": "PM_deg",
+          "target": {
+            "metric": "PM_deg",
+            "unit": "deg",
+            "min": 50,
+            "tolerance": 0,
+            "evaluator": "M1",
+            "protocol": "180_plus_continuous_L_phase_at_UGF",
+            "source": "User: experimental PM target"
+          },
+          "status": "UNKNOWN",
+          "reason": "PM_M2_UNKNOWN"
+        }
+      ],
+      "prediction_errors": {
+        "BW_Hz": {
+          "M1_prediction": 224999.9999999518,
+          "M2_measurement": 225472.3749286234,
+          "comparable": true,
+          "absolute_error": 472.3749286716047,
+          "relative_error": 0.002099444127429795
+        },
+        "output_frequency_Hz": {
+          "M1_prediction": 80000000,
+          "M2_measurement": 80000000.00000764,
+          "comparable": true,
+          "absolute_error": 7.644295692443848e-06,
+          "relative_error": 9.547918011776346e-14
+        },
+        "steady_control_V": {
+          "M1_prediction": 0.47773889364581995,
+          "M2_measurement": 0.47773889354913085,
+          "comparable": true,
+          "absolute_error": -9.668910116999996e-11,
+          "relative_error": -2.023889944524626e-10
+        }
+      },
+      "execution_cost": {
+        "completed_native_runs": 106,
+        "integration_points": 95098845,
+        "native_elapsed_s": 2.8965815998381004,
+        "failed_attempts": 0
+      },
+      "M1_posthoc_calls": 1
+    }
+  ],
+  "cost": {
+    "analytic_calls": 0,
+    "M1_calls": 1,
+    "candidate_generations": 0,
+    "M2_calls": 1,
+    "LLM_calls": 0,
+    "native_completed_runs": 106,
+    "native_failed_attempts": 0,
+    "integration_points": 95098845,
+    "native_elapsed_s": 2.8965815998381004,
+    "native_failure_elapsed_s": 0,
+    "M1_posthoc_calls": 1,
+    "M1_total_calls": 2,
+    "total_elapsed_s": 9.64073310000822,
+    "monetary_cost": null
+  },
+  "failure": null,
+  "first_shot": {
+    "stage": "FIRST_SHOT",
+    "parameter_sha256": "597f25d17eab0c50c57c6bffe41efb3d16e92150188af939a0d113588f27a290",
+    "validation_level": "M1_VALIDATED",
+    "M1_status": "M1_PASS",
+    "directory": "attempt_001",
+    "M2_status": "M2_PARTIAL_PASS",
+    "generation_elapsed_s": 0.049566200003027916,
+    "scenario_binding": null,
+    "first_shot_kind": "FIRST_SHOT",
+    "M2_overall_status": "UNKNOWN",
+    "metrics": {
+      "output_frequency_Hz": {
+        "value": 80000000.00000764,
+        "unit": "Hz",
+        "status": "MEASURED_STEADY",
+        "numerical_envelope": [
+          79999999.99000764,
+          80000000.01000765
+        ],
+        "required_precision_validated": false,
+        "uncertainty_basis": "empirical two-step difference with 0.01 Hz reporting floor; not a certified confidence bound",
+        "confidence": "CONDITIONAL_ON_TRACE_WINDOW"
+      },
+      "steady_control_V": {
+        "value": 0.47773889354913085,
+        "unit": "V",
+        "status": "MEASURED_STEADY",
+        "step_difference_V": 1.1161999102782261e-10
+      },
+      "capture": {
+        "value": "CAPTURED_WITHIN_WINDOW",
+        "status": "MEASURED_WINDOW_CONDITIONAL",
+        "initial_control_V": 0.15,
+        "duration_s": 0.00016
+      },
+      "lock_time_s": {
+        "value": 1.6e-05,
+        "unit": "s",
+        "status": "MEASURED_WINDOW_CONDITIONAL",
+        "resolution_s": 1e-06,
+        "step_difference_s": 0.0
+      },
+      "BW_Hz": {
+        "value": 225472.3749286234,
+        "unit": "Hz",
+        "status": "MEASURED_CONVERGED",
+        "numerical_envelope": [
+          225448.80396313895,
+          225570.98150865707
+        ],
+        "confidence": "LOCAL_WARM_START_SAMPLED_POINTS_ONLY",
+        "observable": "continuous divided VCO phase fundamental / reference phase fundamental",
+        "edge_only_equivalence": "NOT_ESTABLISHED; edge timestamp harmonic fits show different sampled response",
+        "envelope_scope": "bracketing and amplitude/step/window refinements; excludes cross-observable systematic difference"
+      },
+      "PM_deg": {
+        "value": null,
+        "unit": "deg",
+        "status": "PM_M2_UNKNOWN"
+      },
+      "UGF_Hz": {
+        "value": null,
+        "unit": "Hz",
+        "status": "UNKNOWN_NO_DIRECT_LOOP_INJECTION"
+      }
+    },
+    "constraints": [
+      {
+        "metric": "output_frequency_Hz",
+        "target": {
+          "metric": "output_frequency_Hz",
+          "unit": "Hz",
+          "min": 80000000,
+          "max": 80000000,
+          "tolerance": 1e-06,
+          "evaluator": "M1",
+          "protocol": "conditional_locked_tuning_frequency",
+          "source": "User: 10 MHz x 8; conditional static frequency, not a transient measurement"
+        },
+        "status": "UNKNOWN",
+        "reason": "UNKNOWN_REQUIRED_PRECISION: frozen 1e-6 Hz tolerance not independently validated"
+      },
+      {
+        "metric": "BW_Hz",
+        "target": {
+          "metric": "BW_Hz",
+          "unit": "Hz",
+          "min": 150000,
+          "max": 300000,
+          "tolerance": 0,
+          "evaluator": "M1",
+          "protocol": "continuous_normalized_T_first_downward_minus3dB",
+          "source": "User: experimental BW target"
+        },
+        "status": "PASS",
+        "reason": "converged measured BW envelope"
+      },
+      {
+        "metric": "PM_deg",
+        "target": {
+          "metric": "PM_deg",
+          "unit": "deg",
+          "min": 50,
+          "tolerance": 0,
+          "evaluator": "M1",
+          "protocol": "180_plus_continuous_L_phase_at_UGF",
+          "source": "User: experimental PM target"
+        },
+        "status": "UNKNOWN",
+        "reason": "PM_M2_UNKNOWN"
+      }
+    ],
+    "prediction_errors": {
+      "BW_Hz": {
+        "M1_prediction": 224999.9999999518,
+        "M2_measurement": 225472.3749286234,
+        "comparable": true,
+        "absolute_error": 472.3749286716047,
+        "relative_error": 0.002099444127429795
+      },
+      "output_frequency_Hz": {
+        "M1_prediction": 80000000,
+        "M2_measurement": 80000000.00000764,
+        "comparable": true,
+        "absolute_error": 7.644295692443848e-06,
+        "relative_error": 9.547918011776346e-14
+      },
+      "steady_control_V": {
+        "M1_prediction": 0.47773889364581995,
+        "M2_measurement": 0.47773889354913085,
+        "comparable": true,
+        "absolute_error": -9.668910116999996e-11,
+        "relative_error": -2.023889944524626e-10
+      }
+    },
+    "execution_cost": {
+      "completed_native_runs": 106,
+      "integration_points": 95098845,
+      "native_elapsed_s": 2.8965815998381004,
+      "failed_attempts": 0
+    },
+    "M1_posthoc_calls": 1
+  },
+  "verified_joint_block_spec": false,
+  "full_behavioral_pass": false,
+  "LLM_execution": "NOT_APPLICABLE",
+  "feedback_received_by_agent": true
+}

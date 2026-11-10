@@ -1,0 +1,4082 @@
+{
+  "candidate": "E1_analytical",
+  "experiment": "E1",
+  "research_SystemSpec": {
+    "version": "0",
+    "draft": true,
+    "source": "User Stage 1 research targets, 2026-11-04; not frozen",
+    "metrics": [
+      {
+        "metric": "output_frequency_Hz",
+        "unit": "Hz",
+        "min": 80000000,
+        "max": 80000000,
+        "tolerance": 1e-06,
+        "evaluator": "M1",
+        "protocol": "conditional_locked_tuning_frequency",
+        "source": "User: 10 MHz x 8; conditional static frequency, not a transient measurement"
+      },
+      {
+        "metric": "BW_Hz",
+        "unit": "Hz",
+        "min": 290000,
+        "max": 300000,
+        "tolerance": 0,
+        "evaluator": "M1",
+        "protocol": "continuous_normalized_T_first_downward_minus3dB",
+        "source": "User: experimental BW target"
+      },
+      {
+        "metric": "PM_deg",
+        "unit": "deg",
+        "min": 70,
+        "tolerance": 0,
+        "evaluator": "M1",
+        "protocol": "180_plus_continuous_L_phase_at_UGF",
+        "source": "User: experimental PM target"
+      }
+    ]
+  },
+  "additional_constraints": {
+    "interior_tuning_V": [
+      0,
+      1.2
+    ],
+    "strict_endpoints": true,
+    "capture_deadline_s": null
+  },
+  "original_SystemSpec": {
+    "version": "0",
+    "draft": true,
+    "source": "User Stage 1 research targets, 2026-11-04; not frozen",
+    "metrics": [
+      {
+        "metric": "output_frequency_Hz",
+        "unit": "Hz",
+        "min": 80000000,
+        "max": 80000000,
+        "tolerance": 1e-06,
+        "evaluator": "M1",
+        "protocol": "conditional_locked_tuning_frequency",
+        "source": "User: 10 MHz x 8; conditional static frequency, not a transient measurement"
+      },
+      {
+        "metric": "BW_Hz",
+        "unit": "Hz",
+        "min": 150000,
+        "max": 300000,
+        "tolerance": 0,
+        "evaluator": "M1",
+        "protocol": "continuous_normalized_T_first_downward_minus3dB",
+        "source": "User: experimental BW target"
+      },
+      {
+        "metric": "PM_deg",
+        "unit": "deg",
+        "min": 50,
+        "tolerance": 0,
+        "evaluator": "M1",
+        "protocol": "180_plus_continuous_L_phase_at_UGF",
+        "source": "User: experimental PM target"
+      }
+    ]
+  },
+  "JointBlockSpec": {
+    "schema_version": "pll-physics-mapping-2.0",
+    "conventions": {
+      "vco_f0": "frequency_at_zero_volts",
+      "phase_error": "reference_minus_feedback_rad",
+      "lf_topology": "C1_shunt_Rz_series_C2",
+      "cp_leakage": "positive_injected_into_lf"
+    },
+    "values": {
+      "f_ref": {
+        "value": 10000000,
+        "unit": "Hz"
+      },
+      "N": {
+        "value": 8,
+        "unit": "1"
+      },
+      "Icp": {
+        "value": 0.0001511129254967205,
+        "unit": "A"
+      },
+      "Rz": {
+        "value": 2324.8410411883065,
+        "unit": "Ohm"
+      },
+      "C1": {
+        "value": 5e-11,
+        "unit": "F"
+      },
+      "C2": {
+        "value": 2e-09,
+        "unit": "F"
+      },
+      "f0": {
+        "value": 60714145.121518746,
+        "unit": "Hz"
+      },
+      "Kvco": {
+        "value": 32143091.464135423,
+        "unit": "Hz/V"
+      },
+      "Vctrl_min": {
+        "value": 0,
+        "unit": "V"
+      },
+      "Vctrl_max": {
+        "value": 1.2,
+        "unit": "V"
+      },
+      "Kvco2": {
+        "value": 0,
+        "unit": "Hz/V^2"
+      },
+      "CP_mismatch": {
+        "value": 0,
+        "unit": "1"
+      },
+      "CP_leakage": {
+        "value": 0,
+        "unit": "A"
+      },
+      "q0": {
+        "value": 0,
+        "unit": "C"
+      },
+      "PFD_reset_delay": {
+        "value": 0,
+        "unit": "s"
+      },
+      "Cload": {
+        "value": 0,
+        "unit": "F"
+      },
+      "Gload": {
+        "value": 0,
+        "unit": "S"
+      }
+    }
+  },
+  "parameter_sha256": "d4d5a697482ee8c57188e479fd64a37b033fe889e0c4efbd67b726ddc2a9a774",
+  "judgment": {
+    "M1_PREDICTED_FEASIBLE": true,
+    "M2_MEASURED_PASS": true,
+    "BW_status": "PASS",
+    "M2_measured_pass_subset": [
+      "BW_Hz"
+    ],
+    "capture_deadline": null,
+    "research_joint_status": "RESEARCH_JOINT_FEASIBLE",
+    "required_research_checks": {
+      "M1_joint": "PASS",
+      "M2_BW": "PASS"
+    },
+    "M1": {
+      "domain": {
+        "declared_domain": "IN_DECLARED_DOMAIN",
+        "model_validity": "VALID",
+        "derived": {
+          "f_target_Hz": 80000000,
+          "Vctrl_required_V": 0.6,
+          "voltage_margin_V": 0.6,
+          "Icp_Kvco_over_N": 607.1545732067711,
+          "Routh_bc_minus_ad": 5.646151480545088e-12,
+          "wz_rad_s": 215068.4675389388,
+          "wp_rad_s": 8817807.16909649
+        },
+        "issues": [],
+        "system_feasibility": "NOT_EVALUATED"
+      },
+      "prediction": {
+        "status": "OK",
+        "reason": "",
+        "model_level": "M1",
+        "model_id": "ideal_cppll_locked_continuous_m1_v1",
+        "parameter_sha256": "d4d5a697482ee8c57188e479fd64a37b033fe889e0c4efbd67b726ddc2a9a774",
+        "metrics": {
+          "output_frequency_Hz": 80000000,
+          "Vctrl_required_V": 0.6,
+          "Kvco_local_Hz_per_V": 32143091.464135423,
+          "UGF_Hz": 219173.8823354356,
+          "BW_Hz": 295000.0000002603,
+          "PM_deg": 72.24720983805331
+        },
+        "units": {
+          "output_frequency_Hz": "Hz",
+          "Vctrl_required_V": "V",
+          "Kvco_local_Hz_per_V": "Hz/V",
+          "UGF_Hz": "Hz",
+          "BW_Hz": "Hz",
+          "PM_deg": "deg"
+        },
+        "protocols": {
+          "output_frequency_Hz": "conditional_locked_tuning_frequency",
+          "Vctrl_required_V": "linear_vco_static_tuning_solution",
+          "Kvco_local_Hz_per_V": "vco_derivative_at_tuning_point",
+          "UGF_Hz": "continuous_L_first_downward_unity_crossing",
+          "BW_Hz": "continuous_normalized_T_first_downward_minus3dB",
+          "PM_deg": "180_plus_continuous_L_phase_at_UGF"
+        },
+        "factors": {
+          "F_FREQ_PLAN": {
+            "f_target_Hz": 80000000,
+            "source": "model/solve_tuning_point.m"
+          },
+          "F_TUNING": {
+            "Vctrl_required_V": 0.6,
+            "Kvco_local_Hz_per_V": 32143091.464135423,
+            "feasible": true,
+            "voltage_margin_V": 0.6,
+            "tuning_frequency_min_Hz": 60714145.121518746,
+            "tuning_frequency_max_Hz": 99285854.87848125,
+            "source": "model/solve_tuning_point.m; model/vco_model.m"
+          },
+          "F_KPFD": {
+            "Kpfd_A_per_rad": 2.405036905788037e-05,
+            "Iup_A": 0.0001511129254967205,
+            "Idown_A": 0.0001511129254967205,
+            "source": "model/pll_linear_kernel.m"
+          },
+          "F_LF_TF": {
+            "zero_Hz": 34229.209712020944,
+            "poles_rad_per_s": [
+              0,
+              -8817807.16909649
+            ],
+            "nonzero_pole_Hz": 1403397.5981928587,
+            "source": "model/pll_linear_kernel.m"
+          },
+          "F_LOOP": {
+            "UGF_Hz": 219173.8823354356,
+            "BW_Hz": 295000.0000002603,
+            "PM_deg": 72.24720983805331,
+            "characteristic_descending": [
+              2.3248410411883067e-16,
+              2.05e-09,
+              0.0028230757402725438,
+              607.1545732067711
+            ],
+            "routh_stable": true,
+            "T_definition": "L/(1+L); normalized reference phase response; H_ref=N*T",
+            "source": "model/pll_linear_kernel.m; characterization/characterize_loop.m"
+          }
+        },
+        "diagnostics": {
+          "scan": {
+            "minimum_Hz": 3.4229209712020947,
+            "maximum_Hz": 1000000000,
+            "points": 8000
+          },
+          "UGF_over_fref": 0.02191738823354356,
+          "BW_over_fref": 0.02950000000002603,
+          "sampling_equivalence": "NOT_ESTABLISHED",
+          "transient_lock": "NOT_EVALUATED",
+          "MATLAB_runtime_calls": 0,
+          "behavioral_TB_calls": 0
+        },
+        "response": [],
+        "scope": "CONDITIONAL_LOCKED_CONTINUOUS_SMALL_SIGNAL_ONLY",
+        "verified_joint_block_spec": false
+      },
+      "judgment": {
+        "verdict": "M1_SPEC_PASS",
+        "checks": [
+          {
+            "metric": "output_frequency_Hz",
+            "actual": 80000000,
+            "unit": "Hz",
+            "margin": 1e-06,
+            "status": "SATISFIED"
+          },
+          {
+            "metric": "BW_Hz",
+            "actual": 295000.0000002603,
+            "unit": "Hz",
+            "margin": 4999.999999739695,
+            "status": "SATISFIED"
+          },
+          {
+            "metric": "PM_deg",
+            "actual": 72.24720983805331,
+            "unit": "deg",
+            "margin": 2.2472098380533083,
+            "status": "SATISFIED"
+          }
+        ],
+        "issues": [],
+        "scope": "RESEARCH_DRAFT_CONTINUOUS_M1_ONLY",
+        "verified_joint_block_spec": false,
+        "M2_behavioral_verdict": "NOT_EVALUATED"
+      },
+      "validation_level": "M1_VALIDATED",
+      "verified_joint_block_spec": false
+    },
+    "FULL_SYSTEMSPEC_CERTIFIED": false,
+    "full_SystemSpec_status": "UNKNOWN",
+    "scope": "MIXED_M1_PM_TUNING_AND_MEASURED_M2_SUBSET; NOT_PERIODIC_PM_CERTIFICATION"
+  },
+  "M2_metrics": {
+    "output_frequency_Hz": {
+      "value": 79999999.99994719,
+      "unit": "Hz",
+      "status": "MEASURED_STEADY",
+      "numerical_envelope": [
+        79999999.98994718,
+        80000000.0099472
+      ],
+      "required_precision_validated": false,
+      "uncertainty_basis": "empirical two-step difference with 0.01 Hz reporting floor; not a certified confidence bound",
+      "confidence": "CONDITIONAL_ON_TRACE_WINDOW"
+    },
+    "steady_control_V": {
+      "value": 0.5999999999251424,
+      "unit": "V",
+      "status": "MEASURED_STEADY",
+      "step_difference_V": 8.58246806956231e-11
+    },
+    "capture": {
+      "value": "CAPTURED_WITHIN_WINDOW",
+      "status": "MEASURED_WINDOW_CONDITIONAL",
+      "initial_control_V": 0.15,
+      "duration_s": 0.00016
+    },
+    "lock_time_s": {
+      "value": 2.4e-05,
+      "unit": "s",
+      "status": "MEASURED_WINDOW_CONDITIONAL",
+      "resolution_s": 1e-06,
+      "step_difference_s": 0.0
+    },
+    "BW_Hz": {
+      "value": 298165.943413578,
+      "unit": "Hz",
+      "status": "MEASURED_CONVERGED",
+      "numerical_envelope": [
+        298042.8966478047,
+        298196.1896406976
+      ],
+      "confidence": "LOCAL_WARM_START_SAMPLED_POINTS_ONLY",
+      "observable": "continuous divided VCO phase fundamental / reference phase fundamental",
+      "edge_only_equivalence": "NOT_ESTABLISHED; edge timestamp harmonic fits show different sampled response",
+      "envelope_scope": "bracketing and amplitude/step/window refinements; excludes cross-observable systematic difference"
+    },
+    "PM_deg": {
+      "value": null,
+      "unit": "deg",
+      "status": "PM_M2_UNKNOWN"
+    },
+    "UGF_Hz": {
+      "value": null,
+      "unit": "Hz",
+      "status": "UNKNOWN_NO_DIRECT_LOOP_INJECTION"
+    }
+  },
+  "original_M2_constraints": [
+    {
+      "metric": "output_frequency_Hz",
+      "target": {
+        "metric": "output_frequency_Hz",
+        "unit": "Hz",
+        "min": 80000000,
+        "max": 80000000,
+        "tolerance": 1e-06,
+        "evaluator": "M1",
+        "protocol": "conditional_locked_tuning_frequency",
+        "source": "User: 10 MHz x 8; conditional static frequency, not a transient measurement"
+      },
+      "status": "UNKNOWN",
+      "reason": "UNKNOWN_REQUIRED_PRECISION: frozen 1e-6 Hz tolerance not independently validated"
+    },
+    {
+      "metric": "BW_Hz",
+      "target": {
+        "metric": "BW_Hz",
+        "unit": "Hz",
+        "min": 150000,
+        "max": 300000,
+        "tolerance": 0,
+        "evaluator": "M1",
+        "protocol": "continuous_normalized_T_first_downward_minus3dB",
+        "source": "User: experimental BW target"
+      },
+      "status": "PASS",
+      "reason": "converged measured BW envelope"
+    },
+    {
+      "metric": "PM_deg",
+      "target": {
+        "metric": "PM_deg",
+        "unit": "deg",
+        "min": 50,
+        "tolerance": 0,
+        "evaluator": "M1",
+        "protocol": "180_plus_continuous_L_phase_at_UGF",
+        "source": "User: experimental PM target"
+      },
+      "status": "UNKNOWN",
+      "reason": "PM_M2_UNKNOWN"
+    }
+  ],
+  "original_M2_status": "UNKNOWN",
+  "capture_pair": {
+    "coarse": {
+      "status": "CAPTURED_WITHIN_WINDOW",
+      "output_frequency_Hz": 80000000.0000074,
+      "steady_control_V": 0.6000000000109671,
+      "lock_time_s": 2.4e-05,
+      "lock_time_status": "MEASURED_WINDOW_CONDITIONAL",
+      "actual_clamp_events": 0,
+      "phase_lock_reference": "nearest_integer_cycle_with_no_terminal_slips",
+      "net_cycle_index": 1,
+      "startup_cycle_slips_do_not_preclude_terminal_lock": true,
+      "terminal_phase_error_peak_deg": 1.7234229930290566e-08,
+      "hold_window_s": 9.999999999999999e-06,
+      "blocks": [
+        {
+          "start_s": 0.0,
+          "end_s": 1e-06,
+          "frequency_Hz": 71846004.91408533,
+          "control_mean_V": 0.3454273721988934,
+          "phase_error_peak_deg": 176.11270554440335,
+          "control_range_V": 0.37005362156735333,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 1e-06,
+          "end_s": 2e-06,
+          "frequency_Hz": 73133748.81813963,
+          "control_mean_V": 0.38779123979972735,
+          "phase_error_peak_deg": 178.8516656111391,
+          "control_range_V": 0.25858936808905475,
+          "actual_clamps": 0,
+          "cycle_index": 2,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 2e-06,
+          "end_s": 3e-06,
+          "frequency_Hz": 79430865.7793008,
+          "control_mean_V": 0.5807391205249656,
+          "phase_error_peak_deg": 44.08891795012259,
+          "control_range_V": 0.13617443145937724,
+          "actual_clamps": 0,
+          "cycle_index": 2,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 3e-06,
+          "end_s": 4e-06,
+          "frequency_Hz": 81208506.04664005,
+          "control_mean_V": 0.6361276242151674,
+          "phase_error_peak_deg": 72.86065011746061,
+          "control_range_V": 0.047573467541247694,
+          "actual_clamps": 0,
+          "cycle_index": 2,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 4e-06,
+          "end_s": 4.9999999999999996e-06,
+          "frequency_Hz": 81336479.39282584,
+          "control_mean_V": 0.6398351979076843,
+          "phase_error_peak_deg": 133.00222279462363,
+          "control_range_V": 0.06599431144540946,
+          "actual_clamps": 0,
+          "cycle_index": 2,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 4.9999999999999996e-06,
+          "end_s": 6e-06,
+          "frequency_Hz": 81132691.3461672,
+          "control_mean_V": 0.6336006904741908,
+          "phase_error_peak_deg": 179.71604970239883,
+          "control_range_V": 0.07697693774140169,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 6e-06,
+          "end_s": 7e-06,
+          "frequency_Hz": 80899098.48733403,
+          "control_mean_V": 0.6265295044802592,
+          "phase_error_peak_deg": 176.02666662785205,
+          "control_range_V": 0.0715807284836204,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 7e-06,
+          "end_s": 8e-06,
+          "frequency_Hz": 80698454.79516123,
+          "control_mean_V": 0.6198797467662557,
+          "phase_error_peak_deg": 135.5672346978208,
+          "control_range_V": 0.06624522317423098,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 8e-06,
+          "end_s": 9e-06,
+          "frequency_Hz": 80538204.1504822,
+          "control_mean_V": 0.6151136891497926,
+          "phase_error_peak_deg": 104.13676891556554,
+          "control_range_V": 0.04853606050135584,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 9e-06,
+          "end_s": 9.999999999999999e-06,
+          "frequency_Hz": 80413383.56022945,
+          "control_mean_V": 0.6120844186296047,
+          "phase_error_peak_deg": 79.91758214386668,
+          "control_range_V": 0.04802949527906186,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 9.999999999999999e-06,
+          "end_s": 1.1e-05,
+          "frequency_Hz": 80317121.14469664,
+          "control_mean_V": 0.6084364837319286,
+          "phase_error_peak_deg": 61.315321933541604,
+          "control_range_V": 0.04002106252342985,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 1.1e-05,
+          "end_s": 1.2e-05,
+          "frequency_Hz": 80243188.52207045,
+          "control_mean_V": 0.6058597860659619,
+          "phase_error_peak_deg": 47.04487042219272,
+          "control_range_V": 0.030224293501938226,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 1.2e-05,
+          "end_s": 1.3e-05,
+          "frequency_Hz": 80186499.24949063,
+          "control_mean_V": 0.6041393929283151,
+          "phase_error_peak_deg": 36.101386929022645,
+          "control_range_V": 0.02291505201421562,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 1.3e-05,
+          "end_s": 1.4e-05,
+          "frequency_Hz": 80143053.87130708,
+          "control_mean_V": 0.6029683966709382,
+          "phase_error_peak_deg": 27.708920701944102,
+          "control_range_V": 0.017427014794523243,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 1.4e-05,
+          "end_s": 1.4999999999999999e-05,
+          "frequency_Hz": 80109756.47959495,
+          "control_mean_V": 0.6021565234707819,
+          "phase_error_peak_deg": 21.271496493125678,
+          "control_range_V": 0.013284599874265113,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 1.4999999999999999e-05,
+          "end_s": 1.6e-05,
+          "frequency_Hz": 80084231.78112124,
+          "control_mean_V": 0.6015841189212402,
+          "phase_error_peak_deg": 16.332454911353018,
+          "control_range_V": 0.010145374298736742,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 1.6e-05,
+          "end_s": 1.7e-05,
+          "frequency_Hz": 80064657.05432692,
+          "control_mean_V": 0.601174394513365,
+          "phase_error_peak_deg": 12.542024760897375,
+          "control_range_V": 0.007758851568524849,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 1.7e-05,
+          "end_s": 1.8e-05,
+          "frequency_Hz": 80049640.64638543,
+          "control_mean_V": 0.6008772594064818,
+          "phase_error_peak_deg": 9.632457316185894,
+          "control_range_V": 0.005940192822121215,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 1.8e-05,
+          "end_s": 1.8999999999999998e-05,
+          "frequency_Hz": 80038119.88543633,
+          "control_mean_V": 0.6006592702439387,
+          "phase_error_peak_deg": 7.398628228841487,
+          "control_range_V": 0.004551484423578223,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 1.8999999999999998e-05,
+          "end_s": 1.9999999999999998e-05,
+          "frequency_Hz": 80029274.87139034,
+          "control_mean_V": 0.6004979255759857,
+          "phase_error_peak_deg": 5.683233384206922,
+          "control_range_V": 0.0034896695064680072,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 1.9999999999999998e-05,
+          "end_s": 2.1e-05,
+          "frequency_Hz": 80022484.69673125,
+          "control_mean_V": 0.6003775015393756,
+          "phase_error_peak_deg": 4.365864171641778,
+          "control_range_V": 0.002676920628213675,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 2.1e-05,
+          "end_s": 2.2e-05,
+          "frequency_Hz": 80017273.05222885,
+          "control_mean_V": 0.6002870290335838,
+          "phase_error_peak_deg": 3.3540528187354215,
+          "control_range_V": 0.0020545536498279837,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 2.2e-05,
+          "end_s": 2.3e-05,
+          "frequency_Hz": 80013266.8785659,
+          "control_mean_V": 0.6002189927352609,
+          "phase_error_peak_deg": 2.576765468437029,
+          "control_range_V": 0.0015771036290938012,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 2.3e-05,
+          "end_s": 2.4e-05,
+          "frequency_Hz": 80010194.093063,
+          "control_mean_V": 0.6001672539130125,
+          "phase_error_peak_deg": 1.97975593297175,
+          "control_range_V": 0.0012110514962165864,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 2.4e-05,
+          "end_s": 2.4999999999999998e-05,
+          "frequency_Hz": 80007830.75556676,
+          "control_mean_V": 0.6001277300451447,
+          "phase_error_peak_deg": 1.5210217451366346,
+          "control_range_V": 0.0009298011443183984,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 2.4999999999999998e-05,
+          "end_s": 2.6e-05,
+          "frequency_Hz": 80006015.31053402,
+          "control_mean_V": 0.60009806609156,
+          "phase_error_peak_deg": 1.1686377446324374,
+          "control_range_V": 0.0007142757071088024,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 2.6e-05,
+          "end_s": 2.7e-05,
+          "frequency_Hz": 80004622.00907348,
+          "control_mean_V": 0.600075352784974,
+          "phase_error_peak_deg": 0.8979487706018595,
+          "control_range_V": 0.0005488190364727474,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 2.7e-05,
+          "end_s": 2.8e-05,
+          "frequency_Hz": 80003551.48468587,
+          "control_mean_V": 0.6000579017625722,
+          "phase_error_peak_deg": 0.6899583622948919,
+          "control_range_V": 0.00042169059487773275,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 2.8e-05,
+          "end_s": 2.9e-05,
+          "frequency_Hz": 80002728.89696038,
+          "control_mean_V": 0.6000444919606728,
+          "phase_error_peak_deg": 0.5301415514308718,
+          "control_range_V": 0.00032400953378797226,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 2.9e-05,
+          "end_s": 2.9999999999999997e-05,
+          "frequency_Hz": 80002096.81758504,
+          "control_mean_V": 0.6000341873519627,
+          "phase_error_peak_deg": 0.4073411882138981,
+          "control_range_V": 0.000248954711562166,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 2.9999999999999997e-05,
+          "end_s": 3.1e-05,
+          "frequency_Hz": 80001611.13020954,
+          "control_mean_V": 0.6000262690091699,
+          "phase_error_peak_deg": 0.31298439688734664,
+          "control_range_V": 0.00019128534358314742,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 3.1e-05,
+          "end_s": 3.2e-05,
+          "frequency_Hz": 80001237.93461367,
+          "control_mean_V": 0.6000201844612134,
+          "phase_error_peak_deg": 0.24048353745856416,
+          "control_range_V": 0.00014697451684742013,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 3.2e-05,
+          "end_s": 3.2999999999999996e-05,
+          "frequency_Hz": 80000951.17942286,
+          "control_mean_V": 0.6000155091090195,
+          "phase_error_peak_deg": 0.18477647984345905,
+          "control_range_V": 0.00011292798966555662,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 3.2999999999999996e-05,
+          "end_s": 3.4e-05,
+          "frequency_Hz": 80000730.8451696,
+          "control_mean_V": 0.6000119166336526,
+          "phase_error_peak_deg": 0.1419734058147898,
+          "control_range_V": 8.67681902845252e-05,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 3.4e-05,
+          "end_s": 3.5e-05,
+          "frequency_Hz": 80000561.54804914,
+          "control_mean_V": 0.6000091562586123,
+          "phase_error_peak_deg": 0.10908537318243323,
+          "control_range_V": 6.66682427876708e-05,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 3.5e-05,
+          "end_s": 3.6e-05,
+          "frequency_Hz": 80000431.46679567,
+          "control_mean_V": 0.6000070352699982,
+          "phase_error_peak_deg": 0.08381571097095583,
+          "control_range_V": 5.122442730909338e-05,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 3.6e-05,
+          "end_s": 3.7e-05,
+          "frequency_Hz": 80000331.51792714,
+          "control_mean_V": 0.6000054055777879,
+          "phase_error_peak_deg": 0.06439970516592958,
+          "control_range_V": 3.9358173544723485e-05,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 3.7e-05,
+          "end_s": 3.7999999999999995e-05,
+          "frequency_Hz": 80000254.72174789,
+          "control_mean_V": 0.6000041533874428,
+          "phase_error_peak_deg": 0.04948139844462959,
+          "control_range_V": 3.024074916901931e-05,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 3.7999999999999995e-05,
+          "end_s": 3.9e-05,
+          "frequency_Hz": 80000195.7151807,
+          "control_mean_V": 0.6000031912584437,
+          "phase_error_peak_deg": 0.03801891978959301,
+          "control_range_V": 2.3235391090947743e-05,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 3.9e-05,
+          "end_s": 3.9999999999999996e-05,
+          "frequency_Hz": 80000150.3774366,
+          "control_mean_V": 0.6000024520027935,
+          "phase_error_peak_deg": 0.029211736658201197,
+          "control_range_V": 1.785283985200614e-05,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 3.9999999999999996e-05,
+          "end_s": 4.1e-05,
+          "frequency_Hz": 80000115.54217719,
+          "control_mean_V": 0.6000018839936552,
+          "phase_error_peak_deg": 0.022444752011461896,
+          "control_range_V": 1.3717170146421154e-05,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 4.1e-05,
+          "end_s": 4.2e-05,
+          "frequency_Hz": 80000088.77652507,
+          "control_mean_V": 0.6000014475629173,
+          "phase_error_peak_deg": 0.017245354038452954,
+          "control_range_V": 1.053954014540448e-05,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 4.2e-05,
+          "end_s": 4.2999999999999995e-05,
+          "frequency_Hz": 80000068.21117824,
+          "control_mean_V": 0.6000011122319155,
+          "phase_error_peak_deg": 0.013250410410456213,
+          "control_range_V": 8.098018224100834e-06,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 4.2999999999999995e-05,
+          "end_s": 4.4e-05,
+          "frequency_Hz": 80000052.40986359,
+          "control_mean_V": 0.6000008545806682,
+          "phase_error_peak_deg": 0.010180907389196615,
+          "control_range_V": 6.222083142159995e-06,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 4.4e-05,
+          "end_s": 4.4999999999999996e-05,
+          "frequency_Hz": 80000040.2689338,
+          "control_mean_V": 0.600000656614231,
+          "phase_error_peak_deg": 0.007822463527258834,
+          "control_range_V": 4.780714311203305e-06,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 4.4999999999999996e-05,
+          "end_s": 4.6e-05,
+          "frequency_Hz": 80000030.94050369,
+          "control_mean_V": 0.6000005045075171,
+          "phase_error_peak_deg": 0.0060103615059146605,
+          "control_range_V": 3.673244047375235e-06,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 4.6e-05,
+          "end_s": 4.7e-05,
+          "frequency_Hz": 80000023.77302077,
+          "control_mean_V": 0.6000003876366525,
+          "phase_error_peak_deg": 0.00461803884011003,
+          "control_range_V": 2.822323080797773e-06,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 4.7e-05,
+          "end_s": 4.8e-05,
+          "frequency_Hz": 80000018.26591904,
+          "control_mean_V": 0.6000002978394098,
+          "phase_error_peak_deg": 0.003548252905376637,
+          "control_range_V": 2.168521204160001e-06,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 4.8e-05,
+          "end_s": 4.9e-05,
+          "frequency_Hz": 80000014.03454874,
+          "control_mean_V": 0.6000002288436992,
+          "phase_error_peak_deg": 0.002726286548374755,
+          "control_range_V": 1.6661748581947577e-06,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 4.9e-05,
+          "end_s": 4.9999999999999996e-05,
+          "frequency_Hz": 80000010.78339171,
+          "control_mean_V": 0.6000001758309459,
+          "phase_error_peak_deg": 0.002094731855082332,
+          "control_range_V": 1.280199022013484e-06,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 4.9999999999999996e-05,
+          "end_s": 5.1e-05,
+          "frequency_Hz": 80000008.28537947,
+          "control_mean_V": 0.6000001350991233,
+          "phase_error_peak_deg": 0.0016094792280928454,
+          "control_range_V": 9.836360175263792e-07,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 5.1e-05,
+          "end_s": 5.2e-05,
+          "frequency_Hz": 80000006.36603197,
+          "control_mean_V": 0.6000001038029822,
+          "phase_error_peak_deg": 0.0012366371522262672,
+          "control_range_V": 7.557729013729642e-07,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 5.2e-05,
+          "end_s": 5.3e-05,
+          "frequency_Hz": 80000004.89133336,
+          "control_mean_V": 0.600000079756642,
+          "phase_error_peak_deg": 0.0009501657136576511,
+          "control_range_V": 5.806953914389013e-07,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 5.3e-05,
+          "end_s": 5.4e-05,
+          "frequency_Hz": 80000003.75822467,
+          "control_mean_V": 0.6000000612806323,
+          "phase_error_peak_deg": 0.0007300557129224453,
+          "control_range_V": 4.4617476357977637e-07,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 5.4e-05,
+          "end_s": 5.4999999999999995e-05,
+          "frequency_Hz": 80000002.88760959,
+          "control_mean_V": 0.6000000470848648,
+          "phase_error_peak_deg": 0.0005609356027286722,
+          "control_range_V": 3.4281670036051537e-07,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 5.4999999999999995e-05,
+          "end_s": 5.6e-05,
+          "frequency_Hz": 80000002.2186888,
+          "control_mean_V": 0.6000000361778577,
+          "phase_error_peak_deg": 0.00043099317142483034,
+          "control_range_V": 2.6340219272391607e-07,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 5.6e-05,
+          "end_s": 5.6999999999999996e-05,
+          "frequency_Hz": 80000001.70473856,
+          "control_mean_V": 0.6000000277973206,
+          "phase_error_peak_deg": 0.000331152175659954,
+          "control_range_V": 2.0238419895513005e-07,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 5.6999999999999996e-05,
+          "end_s": 5.8e-05,
+          "frequency_Hz": 80000001.30982192,
+          "control_mean_V": 0.600000021357578,
+          "phase_error_peak_deg": 0.00025443894080657463,
+          "control_range_V": 1.555007260733987e-07,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 5.8e-05,
+          "end_s": 5.9e-05,
+          "frequency_Hz": 80000001.00639112,
+          "control_mean_V": 0.6000000164098749,
+          "phase_error_peak_deg": 0.00019549695437412267,
+          "control_range_V": 1.1947826650260396e-07,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 5.9e-05,
+          "end_s": 5.9999999999999995e-05,
+          "frequency_Hz": 80000000.77325585,
+          "control_mean_V": 0.6000000126084353,
+          "phase_error_peak_deg": 0.00015020935360778755,
+          "control_range_V": 9.18006629602175e-08,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 5.9999999999999995e-05,
+          "end_s": 6.1e-05,
+          "frequency_Hz": 80000000.59412585,
+          "control_mean_V": 0.6000000096877194,
+          "phase_error_peak_deg": 0.00011541284044714104,
+          "control_range_V": 7.053473172202729e-08,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 6.1e-05,
+          "end_s": 6.2e-05,
+          "frequency_Hz": 80000000.45649989,
+          "control_mean_V": 0.6000000074434929,
+          "phase_error_peak_deg": 8.867717718140356e-05,
+          "control_range_V": 5.419516879712205e-08,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 6.2e-05,
+          "end_s": 6.3e-05,
+          "frequency_Hz": 80000000.35073818,
+          "control_mean_V": 0.6000000057191942,
+          "phase_error_peak_deg": 6.813468184919186e-05,
+          "control_range_V": 4.164062650247047e-08,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 6.3e-05,
+          "end_s": 6.4e-05,
+          "frequency_Hz": 80000000.26950647,
+          "control_mean_V": 0.6000000043946112,
+          "phase_error_peak_deg": 5.2351463914795374e-05,
+          "control_range_V": 3.199469167380897e-08,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 6.4e-05,
+          "end_s": 6.5e-05,
+          "frequency_Hz": 80000000.20706975,
+          "control_mean_V": 0.6000000033764004,
+          "phase_error_peak_deg": 4.022367284424512e-05,
+          "control_range_V": 2.458273562488955e-08,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 6.5e-05,
+          "end_s": 6.599999999999999e-05,
+          "frequency_Hz": 80000000.15910347,
+          "control_mean_V": 0.6000000025940412,
+          "phase_error_peak_deg": 3.0905533908202334e-05,
+          "control_range_V": 1.8887916564125362e-08,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 6.599999999999999e-05,
+          "end_s": 6.7e-05,
+          "frequency_Hz": 80000000.12221234,
+          "control_mean_V": 0.6000000019931412,
+          "phase_error_peak_deg": 2.374587794873489e-05,
+          "control_range_V": 1.4512265611443809e-08,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 6.7e-05,
+          "end_s": 6.8e-05,
+          "frequency_Hz": 80000000.09393965,
+          "control_mean_V": 0.6000000015319661,
+          "phase_error_peak_deg": 1.824632293747668e-05,
+          "control_range_V": 1.1151284895483116e-08,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 6.8e-05,
+          "end_s": 6.9e-05,
+          "frequency_Hz": 80000000.0721819,
+          "control_mean_V": 0.6000000011769623,
+          "phase_error_peak_deg": 1.4019038652123788e-05,
+          "control_range_V": 8.567760167998983e-09,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 6.9e-05,
+          "end_s": 7e-05,
+          "frequency_Hz": 80000000.05544874,
+          "control_mean_V": 0.6000000009037345,
+          "phase_error_peak_deg": 1.077085306302463e-05,
+          "control_range_V": 6.582568379265297e-09,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 7e-05,
+          "end_s": 7.099999999999999e-05,
+          "frequency_Hz": 80000000.04258677,
+          "control_mean_V": 0.6000000006943396,
+          "phase_error_peak_deg": 8.275659978096343e-06,
+          "control_range_V": 5.057659180351948e-09,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 7.099999999999999e-05,
+          "end_s": 7.2e-05,
+          "frequency_Hz": 80000000.03273563,
+          "control_mean_V": 0.6000000005338886,
+          "phase_error_peak_deg": 6.359254972325553e-06,
+          "control_range_V": 3.886462152102865e-09,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 7.2e-05,
+          "end_s": 7.3e-05,
+          "frequency_Hz": 80000000.0251565,
+          "control_mean_V": 0.6000000004102777,
+          "phase_error_peak_deg": 4.886151505169406e-06,
+          "control_range_V": 2.9862071704300774e-09,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 7.3e-05,
+          "end_s": 7.4e-05,
+          "frequency_Hz": 80000000.01932362,
+          "control_mean_V": 0.6000000003152381,
+          "phase_error_peak_deg": 3.7541093487259477e-06,
+          "control_range_V": 2.2943005273390327e-09,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 7.4e-05,
+          "end_s": 7.5e-05,
+          "frequency_Hz": 80000000.0148514,
+          "control_mean_V": 0.60000000024228,
+          "phase_error_peak_deg": 2.8845463094803213e-06,
+          "control_range_V": 1.7629044890554724e-09,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 7.5e-05,
+          "end_s": 7.599999999999999e-05,
+          "frequency_Hz": 80000000.01141562,
+          "control_mean_V": 0.6000000001860026,
+          "phase_error_peak_deg": 2.216232893148736e-06,
+          "control_range_V": 1.3544263488540764e-09,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 7.599999999999999e-05,
+          "end_s": 7.7e-05,
+          "frequency_Hz": 80000000.00875683,
+          "control_mean_V": 0.6000000001428167,
+          "phase_error_peak_deg": 1.7025304636597094e-06,
+          "control_range_V": 1.0405064587715174e-09,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 7.7e-05,
+          "end_s": 7.8e-05,
+          "frequency_Hz": 80000000.00673959,
+          "control_mean_V": 0.6000000001096973,
+          "phase_error_peak_deg": 1.3084730715116044e-06,
+          "control_range_V": 7.996475703819783e-10,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 7.8e-05,
+          "end_s": 7.9e-05,
+          "frequency_Hz": 80000000.00516702,
+          "control_mean_V": 0.6000000000845679,
+          "phase_error_peak_deg": 1.0051916615272124e-06,
+          "control_range_V": 6.143501263267126e-10,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 7.9e-05,
+          "end_s": 7.999999999999999e-05,
+          "frequency_Hz": 80000000.00399859,
+          "control_mean_V": 0.6000000000646493,
+          "phase_error_peak_deg": 7.72675913872512e-07,
+          "control_range_V": 4.721815161090603e-10,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 7.999999999999999e-05,
+          "end_s": 8.099999999999999e-05,
+          "frequency_Hz": 80000000.00302124,
+          "control_mean_V": 0.6000000000494051,
+          "phase_error_peak_deg": 5.927393659900198e-07,
+          "control_range_V": 3.621851707436008e-10,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 8.099999999999999e-05,
+          "end_s": 8.2e-05,
+          "frequency_Hz": 80000000.0023299,
+          "control_mean_V": 0.6000000000390986,
+          "phase_error_peak_deg": 4.567838335760544e-07,
+          "control_range_V": 2.7915891820384786e-10,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 8.2e-05,
+          "end_s": 8.3e-05,
+          "frequency_Hz": 80000000.00184238,
+          "control_mean_V": 0.6000000000306901,
+          "phase_error_peak_deg": 3.5193809527904467e-07,
+          "control_range_V": 2.1508894665345224e-10,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 8.3e-05,
+          "end_s": 8.4e-05,
+          "frequency_Hz": 80000000.00141276,
+          "control_mean_V": 0.600000000022341,
+          "phase_error_peak_deg": 2.6903075450839733e-07,
+          "control_range_V": 1.6437917693679083e-10,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 8.4e-05,
+          "end_s": 8.499999999999999e-05,
+          "frequency_Hz": 80000000.00118232,
+          "control_mean_V": 0.6000000000144646,
+          "phase_error_peak_deg": 2.0545630086905748e-07,
+          "control_range_V": 1.254560899610624e-10,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 8.499999999999999e-05,
+          "end_s": 8.599999999999999e-05,
+          "frequency_Hz": 80000000.00082797,
+          "control_mean_V": 0.6000000000056445,
+          "phase_error_peak_deg": 1.5225177860203615e-07,
+          "control_range_V": 9.289835567471982e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 8.599999999999999e-05,
+          "end_s": 8.7e-05,
+          "frequency_Hz": 80000000.00049563,
+          "control_mean_V": 0.6000000000031814,
+          "phase_error_peak_deg": 1.149929799527509e-07,
+          "control_range_V": 7.02632396709646e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 8.7e-05,
+          "end_s": 8.8e-05,
+          "frequency_Hz": 80000000.00040182,
+          "control_mean_V": 0.6000000000053913,
+          "phase_error_peak_deg": 9.268981097108085e-08,
+          "control_range_V": 5.676425995915224e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 8.8e-05,
+          "end_s": 8.9e-05,
+          "frequency_Hz": 80000000.00040182,
+          "control_mean_V": 0.6000000000054044,
+          "phase_error_peak_deg": 7.460756882939976e-08,
+          "control_range_V": 4.560229971417584e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 8.9e-05,
+          "end_s": 8.999999999999999e-05,
+          "frequency_Hz": 80000000.00040182,
+          "control_mean_V": 0.6000000000017269,
+          "phase_error_peak_deg": 5.652532668771865e-08,
+          "control_range_V": 3.505540302484178e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 8.999999999999999e-05,
+          "end_s": 9.099999999999999e-05,
+          "frequency_Hz": 80000000.00040299,
+          "control_mean_V": 0.5999999999943404,
+          "phase_error_peak_deg": 3.8443084546037555e-08,
+          "control_range_V": 2.7668201063590914e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 9.099999999999999e-05,
+          "end_s": 9.2e-05,
+          "frequency_Hz": 80000000.00040182,
+          "control_mean_V": 0.5999999999832432,
+          "phase_error_peak_deg": 2.0308732196455363e-08,
+          "control_range_V": 2.0201507133776886e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 9.2e-05,
+          "end_s": 9.3e-05,
+          "frequency_Hz": 80000000.00014128,
+          "control_mean_V": 0.5999999999702189,
+          "phase_error_peak_deg": 6.163253417302551e-09,
+          "control_range_V": 1.1578848990723145e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 9.3e-05,
+          "end_s": 9.4e-05,
+          "frequency_Hz": 79999999.99997799,
+          "control_mean_V": 0.5999999999681933,
+          "phase_error_peak_deg": 4.130955309159719e-09,
+          "control_range_V": 2.797650999752932e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 9.4e-05,
+          "end_s": 9.499999999999999e-05,
+          "frequency_Hz": 80000000.00000347,
+          "control_mean_V": 0.5999999999680928,
+          "phase_error_peak_deg": 3.2971919827421467e-09,
+          "control_range_V": 2.598476989135179e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 9.499999999999999e-05,
+          "end_s": 9.6e-05,
+          "frequency_Hz": 79999999.99998726,
+          "control_mean_V": 0.5999999999680108,
+          "phase_error_peak_deg": 3.2971919827421467e-09,
+          "control_range_V": 2.7335911312320604e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 9.6e-05,
+          "end_s": 9.7e-05,
+          "frequency_Hz": 79999999.99995369,
+          "control_mean_V": 0.5999999999681154,
+          "phase_error_peak_deg": 3.2450817748410484e-09,
+          "control_range_V": 3.1491476093492565e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 9.7e-05,
+          "end_s": 9.8e-05,
+          "frequency_Hz": 79999999.99998148,
+          "control_mean_V": 0.5999999999682116,
+          "phase_error_peak_deg": 3.349302190643245e-09,
+          "control_range_V": 3.675837412231431e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 9.8e-05,
+          "end_s": 9.9e-05,
+          "frequency_Hz": 80000000.00005327,
+          "control_mean_V": 0.5999999999690043,
+          "phase_error_peak_deg": 3.5577430222476383e-09,
+          "control_range_V": 4.9658055445434e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 9.9e-05,
+          "end_s": 9.999999999999999e-05,
+          "frequency_Hz": 79999999.99992588,
+          "control_mean_V": 0.5999999999695114,
+          "phase_error_peak_deg": 4.936220865631378e-09,
+          "control_range_V": 7.112754829563528e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 9.999999999999999e-05,
+          "end_s": 0.000101,
+          "frequency_Hz": 79999999.99996063,
+          "control_mean_V": 0.5999999999695129,
+          "phase_error_peak_deg": 5.19677190513687e-09,
+          "control_range_V": 7.623346398588637e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000101,
+          "end_s": 0.000102,
+          "frequency_Hz": 80000000.00014591,
+          "control_mean_V": 0.5999999999697155,
+          "phase_error_peak_deg": 5.405212736741262e-09,
+          "control_range_V": 7.8873574338445e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000102,
+          "end_s": 0.000103,
+          "frequency_Hz": 79999999.99987377,
+          "control_mean_V": 0.5999999999687975,
+          "phase_error_peak_deg": 4.0503473313127076e-09,
+          "control_range_V": 5.651146217644509e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000103,
+          "end_s": 0.000104,
+          "frequency_Hz": 80000000.00005095,
+          "control_mean_V": 0.5999999999686911,
+          "phase_error_peak_deg": 3.4535226064454417e-09,
+          "control_range_V": 4.178546397781702e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000104,
+          "end_s": 0.00010499999999999999,
+          "frequency_Hz": 79999999.99994905,
+          "control_mean_V": 0.5999999999687725,
+          "phase_error_peak_deg": 4.154567747114904e-09,
+          "control_range_V": 5.334843677928802e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00010499999999999999,
+          "end_s": 0.000106,
+          "frequency_Hz": 79999999.99994326,
+          "control_mean_V": 0.5999999999691948,
+          "phase_error_peak_deg": 6.395306686862129e-09,
+          "control_range_V": 7.14550640878997e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000106,
+          "end_s": 0.000107,
+          "frequency_Hz": 80000000.0001216,
+          "control_mean_V": 0.5999999999707132,
+          "phase_error_peak_deg": 6.343196478961031e-09,
+          "control_range_V": 8.956169139651138e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000107,
+          "end_s": 0.000108,
+          "frequency_Hz": 80000000.00002548,
+          "control_mean_V": 0.599999999969474,
+          "phase_error_peak_deg": 5.6657637762467536e-09,
+          "control_range_V": 8.353095992674753e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000108,
+          "end_s": 0.00010899999999999999,
+          "frequency_Hz": 79999999.99995483,
+          "control_mean_V": 0.5999999999683321,
+          "phase_error_peak_deg": 3.320804420697332e-09,
+          "control_range_V": 4.2127412669401565e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00010899999999999999,
+          "end_s": 0.00010999999999999999,
+          "frequency_Hz": 79999999.99998958,
+          "control_mean_V": 0.5999999999689833,
+          "phase_error_peak_deg": 4.8320004498291814e-09,
+          "control_range_V": 6.238898286881067e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00010999999999999999,
+          "end_s": 0.000111,
+          "frequency_Hz": 80000000.0000417,
+          "control_mean_V": 0.5999999999691146,
+          "phase_error_peak_deg": 4.3630085787192974e-09,
+          "control_range_V": 5.589417817475351e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000111,
+          "end_s": 0.000112,
+          "frequency_Hz": 80000000.00004517,
+          "control_mean_V": 0.599999999968939,
+          "phase_error_peak_deg": 4.102457539213806e-09,
+          "control_range_V": 5.273226300062106e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000112,
+          "end_s": 0.000113,
+          "frequency_Hz": 79999999.99997568,
+          "control_mean_V": 0.5999999999694607,
+          "phase_error_peak_deg": 5.248882113037968e-09,
+          "control_range_V": 6.681544206799117e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000113,
+          "end_s": 0.00011399999999999999,
+          "frequency_Hz": 79999999.9998483,
+          "control_mean_V": 0.5999999999696545,
+          "phase_error_peak_deg": 6.395306686862129e-09,
+          "control_range_V": 8.924860850356708e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00011399999999999999,
+          "end_s": 0.00011499999999999999,
+          "frequency_Hz": 80000000.00016327,
+          "control_mean_V": 0.5999999999701927,
+          "phase_error_peak_deg": 4.727780034026985e-09,
+          "control_range_V": 8.278266960815017e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00011499999999999999,
+          "end_s": 0.000116,
+          "frequency_Hz": 80000000.00001274,
+          "control_mean_V": 0.5999999999683444,
+          "phase_error_peak_deg": 3.4535226064454417e-09,
+          "control_range_V": 4.5852210917018965e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000116,
+          "end_s": 0.000117,
+          "frequency_Hz": 79999999.99995483,
+          "control_mean_V": 0.5999999999695235,
+          "phase_error_peak_deg": 4.936220865631378e-09,
+          "control_range_V": 6.4650507169972116e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000117,
+          "end_s": 0.000118,
+          "frequency_Hz": 79999999.99998148,
+          "control_mean_V": 0.599999999968498,
+          "phase_error_peak_deg": 3.477135044400627e-09,
+          "control_range_V": 4.1744385725905886e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000118,
+          "end_s": 0.00011899999999999999,
+          "frequency_Hz": 79999999.99998263,
+          "control_mean_V": 0.599999999968218,
+          "phase_error_peak_deg": 2.747592133785251e-09,
+          "control_range_V": 3.0595526112620064e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00011899999999999999,
+          "end_s": 0.00011999999999999999,
+          "frequency_Hz": 79999999.9999583,
+          "control_mean_V": 0.5999999999694302,
+          "phase_error_peak_deg": 5.561543360444557e-09,
+          "control_range_V": 7.1423977843210196e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00011999999999999999,
+          "end_s": 0.000121,
+          "frequency_Hz": 79999999.99993284,
+          "control_mean_V": 0.5999999999691931,
+          "phase_error_peak_deg": 6.916408765873112e-09,
+          "control_range_V": 7.550737812778152e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000121,
+          "end_s": 0.000122,
+          "frequency_Hz": 80000000.00018181,
+          "control_mean_V": 0.5999999999703022,
+          "phase_error_peak_deg": 5.092551489334673e-09,
+          "control_range_V": 8.65707505681712e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000122,
+          "end_s": 0.00012299999999999998,
+          "frequency_Hz": 79999999.99980778,
+          "control_mean_V": 0.5999999999687939,
+          "phase_error_peak_deg": 5.561543360444557e-09,
+          "control_range_V": 7.178924121831187e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00012299999999999998,
+          "end_s": 0.000124,
+          "frequency_Hz": 80000000.00001737,
+          "control_mean_V": 0.5999999999694074,
+          "phase_error_peak_deg": 5.561543360444557e-09,
+          "control_range_V": 7.603362384145385e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000124,
+          "end_s": 0.000125,
+          "frequency_Hz": 80000000.00015402,
+          "control_mean_V": 0.5999999999701099,
+          "phase_error_peak_deg": 5.092551489334673e-09,
+          "control_range_V": 7.457812145617027e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000125,
+          "end_s": 0.000126,
+          "frequency_Hz": 80000000.00001042,
+          "control_mean_V": 0.5999999999690651,
+          "phase_error_peak_deg": 3.922514477555326e-09,
+          "control_range_V": 5.484834808555661e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000126,
+          "end_s": 0.000127,
+          "frequency_Hz": 79999999.99998032,
+          "control_mean_V": 0.5999999999690113,
+          "phase_error_peak_deg": 4.0503473313127076e-09,
+          "control_range_V": 5.391354029882223e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000127,
+          "end_s": 0.000128,
+          "frequency_Hz": 79999999.99997684,
+          "control_mean_V": 0.5999999999692984,
+          "phase_error_peak_deg": 5.092551489334673e-09,
+          "control_range_V": 6.796452289847821e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000128,
+          "end_s": 0.000129,
+          "frequency_Hz": 79999999.99996874,
+          "control_mean_V": 0.5999999999695098,
+          "phase_error_peak_deg": 5.9784250236533434e-09,
+          "control_range_V": 8.498868275808036e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000129,
+          "end_s": 0.00013,
+          "frequency_Hz": 79999999.99998379,
+          "control_mean_V": 0.599999999968491,
+          "phase_error_peak_deg": 3.088751151137754e-09,
+          "control_range_V": 3.678057858280681e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00013,
+          "end_s": 0.00013099999999999999,
+          "frequency_Hz": 79999999.99894506,
+          "control_mean_V": 0.599999999978659,
+          "phase_error_peak_deg": 4.8917236334158306e-08,
+          "control_range_V": 5.4743987121241844e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00013099999999999999,
+          "end_s": 0.00013199999999999998,
+          "frequency_Hz": 80000000.00034045,
+          "control_mean_V": 0.6000000000100871,
+          "phase_error_peak_deg": 4.8917236334158306e-08,
+          "control_range_V": 3.171229945309051e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00013199999999999998,
+          "end_s": 0.000133,
+          "frequency_Hz": 80000000.00015055,
+          "control_mean_V": 0.6000000000097502,
+          "phase_error_peak_deg": 3.359683521123542e-08,
+          "control_range_V": 2.0524582033942806e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000133,
+          "end_s": 0.000134,
+          "frequency_Hz": 80000000.00011349,
+          "control_mean_V": 0.6000000000101573,
+          "phase_error_peak_deg": 2.6822508184092645e-08,
+          "control_range_V": 1.6371570765727483e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000134,
+          "end_s": 0.000135,
+          "frequency_Hz": 80000000.00009264,
+          "control_mean_V": 0.6000000000105591,
+          "phase_error_peak_deg": 2.1715707809785017e-08,
+          "control_range_V": 1.3249734642784006e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000135,
+          "end_s": 0.000136,
+          "frequency_Hz": 80000000.00007643,
+          "control_mean_V": 0.6000000000108929,
+          "phase_error_peak_deg": 1.7546891177697156e-08,
+          "control_range_V": 1.0754064305729116e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000136,
+          "end_s": 0.000137,
+          "frequency_Hz": 80000000.00006022,
+          "control_mean_V": 0.6000000000111706,
+          "phase_error_peak_deg": 1.4107617456224672e-08,
+          "control_range_V": 8.605560708474513e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000137,
+          "end_s": 0.000138,
+          "frequency_Hz": 80000000.00004864,
+          "control_mean_V": 0.6000000000114211,
+          "phase_error_peak_deg": 1.1397886645367562e-08,
+          "control_range_V": 7.026157433642766e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000138,
+          "end_s": 0.000139,
+          "frequency_Hz": 80000000.00004631,
+          "control_mean_V": 0.6000000000116199,
+          "phase_error_peak_deg": 9.209257913521435e-09,
+          "control_range_V": 5.695444116327053e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000139,
+          "end_s": 0.00014,
+          "frequency_Hz": 80000000.00003706,
+          "control_mean_V": 0.6000000000117858,
+          "phase_error_peak_deg": 7.54173126068629e-09,
+          "control_range_V": 4.743094805803594e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00014,
+          "end_s": 0.00014099999999999998,
+          "frequency_Hz": 80000000.00014591,
+          "control_mean_V": 0.6000000000120146,
+          "phase_error_peak_deg": 9.10503749771924e-09,
+          "control_range_V": 5.947908832126814e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00014099999999999998,
+          "end_s": 0.00014199999999999998,
+          "frequency_Hz": 79999999.99987724,
+          "control_mean_V": 0.6000000000116998,
+          "phase_error_peak_deg": 1.0668343734752187e-08,
+          "control_range_V": 7.997935647097165e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00014199999999999998,
+          "end_s": 0.000143,
+          "frequency_Hz": 79999999.99984945,
+          "control_mean_V": 0.6000000000115983,
+          "phase_error_peak_deg": 1.1710547892774152e-08,
+          "control_range_V": 1.0954459561673957e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000143,
+          "end_s": 0.000144,
+          "frequency_Hz": 80000000.0000857,
+          "control_mean_V": 0.6000000000120386,
+          "phase_error_peak_deg": 1.2231649971785135e-08,
+          "control_range_V": 1.1952216993904585e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000144,
+          "end_s": 0.000145,
+          "frequency_Hz": 80000000.00010191,
+          "control_mean_V": 0.60000000001046,
+          "phase_error_peak_deg": 1.504560119844444e-08,
+          "control_range_V": 2.0800250410957233e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000145,
+          "end_s": 0.000146,
+          "frequency_Hz": 80000000.0001158,
+          "control_mean_V": 0.6000000000115434,
+          "phase_error_peak_deg": 1.3899176624620279e-08,
+          "control_range_V": 1.643629676806313e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000146,
+          "end_s": 0.000147,
+          "frequency_Hz": 79999999.99987957,
+          "control_mean_V": 0.600000000011407,
+          "phase_error_peak_deg": 8.79237625031265e-09,
+          "control_range_V": 1.0808354211633286e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000147,
+          "end_s": 0.000148,
+          "frequency_Hz": 80000000.00009033,
+          "control_mean_V": 0.60000000001115,
+          "phase_error_peak_deg": 1.5386760215796943e-08,
+          "control_range_V": 2.1070034605941146e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000148,
+          "end_s": 0.000149,
+          "frequency_Hz": 79999999.99986799,
+          "control_mean_V": 0.6000000000096344,
+          "phase_error_peak_deg": 1.5907862294807926e-08,
+          "control_range_V": 2.3013035921337632e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000149,
+          "end_s": 0.00015,
+          "frequency_Hz": 80000000.00002779,
+          "control_mean_V": 0.6000000000112002,
+          "phase_error_peak_deg": 1.2023209140180742e-08,
+          "control_range_V": 1.4548029447780664e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00015,
+          "end_s": 0.00015099999999999998,
+          "frequency_Hz": 80000000.00005095,
+          "control_mean_V": 0.6000000000104205,
+          "phase_error_peak_deg": 1.486565813678596e-08,
+          "control_range_V": 2.0836887770769863e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00015099999999999998,
+          "end_s": 0.00015199999999999998,
+          "frequency_Hz": 80000000.00010654,
+          "control_mean_V": 0.600000000011636,
+          "phase_error_peak_deg": 1.4837160366840047e-08,
+          "control_range_V": 2.0694446156710455e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00015199999999999998,
+          "end_s": 0.000153,
+          "frequency_Hz": 80000000.00015749,
+          "control_mean_V": 0.6000000000107542,
+          "phase_error_peak_deg": 1.0592621088895904e-08,
+          "control_range_V": 1.340838551300294e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000153,
+          "end_s": 0.000154,
+          "frequency_Hz": 79999999.99979387,
+          "control_mean_V": 0.6000000000115153,
+          "phase_error_peak_deg": 1.3378074545609296e-08,
+          "control_range_V": 1.6293633109398797e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000154,
+          "end_s": 0.000155,
+          "frequency_Hz": 79999999.99992357,
+          "control_mean_V": 0.6000000000100584,
+          "phase_error_peak_deg": 1.681734826708178e-08,
+          "control_range_V": 2.458011572059604e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000155,
+          "end_s": 0.000156,
+          "frequency_Hz": 80000000.00039604,
+          "control_mean_V": 0.6000000000117522,
+          "phase_error_peak_deg": 1.5699421463203533e-08,
+          "control_range_V": 2.1147306128455057e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000156,
+          "end_s": 0.000157,
+          "frequency_Hz": 79999999.9993492,
+          "control_mean_V": 0.6000000000101295,
+          "phase_error_peak_deg": 1.5699421463203533e-08,
+          "control_range_V": 1.761324419646826e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000157,
+          "end_s": 0.000158,
+          "frequency_Hz": 80000000.0006647,
+          "control_mean_V": 0.6000000000111614,
+          "phase_error_peak_deg": 1.6324743958016713e-08,
+          "control_range_V": 2.1758816970418593e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000158,
+          "end_s": 0.000159,
+          "frequency_Hz": 79999999.99981703,
+          "control_mean_V": 0.6000000000108605,
+          "phase_error_peak_deg": 1.7234229930290566e-08,
+          "control_range_V": 2.469002780003393e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000159,
+          "end_s": 0.00015999999999999999,
+          "frequency_Hz": 79999999.99981472,
+          "control_mean_V": 0.6000000000113832,
+          "phase_error_peak_deg": 1.5282539799994747e-08,
+          "control_range_V": 2.1531221250370436e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        }
+      ],
+      "finite_window_not_absolute_nonlockability": true
+    },
+    "fine": {
+      "status": "CAPTURED_WITHIN_WINDOW",
+      "output_frequency_Hz": 79999999.99994719,
+      "steady_control_V": 0.5999999999251424,
+      "lock_time_s": 2.4e-05,
+      "lock_time_status": "MEASURED_WINDOW_CONDITIONAL",
+      "actual_clamp_events": 0,
+      "phase_lock_reference": "nearest_integer_cycle_with_no_terminal_slips",
+      "net_cycle_index": 1,
+      "startup_cycle_slips_do_not_preclude_terminal_lock": true,
+      "terminal_phase_error_peak_deg": 2.445393639058804e-08,
+      "hold_window_s": 9.999999999999999e-06,
+      "blocks": [
+        {
+          "start_s": 0.0,
+          "end_s": 1e-06,
+          "frequency_Hz": 71846020.25515705,
+          "control_mean_V": 0.3453917929737795,
+          "phase_error_peak_deg": 176.11230782540167,
+          "control_range_V": 0.3700326301917397,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 1e-06,
+          "end_s": 2e-06,
+          "frequency_Hz": 73133710.25827344,
+          "control_mean_V": 0.38779307243867694,
+          "phase_error_peak_deg": 178.8451352968542,
+          "control_range_V": 0.25851462937427416,
+          "actual_clamps": 0,
+          "cycle_index": 2,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 2e-06,
+          "end_s": 3e-06,
+          "frequency_Hz": 79430909.42852002,
+          "control_mean_V": 0.5807286270888641,
+          "phase_error_peak_deg": 44.08787310437193,
+          "control_range_V": 0.1361792977460275,
+          "actual_clamps": 0,
+          "cycle_index": 2,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 3e-06,
+          "end_s": 4e-06,
+          "frequency_Hz": 81208438.56531875,
+          "control_mean_V": 0.6361264515139065,
+          "phase_error_peak_deg": 72.85853282711648,
+          "control_range_V": 0.047553727326168804,
+          "actual_clamps": 0,
+          "cycle_index": 2,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 4e-06,
+          "end_s": 4.9999999999999996e-06,
+          "frequency_Hz": 81336381.43116139,
+          "control_mean_V": 0.639834749640907,
+          "phase_error_peak_deg": 132.9956972293789,
+          "control_range_V": 0.06594002034069701,
+          "actual_clamps": 0,
+          "cycle_index": 2,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 4.9999999999999996e-06,
+          "end_s": 6e-06,
+          "frequency_Hz": 81132626.5587591,
+          "control_mean_V": 0.6336006328724327,
+          "phase_error_peak_deg": 179.71204748394481,
+          "control_range_V": 0.07691940171369915,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 6e-06,
+          "end_s": 7e-06,
+          "frequency_Hz": 80899072.30639529,
+          "control_mean_V": 0.6265299212081353,
+          "phase_error_peak_deg": 176.03610762646184,
+          "control_range_V": 0.07152234934253121,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 7e-06,
+          "end_s": 8e-06,
+          "frequency_Hz": 80698457.5747174,
+          "control_mean_V": 0.6198811417034967,
+          "phase_error_peak_deg": 135.57785383867383,
+          "control_range_V": 0.066195407443283,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 8e-06,
+          "end_s": 9e-06,
+          "frequency_Hz": 80538223.02416709,
+          "control_mean_V": 0.6151151954107357,
+          "phase_error_peak_deg": 104.14726297639079,
+          "control_range_V": 0.04849851040052933,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 9e-06,
+          "end_s": 9.999999999999999e-06,
+          "frequency_Hz": 80413410.94400285,
+          "control_mean_V": 0.6120854942978657,
+          "phase_error_peak_deg": 79.92722688887204,
+          "control_range_V": 0.04798768851574453,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 9.999999999999999e-06,
+          "end_s": 1.1e-05,
+          "frequency_Hz": 80317149.84909804,
+          "control_mean_V": 0.6084382582340077,
+          "phase_error_peak_deg": 61.323734408743526,
+          "control_range_V": 0.03998911528811455,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 1.1e-05,
+          "end_s": 1.2e-05,
+          "frequency_Hz": 80243215.89667535,
+          "control_mean_V": 0.60586164552093,
+          "phase_error_peak_deg": 47.05199119933186,
+          "control_range_V": 0.030200757565552183,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 1.2e-05,
+          "end_s": 1.3e-05,
+          "frequency_Hz": 80186523.599449,
+          "control_mean_V": 0.6041411279452147,
+          "phase_error_peak_deg": 36.107275848940915,
+          "control_range_V": 0.022897953038772956,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 1.3e-05,
+          "end_s": 1.4e-05,
+          "frequency_Hz": 80143074.65975101,
+          "control_mean_V": 0.6029698579858099,
+          "phase_error_peak_deg": 27.71371387373619,
+          "control_range_V": 0.017414128392041928,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 1.4e-05,
+          "end_s": 1.4999999999999999e-05,
+          "frequency_Hz": 80109774.10111901,
+          "control_mean_V": 0.6021577050630038,
+          "phase_error_peak_deg": 21.275354184940756,
+          "control_range_V": 0.01327486513392373,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 1.4999999999999999e-05,
+          "end_s": 1.6e-05,
+          "frequency_Hz": 80084245.63202666,
+          "control_mean_V": 0.6015850271205846,
+          "phase_error_peak_deg": 16.335519634585,
+          "control_range_V": 0.01013794246530253,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 1.6e-05,
+          "end_s": 1.7e-05,
+          "frequency_Hz": 80064668.5629238,
+          "control_mean_V": 0.601175067748,
+          "phase_error_peak_deg": 12.544466193385494,
+          "control_range_V": 0.00775320046809147,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 1.7e-05,
+          "end_s": 1.8e-05,
+          "frequency_Hz": 80049650.55816965,
+          "control_mean_V": 0.6008777080727501,
+          "phase_error_peak_deg": 9.634380861814371,
+          "control_range_V": 0.005935844553202507,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 1.8e-05,
+          "end_s": 1.8999999999999998e-05,
+          "frequency_Hz": 80038126.53424521,
+          "control_mean_V": 0.6006595892152714,
+          "phase_error_peak_deg": 7.400105744180313,
+          "control_range_V": 0.004548262757371524,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 1.8999999999999998e-05,
+          "end_s": 1.9999999999999998e-05,
+          "frequency_Hz": 80029280.84817006,
+          "control_mean_V": 0.6004980962582885,
+          "phase_error_peak_deg": 5.684411703146154,
+          "control_range_V": 0.003487256958288998,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 1.9999999999999998e-05,
+          "end_s": 2.1e-05,
+          "frequency_Hz": 80022490.14913087,
+          "control_mean_V": 0.6003775826298338,
+          "phase_error_peak_deg": 4.36677353549378,
+          "control_range_V": 0.0026750907253113576,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 2.1e-05,
+          "end_s": 2.2e-05,
+          "frequency_Hz": 80017275.42317007,
+          "control_mean_V": 0.6002871108367759,
+          "phase_error_peak_deg": 3.35471682460472,
+          "control_range_V": 0.00205292531568968,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 2.2e-05,
+          "end_s": 2.3e-05,
+          "frequency_Hz": 80013271.02794513,
+          "control_mean_V": 0.6002188352815407,
+          "phase_error_peak_deg": 2.577322781951621,
+          "control_range_V": 0.0015758961663387971,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 2.3e-05,
+          "end_s": 2.4e-05,
+          "frequency_Hz": 80010194.97967245,
+          "control_mean_V": 0.6001671338228661,
+          "phase_error_peak_deg": 1.9801265244207649,
+          "control_range_V": 0.001209962879952231,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": false
+        },
+        {
+          "start_s": 2.4e-05,
+          "end_s": 2.4999999999999998e-05,
+          "frequency_Hz": 80007832.47461507,
+          "control_mean_V": 0.6001277746200028,
+          "phase_error_peak_deg": 1.521352439160568,
+          "control_range_V": 0.0009291463056935179,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 2.4999999999999998e-05,
+          "end_s": 2.6e-05,
+          "frequency_Hz": 80006017.54934342,
+          "control_mean_V": 0.6000978878404308,
+          "phase_error_peak_deg": 1.1688910814826508,
+          "control_range_V": 0.0007136691106733872,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 2.6e-05,
+          "end_s": 2.7e-05,
+          "frequency_Hz": 80004623.75760777,
+          "control_mean_V": 0.6000749631015554,
+          "phase_error_peak_deg": 0.8981013610284183,
+          "control_range_V": 0.0005481767924051528,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 2.7e-05,
+          "end_s": 2.8e-05,
+          "frequency_Hz": 80003551.91608746,
+          "control_mean_V": 0.6000574792003767,
+          "phase_error_peak_deg": 0.6900322686785344,
+          "control_range_V": 0.0004210507101150007,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 2.8e-05,
+          "end_s": 2.9e-05,
+          "frequency_Hz": 80002729.08996211,
+          "control_mean_V": 0.6000441627312281,
+          "phase_error_peak_deg": 0.5301960447428006,
+          "control_range_V": 0.00032351802526764395,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 2.9e-05,
+          "end_s": 2.9999999999999997e-05,
+          "frequency_Hz": 80002096.96405235,
+          "control_mean_V": 0.6000339339740196,
+          "phase_error_peak_deg": 0.40738699644775156,
+          "control_range_V": 0.000248579501003654,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 2.9999999999999997e-05,
+          "end_s": 3.1e-05,
+          "frequency_Hz": 80001611.2580211,
+          "control_mean_V": 0.600026074478635,
+          "phase_error_peak_deg": 0.3130236140918292,
+          "control_range_V": 0.00019099951036671836,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 3.1e-05,
+          "end_s": 3.2e-05,
+          "frequency_Hz": 80001238.04864296,
+          "control_mean_V": 0.6000200352265946,
+          "phase_error_peak_deg": 0.24051700314215277,
+          "control_range_V": 0.00014675693119725608,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 3.2e-05,
+          "end_s": 3.2999999999999996e-05,
+          "frequency_Hz": 80000951.28021124,
+          "control_mean_V": 0.6000153946523505,
+          "phase_error_peak_deg": 0.18480481420882053,
+          "control_range_V": 0.000112762406607958,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 3.2999999999999996e-05,
+          "end_s": 3.4e-05,
+          "frequency_Hz": 80000730.93297067,
+          "control_mean_V": 0.6000118288574906,
+          "phase_error_peak_deg": 0.14199720470306884,
+          "control_range_V": 8.664220173160153e-05,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 3.4e-05,
+          "end_s": 3.5e-05,
+          "frequency_Hz": 80000561.6235551,
+          "control_mean_V": 0.6000090889456748,
+          "phase_error_peak_deg": 0.10910522102263903,
+          "control_range_V": 6.657239247065405e-05,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 3.5e-05,
+          "end_s": 3.6e-05,
+          "frequency_Hz": 80000431.53096128,
+          "control_mean_V": 0.6000069836498898,
+          "phase_error_peak_deg": 0.08383216104322073,
+          "control_range_V": 5.115151287216069e-05,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 3.6e-05,
+          "end_s": 3.7e-05,
+          "frequency_Hz": 80000331.571988,
+          "control_mean_V": 0.6000053659929405,
+          "phase_error_peak_deg": 0.06441326778551959,
+          "control_range_V": 3.930271316188172e-05,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 3.7e-05,
+          "end_s": 3.7999999999999995e-05,
+          "frequency_Hz": 80000254.7669396,
+          "control_mean_V": 0.6000041230317548,
+          "phase_error_peak_deg": 0.04949252832521884,
+          "control_range_V": 3.0198568887418453e-05,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 3.7999999999999995e-05,
+          "end_s": 3.9e-05,
+          "frequency_Hz": 80000195.75271684,
+          "control_mean_V": 0.6000031679799803,
+          "phase_error_peak_deg": 0.03802801604326381,
+          "control_range_V": 2.320331428895539e-05,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 3.9e-05,
+          "end_s": 3.9999999999999996e-05,
+          "frequency_Hz": 80000150.4084138,
+          "control_mean_V": 0.6000024341516117,
+          "phase_error_peak_deg": 0.029219143785537985,
+          "control_range_V": 1.7828448796386454e-05,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 3.9999999999999996e-05,
+          "end_s": 4.1e-05,
+          "frequency_Hz": 80000115.56764054,
+          "control_mean_V": 0.6000018703044973,
+          "phase_error_peak_deg": 0.022450765164682227,
+          "control_range_V": 1.3698625778935103e-05,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 4.1e-05,
+          "end_s": 4.2e-05,
+          "frequency_Hz": 80000088.79736741,
+          "control_mean_V": 0.6000014370658043,
+          "phase_error_peak_deg": 0.017250221340311747,
+          "control_range_V": 1.0525442443842792e-05,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 4.2e-05,
+          "end_s": 4.2999999999999995e-05,
+          "frequency_Hz": 80000068.22817603,
+          "control_mean_V": 0.6000011041816776,
+          "phase_error_peak_deg": 0.013254339806738099,
+          "control_range_V": 8.08730198298413e-06,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 4.2999999999999995e-05,
+          "end_s": 4.4e-05,
+          "frequency_Hz": 80000052.42364791,
+          "control_mean_V": 0.6000008484073627,
+          "phase_error_peak_deg": 0.010184071885791826,
+          "control_range_V": 6.213938023136301e-06,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 4.4e-05,
+          "end_s": 4.4999999999999996e-05,
+          "frequency_Hz": 80000040.28011492,
+          "control_mean_V": 0.600000651880996,
+          "phase_error_peak_deg": 0.007825007729994294,
+          "control_range_V": 4.774524903106148e-06,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 4.4999999999999996e-05,
+          "end_s": 4.6e-05,
+          "frequency_Hz": 80000030.94954771,
+          "control_mean_V": 0.6000005008780361,
+          "phase_error_peak_deg": 0.006012402558537731,
+          "control_range_V": 3.668541014967275e-06,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 4.6e-05,
+          "end_s": 4.7e-05,
+          "frequency_Hz": 80000023.78029536,
+          "control_mean_V": 0.6000003848532797,
+          "phase_error_peak_deg": 0.0046196729120093925,
+          "control_range_V": 2.818749645583374e-06,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 4.7e-05,
+          "end_s": 4.8e-05,
+          "frequency_Hz": 80000018.27179477,
+          "control_mean_V": 0.6000002957051588,
+          "phase_error_peak_deg": 0.003549559620949965,
+          "control_range_V": 2.1658068322105706e-06,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 4.8e-05,
+          "end_s": 4.9e-05,
+          "frequency_Hz": 80000014.03924213,
+          "control_mean_V": 0.6000002272063285,
+          "phase_error_peak_deg": 0.0027273288567531925,
+          "control_range_V": 1.6641126370231518e-06,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 4.9e-05,
+          "end_s": 4.9999999999999996e-05,
+          "frequency_Hz": 80000010.78715639,
+          "control_mean_V": 0.6000001745758896,
+          "phase_error_peak_deg": 0.0020955629607881466,
+          "control_range_V": 1.278633046108979e-06,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 4.9999999999999996e-05,
+          "end_s": 5.1e-05,
+          "frequency_Hz": 80000008.28837001,
+          "control_mean_V": 0.6000001341367098,
+          "phase_error_peak_deg": 0.0016101409235127736,
+          "control_range_V": 9.824468563124356e-07,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 5.1e-05,
+          "end_s": 5.2e-05,
+          "frequency_Hz": 80000006.3684603,
+          "control_mean_V": 0.6000001030653095,
+          "phase_error_peak_deg": 0.0012371642730342907,
+          "control_range_V": 7.548706849602738e-07,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 5.2e-05,
+          "end_s": 5.3e-05,
+          "frequency_Hz": 80000004.8932429,
+          "control_mean_V": 0.6000000791908989,
+          "phase_error_peak_deg": 0.0009505835593597061,
+          "control_range_V": 5.800099664998726e-07,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 5.3e-05,
+          "end_s": 5.4e-05,
+          "frequency_Hz": 80000003.7597515,
+          "control_mean_V": 0.6000000608469469,
+          "phase_error_peak_deg": 0.0007303876288916714,
+          "control_range_V": 4.456547562092794e-07,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 5.4e-05,
+          "end_s": 5.4999999999999995e-05,
+          "frequency_Hz": 80000002.88884749,
+          "control_mean_V": 0.6000000467521864,
+          "phase_error_peak_deg": 0.0005611988113887807,
+          "control_range_V": 3.424221947101458e-07,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 5.4999999999999995e-05,
+          "end_s": 5.6e-05,
+          "frequency_Hz": 80000002.2196563,
+          "control_mean_V": 0.6000000359221206,
+          "phase_error_peak_deg": 0.00043120067427269255,
+          "control_range_V": 2.631022484322898e-07,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 5.6e-05,
+          "end_s": 5.6999999999999996e-05,
+          "frequency_Hz": 80000001.70548546,
+          "control_mean_V": 0.600000027600895,
+          "phase_error_peak_deg": 0.0003313161404291148,
+          "control_range_V": 2.021565178589313e-07,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 5.6999999999999996e-05,
+          "end_s": 5.8e-05,
+          "frequency_Hz": 80000001.31044145,
+          "control_mean_V": 0.6000000212071626,
+          "phase_error_peak_deg": 0.00025456929449163925,
+          "control_range_V": 1.5532848862687132e-07,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 5.8e-05,
+          "end_s": 5.9e-05,
+          "frequency_Hz": 80000001.00685954,
+          "control_mean_V": 0.6000000162946398,
+          "phase_error_peak_deg": 0.00019559942909796018,
+          "control_range_V": 1.193473007088386e-07,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 5.9e-05,
+          "end_s": 5.9999999999999995e-05,
+          "frequency_Hz": 80000000.773638,
+          "control_mean_V": 0.6000000125203344,
+          "phase_error_peak_deg": 0.00015029074975252905,
+          "control_range_V": 9.170167059036061e-08,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 5.9999999999999995e-05,
+          "end_s": 6.1e-05,
+          "frequency_Hz": 80000000.59442288,
+          "control_mean_V": 0.6000000096201439,
+          "phase_error_peak_deg": 0.00011547704022327518,
+          "control_range_V": 7.04596886391684e-08,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 6.1e-05,
+          "end_s": 6.2e-05,
+          "frequency_Hz": 80000000.45675524,
+          "control_mean_V": 0.6000000073919716,
+          "phase_error_peak_deg": 8.872801068921108e-05,
+          "control_range_V": 5.413844827995007e-08,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 6.2e-05,
+          "end_s": 6.3e-05,
+          "frequency_Hz": 80000000.35093446,
+          "control_mean_V": 0.600000005679165,
+          "phase_error_peak_deg": 6.81740250561572e-05,
+          "control_range_V": 4.159714972473694e-08,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 6.3e-05,
+          "end_s": 6.4e-05,
+          "frequency_Hz": 80000000.269635,
+          "control_mean_V": 0.6000000043636113,
+          "phase_error_peak_deg": 5.238197444152146e-05,
+          "control_range_V": 3.196148934403453e-08,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 6.4e-05,
+          "end_s": 6.5e-05,
+          "frequency_Hz": 80000000.20718324,
+          "control_mean_V": 0.6000000033529109,
+          "phase_error_peak_deg": 4.024839913789419e-05,
+          "control_range_V": 2.455805248047227e-08,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 6.5e-05,
+          "end_s": 6.599999999999999e-05,
+          "frequency_Hz": 80000000.15918511,
+          "control_mean_V": 0.6000000025763367,
+          "phase_error_peak_deg": 3.0925153401477095e-05,
+          "control_range_V": 1.8869325102421897e-08,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 6.599999999999999e-05,
+          "end_s": 6.7e-05,
+          "frequency_Hz": 80000000.12232813,
+          "control_mean_V": 0.6000000019795823,
+          "phase_error_peak_deg": 2.3761823672352625e-05,
+          "control_range_V": 1.4498536149432084e-08,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 6.7e-05,
+          "end_s": 6.8e-05,
+          "frequency_Hz": 80000000.09397902,
+          "control_mean_V": 0.6000000015209265,
+          "phase_error_peak_deg": 1.8257057640304308e-05,
+          "control_range_V": 1.1139713929075867e-08,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 6.8e-05,
+          "end_s": 6.9e-05,
+          "frequency_Hz": 80000000.07220507,
+          "control_mean_V": 0.6000000011686016,
+          "phase_error_peak_deg": 1.4028001607882778e-05,
+          "control_range_V": 8.55933812715648e-09,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 6.9e-05,
+          "end_s": 7e-05,
+          "frequency_Hz": 80000000.0554719,
+          "control_mean_V": 0.6000000008981403,
+          "phase_error_peak_deg": 1.0778773814625597e-05,
+          "control_range_V": 6.576785005485419e-09,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 7e-05,
+          "end_s": 7.099999999999999e-05,
+          "frequency_Hz": 80000000.04265046,
+          "control_mean_V": 0.6000000006902022,
+          "phase_error_peak_deg": 8.282538525539288e-06,
+          "control_range_V": 5.053668483689933e-09,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 7.099999999999999e-05,
+          "end_s": 7.2e-05,
+          "frequency_Hz": 80000000.03275648,
+          "control_mean_V": 0.6000000005300036,
+          "phase_error_peak_deg": 6.363267458333938e-06,
+          "control_range_V": 3.882595134285793e-09,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 7.2e-05,
+          "end_s": 7.3e-05,
+          "frequency_Hz": 80000000.02516691,
+          "control_mean_V": 0.6000000004072849,
+          "phase_error_peak_deg": 4.889226007435571e-06,
+          "control_range_V": 2.9832258885420515e-09,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 7.3e-05,
+          "end_s": 7.4e-05,
+          "frequency_Hz": 80000000.01933868,
+          "control_mean_V": 0.6000000003130592,
+          "phase_error_peak_deg": 3.7567148591210027e-06,
+          "control_range_V": 2.2921746722914804e-09,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 7.4e-05,
+          "end_s": 7.5e-05,
+          "frequency_Hz": 80000000.0148433,
+          "control_mean_V": 0.6000000002405436,
+          "phase_error_peak_deg": 2.886474387172662e-06,
+          "control_range_V": 1.7611848646126305e-09,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 7.5e-05,
+          "end_s": 7.599999999999999e-05,
+          "frequency_Hz": 80000000.01144919,
+          "control_mean_V": 0.6000000001848517,
+          "phase_error_peak_deg": 2.2185257422963845e-06,
+          "control_range_V": 1.3536366472166605e-09,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 7.599999999999999e-05,
+          "end_s": 7.7e-05,
+          "frequency_Hz": 80000000.0087221,
+          "control_mean_V": 0.6000000001420431,
+          "phase_error_peak_deg": 1.7033121167782259e-06,
+          "control_range_V": 1.0392966487415833e-09,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 7.7e-05,
+          "end_s": 7.8e-05,
+          "frequency_Hz": 80000000.00678012,
+          "control_mean_V": 0.6000000001101108,
+          "phase_error_peak_deg": 1.3108180308671538e-06,
+          "control_range_V": 7.998259832220356e-10,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 7.8e-05,
+          "end_s": 7.9e-05,
+          "frequency_Hz": 80000000.00523071,
+          "control_mean_V": 0.6000000000819846,
+          "phase_error_peak_deg": 1.0057127636062234e-06,
+          "control_range_V": 6.135808527929498e-10,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 7.9e-05,
+          "end_s": 7.999999999999999e-05,
+          "frequency_Hz": 80000000.00391173,
+          "control_mean_V": 0.6000000000621547,
+          "phase_error_peak_deg": 7.703309545169626e-07,
+          "control_range_V": 4.70010030895196e-10,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 7.999999999999999e-05,
+          "end_s": 8.099999999999999e-05,
+          "frequency_Hz": 80000000.00296102,
+          "control_mean_V": 0.6000000000514667,
+          "phase_error_peak_deg": 5.943026722270527e-07,
+          "control_range_V": 3.626486888563818e-10,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 8.099999999999999e-05,
+          "end_s": 8.2e-05,
+          "frequency_Hz": 80000000.00236002,
+          "control_mean_V": 0.6000000000421197,
+          "phase_error_peak_deg": 4.6105687062394443e-07,
+          "control_range_V": 2.8130597851117045e-10,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 8.2e-05,
+          "end_s": 8.3e-05,
+          "frequency_Hz": 80000000.00171037,
+          "control_mean_V": 0.6000000000352733,
+          "phase_error_peak_deg": 3.548562669215062e-07,
+          "control_range_V": 2.1652324377896548e-10,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 8.3e-05,
+          "end_s": 8.4e-05,
+          "frequency_Hz": 80000000.00145909,
+          "control_mean_V": 0.6000000000324962,
+          "phase_error_peak_deg": 2.7788948985158406e-07,
+          "control_range_V": 1.6969436966718376e-10,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 8.4e-05,
+          "end_s": 8.499999999999999e-05,
+          "frequency_Hz": 80000000.00124602,
+          "control_mean_V": 0.6000000000228455,
+          "phase_error_peak_deg": 2.1223062789620026e-07,
+          "control_range_V": 1.293176676853136e-10,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 8.499999999999999e-05,
+          "end_s": 8.599999999999999e-05,
+          "frequency_Hz": 80000000.00085925,
+          "control_mean_V": 0.6000000000134513,
+          "phase_error_peak_deg": 1.5616004419461852e-07,
+          "control_range_V": 9.513601018085183e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 8.599999999999999e-05,
+          "end_s": 8.7e-05,
+          "frequency_Hz": 80000000.00058827,
+          "control_mean_V": 0.6000000000093694,
+          "phase_error_peak_deg": 1.1749426993200362e-07,
+          "control_range_V": 7.164235871215396e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 8.7e-05,
+          "end_s": 8.8e-05,
+          "frequency_Hz": 80000000.00043078,
+          "control_mean_V": 0.6000000000082701,
+          "phase_error_peak_deg": 9.10222843182457e-08,
+          "control_range_V": 5.557221349761221e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 8.8e-05,
+          "end_s": 8.9e-05,
+          "frequency_Hz": 80000000.00032772,
+          "control_mean_V": 0.6000000000082147,
+          "phase_error_peak_deg": 7.163728697903716e-08,
+          "control_range_V": 4.3714032393893376e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 8.9e-05,
+          "end_s": 8.999999999999999e-05,
+          "frequency_Hz": 80000000.00025477,
+          "control_mean_V": 0.6000000000085671,
+          "phase_error_peak_deg": 5.6890098143026344e-08,
+          "control_range_V": 3.4708680374251344e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 8.999999999999999e-05,
+          "end_s": 9.099999999999999e-05,
+          "frequency_Hz": 80000000.0002015,
+          "control_mean_V": 0.6000000000090256,
+          "phase_error_peak_deg": 4.542585240478472e-08,
+          "control_range_V": 2.771705087667442e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 9.099999999999999e-05,
+          "end_s": 9.2e-05,
+          "frequency_Hz": 80000000.00015865,
+          "control_mean_V": 0.600000000009513,
+          "phase_error_peak_deg": 3.635867622999363e-08,
+          "control_range_V": 2.222477757385377e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 9.2e-05,
+          "end_s": 9.3e-05,
+          "frequency_Hz": 80000000.00012738,
+          "control_mean_V": 0.6000000000099839,
+          "phase_error_peak_deg": 2.9219577747543168e-08,
+          "control_range_V": 1.7828072351733226e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 9.3e-05,
+          "end_s": 9.4e-05,
+          "frequency_Hz": 80000000.00009958,
+          "control_mean_V": 0.6000000000103883,
+          "phase_error_peak_deg": 2.3487454878422357e-08,
+          "control_range_V": 1.4354850641495887e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 9.4e-05,
+          "end_s": 9.499999999999999e-05,
+          "frequency_Hz": 80000000.00008106,
+          "control_mean_V": 0.6000000000107518,
+          "phase_error_peak_deg": 1.900597699892791e-08,
+          "control_range_V": 1.1582290682099483e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 9.499999999999999e-05,
+          "end_s": 9.6e-05,
+          "frequency_Hz": 80000000.00006716,
+          "control_mean_V": 0.6000000000110634,
+          "phase_error_peak_deg": 1.535826244585103e-08,
+          "control_range_V": 9.31421606509275e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 9.6e-05,
+          "end_s": 9.7e-05,
+          "frequency_Hz": 80000000.00005095,
+          "control_mean_V": 0.6000000000113178,
+          "phase_error_peak_deg": 1.2335870387587331e-08,
+          "control_range_V": 7.495559728454282e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 9.7e-05,
+          "end_s": 9.8e-05,
+          "frequency_Hz": 80000000.00004284,
+          "control_mean_V": 0.6000000000115303,
+          "phase_error_peak_deg": 1.0043021239939007e-08,
+          "control_range_V": 6.104561300901423e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 9.8e-05,
+          "end_s": 9.9e-05,
+          "frequency_Hz": 80000000.00003242,
+          "control_mean_V": 0.6000000000117092,
+          "phase_error_peak_deg": 8.114943547598372e-09,
+          "control_range_V": 4.960365451722737e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 9.9e-05,
+          "end_s": 9.999999999999999e-05,
+          "frequency_Hz": 80000000.00001621,
+          "control_mean_V": 0.6000000000118513,
+          "phase_error_peak_deg": 6.655857726367621e-09,
+          "control_range_V": 4.0075720519894276e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 9.999999999999999e-05,
+          "end_s": 0.000101,
+          "frequency_Hz": 80000000.00018992,
+          "control_mean_V": 0.6000000000120593,
+          "phase_error_peak_deg": 1.2127429555982938e-08,
+          "control_range_V": 9.435341397079355e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000101,
+          "end_s": 0.000102,
+          "frequency_Hz": 79999999.99967924,
+          "control_mean_V": 0.6000000000113678,
+          "phase_error_peak_deg": 1.1814768308576348e-08,
+          "control_range_V": 7.99371679960359e-12,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000102,
+          "end_s": 0.000103,
+          "frequency_Hz": 80000000.00016327,
+          "control_mean_V": 0.6000000000110647,
+          "phase_error_peak_deg": 1.6087805356466407e-08,
+          "control_range_V": 2.0607848760789693e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000103,
+          "end_s": 0.000104,
+          "frequency_Hz": 80000000.00011927,
+          "control_mean_V": 0.6000000000123051,
+          "phase_error_peak_deg": 1.3899176624620279e-08,
+          "control_range_V": 1.3309686686113764e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000104,
+          "end_s": 0.00010499999999999999,
+          "frequency_Hz": 79999999.99964449,
+          "control_mean_V": 0.6000000000108707,
+          "phase_error_peak_deg": 1.509771140634554e-08,
+          "control_range_V": 1.4780288104532247e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00010499999999999999,
+          "end_s": 0.000106,
+          "frequency_Hz": 80000000.0003694,
+          "control_mean_V": 0.6000000000112414,
+          "phase_error_peak_deg": 1.509771140634554e-08,
+          "control_range_V": 2.0781820708748455e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000106,
+          "end_s": 0.000107,
+          "frequency_Hz": 80000000.00009148,
+          "control_mean_V": 0.600000000011,
+          "phase_error_peak_deg": 1.504560119844444e-08,
+          "control_range_V": 2.0714208126548783e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000107,
+          "end_s": 0.000108,
+          "frequency_Hz": 79999999.99972324,
+          "control_mean_V": 0.6000000000105226,
+          "phase_error_peak_deg": 1.3406572315555209e-08,
+          "control_range_V": 1.7672308061378317e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000108,
+          "end_s": 0.00010899999999999999,
+          "frequency_Hz": 80000000.00022697,
+          "control_mean_V": 0.6000000000113791,
+          "phase_error_peak_deg": 1.512620917629145e-08,
+          "control_range_V": 2.1006751893537512e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00010899999999999999,
+          "end_s": 0.00010999999999999999,
+          "frequency_Hz": 79999999.99960512,
+          "control_mean_V": 0.6000000000120448,
+          "phase_error_peak_deg": 1.4368168495730162e-08,
+          "control_range_V": 1.1584289083543808e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00010999999999999999,
+          "end_s": 0.000111,
+          "frequency_Hz": 80000000.00039604,
+          "control_mean_V": 0.6000000000110287,
+          "phase_error_peak_deg": 1.5230429592093648e-08,
+          "control_range_V": 2.144528998826445e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000111,
+          "end_s": 0.000112,
+          "frequency_Hz": 79999999.99986105,
+          "control_mean_V": 0.6000000000104819,
+          "phase_error_peak_deg": 1.2335870387587331e-08,
+          "control_range_V": 1.506372804271905e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000112,
+          "end_s": 0.000113,
+          "frequency_Hz": 80000000.00024202,
+          "control_mean_V": 0.6000000000115265,
+          "phase_error_peak_deg": 1.5595201047401336e-08,
+          "control_range_V": 2.094702189481268e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000113,
+          "end_s": 0.00011399999999999999,
+          "frequency_Hz": 79999999.99981935,
+          "control_mean_V": 0.6000000000113056,
+          "phase_error_peak_deg": 1.5282539799994747e-08,
+          "control_range_V": 2.1347479339794972e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00011399999999999999,
+          "end_s": 0.00011499999999999999,
+          "frequency_Hz": 80000000.00001852,
+          "control_mean_V": 0.6000000000111183,
+          "phase_error_peak_deg": 1.4813547928884862e-08,
+          "control_range_V": 2.007105592838343e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00011499999999999999,
+          "end_s": 0.000116,
+          "frequency_Hz": 79999999.99964912,
+          "control_mean_V": 0.6000000000100587,
+          "phase_error_peak_deg": 1.5595201047401336e-08,
+          "control_range_V": 1.6037060568407924e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000116,
+          "end_s": 0.000117,
+          "frequency_Hz": 80000000.00011465,
+          "control_mean_V": 0.6000000000102554,
+          "phase_error_peak_deg": 1.4993490990543342e-08,
+          "control_range_V": 2.0697221714272018e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000117,
+          "end_s": 0.000118,
+          "frequency_Hz": 80000000.00019455,
+          "control_mean_V": 0.6000000000109008,
+          "phase_error_peak_deg": 1.5699421463203533e-08,
+          "control_range_V": 2.118150099761351e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000118,
+          "end_s": 0.00011899999999999999,
+          "frequency_Hz": 80000000.00017023,
+          "control_mean_V": 0.6000000000106682,
+          "phase_error_peak_deg": 1.4240335641972782e-08,
+          "control_range_V": 1.9270363083023767e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00011899999999999999,
+          "end_s": 0.00011999999999999999,
+          "frequency_Hz": 80000000.00020844,
+          "control_mean_V": 0.6000000000118588,
+          "phase_error_peak_deg": 1.5959972502709025e-08,
+          "control_range_V": 2.11880513134588e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00011999999999999999,
+          "end_s": 0.000121,
+          "frequency_Hz": 79999999.99959238,
+          "control_mean_V": 0.6000000000102821,
+          "phase_error_peak_deg": 1.5959972502709025e-08,
+          "control_range_V": 1.886313327759126e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000121,
+          "end_s": 0.000122,
+          "frequency_Hz": 80000000.00010538,
+          "control_mean_V": 0.6000000000109778,
+          "phase_error_peak_deg": 1.5959972502709025e-08,
+          "control_range_V": 2.1251000958955046e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000122,
+          "end_s": 0.00012299999999999998,
+          "frequency_Hz": 80000000.00030108,
+          "control_mean_V": 0.6000000000116181,
+          "phase_error_peak_deg": 1.5907862294807926e-08,
+          "control_range_V": 2.1588619780743556e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00012299999999999998,
+          "end_s": 0.000124,
+          "frequency_Hz": 79999999.9995588,
+          "control_mean_V": 0.600000000009783,
+          "phase_error_peak_deg": 1.5907862294807926e-08,
+          "control_range_V": 1.792843651315934e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000124,
+          "end_s": 0.000125,
+          "frequency_Hz": 80000000.00017487,
+          "control_mean_V": 0.6000000000122131,
+          "phase_error_peak_deg": 1.512620917629145e-08,
+          "control_range_V": 2.1008195183469525e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000125,
+          "end_s": 0.000126,
+          "frequency_Hz": 80000000.00012043,
+          "control_mean_V": 0.6000000000102215,
+          "phase_error_peak_deg": 1.5907862294807926e-08,
+          "control_range_V": 2.1594392940471607e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000126,
+          "end_s": 0.000127,
+          "frequency_Hz": 79999999.99982052,
+          "control_mean_V": 0.6000000000106763,
+          "phase_error_peak_deg": 1.7182119722389468e-08,
+          "control_range_V": 2.483468986014259e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000127,
+          "end_s": 0.000128,
+          "frequency_Hz": 79999999.99982052,
+          "control_mean_V": 0.6000000000108192,
+          "phase_error_peak_deg": 1.5543090839500238e-08,
+          "control_range_V": 2.1139423544980218e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000128,
+          "end_s": 0.000129,
+          "frequency_Hz": 80000000.00037403,
+          "control_mean_V": 0.6000000000110689,
+          "phase_error_peak_deg": 1.0019408801983822e-08,
+          "control_range_V": 1.2518985847975728e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000129,
+          "end_s": 0.00013,
+          "frequency_Hz": 79999999.9997325,
+          "control_mean_V": 0.6000000000098964,
+          "phase_error_peak_deg": 1.4188225434071684e-08,
+          "control_range_V": 1.8330781337283497e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00013,
+          "end_s": 0.00013099999999999999,
+          "frequency_Hz": 80000000.0016768,
+          "control_mean_V": 0.5999999999964721,
+          "phase_error_peak_deg": 7.343753181762041e-08,
+          "control_range_V": 1.0199574518310328e-10,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00013099999999999999,
+          "end_s": 0.00013199999999999998,
+          "frequency_Hz": 79999999.99980082,
+          "control_mean_V": 0.5999999999260411,
+          "phase_error_peak_deg": 8.531865921907081e-08,
+          "control_range_V": 7.377942701225493e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00013199999999999998,
+          "end_s": 0.000133,
+          "frequency_Hz": 79999999.99974756,
+          "control_mean_V": 0.599999999925274,
+          "phase_error_peak_deg": 6.44745760586315e-08,
+          "control_range_V": 4.616318438621647e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000133,
+          "end_s": 0.000134,
+          "frequency_Hz": 79999999.99979387,
+          "control_mean_V": 0.5999999999249798,
+          "phase_error_peak_deg": 5.311455073619208e-08,
+          "control_range_V": 3.8077319075568994e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000134,
+          "end_s": 0.000135,
+          "frequency_Hz": 79999999.99983093,
+          "control_mean_V": 0.5999999999246677,
+          "phase_error_peak_deg": 4.3838933729796594e-08,
+          "control_range_V": 3.1424307600502743e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000135,
+          "end_s": 0.000136,
+          "frequency_Hz": 79999999.99986336,
+          "control_mean_V": 0.5999999999243708,
+          "phase_error_peak_deg": 3.623084337623625e-08,
+          "control_range_V": 2.6040503087187972e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000136,
+          "end_s": 0.000137,
+          "frequency_Hz": 79999999.99988651,
+          "control_mean_V": 0.5999999999240947,
+          "phase_error_peak_deg": 3.0081838843906653e-08,
+          "control_range_V": 2.1591506360607582e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000137,
+          "end_s": 0.000138,
+          "frequency_Hz": 79999999.99990273,
+          "control_mean_V": 0.5999999999238519,
+          "phase_error_peak_deg": 2.4975038469599022e-08,
+          "control_range_V": 1.7884027592174334e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000138,
+          "end_s": 0.000139,
+          "frequency_Hz": 79999999.99992357,
+          "control_mean_V": 0.5999999999236417,
+          "phase_error_peak_deg": 2.0597781005906768e-08,
+          "control_range_V": 1.4826140315449265e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000139,
+          "end_s": 0.00014,
+          "frequency_Hz": 79999999.99993515,
+          "control_mean_V": 0.5999999999234499,
+          "phase_error_peak_deg": 1.7158507284434282e-08,
+          "control_range_V": 1.2369771873466107e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00014,
+          "end_s": 0.00014099999999999998,
+          "frequency_Hz": 79999999.99993515,
+          "control_mean_V": 0.5999999999232875,
+          "phase_error_peak_deg": 1.4240335641972782e-08,
+          "control_range_V": 1.02873265461767e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00014099999999999998,
+          "end_s": 0.00014199999999999998,
+          "frequency_Hz": 79999999.99967344,
+          "control_mean_V": 0.5999999999229417,
+          "phase_error_peak_deg": 1.9555576847884805e-08,
+          "control_range_V": 1.5566214983664395e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00014199999999999998,
+          "end_s": 0.000143,
+          "frequency_Hz": 80000000.0001158,
+          "control_mean_V": 0.599999999924683,
+          "phase_error_peak_deg": 2.4349715974785843e-08,
+          "control_range_V": 2.463618198333961e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000143,
+          "end_s": 0.000144,
+          "frequency_Hz": 80000000.00023623,
+          "control_mean_V": 0.5999999999248512,
+          "phase_error_peak_deg": 1.788805019504966e-08,
+          "control_range_V": 2.036359969537216e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000144,
+          "end_s": 0.000145,
+          "frequency_Hz": 79999999.99980778,
+          "control_mean_V": 0.599999999924337,
+          "phase_error_peak_deg": 1.5907862294807926e-08,
+          "control_range_V": 2.1074031408829796e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000145,
+          "end_s": 0.000146,
+          "frequency_Hz": 80000000.00001852,
+          "control_mean_V": 0.5999999999258895,
+          "phase_error_peak_deg": 2.3724393479972663e-08,
+          "control_range_V": 3.012012861347557e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000146,
+          "end_s": 0.000147,
+          "frequency_Hz": 79999999.99947889,
+          "control_mean_V": 0.5999999999247749,
+          "phase_error_peak_deg": 1.9451356432082608e-08,
+          "control_range_V": 2.5699109507115736e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000147,
+          "end_s": 0.000148,
+          "frequency_Hz": 80000000.00097504,
+          "control_mean_V": 0.5999999999253971,
+          "phase_error_peak_deg": 2.5600360964412202e-08,
+          "control_range_V": 3.1551539159124786e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000148,
+          "end_s": 0.000149,
+          "frequency_Hz": 79999999.99981241,
+          "control_mean_V": 0.5999999999233405,
+          "phase_error_peak_deg": 2.507925888540122e-08,
+          "control_range_V": 3.1436742098378545e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000149,
+          "end_s": 0.00015,
+          "frequency_Hz": 79999999.99981703,
+          "control_mean_V": 0.5999999999256469,
+          "phase_error_peak_deg": 2.382861389577486e-08,
+          "control_range_V": 3.1164071323530607e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00015,
+          "end_s": 0.00015099999999999998,
+          "frequency_Hz": 79999999.99981703,
+          "control_mean_V": 0.5999999999243505,
+          "phase_error_peak_deg": 2.3203291400961683e-08,
+          "control_range_V": 3.130551373686785e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00015099999999999998,
+          "end_s": 0.00015199999999999998,
+          "frequency_Hz": 79999999.99981703,
+          "control_mean_V": 0.5999999999264168,
+          "phase_error_peak_deg": 2.286213238360918e-08,
+          "control_range_V": 3.116906732714142e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.00015199999999999998,
+          "end_s": 0.000153,
+          "frequency_Hz": 79999999.99989346,
+          "control_mean_V": 0.599999999925319,
+          "phase_error_peak_deg": 2.445393639058804e-08,
+          "control_range_V": 3.2900127067136964e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000153,
+          "end_s": 0.000154,
+          "frequency_Hz": 79999999.99981703,
+          "control_mean_V": 0.5999999999237433,
+          "phase_error_peak_deg": 2.3932834311577056e-08,
+          "control_range_V": 3.082845090318642e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000154,
+          "end_s": 0.000155,
+          "frequency_Hz": 80000000.00097504,
+          "control_mean_V": 0.5999999999258925,
+          "phase_error_peak_deg": 2.330751181676388e-08,
+          "control_range_V": 3.113875823856915e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000155,
+          "end_s": 0.000156,
+          "frequency_Hz": 79999999.99981703,
+          "control_mean_V": 0.5999999999242447,
+          "phase_error_peak_deg": 2.2786409737752897e-08,
+          "control_range_V": 3.115008251342033e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000156,
+          "end_s": 0.000157,
+          "frequency_Hz": 79999999.99981472,
+          "control_mean_V": 0.5999999999269797,
+          "phase_error_peak_deg": 2.338323446262016e-08,
+          "control_range_V": 3.093836298262431e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000157,
+          "end_s": 0.000158,
+          "frequency_Hz": 79999999.99988651,
+          "control_mean_V": 0.5999999999247713,
+          "phase_error_peak_deg": 2.3620173064170466e-08,
+          "control_range_V": 3.2326030741103295e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000158,
+          "end_s": 0.000159,
+          "frequency_Hz": 79999999.99981703,
+          "control_mean_V": 0.5999999999249519,
+          "phase_error_peak_deg": 2.3099070985159487e-08,
+          "control_range_V": 3.1020186419539186e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        },
+        {
+          "start_s": 0.000159,
+          "end_s": 0.00015999999999999999,
+          "frequency_Hz": 79999999.99981703,
+          "control_mean_V": 0.5999999999247541,
+          "phase_error_peak_deg": 2.2577968906148503e-08,
+          "control_range_V": 3.120737002149099e-11,
+          "actual_clamps": 0,
+          "cycle_index": 1,
+          "valid_tracking_block": true
+        }
+      ],
+      "finite_window_not_absolute_nonlockability": true
+    },
+    "step_comparison": {
+      "frequency_difference_ppm": 7.526949048042298e-07,
+      "control_difference_V": 8.58246806956231e-11,
+      "same_status": true,
+      "lock_time_difference_s": 0.0
+    },
+    "numerical_converged": true,
+    "reliable_capture_status": "CAPTURED_WITHIN_WINDOW",
+    "initial_control_V": 0.15,
+    "duration_s": 0.00016
+  },
+  "margins": {
+    "BW_lower_measured_Hz": 8042.896647804708,
+    "BW_upper_measured_Hz": 1803.8103593023843,
+    "PM_M1_deg": 2.2472098380533083,
+    "tuning_rail_V": 0.6
+  },
+  "cost": {
+    "pipeline": {
+      "analytic_calls": 0,
+      "M1_calls": 1,
+      "candidate_generations": 0,
+      "M2_calls": 1,
+      "LLM_calls": 0,
+      "native_completed_runs": 106,
+      "native_failed_attempts": 0,
+      "integration_points": 93650259,
+      "native_elapsed_s": 2.8092519999481738,
+      "native_failure_elapsed_s": 0,
+      "M1_posthoc_calls": 1,
+      "M1_total_calls": 2,
+      "total_elapsed_s": 9.464427300030366,
+      "monetary_cost": null
+    },
+    "process_wall_s": 10.376236399984919,
+    "native_components": {
+      "capture": {
+        "runs": 2,
+        "elapsed_s": 0.02272210002411157,
+        "integration_points": 1200002
+      },
+      "BW_response": {
+        "runs": 104,
+        "elapsed_s": 2.786529899924062,
+        "integration_points": 92450257
+      }
+    },
+    "timed_components": [
+      {
+        "component": "full_M1_evaluate",
+        "status": "RETURNED",
+        "wall_s": 0.03377790004014969
+      },
+      {
+        "component": "capture_pair",
+        "status": "RETURNED",
+        "wall_s": 0.12078919995110482
+      },
+      {
+        "component": "response_sweep",
+        "status": "RETURNED",
+        "folder": "C:\\Users\\Lenovo\\.codex\\worktrees\\stage6a-multispec-feasibility\\PLL_allocation\\experiments\\stage6a\\m2_01\\runs\\E1_analytical\\raw\\attempt_001\\base",
+        "wall_s": 1.7876731000142172
+      },
+      {
+        "component": "response_sweep",
+        "status": "RETURNED",
+        "folder": "C:\\Users\\Lenovo\\.codex\\worktrees\\stage6a-multispec-feasibility\\PLL_allocation\\experiments\\stage6a\\m2_01\\runs\\E1_analytical\\raw\\attempt_001\\amplitude_half",
+        "wall_s": 1.7145439001033083
+      },
+      {
+        "component": "response_sweep",
+        "status": "RETURNED",
+        "folder": "C:\\Users\\Lenovo\\.codex\\worktrees\\stage6a-multispec-feasibility\\PLL_allocation\\experiments\\stage6a\\m2_01\\runs\\E1_analytical\\raw\\attempt_001\\step_half",
+        "wall_s": 2.1341729999985546
+      },
+      {
+        "component": "response_sweep",
+        "status": "RETURNED",
+        "folder": "C:\\Users\\Lenovo\\.codex\\worktrees\\stage6a-multispec-feasibility\\PLL_allocation\\experiments\\stage6a\\m2_01\\runs\\E1_analytical\\raw\\attempt_001\\window_double",
+        "wall_s": 2.421782199991867
+      },
+      {
+        "component": "comparison_after_measurement",
+        "status": "RETURNED",
+        "wall_s": 0.03510780003853142
+      },
+      {
+        "component": "full_M1_evaluate",
+        "status": "RETURNED",
+        "wall_s": 0.03471209993585944
+      },
+      {
+        "component": "assemble_result",
+        "status": "RETURNED",
+        "wall_s": 0.002942599938251078
+      }
+    ]
+  },
+  "evidence_directory": "experiments\\stage6a\\m2_01\\runs\\E1_analytical",
+  "source_sha256": {
+    "AllocationProposal.json": "c44150f36bf5c3d3f52626d33e65672867dffe7e9b5e2d9dd9e175f370795775",
+    "BehavioralVerificationResult.json": "00c6029492b702188d62dd94ae16fa9b7b544006682b49aa1c3772639ebe9f3a",
+    "M1_prediction.json": "05a15dc7366eaedb4df6a4d2f8192807c2e336fa8741f614a447bab2ad722316"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "schema_version": "behavioral-metric-protocol-1.0",
+  "protocol_id": "track_b_metrics_1.0",
+  "frozen_baseline": "Stage1.5 BLOCK_SPACE_MODEL_V1 unchanged",
+  "phase_convention": "reference_minus_divided_output_rad",
+  "capture": {
+    "duration_s": 0.00016, "dt_pair_s": [4e-10, 2e-10], "record_interval_s": 2e-8,
+    "block_reference_cycles": 10, "hold_blocks": 10,
+    "block_frequency_error_limit_ppm": 100, "peak_phase_error_limit_deg": 5,
+    "block_control_range_limit_V": 0.005,
+    "step_frequency_difference_limit_ppm": 1, "step_control_difference_limit_V": 0.0001,
+    "step_lock_time_difference_limit_s": 0.000002,
+    "near_rail_warning_margin_V": 0.01,
+    "not_captured_label": "NOT_CAPTURED_WITHIN_WINDOW",
+    "lock_time_definition": "earliest beginning of a terminal sustained sequence of at least hold_blocks valid blocks; initial-condition and window conditional",
+    "no_absolute_nonlockability_claim": true
+  },
+  "frequency_response": {
+    "onset_s": 0.00005, "discard_cycles": 8, "minimum_discard_s": 0.00004,
+    "measurement_cycles": 12, "amplitude_rad": 0.01, "dt_s": 4e-10,
+    "record_interval_s": 2e-8,
+    "grid_Hz": [10000,25000,50000,75000,100000,125000,150000,175000,200000,225000,250000,275000,300000,350000,450000,600000,800000,1000000],
+    "fit": "least squares offset + trend + sin/cos at f,2f,3f; complex output divided-phase / input reference-phase",
+    "minimum_samples_per_period": 20, "max_harmonic_distortion": 0.03,
+    "max_half_window_transfer_relative_difference": 0.02,
+    "max_residual_to_fundamental_ratio": 0.05,
+    "max_unwrapped_error_peak_rad": 0.3,
+    "max_transfer_refinement_relative_difference": 0.03,
+    "max_transfer_refinement_phase_deg": 1.5,
+    "max_BW_refinement_relative_difference": 0.02,
+    "frequency_bracket_relative_width_limit": 0.01,
+    "BW_definition": "unique downward |T|=1/sqrt(2) crossing normalized to ideal DC divided-phase tracking gain; require low-frequency measured gain within 3 percent of unity",
+    "PM_status": "PM_M2_UNKNOWN",
+    "PM_prototype": "conditional L_ident=T/(1-T) from measured complex fundamental T; no direct return-ratio injection, sampled harmonic coupling not validated; diagnostic estimate only"
+  },
+  "judgment": {
+    "BW": "only compare converged M2 bandwidth interval to frozen 150-300kHz bounds",
+    "frequency": "retain frozen 1e-6 Hz equality tolerance; incorporate empirical step uncertainty; never replace by capture ppm threshold",
+    "PM": "UNKNOWN until independently validated phase-margin protocol",
+    "overall": "FAIL if any reliably measured required constraint fails; otherwise UNKNOWN while any required constraint is unsupported/unresolved; PASS only if all required independent metrics pass",
+    "capture_thresholds_are_not_replacements_for_SystemSpec": true
+  }
+}

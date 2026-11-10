@@ -1,0 +1,129 @@
+{
+  "name": "E0_alternative_capacitors",
+  "command": [
+    "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "-B",
+    "C:\\Users\\Lenovo\\.codex\\worktrees\\stage6a-multispec-feasibility\\PLL_allocation\\experiments\\stage6a\\verifier_pipeline_timing.py",
+    "C:\\Users\\Lenovo\\.codex\\worktrees\\stage6a-multispec-feasibility\\PLL_allocation\\experiments\\stage6a\\m2_01\\receipts\\E0_alternative_capacitors_timing.json",
+    "pipeline",
+    "--strategy",
+    "analytical",
+    "--proposal",
+    "experiments\\stage6a\\frozen_01\\E0_alternative_capacitors_proposal.json",
+    "--m2-budget",
+    "1",
+    "--repair-budget",
+    "0",
+    "--out",
+    "experiments\\stage6a\\m2_01\\runs\\E0_alternative_capacitors"
+  ],
+  "equivalent_formal_command": [
+    "python",
+    "-B",
+    "-m",
+    "pll_allocation",
+    "pipeline",
+    "--strategy",
+    "analytical",
+    "--proposal",
+    "experiments\\stage6a\\frozen_01\\E0_alternative_capacitors_proposal.json",
+    "--m2-budget",
+    "1",
+    "--repair-budget",
+    "0",
+    "--out",
+    "experiments\\stage6a\\m2_01\\runs\\E0_alternative_capacitors"
+  ],
+  "returncode": 0,
+  "process_wall_s": 10.546760299941525,
+  "proposal_sha256": "4b3358ce8a06ad36f35de882594030994182faa9bfefd9d98886e9900c325828",
+  "proposal_raw_sha256": "d768b98495a160fe113973f559cf7f8e9b485f7b64de41ecfb8ed2511ee46879",
+  "parameter_sha256": "597f25d17eab0c50c57c6bffe41efb3d16e92150188af939a0d113588f27a290",
+  "plan_sha256": "c3d017a6fb3eac69e362aa42e400a6a244de91b0e5074d9617ed7ec08026162f",
+  "pipeline_status": "M2_PARTIAL_PASS",
+  "cost": {
+    "analytic_calls": 0,
+    "M1_calls": 1,
+    "candidate_generations": 0,
+    "M2_calls": 1,
+    "LLM_calls": 0,
+    "native_completed_runs": 106,
+    "native_failed_attempts": 0,
+    "integration_points": 95098845,
+    "native_elapsed_s": 2.8965815998381004,
+    "native_failure_elapsed_s": 0,
+    "M1_posthoc_calls": 1,
+    "M1_total_calls": 2,
+    "total_elapsed_s": 9.64073310000822,
+    "monetary_cost": null
+  },
+  "failure": null,
+  "measurements": {
+    "output_frequency_Hz": {
+      "value": 80000000.00000764,
+      "unit": "Hz",
+      "status": "MEASURED_STEADY",
+      "numerical_envelope": [
+        79999999.99000764,
+        80000000.01000765
+      ],
+      "required_precision_validated": false,
+      "uncertainty_basis": "empirical two-step difference with 0.01 Hz reporting floor; not a certified confidence bound",
+      "confidence": "CONDITIONAL_ON_TRACE_WINDOW"
+    },
+    "steady_control_V": {
+      "value": 0.47773889354913085,
+      "unit": "V",
+      "status": "MEASURED_STEADY",
+      "step_difference_V": 1.1161999102782261e-10
+    },
+    "capture": {
+      "value": "CAPTURED_WITHIN_WINDOW",
+      "status": "MEASURED_WINDOW_CONDITIONAL",
+      "initial_control_V": 0.15,
+      "duration_s": 0.00016
+    },
+    "lock_time_s": {
+      "value": 1.6e-05,
+      "unit": "s",
+      "status": "MEASURED_WINDOW_CONDITIONAL",
+      "resolution_s": 1e-06,
+      "step_difference_s": 0.0
+    },
+    "BW_Hz": {
+      "value": 225472.3749286234,
+      "unit": "Hz",
+      "status": "MEASURED_CONVERGED",
+      "numerical_envelope": [
+        225448.80396313895,
+        225570.98150865707
+      ],
+      "confidence": "LOCAL_WARM_START_SAMPLED_POINTS_ONLY",
+      "observable": "continuous divided VCO phase fundamental / reference phase fundamental",
+      "edge_only_equivalence": "NOT_ESTABLISHED; edge timestamp harmonic fits show different sampled response",
+      "envelope_scope": "bracketing and amplitude/step/window refinements; excludes cross-observable systematic difference"
+    },
+    "PM_deg": {
+      "value": null,
+      "unit": "deg",
+      "status": "PM_M2_UNKNOWN"
+    },
+    "UGF_Hz": {
+      "value": null,
+      "unit": "Hz",
+      "status": "UNKNOWN_NO_DIRECT_LOOP_INJECTION"
+    }
+  },
+  "native_components": {
+    "capture": {
+      "runs": 2,
+      "elapsed_s": 0.021667499910108745,
+      "integration_points": 1200002
+    },
+    "BW_response": {
+      "runs": 104,
+      "elapsed_s": 2.8749140999279916,
+      "integration_points": 93898843
+    }
+  }
+}

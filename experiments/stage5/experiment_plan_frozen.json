@@ -1,0 +1,45 @@
+{
+  "schema_version": "stage5-predeclared-plan-1.0",
+  "scenarios": [
+    {
+      "id": "S0",
+      "sha256": "2130df67ae85836e882b2ce04e7058f45dd374570f5f44fdde7c6b167fcd3ab6"
+    },
+    {
+      "id": "S1",
+      "sha256": "a95c1ef4bbc336edf6685f7a2ea30228ce663ff64874ebec93c64e9a36ca5e1f"
+    },
+    {
+      "id": "S2",
+      "sha256": "14c77bb4de3426197f6321740b019dd97adb049993faa59d02f2cee3511a2f02"
+    },
+    {
+      "id": "S3",
+      "sha256": "7bb0cd08769f4326a9e1a9599db85105e3a87220cfc275aaa72ca8457dd1c4b9"
+    },
+    {
+      "id": "S4",
+      "sha256": "24c3a1675ce960969262ae65422f6d65df4eaa2f4983c3e5c91628d6c0580aea"
+    }
+  ],
+  "random_seeds": [
+    11,
+    23,
+    47
+  ],
+  "random_sampling": "Existing allocation.allocate.random_candidate: one uniform continuous draw in model insertion order; uniform discrete choice. No target screening/resampling. Invalid first proposal recorded without M2. Same seed per scenario forms paired candidate comparison.",
+  "strategies": [
+    "analytical",
+    "random",
+    "llm_agent"
+  ],
+  "max_M2_per_scenario_strategy_seed": 3,
+  "phase_A": "All first-shot runs finish before any PhaseB. One M2 max per first-shot.",
+  "phase_B": "Only existing deterministic repair from prior reliable certified hard FAIL. At most two extra M2 per arm, with full lineage. UNKNOWN alone never forces repair.",
+  "LLM": "Existing Messages interface; up to4 decisions,45s process deadline per decision,1500 max_tokens. No hidden retry or fallback; failure costs retained.",
+  "S4": "Independent propagation necessary-condition certificate before every policy; no artificial candidate, no M2 or LLM.",
+  "local_evidence": "After both phases, run unchanged Stage4 full six-sweep/refinements plus Stage4.1 steps for analytical S0 and S3 only, budget maximum800 native calls total. All others explicitly NOT_MEASURED_THIS_ROUND.",
+  "acceptance": "M1/M2 separate; measured subset explicitly {BW_Hz}; strict PM/frequency UNKNOWN; any certified hard FAIL dominates UNKNOWN; no full verified PASS.",
+  "statistical_scope": "exploratory paired seeds; not statistical proof",
+  "source_HEAD": "cd70cf445d2ac6789550b7df2da6736221262045"
+}

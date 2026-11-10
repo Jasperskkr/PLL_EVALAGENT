@@ -1,0 +1,30 @@
+{
+  "command": [
+    "python",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "tests",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp=experiments/stage6a/pretests_01/tmp",
+    "--junitxml=experiments/stage6a/pretests_01/tests.xml"
+  ],
+  "returncode": 0,
+  "wall_s": 27.4056266999105,
+  "suites": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "364",
+      "time": "26.144",
+      "timestamp": "2026-11-09T11:18:21.374320+08:00",
+      "hostname": "LAPTOP-VNAQOC78"
+    }
+  ],
+  "source_checked": 80,
+  "source_changes": []
+}

@@ -55,3 +55,30 @@ P3部分完成：LLM首次/有限反馈接口、真实请求/原始响应日志�
 2026-11-05 · 用户另行授权Stage4.1后：先保护45,167份既有文件及Stage4未提交源码，7270f31明确范围checkpoint，与66c4ddb Registry同版本。新增隔离平滑参考相位阶跃入口与观测，预声明协议不改M1/M2更新/正式SystemSpec/draft/域/Stage4方法/Agent。C01–C08开发后锁定分析，6f93a5f下C09/C10单次固定套件，结束源码绑定一致。
 
 10点局部频响与时域均支持映射、均局部恢复，C07振铃更明显仍稳定，PM配对形状受LF零极点影响；C01/C08理想增益拆分近似等价。BW最大误差0.624%、Series/Clamp UGF最大0.553%/0.00792%、局部PM最大差0.0487°/0.0101°；未外推全域或认证周期PM。正式9 UNKNOWN、1 BW FAIL，无完整PASS。主实验3632native（含340pilot）/111.751原生秒，新LLM0；测试328、原TrackB单独28、无DLL副本重编译328通过。编译/后处理/导出范围问题均留记录，原始波形本地保留、审查包排除。详见docs/stage4_1；完成后停止等待Leader，不推进Stage4.3。
+
+2026-11-05 · 用户暂停 Stage5，先按 D014 归并主分支：目标明确为 master，已由 acf49b8 快进到 cd70cf4，Stage4（7270f31）、Stage4.2（66c4ddb）及 Stage4.1 全部提交均可从 master 到达。M1 / Agent / M2 正式归属 physics_mapping / allocation / verification；旧路径仅兼容，正式入口仍为 pipeline。合并前完整328项通过；合并后重新真实运行解析 Baseline，候选、完整M1、M2语义结果与既有实跑及正式fixture均精确一致：BW 225000→226403.934472Hz，M1 PM72.247209838°，严格M2 PM/频率精度UNKNOWN，整体M2_PARTIAL_PASS。最终合并后回归、成本及保护回执见 `mainline_consolidation_20261105_01/VERIFICATION_REPORT.md` 和 `FINAL_RECEIPT.json`。Stage5仅保留此前冻结Baseline/预审材料，未继续场景或策略比较，保持暂停。
+
+2026-11-05 · 用户恢复并完成Stage5（D015），待技术Leader验收后停止：正式pipeline新增版本化Research Scenario合同，只覆写BW min/max与PM min，原配置/域/公式/六份分配算法/M2事件核及Protocol1.1不改。S0–S3解析首发4/4 M1满足且M2 BW通过；Random seeds11/23/47共12个配对首发均BW失败；真实deepseek-v4-pro在S0/S1/S3各3次决策生成与解析相同候选，S2一次HTTP200后JSON失败无候选，失败成本保留。S4全部5arm返回M1假设下PM上界不可行，无候选/无M2/无LLM。
+
+PhaseA全部完成后才调用既有确定性repair：12个真实BW FAIL均生成新候选，各1次新增M2改为BW PASS；S3/seed11仍M1 PM45.661<50，不能称联合可行。31次主策略完整M2/3350native，局部解析S0/S3频响及阶跃490native，合计3840native/102.702原生秒/576.121s主实验进程墙钟（含保留失败）。全阶段另加两个Baseline回归为33完整M2/4052native；测试成本另列不混样本。正式PM/1µHz频率认证仍UNKNOWN，完整SystemSpec PASS0。
+
+接口及最终回归各351项通过，独立最终297项数据/场景/谱系检查通过；14份复用原模块逐字节一致，5765份既有tracked保护仅授权pipeline/contracts及状态文档变化。局部成本字段异常、PhaseA仅local分支helper改动、汇总种子元数据错误均保留并显式纠正；权威summary_02，未重跑挑选候选。交付docs/stage5三问题/七问报告、合同/计划、experiments/stage5/scenario_results.csv和candidate_trace.jsonl及精简SHA审查包。源码运行已验证，wheel安装/跨平台未验收；源码以master cd70cf4加各manifest Stage5工作树SHA绑定，未冒称已提交新版本。详见stage5/END_TO_END_FEASIBILITY_REPORT.md及VALIDATION_AND_COSTS.md。不进入Stage5.1/6。
+
+2026-11-06 · Block变量关系表（D016）：依据用户图片呈现参考，完成全部41项语义、17输入/6自由变量、18组块级关系、派生边际范围和九个电容组合的条件可行域表。最新主产物在`block_relations_20261106_01/atlas_03`，HTML可离线阅读/打印，另有Markdown/JSON/CSV及原路径/SHA。调谐开端点、PM形状、BW/R/增益乘积和CP/VCO分摊交集均明确；未改变原范围/公式/策略/Runner/协议。
+
+实际三次新目录生成每次12点正式M1通过、6个空交集保留，合计36次M1/72次条件β数值根；三轮是相同12点开发复验，非独立样本。最后一轮BW重建相对差≤8.54e-13，独立KCL交越残差≤1.27e-12。实际相关回归先81后83项通过，命令见`block_relations_20261106_01/README.md`；HTML已离线渲染目视检查。新M2/真实LLM均0，测试内M1成本另列。初版计数字段纠正/临时检查脚本TypeError及HTTP403均留说明，结果未覆盖。
+
+已完成当前域图谱，待用户/Leader审阅；完整行为认证仍部分完成，PM/微Hz频率UNKNOWN及噪声/功耗/RUR缺口保持。历史有限M2点不升级为全域能力。最终5768个tracked条目保护检查仅状态/决策追加变化；已有Stage5未提交内容及旧删除不改。本轮不推进Stage5.1/6。
+
+
+2026-11-09 · Stage6A依据新用户授权完成多指标可分配性研究，独立研究分支codex/stage6a-multispec-feasibility，master cd70cf4不变。原Stage5仍依赖工作树，已在新worktree复制并SHA保护14709份非忽略文件，原目录无修改；正式M1/M2/Allocation/Pipeline/域/方程/协议未改。4,725点原轴扫描及578条条件形状记录给出可行域和真实BW–PM–Rz域竞争，调谐无强三方冲突；Analytical/SLSQP可直接处理大部分当前M1约束。
+7个首次代表性候选+1次原确定性BW修复，8完整M2/852native；另2次重复capture，总854native/23.279037原生秒。E1边界M1 BW299.5kHz/PM70.0437°可行，但M2 BW301.4536kHz可靠FAIL；现有修复后294.9261kHz并重查全部约束，研究联合可行。等效M1动态三例捕获33/36/38µs，40µs条件deadline均通过，重复pair一致；未得到捕获失败，不声称捕获反馈增量。Stage5 S3/random11 BW通过但PM失败仍判联合FAIL。
+最终376测试全通过，首次191项结果与保护审计通过，原目录14709文件SHA与Git状态/HEAD不变。8次新M2中7个BW通过/1个失败，严格周期PM和1µHz频率认证UNKNOWN，FULL_SYSTEMSPEC_CERTIFIED=0；Jitter/Power/RUR不支持。完整交付docs/stage6a及experiments/stage6a，计时/失败/原始数据保留；未提交/合并master，不自动启动后续阶段，待用户/Leader审阅。
+
+## Stage 6B · 2026-11-09
+
+已完成：隔离分支 codex/stage6b-sensitivity-allocation 的统一研究约束、原敏感度/SLSQP与确定性物理坐标反馈搜索、原pipeline入口集成、B1/B2 A/B/C对照。404测试通过；13候选槽/10新增完整M2/3缓存/1060native，六组首发与最终研究可行、1额外候选UNKNOWN保留。B1 C37→33µs与解析持平；B2 24→23µs包络重叠，主裕量不变。真实LLM0、完整SystemSpec认证0。独立审计核对所有候选/原始请求/trace通过。
+
+实际命令：python -B tools/run_stage6b.py --frozen experiments/stage6b/frozen_02 --out experiments/stage6b/study_01；python -B tools/audit_stage6b.py --study experiments/stage6b/study_01 --out experiments/stage6b/summary_01。报告 docs/stage6b/FINAL_REPORT.md；完整源码/结果/trace封包正在验收。部分能力：正式场景无BW FAIL，未正式证明通用BW恢复；严格周期PM/频率精度仍UNKNOWN。待验收：最终压缩包独立解包复现与用户审阅。未自动合并master，旧Stage5/6A脏快照保持。
+
+Stage6B交付补充：源码归档兼容修复后407项通过；独立解包重建全六组实验，156个数值/包络及候选顺序/判决/成本计数完全一致。复现另记10完整M2/1060native，不计正式方法增益。最终包含正式与复现原始结果及单文件 trace_01/complete_trace.jsonl；最终ZIP独立manifest/测试校验回执随交付给出。Stage6B实施与实验完成，待用户审阅；严格PM/频率完整认证和未来Agent未验收。

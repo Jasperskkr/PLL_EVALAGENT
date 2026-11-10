@@ -1,0 +1,24 @@
+flowchart TD
+    S[SystemSpec 当前三项：频率 / BW / PM]
+    D[Block Space：手工声明六轴 + 固定条件 + 单位与域]
+    M[M1：理想锁定点连续公式 / 快速预测]
+    A[Allocation Policy：解析 / SLSQP / 随机 / LLM工具选择]
+    C[完整17输入候选：五块拓扑信息齐全]
+    R[Runner：先写盘 / 域检查 / 预算 / 哈希绑定]
+    T[M2 TB：C++边沿插值与Euler + Python实验驱动]
+    Q[独立波形测量：冷捕获 + 暖BW + 数值复核]
+    J{逐指标 PASS / FAIL / UNKNOWN}
+    P[完整Verified BlockSpec：当前必需指标支持不足]
+    F[Structured Feedback：失败 / 预测差值 / 可靠性 / 预算]
+    E[模型偏差证据维护：有记录，无自动更新]
+    V[验证诊断：有固定收敛检查，无自动复测调度]
+    S --> D --> A
+    D --> M --> A
+    A --> C --> R --> T --> Q --> J
+    J -->|全部必需指标PASS| P
+    J -->|FAIL或UNKNOWN| F
+    F -->|① 已实现确定性修复；真实LLM修复缺失| A
+    F -.->|② 待完善的模型误差反馈| E
+    E -.->|独立审查后新版本| D
+    F -.->|③ 待完善的验证反馈| V
+    V -.->|明确复测计划与预算后| T

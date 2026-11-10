@@ -1,0 +1,106 @@
+{
+  "created_at": "2026-11-09T15:22:31.722842+08:00",
+  "order": [
+    [
+      "B1",
+      "A"
+    ],
+    [
+      "B1",
+      "B"
+    ],
+    [
+      "B1",
+      "C"
+    ],
+    [
+      "B2",
+      "A"
+    ],
+    [
+      "B2",
+      "B"
+    ],
+    [
+      "B2",
+      "C"
+    ]
+  ],
+  "methods": {
+    "A": "unchanged analytical; one M2",
+    "B": "analytical-center sensitivity -> unchanged SLSQP; one M2",
+    "C": "same B first shot -> paired Vreq/Kvco polls -> unused capacitor region"
+  },
+  "budget": "equal caps:96 M1 including child pre/posthoc,10000 cheap,6 slots including cache hits/failures",
+  "cache": "new Stage6B source/protocol/parameter-bound shared cache; no historical Stage6A reuse",
+  "rules": "no outcome tuning; no LLM; no BO; no measurement changes; A/B naturally stop after first candidate",
+  "capture_interval": "fine +/- abs(coarse-fine) +/-1us block resolution; conservative hull superset",
+  "normalization": "BW half-interval; PM lower limit; tuning0.6V; capture40us",
+  "optional_B3": "read-only interface analysis, no alternate-initial-state formal run",
+  "sources": [
+    {
+      "path": "pll_allocation/pipeline.py",
+      "sha256": "7e828ea018d4f88b477af907c86d9077aac43d81bac326cd2d8f92e3c517e5f6"
+    },
+    {
+      "path": "pll_allocation/allocation/__init__.py",
+      "sha256": "12acf2bdc7e4364c6d7d1731eed3a1e0b32f41cfdfae4d59026be99d9b99c5a9"
+    },
+    {
+      "path": "pll_allocation/allocation/agent.py",
+      "sha256": "b1c66dc9253ef0c6235d12a088a5538bc8a0744adfd93c3dde9d585cf009b183"
+    },
+    {
+      "path": "pll_allocation/allocation/allocate.py",
+      "sha256": "bf570c5e05f29afc1f0d75723fca0a1f781fa321a20a4ab459ffe64ee4cb1535"
+    },
+    {
+      "path": "pll_allocation/allocation/core.py",
+      "sha256": "2c04824cc0bf86831050e059ee424c2b8c2ed539751a4971632ba833441a320c"
+    },
+    {
+      "path": "pll_allocation/allocation/feedback_agent.py",
+      "sha256": "5250fd9de38117c4b1fcd9a761f12d387b56f660d0f92907689a0ca96a9414c2"
+    },
+    {
+      "path": "pll_allocation/allocation/multispec_constraints.py",
+      "sha256": "548f8e8ab3b4b07282212d43b2a0a4af0cc166dcfb78d1a6ecaf37b4b1e2e883"
+    },
+    {
+      "path": "pll_allocation/allocation/multispec_search.py",
+      "sha256": "82c32736b673a7aeb77a26e98982d41c782444528ddef1aaebcc04cc1820e3b1"
+    },
+    {
+      "path": "pll_allocation/allocation/physics.py",
+      "sha256": "f10aa7d11044d484a18bd6aaa3b420f08f69f1215ce9c7d746132a4e72872860"
+    },
+    {
+      "path": "pll_allocation/allocation/repair.py",
+      "sha256": "4e1b54ae9b5a5b8619f95435c9f9f7994a229a822e39ac58613a865f952c6ea6"
+    },
+    {
+      "path": "tests/test_multispec_stage6b.py",
+      "sha256": "75a99033e1e89acc35d12a01f58da6fd0ad51bc8d240492912e1de43363eef00"
+    },
+    {
+      "path": "tools/audit_stage6b.py",
+      "sha256": "0d7526dc792555780a1111c8d3bfa9d6f8180a96c88ff8a705044d313b3241ba"
+    },
+    {
+      "path": "tools/prepare_stage6b.py",
+      "sha256": "f3941926ed29b86621c61cad38ae0712767c20bb18404b8b695d6ad7683a0601"
+    },
+    {
+      "path": "tools/run_stage6b.py",
+      "sha256": "e81f27680da7628d717a09e43469820033b03c36e0a6005665c6ba89a69d6938"
+    },
+    {
+      "path": "experiments/stage6b/frozen_02/B1.json",
+      "sha256": "a098ef3e6ebfe2066e09ec4a768a38c1f6503101ee44def22dbaee0e322120c6"
+    },
+    {
+      "path": "experiments/stage6b/frozen_02/B2.json",
+      "sha256": "a9fed540b0945babfec5b2d9905c7de43d6d37c21b0d0e1500fad295eb925a8b"
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "name": "E1_analytical",
+  "command": [
+    "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "-B",
+    "C:\\Users\\Lenovo\\.codex\\worktrees\\stage6a-multispec-feasibility\\PLL_allocation\\experiments\\stage6a\\verifier_pipeline_timing.py",
+    "C:\\Users\\Lenovo\\.codex\\worktrees\\stage6a-multispec-feasibility\\PLL_allocation\\experiments\\stage6a\\m2_01\\receipts\\E1_analytical_timing.json",
+    "pipeline",
+    "--strategy",
+    "analytical",
+    "--proposal",
+    "experiments\\stage6a\\frozen_01\\E1_analytical_proposal.json",
+    "--m2-budget",
+    "1",
+    "--repair-budget",
+    "0",
+    "--out",
+    "experiments\\stage6a\\m2_01\\runs\\E1_analytical"
+  ],
+  "equivalent_formal_command": [
+    "python",
+    "-B",
+    "-m",
+    "pll_allocation",
+    "pipeline",
+    "--strategy",
+    "analytical",
+    "--proposal",
+    "experiments\\stage6a\\frozen_01\\E1_analytical_proposal.json",
+    "--m2-budget",
+    "1",
+    "--repair-budget",
+    "0",
+    "--out",
+    "experiments\\stage6a\\m2_01\\runs\\E1_analytical"
+  ],
+  "returncode": 0,
+  "process_wall_s": 10.376236399984919,
+  "proposal_sha256": "3c4d89c95e9ef7dd2f4c2b5bb5720b37e37d81a0cd3cae08830c90f2a61c830e",
+  "proposal_raw_sha256": "450950a502fb10a16b1482fa9b618bcdbe0a19ad4fb5352a72f141c4937de291",
+  "parameter_sha256": "d4d5a697482ee8c57188e479fd64a37b033fe889e0c4efbd67b726ddc2a9a774",
+  "plan_sha256": "c3d017a6fb3eac69e362aa42e400a6a244de91b0e5074d9617ed7ec08026162f",
+  "pipeline_status": "M2_PARTIAL_PASS",
+  "cost": {
+    "analytic_calls": 0,
+    "M1_calls": 1,
+    "candidate_generations": 0,
+    "M2_calls": 1,
+    "LLM_calls": 0,
+    "native_completed_runs": 106,
+    "native_failed_attempts": 0,
+    "integration_points": 93650259,
+    "native_elapsed_s": 2.8092519999481738,
+    "native_failure_elapsed_s": 0,
+    "M1_posthoc_calls": 1,
+    "M1_total_calls": 2,
+    "total_elapsed_s": 9.464427300030366,
+    "monetary_cost": null
+  },
+  "failure": null,
+  "measurements": {
+    "output_frequency_Hz": {
+      "value": 79999999.99994719,
+      "unit": "Hz",
+      "status": "MEASURED_STEADY",
+      "numerical_envelope": [
+        79999999.98994718,
+        80000000.0099472
+      ],
+      "required_precision_validated": false,
+      "uncertainty_basis": "empirical two-step difference with 0.01 Hz reporting floor; not a certified confidence bound",
+      "confidence": "CONDITIONAL_ON_TRACE_WINDOW"
+    },
+    "steady_control_V": {
+      "value": 0.5999999999251424,
+      "unit": "V",
+      "status": "MEASURED_STEADY",
+      "step_difference_V": 8.58246806956231e-11
+    },
+    "capture": {
+      "value": "CAPTURED_WITHIN_WINDOW",
+      "status": "MEASURED_WINDOW_CONDITIONAL",
+      "initial_control_V": 0.15,
+      "duration_s": 0.00016
+    },
+    "lock_time_s": {
+      "value": 2.4e-05,
+      "unit": "s",
+      "status": "MEASURED_WINDOW_CONDITIONAL",
+      "resolution_s": 1e-06,
+      "step_difference_s": 0.0
+    },
+    "BW_Hz": {
+      "value": 298165.943413578,
+      "unit": "Hz",
+      "status": "MEASURED_CONVERGED",
+      "numerical_envelope": [
+        298042.8966478047,
+        298196.1896406976
+      ],
+      "confidence": "LOCAL_WARM_START_SAMPLED_POINTS_ONLY",
+      "observable": "continuous divided VCO phase fundamental / reference phase fundamental",
+      "edge_only_equivalence": "NOT_ESTABLISHED; edge timestamp harmonic fits show different sampled response",
+      "envelope_scope": "bracketing and amplitude/step/window refinements; excludes cross-observable systematic difference"
+    },
+    "PM_deg": {
+      "value": null,
+      "unit": "deg",
+      "status": "PM_M2_UNKNOWN"
+    },
+    "UGF_Hz": {
+      "value": null,
+      "unit": "Hz",
+      "status": "UNKNOWN_NO_DIRECT_LOOP_INJECTION"
+    }
+  },
+  "native_components": {
+    "capture": {
+      "runs": 2,
+      "elapsed_s": 0.02272210002411157,
+      "integration_points": 1200002
+    },
+    "BW_response": {
+      "runs": 104,
+      "elapsed_s": 2.786529899924062,
+      "integration_points": 92450257
+    }
+  }
+}

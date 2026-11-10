@@ -1,0 +1,28 @@
+{
+  "schema_version": "track-a-benchmark-plan-1.0",
+  "cheap_budget": 2000,
+  "M1_budget": 16,
+  "M2_budget": 0,
+  "formal_submissions": 1,
+  "strategies": ["nominal", "analytical", "sensitivity_optimization", "random", "mock_agent"],
+  "random_seed": 23,
+  "calibration_cases": [],
+  "prior_data": "Published defaults and formulas; Stage1.5 reports read. No 139-point table or 44-PASS list loaded. Official is prior-informed, not blind.",
+  "variants": [
+    {"id": "low_bw", "BW_Hz": [100000, 160000], "PM_min_deg": 50},
+    {"id": "high_bw", "BW_Hz": [250000, 300000], "PM_min_deg": 60},
+    {"id": "tight_pm", "BW_Hz": [210000, 240000], "PM_min_deg": 65},
+    {"id": "near_ceiling", "BW_Hz": [200000, 260000], "PM_min_deg": 71},
+    {"id": "impossible_pm", "BW_Hz": [150000, 300000], "PM_min_deg": 75}
+  ],
+  "llm": {
+    "provider": "configured_messages_provider",
+    "model_env": "ANTHROPIC_MODEL",
+    "api_key_env": "ANTHROPIC_AUTH_TOKEN",
+    "base_url_env": "ANTHROPIC_BASE_URL",
+    "auth_mode": "bearer",
+    "max_tokens": 1500,
+    "timeout_s": 45,
+    "max_calls": 4
+  }
+}

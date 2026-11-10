@@ -1,0 +1,83 @@
+{
+  "status": "PASS",
+  "runs": [
+    {
+      "run": "B1_A",
+      "trace_events": 34,
+      "candidate_slots": 1,
+      "new_M2": 1,
+      "cache_hits": 0,
+      "native": 106,
+      "status": "RESEARCH_JOINT_FEASIBLE",
+      "stop_reason": "METHOD_HAS_NO_BEHAVIORAL_SEARCH"
+    },
+    {
+      "run": "B1_B",
+      "trace_events": 243,
+      "candidate_slots": 1,
+      "new_M2": 1,
+      "cache_hits": 0,
+      "native": 106,
+      "status": "RESEARCH_JOINT_FEASIBLE",
+      "stop_reason": "METHOD_HAS_NO_BEHAVIORAL_SEARCH"
+    },
+    {
+      "run": "B1_C",
+      "trace_events": 270,
+      "candidate_slots": 3,
+      "new_M2": 2,
+      "cache_hits": 1,
+      "native": 212,
+      "status": "RESEARCH_JOINT_FEASIBLE",
+      "stop_reason": "UNRESOLVED_MEASUREMENT_DIAGNOSIS_REQUIRED"
+    },
+    {
+      "run": "B2_A",
+      "trace_events": 20,
+      "candidate_slots": 1,
+      "new_M2": 1,
+      "cache_hits": 0,
+      "native": 106,
+      "status": "RESEARCH_JOINT_FEASIBLE",
+      "stop_reason": "METHOD_HAS_NO_BEHAVIORAL_SEARCH"
+    },
+    {
+      "run": "B2_B",
+      "trace_events": 63,
+      "candidate_slots": 1,
+      "new_M2": 1,
+      "cache_hits": 0,
+      "native": 106,
+      "status": "RESEARCH_JOINT_FEASIBLE",
+      "stop_reason": "METHOD_HAS_NO_BEHAVIORAL_SEARCH"
+    },
+    {
+      "run": "B2_C",
+      "trace_events": 135,
+      "candidate_slots": 6,
+      "new_M2": 4,
+      "cache_hits": 2,
+      "native": 424,
+      "status": "RESEARCH_JOINT_FEASIBLE",
+      "stop_reason": "M2_CANDIDATE_SLOT_BUDGET_EXHAUSTED"
+    }
+  ],
+  "native_requests_bound": 1060,
+  "native_integration_points": 944329412,
+  "unique_immutable_children": 10,
+  "recomputed_joint_evaluations": 13,
+  "new_M1_calls": 0,
+  "new_M2_calls": 0,
+  "checked": [
+    "frozen source/config hashes",
+    "hash-chain and pre-TB persistence order",
+    "full current joint re-evaluation",
+    "original result contract",
+    "full cache subtree SHA/length inventory",
+    "106 original requests per unique complete M2",
+    "capture .15V/160us and .4/.2ns pair",
+    "all native candidate/protocol bindings",
+    "new/cache cost separation",
+    "full certification false"
+  ]
+}

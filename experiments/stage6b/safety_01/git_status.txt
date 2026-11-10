@@ -1,0 +1,219 @@
+ M .gitattributes
+ M .gitignore
+ M AGENTS.md
+ M ARCHIVE_PLAN.md
+ M BEHAVIORAL_ALLOCATION_WORKFLOW.md
+ M END_TO_END_ACCEPTANCE.md
+ M INTEGRATION_VALIDATION.md
+ M LEGACY_ARCHIVE_PLAN.md
+ M MAINLINE_ARCHITECTURE.md
+ M MODULE_REUSE_REPORT.md
+ M P0_EXISTING_SYSTEM_AUDIT.md
+ M P0_MIGRATION_PLAN.md
+ M P0_MODULE_REUSE_MATRIX.md
+ M P0_TARGET_ARCHITECTURE.md
+ M PROJECT_CHARTER.md
+ M README.md
+ M UGF_PM_VALIDATION_REPORT.md
+ M configs/llm_env.json
+ M configs/physics_mapping_stage1_v2.json
+ M configs/track_a/benchmark_plan.json
+ M configs/track_a/requirements.txt
+ M docs/CORE_THREE_QUESTIONS_REVIEW.md
+ M docs/DATA_INHERITANCE_CATALOG.md
+ M docs/DECISIONS.md
+ M docs/DELIVERY_CHANGE_LIST.md
+ M docs/INTERFACE_CONTRACT.md
+ M docs/P1_CONTRACT_VALIDATION.md
+ M docs/P2_BEHAVIORAL_VERTICAL_ACCEPTANCE.md
+ M docs/PROJECT_STATUS.md
+ D docs/physics_mapping_stage1.zip
+ M docs/physics_mapping_stage1/MULTIFIDELITY_INTERFACE.md
+ M docs/physics_mapping_stage1/STAGE1_REPORT.md
+ M docs/physics_mapping_stage1/VARIABLE_SEMANTICS.md
+ D docs/stage1_5.zip
+ M docs/stage1_5/ACCEPTANCE.md
+ M docs/stage1_5/TASK_REQUEST.md
+ M docs/stage3a/ACCEPTANCE_REPORT.md
+ M docs/stage3a/ARCHITECTURE_AND_INTERFACE.md
+ M docs/stage3a/INTEGRATION_AUDIT_AND_PLAN.md
+ M docs/stage3a/MIGRATION_AND_ARCHIVE.md
+ M docs/stage3a/RUN_COMMANDS.md
+ M docs/stage3a1/STRUCTURE_AUDIT_AND_PLAN.md
+ M docs/stage3a1/TASK_REQUEST.md
+ M docs/stage4/AUDIT_AND_METHOD_PLAN.md
+ M docs/stage4/FIGURE_QA.md
+ M docs/stage4/TASK_REQUEST.md
+ M docs/stage4_1/CLOSED_LOOP_PERTURBATION_PROTOCOL.md
+ M docs/stage4_1/DEVELOPMENT_RECORD.md
+ M docs/stage4_1/ENGINEERING_VALIDATION_PLAN.md
+ M docs/stage4_1/FIGURE_QA.md
+ M docs/stage4_1/M1_M2_MAPPING_VALIDATION_REPORT.md
+ M docs/stage4_1/RELEASE_RECEIPT.json
+ M docs/stage4_1/RUN_AND_REPRODUCE.md
+ M docs/stage4_1/SOURCE_AND_RELEASE_MANIFEST.json
+ M docs/stage4_1/USER_REQUEST.txt
+ M docs/stage4_1/holdout_validation_report.md
+ M docs/stage4_2/AUDIT_AND_PLAN.md
+ M docs/stage4_2/EQUATION_AND_DOMAIN_AUDIT.md
+ M docs/stage4_2/SYSTEM_SPEC_MAPPING_MATRIX.md
+ M docs/stage4_2/pre_audit/dirty_source_backup/.gitignore
+ M docs/stage4_2/pre_audit/dirty_source_backup/README.md
+ M docs/stage4_2/pre_audit/dirty_source_backup/pll_allocation/pipeline.py
+ M docs/track_a/A0_AUDIT_AND_PLAN.md
+ M docs/track_a/A1_INVERSE_RELATIONS.md
+ M docs/track_a/INTERFACE_AND_AGENT.md
+ M docs/track_a/REVIEW_AND_DEVELOPMENT_RECORD.md
+ M docs/track_a/RUN_COMMANDS.md
+ M experiments/stage4_1/failures/build_01.json
+ M experiments/stage4_2/readiness_04/source_snapshot/registry.py
+ M experiments/stage4_2/readiness_04/source_snapshot/run_stage4_2.py
+ M experiments/stage4_2/readiness_05/source_snapshot/registry.py
+ M experiments/stage4_2/readiness_05/source_snapshot/run_stage4_2.py
+ M learn/code-walkthrough.md
+ M pll_allocation/__init__.py
+ M pll_allocation/__main__.py
+ M pll_allocation/_legacy/evaluation/python_behavioral.py
+ M pll_allocation/_legacy/physics/cp.py
+ M pll_allocation/_legacy/physics/lf.py
+ M pll_allocation/_legacy/schemas.py
+ M pll_allocation/_legacy/units.py
+ M pll_allocation/behavioral.py
+ M pll_allocation/block_space/__init__.py
+ M pll_allocation/block_space/__main__.py
+ M pll_allocation/block_space/calibration.py
+ M pll_allocation/block_space/contracts.py
+ M pll_allocation/block_space/event_reference.py
+ M pll_allocation/block_space/sampling.py
+ M pll_allocation/block_space/validation.py
+ M pll_allocation/cli.py
+ M pll_allocation/contracts.py
+ M pll_allocation/llm_transport.py
+ M pll_allocation/physics_mapping/__init__.py
+ M pll_allocation/physics_mapping/__main__.py
+ M pll_allocation/physics_mapping/experiment.py
+ M pll_allocation/physics_mapping/model.py
+ M pll_allocation/physics_mapping/registry.py
+ M pll_allocation/physics_mapping/validation.py
+ M pll_allocation/pipeline.py
+ M pll_allocation/pipeline_contracts.py
+ M pll_allocation/policies.py
+ M pll_allocation/runner.py
+ M pll_allocation/track_a/__init__.py
+ M pll_allocation/track_a/__main__.py
+ M pll_allocation/track_a/audit.py
+ M pll_allocation/track_a/benchmark.py
+ M pll_allocation/track_a/experiments.py
+ M pll_allocation/track_a/report.py
+ M pll_allocation/track_a/runner.py
+ M pyproject.toml
+ M tests/test_behavioral.py
+ M tests/test_block_space_v1.py
+ M tests/test_contracts.py
+ M tests/test_mainline_migration.py
+ M tests/test_mapping_registry_stage4_2.py
+ M tests/test_matlab_trajectories.py
+ M tests/test_physics_mapping_stage1.py
+ M tests/test_pipeline_stage3a.py
+ M tests/test_runner.py
+ M tests/track_a/test_allocation.py
+ M tests/verification/test_closed_loop_stage41.py
+ M tests/verification/test_measurements.py
+ M tests/verification/test_return_ratio_stage4.py
+ M tests/verification/test_verification.py
+ M tools/audit_mainline.py
+ M tools/audit_physics_mapping_sources.py
+ M tools/audit_sources.py
+ M tools/audit_stage4.py
+ M tools/audit_stage41.py
+ M tools/audit_stage4_2.py
+ M tools/build_equation_registry_v1.py
+ M tools/build_physics_variable_mapping.py
+ M tools/collect_stage41_frequency.py
+ M tools/create_examples.py
+ M tools/diagnose_event_boundary_v1.py
+ M tools/diagnose_event_warmstart_v1.py
+ M tools/finalize_block_space_v1.py
+ M tools/finalize_stage41.py
+ M tools/freeze_stage3a1.py
+ M tools/generate_stage41_kernel.py
+ M tools/inherit_matlab_reference.py
+ M tools/integrate_stage3a.py
+ M tools/isolate_stage3a1.py
+ M tools/package_stage4.py
+ M tools/package_stage41.py
+ M tools/plot_stage4.py
+ M tools/plot_stage41.py
+ M tools/prepare_block_space_v1.py
+ M tools/qa_stage41_figures.py
+ M tools/reanalyze_stage41_steps.py
+ M tools/refine_stage41_frequency.py
+ M tools/release_stage3a1.py
+ M tools/release_stage4_2.py
+ M tools/report_block_space_v1.py
+ M tools/run_stage4.py
+ M tools/run_stage41.py
+ M tools/run_stage4_2.py
+ M tools/stage3a1_migrate.py
+ M tools/stage3a1_prepare.py
+ M tools/stage41_protect.py
+ M tools/stage4_sideband_checks.py
+ M tools/summarize_stage41.py
+ M tools/validate_delivery.py
+ M tools/validate_stage3a.py
+ M tools/validate_stage3a1.py
+?? docs/block_relations_20261106_01/
+?? docs/mainline_consolidation_20261105_01/
+?? docs/stage3a/audit_final_01/artifact_hashes.json
+?? docs/stage3a/protected_before.json
+?? docs/stage5/
+?? docs/stage6a/
+?? docs/track_a.zip
+?? docs/workflow_model_verifier_audit_20261106_01/
+?? experiments/mainline_consolidation_20261105_01/
+?? experiments/stage3a1_isolated_20261104_01/source/
+?? experiments/stage3a_analytical_20261104_01/
+?? experiments/stage3a_baseline_20261104_01/
+?? experiments/stage3a_feedback_repair_20261104_01/
+?? experiments/stage3a_llm_20261104_01/
+?? experiments/stage3a_optimization_20261104_01/
+?? experiments/stage3a_regression_20261104_01/
+?? experiments/stage3a_regression_final_20261104_01/
+?? experiments/stage3a_regression_final_20261104_02/
+?? experiments/stage3a_reverify_20261104_01/
+?? experiments/stage3a_tests_20261104_01/
+?? experiments/stage4_2/commit_receipt.json
+?? experiments/stage4_2/commitcheck_01/source/
+?? experiments/stage4_2/commitcheck_02/source/
+?? experiments/stage4_bundlecheck_20261105_01/
+?? experiments/stage4_figures_20261105_01/
+?? experiments/stage4_figures_20261105_02/
+?? experiments/stage4_finaltests_20261105_01/
+?? experiments/stage4_finaltests_20261105_02/
+?? experiments/stage4_finaltests_20261105_03/
+?? experiments/stage4_finaltests_20261105_04/
+?? experiments/stage4_pipeline_feedback_20261105_01/
+?? experiments/stage4_pipeline_feedback_20261105_02/
+?? experiments/stage4_pipeline_feedback_20261105_03/
+?? experiments/stage4_pretests_20261105_01/
+?? experiments/stage4_prototype_20261105_01/
+?? experiments/stage4_sidebands_20261105_01/
+?? experiments/stage4_study_20261105_01/
+?? experiments/stage4_study_20261105_02/
+?? experiments/stage4_summary_20261105_01/
+?? experiments/stage4_summary_20261105_02/
+?? experiments/stage4_summary_20261105_03/
+?? experiments/stage4_summary_20261105_04/
+?? experiments/stage4_summary_20261105_05/
+?? experiments/stage4_trackbtests_20261105_01/
+?? experiments/stage4_unittests_20261105_01/
+?? experiments/stage5/
+?? experiments/stage6a/
+?? frequency_response.csv
+?? m1_m2_ugf_pm_comparison.csv
+?? pll_allocation/scenarios.py
+?? pll_allocation/verification/scenario.py
+?? tests/test_block_relation_atlas.py
+?? tests/test_scenarios_stage5.py
+?? tests/test_stage6a_joint.py
+?? tools/build_block_relation_atlas.py

@@ -1,0 +1,60 @@
+{
+  "LLM_analysis": [
+    {
+      "scenario": "S0",
+      "status": "M2_PARTIAL_PASS",
+      "tools": [
+        "SolveInverseAllocation",
+        "EvaluateM1",
+        "SubmitCandidateForM2"
+      ],
+      "same_as_analytical": true,
+      "LLM_calls": 3
+    },
+    {
+      "scenario": "S1",
+      "status": "M2_PARTIAL_PASS",
+      "tools": [
+        "SolveInverseAllocation",
+        "EvaluateM1",
+        "SubmitCandidateForM2"
+      ],
+      "same_as_analytical": true,
+      "LLM_calls": 3
+    },
+    {
+      "scenario": "S2",
+      "status": "POLICY_OR_TOOL_FAILED",
+      "tools": [
+        null
+      ],
+      "same_as_analytical": null,
+      "LLM_calls": 1
+    },
+    {
+      "scenario": "S3",
+      "status": "M2_PARTIAL_PASS",
+      "tools": [
+        "SolveInverseAllocation",
+        "EvaluateM1",
+        "SubmitCandidateForM2"
+      ],
+      "same_as_analytical": true,
+      "LLM_calls": 3
+    }
+  ],
+  "authoritative_summary": "experiments/stage5/summary_02",
+  "authoritative_audit": "experiments/stage5/result_audit_02/audit.json",
+  "tests": "351 pass final_tests_01",
+  "physical_native_study_count": 3840,
+  "physical_native_elapsed_s": 102.70187299896497,
+  "study_wall_scope": "PhaseA+PhaseB+failedlocal+localcontinuation process wall; excludes P0, interface/final tests, analysis and packaging",
+  "study_process_wall_s": 576.121263100009,
+  "no_full_pass": true,
+  "exceptions_retained": [
+    "S2 LLM HTTP200 JSON decode failed; no retry",
+    "Helper inactive local branch edited during PhaseA; disclosure preserves before/after hash",
+    "Local01 S0 measurement complete then schema cost exception; resumed S3 only, no S0 simulation repeated",
+    "Summary01 repaired seed metadata incorrect; authoritativeSummary02 correct; original retained"
+  ]
+}

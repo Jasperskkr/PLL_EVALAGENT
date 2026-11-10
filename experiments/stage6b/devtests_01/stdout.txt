@@ -1,0 +1,49 @@
+........................................................................ [ 17%]
+........................................................................ [ 35%]
+............F.F......................................................... [ 53%]
+........................................................................ [ 71%]
+........................................................................ [ 89%]
+............................................                             [100%]
+================================== FAILURES ===================================
+__________ test_bw_fail_activates_sensitivity_screen_and_degeneracy ___________
+
+    def test_bw_fail_activates_sensitivity_screen_and_degeneracy():
+        ctl,events=controller('B2');r=ctl.initialize();m=synthetic_measurement(r['candidate'],r['assessment'])
+        m['metrics']['BW_Hz'].update(value=302000,numerical_envelope=[301900,302100])
+        e=evaluate_constraints(ctl.model,ctl.problem,r['candidate'],r['assessment'],m);ctl.observe(r,e)
+        trial=ctl.next()
+>       assert trial and 'M2_BW_RESIDUAL' in trial['reason']
+E       AssertionError: assert ({'candidate': {'schema_version': 'pll-physics-mapping-2.0', 'conventions': {'vco_f0': 'frequency_at_zero_volts', 'phas...AIRED_BEHAVIORAL_POLL:Vreq:-1', 'parameter_sha256': '24ba2f99c29fde7de48d53c29a725cdf00b44778feb340a47c4d3d84ed767e6b'} and 'M2_BW_RESIDUAL' in 'PAIRED_BEHAVIORAL_POLL:Vreq:-1')
+
+tests\test_multispec_stage6b.py:136: AssertionError
+________________ test_runner_cache_budget_trace_and_tampering _________________
+
+tmp_path = WindowsPath('C:/Users/Lenovo/.codex/worktrees/stage6b-sensitivity-allocation/PLL_allocation/experiments/stage6b/devtests_01/tmp/test_runner_cache_budget_trace0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000012E6F4B5460>
+
+    def test_runner_cache_budget_trace_and_tampering(tmp_path,monkeypatch):
+        calls=synthetic_child(monkeypatch);cache=tmp_path/'cache';path=ROOT/'experiments/stage6b/frozen_01/B1.json'
+        a=pipeline.run_multispec(tmp_path/'a',path,'A',cache_path=cache)
+        b=pipeline.run_multispec(tmp_path/'b',path,'A',cache_path=cache)
+        assert len(calls)==1 and a['cost']['M2_calls']==1 and b['cost']['M2_calls']==0
+        assert b['cost']['cache_hits']==1 and b['cost']['M2_candidate_slots_used']==1
+>       assert assert_chain(tmp_path/'a/allocation_trace.jsonl')==a['trace_final_sha256']
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_multispec_stage6b.py:185: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/Lenovo/.codex/worktrees/stage6b-sensitivity-allocation/PLL_allocation/experiments/stage6b/devtests_01/tmp/test_runner_cache_budget_trace0/a/allocation_trace.jsonl')
+
+    def assert_chain(path):
+        previous='0'*64
+        for line in path.read_text(encoding='utf-8').splitlines():
+            event=json.loads(line);digest=event.pop('event_sha256')
+>           assert event['previous_sha256']==previous and fingerprint(event)==digest
+E           AssertionError: assert (None == '3eab6a2cea16b47749dff96caf9a2fbb3aaf2e77064609160b3c86557cea3c26')
+
+tests\test_multispec_stage6b.py:174: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_multispec_stage6b.py::test_bw_fail_activates_sensitivity_screen_and_degeneracy
+FAILED tests/test_multispec_stage6b.py::test_runner_cache_budget_trace_and_tampering
+2 failed, 402 passed in 34.47s

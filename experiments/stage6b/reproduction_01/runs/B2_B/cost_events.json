@@ -1,0 +1,3168 @@
+[
+  {
+    "index": 1,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": [
+      41.0,
+      6.4031242374328485
+    ],
+    "output": 1.3459632911407546,
+    "elapsed_s": 5.309993866831064e-05
+  },
+  {
+    "index": 2,
+    "kind": "candidate_generations"
+  },
+  {
+    "index": 3,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001511129254967205,
+      "Rz": 2324.8410411883065,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714145.121518746,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6,
+      "Kvco_local_Hz_per_V": 32143091.464135423,
+      "UGF_Hz": 219173.88233521313,
+      "BW_Hz": 294999.9999999999,
+      "PM_deg": 72.24720983805332
+    },
+    "elapsed_s": 0.00011789996642619371
+  },
+  {
+    "index": 4,
+    "kind": "M1_calls",
+    "status": "RETURNED",
+    "input": {
+      "schema_version": "pll-physics-mapping-2.0",
+      "conventions": {
+        "vco_f0": "frequency_at_zero_volts",
+        "phase_error": "reference_minus_feedback_rad",
+        "lf_topology": "C1_shunt_Rz_series_C2",
+        "cp_leakage": "positive_injected_into_lf"
+      },
+      "values": {
+        "f_ref": {
+          "value": 10000000,
+          "unit": "Hz"
+        },
+        "N": {
+          "value": 8,
+          "unit": "1"
+        },
+        "Icp": {
+          "value": 0.0001511129254967205,
+          "unit": "A"
+        },
+        "Rz": {
+          "value": 2324.8410411883065,
+          "unit": "Ohm"
+        },
+        "C1": {
+          "value": 5e-11,
+          "unit": "F"
+        },
+        "C2": {
+          "value": 2e-09,
+          "unit": "F"
+        },
+        "f0": {
+          "value": 60714145.121518746,
+          "unit": "Hz"
+        },
+        "Kvco": {
+          "value": 32143091.464135423,
+          "unit": "Hz/V"
+        },
+        "Vctrl_min": {
+          "value": 0,
+          "unit": "V"
+        },
+        "Vctrl_max": {
+          "value": 1.2,
+          "unit": "V"
+        },
+        "Kvco2": {
+          "value": 0,
+          "unit": "Hz/V^2"
+        },
+        "CP_mismatch": {
+          "value": 0,
+          "unit": "1"
+        },
+        "CP_leakage": {
+          "value": 0,
+          "unit": "A"
+        },
+        "q0": {
+          "value": 0,
+          "unit": "C"
+        },
+        "PFD_reset_delay": {
+          "value": 0,
+          "unit": "s"
+        },
+        "Cload": {
+          "value": 0,
+          "unit": "F"
+        },
+        "Gload": {
+          "value": 0,
+          "unit": "S"
+        }
+      }
+    },
+    "output": {
+      "status": "OK",
+      "reason": "",
+      "model_level": "M1",
+      "model_id": "ideal_cppll_locked_continuous_m1_v1",
+      "parameter_sha256": "d4d5a697482ee8c57188e479fd64a37b033fe889e0c4efbd67b726ddc2a9a774",
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.6,
+        "Kvco_local_Hz_per_V": 32143091.464135423,
+        "UGF_Hz": 219173.8823354356,
+        "BW_Hz": 295000.0000002603,
+        "PM_deg": 72.24720983805331
+      },
+      "units": {
+        "output_frequency_Hz": "Hz",
+        "Vctrl_required_V": "V",
+        "Kvco_local_Hz_per_V": "Hz/V",
+        "UGF_Hz": "Hz",
+        "BW_Hz": "Hz",
+        "PM_deg": "deg"
+      },
+      "protocols": {
+        "output_frequency_Hz": "conditional_locked_tuning_frequency",
+        "Vctrl_required_V": "linear_vco_static_tuning_solution",
+        "Kvco_local_Hz_per_V": "vco_derivative_at_tuning_point",
+        "UGF_Hz": "continuous_L_first_downward_unity_crossing",
+        "BW_Hz": "continuous_normalized_T_first_downward_minus3dB",
+        "PM_deg": "180_plus_continuous_L_phase_at_UGF"
+      },
+      "factors": {
+        "F_FREQ_PLAN": {
+          "f_target_Hz": 80000000,
+          "source": "model/solve_tuning_point.m"
+        },
+        "F_TUNING": {
+          "Vctrl_required_V": 0.6,
+          "Kvco_local_Hz_per_V": 32143091.464135423,
+          "feasible": true,
+          "voltage_margin_V": 0.6,
+          "tuning_frequency_min_Hz": 60714145.121518746,
+          "tuning_frequency_max_Hz": 99285854.87848125,
+          "source": "model/solve_tuning_point.m; model/vco_model.m"
+        },
+        "F_KPFD": {
+          "Kpfd_A_per_rad": 2.405036905788037e-05,
+          "Iup_A": 0.0001511129254967205,
+          "Idown_A": 0.0001511129254967205,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LF_TF": {
+          "zero_Hz": 34229.209712020944,
+          "poles_rad_per_s": [
+            0,
+            -8817807.16909649
+          ],
+          "nonzero_pole_Hz": 1403397.5981928587,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LOOP": {
+          "UGF_Hz": 219173.8823354356,
+          "BW_Hz": 295000.0000002603,
+          "PM_deg": 72.24720983805331,
+          "characteristic_descending": [
+            2.3248410411883067e-16,
+            2.05e-09,
+            0.0028230757402725438,
+            607.1545732067711
+          ],
+          "routh_stable": true,
+          "T_definition": "L/(1+L); normalized reference phase response; H_ref=N*T",
+          "source": "model/pll_linear_kernel.m; characterization/characterize_loop.m"
+        }
+      },
+      "diagnostics": {
+        "scan": {
+          "minimum_Hz": 3.4229209712020947,
+          "maximum_Hz": 1000000000,
+          "points": 8000
+        },
+        "UGF_over_fref": 0.02191738823354356,
+        "BW_over_fref": 0.02950000000002603,
+        "sampling_equivalence": "NOT_ESTABLISHED",
+        "transient_lock": "NOT_EVALUATED",
+        "MATLAB_runtime_calls": 0,
+        "behavioral_TB_calls": 0
+      },
+      "response": [],
+      "scope": "CONDITIONAL_LOCKED_CONTINUOUS_SMALL_SIGNAL_ONLY",
+      "verified_joint_block_spec": false
+    },
+    "elapsed_s": 0.052723800064995885
+  },
+  {
+    "index": 5,
+    "kind": "candidate_generations"
+  },
+  {
+    "index": 6,
+    "kind": "M1_calls",
+    "status": "RETURNED",
+    "input": {
+      "schema_version": "pll-physics-mapping-2.0",
+      "conventions": {
+        "vco_f0": "frequency_at_zero_volts",
+        "phase_error": "reference_minus_feedback_rad",
+        "lf_topology": "C1_shunt_Rz_series_C2",
+        "cp_leakage": "positive_injected_into_lf"
+      },
+      "values": {
+        "f_ref": {
+          "value": 10000000,
+          "unit": "Hz"
+        },
+        "N": {
+          "value": 8,
+          "unit": "1"
+        },
+        "Icp": {
+          "value": 0.0001496017962417533,
+          "unit": "A"
+        },
+        "Rz": {
+          "value": 2324.8410411883065,
+          "unit": "Ohm"
+        },
+        "C1": {
+          "value": 5e-11,
+          "unit": "F"
+        },
+        "C2": {
+          "value": 2e-09,
+          "unit": "F"
+        },
+        "f0": {
+          "value": 60714145.121518746,
+          "unit": "Hz"
+        },
+        "Kvco": {
+          "value": 32143091.464135423,
+          "unit": "Hz/V"
+        },
+        "Vctrl_min": {
+          "value": 0,
+          "unit": "V"
+        },
+        "Vctrl_max": {
+          "value": 1.2,
+          "unit": "V"
+        },
+        "Kvco2": {
+          "value": 0,
+          "unit": "Hz/V^2"
+        },
+        "CP_mismatch": {
+          "value": 0,
+          "unit": "1"
+        },
+        "CP_leakage": {
+          "value": 0,
+          "unit": "A"
+        },
+        "q0": {
+          "value": 0,
+          "unit": "C"
+        },
+        "PFD_reset_delay": {
+          "value": 0,
+          "unit": "s"
+        },
+        "Cload": {
+          "value": 0,
+          "unit": "F"
+        },
+        "Gload": {
+          "value": 0,
+          "unit": "S"
+        }
+      }
+    },
+    "output": {
+      "status": "OK",
+      "reason": "",
+      "model_level": "M1",
+      "model_id": "ideal_cppll_locked_continuous_m1_v1",
+      "parameter_sha256": "6477b922527f59194d4ecac1adfa0dbcaf2236931cf6f80d4a8ca0d071fdeb67",
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.6,
+        "Kvco_local_Hz_per_V": 32143091.464135423,
+        "UGF_Hz": 217081.29625765546,
+        "BW_Hz": 291984.55966716795,
+        "PM_deg": 72.24644418931796
+      },
+      "units": {
+        "output_frequency_Hz": "Hz",
+        "Vctrl_required_V": "V",
+        "Kvco_local_Hz_per_V": "Hz/V",
+        "UGF_Hz": "Hz",
+        "BW_Hz": "Hz",
+        "PM_deg": "deg"
+      },
+      "protocols": {
+        "output_frequency_Hz": "conditional_locked_tuning_frequency",
+        "Vctrl_required_V": "linear_vco_static_tuning_solution",
+        "Kvco_local_Hz_per_V": "vco_derivative_at_tuning_point",
+        "UGF_Hz": "continuous_L_first_downward_unity_crossing",
+        "BW_Hz": "continuous_normalized_T_first_downward_minus3dB",
+        "PM_deg": "180_plus_continuous_L_phase_at_UGF"
+      },
+      "factors": {
+        "F_FREQ_PLAN": {
+          "f_target_Hz": 80000000,
+          "source": "model/solve_tuning_point.m"
+        },
+        "F_TUNING": {
+          "Vctrl_required_V": 0.6,
+          "Kvco_local_Hz_per_V": 32143091.464135423,
+          "feasible": true,
+          "voltage_margin_V": 0.6,
+          "tuning_frequency_min_Hz": 60714145.121518746,
+          "tuning_frequency_max_Hz": 99285854.87848125,
+          "source": "model/solve_tuning_point.m; model/vco_model.m"
+        },
+        "F_KPFD": {
+          "Kpfd_A_per_rad": 2.3809865367301568e-05,
+          "Iup_A": 0.0001496017962417533,
+          "Idown_A": 0.0001496017962417533,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LF_TF": {
+          "zero_Hz": 34229.209712020944,
+          "poles_rad_per_s": [
+            0,
+            -8817807.16909649
+          ],
+          "nonzero_pole_Hz": 1403397.5981928587,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LOOP": {
+          "UGF_Hz": 217081.29625765546,
+          "BW_Hz": 291984.55966716795,
+          "PM_deg": 72.24644418931796,
+          "characteristic_descending": [
+            2.3248410411883067e-16,
+            2.05e-09,
+            0.002794844982869818,
+            601.0830274747034
+          ],
+          "routh_stable": true,
+          "T_definition": "L/(1+L); normalized reference phase response; H_ref=N*T",
+          "source": "model/pll_linear_kernel.m; characterization/characterize_loop.m"
+        }
+      },
+      "diagnostics": {
+        "scan": {
+          "minimum_Hz": 3.4229209712020947,
+          "maximum_Hz": 1000000000,
+          "points": 8000
+        },
+        "UGF_over_fref": 0.021708129625765547,
+        "BW_over_fref": 0.029198455966716795,
+        "sampling_equivalence": "NOT_ESTABLISHED",
+        "transient_lock": "NOT_EVALUATED",
+        "MATLAB_runtime_calls": 0,
+        "behavioral_TB_calls": 0
+      },
+      "response": [],
+      "scope": "CONDITIONAL_LOCKED_CONTINUOUS_SMALL_SIGNAL_ONLY",
+      "verified_joint_block_spec": false
+    },
+    "elapsed_s": 0.062374599976465106
+  },
+  {
+    "index": 7,
+    "kind": "candidate_generations"
+  },
+  {
+    "index": 8,
+    "kind": "M1_calls",
+    "status": "RETURNED",
+    "input": {
+      "schema_version": "pll-physics-mapping-2.0",
+      "conventions": {
+        "vco_f0": "frequency_at_zero_volts",
+        "phase_error": "reference_minus_feedback_rad",
+        "lf_topology": "C1_shunt_Rz_series_C2",
+        "cp_leakage": "positive_injected_into_lf"
+      },
+      "values": {
+        "f_ref": {
+          "value": 10000000,
+          "unit": "Hz"
+        },
+        "N": {
+          "value": 8,
+          "unit": "1"
+        },
+        "Icp": {
+          "value": 0.00015262405475168772,
+          "unit": "A"
+        },
+        "Rz": {
+          "value": 2324.8410411883065,
+          "unit": "Ohm"
+        },
+        "C1": {
+          "value": 5e-11,
+          "unit": "F"
+        },
+        "C2": {
+          "value": 2e-09,
+          "unit": "F"
+        },
+        "f0": {
+          "value": 60714145.121518746,
+          "unit": "Hz"
+        },
+        "Kvco": {
+          "value": 32143091.464135423,
+          "unit": "Hz/V"
+        },
+        "Vctrl_min": {
+          "value": 0,
+          "unit": "V"
+        },
+        "Vctrl_max": {
+          "value": 1.2,
+          "unit": "V"
+        },
+        "Kvco2": {
+          "value": 0,
+          "unit": "Hz/V^2"
+        },
+        "CP_mismatch": {
+          "value": 0,
+          "unit": "1"
+        },
+        "CP_leakage": {
+          "value": 0,
+          "unit": "A"
+        },
+        "q0": {
+          "value": 0,
+          "unit": "C"
+        },
+        "PFD_reset_delay": {
+          "value": 0,
+          "unit": "s"
+        },
+        "Cload": {
+          "value": 0,
+          "unit": "F"
+        },
+        "Gload": {
+          "value": 0,
+          "unit": "S"
+        }
+      }
+    },
+    "output": {
+      "status": "OK",
+      "reason": "",
+      "model_level": "M1",
+      "model_id": "ideal_cppll_locked_continuous_m1_v1",
+      "parameter_sha256": "e665f03a8723e7a510127285cf3582ffb29b9faf8f0c928d3abb0f1dc342ede2",
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.6,
+        "Kvco_local_Hz_per_V": 32143091.464135423,
+        "UGF_Hz": 221265.51749316862,
+        "BW_Hz": 298022.7359740257,
+        "PM_deg": 72.24645935052742
+      },
+      "units": {
+        "output_frequency_Hz": "Hz",
+        "Vctrl_required_V": "V",
+        "Kvco_local_Hz_per_V": "Hz/V",
+        "UGF_Hz": "Hz",
+        "BW_Hz": "Hz",
+        "PM_deg": "deg"
+      },
+      "protocols": {
+        "output_frequency_Hz": "conditional_locked_tuning_frequency",
+        "Vctrl_required_V": "linear_vco_static_tuning_solution",
+        "Kvco_local_Hz_per_V": "vco_derivative_at_tuning_point",
+        "UGF_Hz": "continuous_L_first_downward_unity_crossing",
+        "BW_Hz": "continuous_normalized_T_first_downward_minus3dB",
+        "PM_deg": "180_plus_continuous_L_phase_at_UGF"
+      },
+      "factors": {
+        "F_FREQ_PLAN": {
+          "f_target_Hz": 80000000,
+          "source": "model/solve_tuning_point.m"
+        },
+        "F_TUNING": {
+          "Vctrl_required_V": 0.6,
+          "Kvco_local_Hz_per_V": 32143091.464135423,
+          "feasible": true,
+          "voltage_margin_V": 0.6,
+          "tuning_frequency_min_Hz": 60714145.121518746,
+          "tuning_frequency_max_Hz": 99285854.87848125,
+          "source": "model/solve_tuning_point.m; model/vco_model.m"
+        },
+        "F_KPFD": {
+          "Kpfd_A_per_rad": 2.4290872748459178e-05,
+          "Iup_A": 0.00015262405475168772,
+          "Idown_A": 0.00015262405475168772,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LF_TF": {
+          "zero_Hz": 34229.209712020944,
+          "poles_rad_per_s": [
+            0,
+            -8817807.16909649
+          ],
+          "nonzero_pole_Hz": 1403397.5981928587,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LOOP": {
+          "UGF_Hz": 221265.51749316862,
+          "BW_Hz": 298022.7359740257,
+          "PM_deg": 72.24645935052742,
+          "characteristic_descending": [
+            2.3248410411883067e-16,
+            2.05e-09,
+            0.002851306497675269,
+            613.2261189388389
+          ],
+          "routh_stable": true,
+          "T_definition": "L/(1+L); normalized reference phase response; H_ref=N*T",
+          "source": "model/pll_linear_kernel.m; characterization/characterize_loop.m"
+        }
+      },
+      "diagnostics": {
+        "scan": {
+          "minimum_Hz": 3.4229209712020947,
+          "maximum_Hz": 1000000000,
+          "points": 8000
+        },
+        "UGF_over_fref": 0.022126551749316863,
+        "BW_over_fref": 0.02980227359740257,
+        "sampling_equivalence": "NOT_ESTABLISHED",
+        "transient_lock": "NOT_EVALUATED",
+        "MATLAB_runtime_calls": 0,
+        "behavioral_TB_calls": 0
+      },
+      "response": [],
+      "scope": "CONDITIONAL_LOCKED_CONTINUOUS_SMALL_SIGNAL_ONLY",
+      "verified_joint_block_spec": false
+    },
+    "elapsed_s": 0.061567500000819564
+  },
+  {
+    "index": 9,
+    "kind": "candidate_generations"
+  },
+  {
+    "index": 10,
+    "kind": "M1_calls",
+    "status": "RETURNED",
+    "input": {
+      "schema_version": "pll-physics-mapping-2.0",
+      "conventions": {
+        "vco_f0": "frequency_at_zero_volts",
+        "phase_error": "reference_minus_feedback_rad",
+        "lf_topology": "C1_shunt_Rz_series_C2",
+        "cp_leakage": "positive_injected_into_lf"
+      },
+      "values": {
+        "f_ref": {
+          "value": 10000000,
+          "unit": "Hz"
+        },
+        "N": {
+          "value": 8,
+          "unit": "1"
+        },
+        "Icp": {
+          "value": 0.0001511129254967205,
+          "unit": "A"
+        },
+        "Rz": {
+          "value": 2301.5926307764234,
+          "unit": "Ohm"
+        },
+        "C1": {
+          "value": 5e-11,
+          "unit": "F"
+        },
+        "C2": {
+          "value": 2e-09,
+          "unit": "F"
+        },
+        "f0": {
+          "value": 60714145.121518746,
+          "unit": "Hz"
+        },
+        "Kvco": {
+          "value": 32143091.464135423,
+          "unit": "Hz/V"
+        },
+        "Vctrl_min": {
+          "value": 0,
+          "unit": "V"
+        },
+        "Vctrl_max": {
+          "value": 1.2,
+          "unit": "V"
+        },
+        "Kvco2": {
+          "value": 0,
+          "unit": "Hz/V^2"
+        },
+        "CP_mismatch": {
+          "value": 0,
+          "unit": "1"
+        },
+        "CP_leakage": {
+          "value": 0,
+          "unit": "A"
+        },
+        "q0": {
+          "value": 0,
+          "unit": "C"
+        },
+        "PFD_reset_delay": {
+          "value": 0,
+          "unit": "s"
+        },
+        "Cload": {
+          "value": 0,
+          "unit": "F"
+        },
+        "Gload": {
+          "value": 0,
+          "unit": "S"
+        }
+      }
+    },
+    "output": {
+      "status": "OK",
+      "reason": "",
+      "model_level": "M1",
+      "model_id": "ideal_cppll_locked_continuous_m1_v1",
+      "parameter_sha256": "175e259e664c845cea7dd2bc985129686834a82f9006bdd790ff5afe858e53fb",
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.6,
+        "Kvco_local_Hz_per_V": 32143091.464135423,
+        "UGF_Hz": 217180.5267278669,
+        "BW_Hz": 291925.74430813274,
+        "PM_deg": 72.24414725960601
+      },
+      "units": {
+        "output_frequency_Hz": "Hz",
+        "Vctrl_required_V": "V",
+        "Kvco_local_Hz_per_V": "Hz/V",
+        "UGF_Hz": "Hz",
+        "BW_Hz": "Hz",
+        "PM_deg": "deg"
+      },
+      "protocols": {
+        "output_frequency_Hz": "conditional_locked_tuning_frequency",
+        "Vctrl_required_V": "linear_vco_static_tuning_solution",
+        "Kvco_local_Hz_per_V": "vco_derivative_at_tuning_point",
+        "UGF_Hz": "continuous_L_first_downward_unity_crossing",
+        "BW_Hz": "continuous_normalized_T_first_downward_minus3dB",
+        "PM_deg": "180_plus_continuous_L_phase_at_UGF"
+      },
+      "factors": {
+        "F_FREQ_PLAN": {
+          "f_target_Hz": 80000000,
+          "source": "model/solve_tuning_point.m"
+        },
+        "F_TUNING": {
+          "Vctrl_required_V": 0.6,
+          "Kvco_local_Hz_per_V": 32143091.464135423,
+          "feasible": true,
+          "voltage_margin_V": 0.6,
+          "tuning_frequency_min_Hz": 60714145.121518746,
+          "tuning_frequency_max_Hz": 99285854.87848125,
+          "source": "model/solve_tuning_point.m; model/vco_model.m"
+        },
+        "F_KPFD": {
+          "Kpfd_A_per_rad": 2.405036905788037e-05,
+          "Iup_A": 0.0001511129254967205,
+          "Idown_A": 0.0001511129254967205,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LF_TF": {
+          "zero_Hz": 34574.959305071665,
+          "poles_rad_per_s": [
+            0,
+            -8906875.928380294
+          ],
+          "nonzero_pole_Hz": 1417573.3315079382,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LOOP": {
+          "UGF_Hz": 217180.5267278669,
+          "BW_Hz": 291925.74430813274,
+          "PM_deg": 72.24414725960601,
+          "characteristic_descending": [
+            2.3015926307764237e-16,
+            2.05e-09,
+            0.002794844982869818,
+            607.1545732067711
+          ],
+          "routh_stable": true,
+          "T_definition": "L/(1+L); normalized reference phase response; H_ref=N*T",
+          "source": "model/pll_linear_kernel.m; characterization/characterize_loop.m"
+        }
+      },
+      "diagnostics": {
+        "scan": {
+          "minimum_Hz": 3.4574959305071666,
+          "maximum_Hz": 1000000000,
+          "points": 8000
+        },
+        "UGF_over_fref": 0.02171805267278669,
+        "BW_over_fref": 0.029192574430813273,
+        "sampling_equivalence": "NOT_ESTABLISHED",
+        "transient_lock": "NOT_EVALUATED",
+        "MATLAB_runtime_calls": 0,
+        "behavioral_TB_calls": 0
+      },
+      "response": [],
+      "scope": "CONDITIONAL_LOCKED_CONTINUOUS_SMALL_SIGNAL_ONLY",
+      "verified_joint_block_spec": false
+    },
+    "elapsed_s": 0.04813900007866323
+  },
+  {
+    "index": 11,
+    "kind": "candidate_generations"
+  },
+  {
+    "index": 12,
+    "kind": "M1_calls",
+    "status": "RETURNED",
+    "input": {
+      "schema_version": "pll-physics-mapping-2.0",
+      "conventions": {
+        "vco_f0": "frequency_at_zero_volts",
+        "phase_error": "reference_minus_feedback_rad",
+        "lf_topology": "C1_shunt_Rz_series_C2",
+        "cp_leakage": "positive_injected_into_lf"
+      },
+      "values": {
+        "f_ref": {
+          "value": 10000000,
+          "unit": "Hz"
+        },
+        "N": {
+          "value": 8,
+          "unit": "1"
+        },
+        "Icp": {
+          "value": 0.0001511129254967205,
+          "unit": "A"
+        },
+        "Rz": {
+          "value": 2348.0894516001895,
+          "unit": "Ohm"
+        },
+        "C1": {
+          "value": 5e-11,
+          "unit": "F"
+        },
+        "C2": {
+          "value": 2e-09,
+          "unit": "F"
+        },
+        "f0": {
+          "value": 60714145.121518746,
+          "unit": "Hz"
+        },
+        "Kvco": {
+          "value": 32143091.464135423,
+          "unit": "Hz/V"
+        },
+        "Vctrl_min": {
+          "value": 0,
+          "unit": "V"
+        },
+        "Vctrl_max": {
+          "value": 1.2,
+          "unit": "V"
+        },
+        "Kvco2": {
+          "value": 0,
+          "unit": "Hz/V^2"
+        },
+        "CP_mismatch": {
+          "value": 0,
+          "unit": "1"
+        },
+        "CP_leakage": {
+          "value": 0,
+          "unit": "A"
+        },
+        "q0": {
+          "value": 0,
+          "unit": "C"
+        },
+        "PFD_reset_delay": {
+          "value": 0,
+          "unit": "s"
+        },
+        "Cload": {
+          "value": 0,
+          "unit": "F"
+        },
+        "Gload": {
+          "value": 0,
+          "unit": "S"
+        }
+      }
+    },
+    "output": {
+      "status": "OK",
+      "reason": "",
+      "model_level": "M1",
+      "model_id": "ideal_cppll_locked_continuous_m1_v1",
+      "parameter_sha256": "010da13fbb026fd0ecb9c45e40c9baed1d048950a1425ef0420d1e094e54a349",
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.6,
+        "Kvco_local_Hz_per_V": 32143091.464135423,
+        "UGF_Hz": 221165.4270614504,
+        "BW_Hz": 298102.0551083866,
+        "PM_deg": 72.24420790379658
+      },
+      "units": {
+        "output_frequency_Hz": "Hz",
+        "Vctrl_required_V": "V",
+        "Kvco_local_Hz_per_V": "Hz/V",
+        "UGF_Hz": "Hz",
+        "BW_Hz": "Hz",
+        "PM_deg": "deg"
+      },
+      "protocols": {
+        "output_frequency_Hz": "conditional_locked_tuning_frequency",
+        "Vctrl_required_V": "linear_vco_static_tuning_solution",
+        "Kvco_local_Hz_per_V": "vco_derivative_at_tuning_point",
+        "UGF_Hz": "continuous_L_first_downward_unity_crossing",
+        "BW_Hz": "continuous_normalized_T_first_downward_minus3dB",
+        "PM_deg": "180_plus_continuous_L_phase_at_UGF"
+      },
+      "factors": {
+        "F_FREQ_PLAN": {
+          "f_target_Hz": 80000000,
+          "source": "model/solve_tuning_point.m"
+        },
+        "F_TUNING": {
+          "Vctrl_required_V": 0.6,
+          "Kvco_local_Hz_per_V": 32143091.464135423,
+          "feasible": true,
+          "voltage_margin_V": 0.6,
+          "tuning_frequency_min_Hz": 60714145.121518746,
+          "tuning_frequency_max_Hz": 99285854.87848125,
+          "source": "model/solve_tuning_point.m; model/vco_model.m"
+        },
+        "F_KPFD": {
+          "Kpfd_A_per_rad": 2.405036905788037e-05,
+          "Iup_A": 0.0001511129254967205,
+          "Idown_A": 0.0001511129254967205,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LF_TF": {
+          "zero_Hz": 33890.306645565295,
+          "poles_rad_per_s": [
+            0,
+            -8730502.147620289
+          ],
+          "nonzero_pole_Hz": 1389502.5724681772,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LOOP": {
+          "UGF_Hz": 221165.4270614504,
+          "BW_Hz": 298102.0551083866,
+          "PM_deg": 72.24420790379658,
+          "characteristic_descending": [
+            2.3480894516001896e-16,
+            2.05e-09,
+            0.002851306497675269,
+            607.1545732067711
+          ],
+          "routh_stable": true,
+          "T_definition": "L/(1+L); normalized reference phase response; H_ref=N*T",
+          "source": "model/pll_linear_kernel.m; characterization/characterize_loop.m"
+        }
+      },
+      "diagnostics": {
+        "scan": {
+          "minimum_Hz": 3.38903066455653,
+          "maximum_Hz": 1000000000,
+          "points": 8000
+        },
+        "UGF_over_fref": 0.02211654270614504,
+        "BW_over_fref": 0.029810205510838662,
+        "sampling_equivalence": "NOT_ESTABLISHED",
+        "transient_lock": "NOT_EVALUATED",
+        "MATLAB_runtime_calls": 0,
+        "behavioral_TB_calls": 0
+      },
+      "response": [],
+      "scope": "CONDITIONAL_LOCKED_CONTINUOUS_SMALL_SIGNAL_ONLY",
+      "verified_joint_block_spec": false
+    },
+    "elapsed_s": 0.04934809997212142
+  },
+  {
+    "index": 13,
+    "kind": "candidate_generations"
+  },
+  {
+    "index": 14,
+    "kind": "M1_calls",
+    "status": "RETURNED",
+    "input": {
+      "schema_version": "pll-physics-mapping-2.0",
+      "conventions": {
+        "vco_f0": "frequency_at_zero_volts",
+        "phase_error": "reference_minus_feedback_rad",
+        "lf_topology": "C1_shunt_Rz_series_C2",
+        "cp_leakage": "positive_injected_into_lf"
+      },
+      "values": {
+        "f_ref": {
+          "value": 10000000,
+          "unit": "Hz"
+        },
+        "N": {
+          "value": 8,
+          "unit": "1"
+        },
+        "Icp": {
+          "value": 0.0001511129254967205,
+          "unit": "A"
+        },
+        "Rz": {
+          "value": 2324.8410411883065,
+          "unit": "Ohm"
+        },
+        "C1": {
+          "value": 5e-11,
+          "unit": "F"
+        },
+        "C2": {
+          "value": 2e-09,
+          "unit": "F"
+        },
+        "f0": {
+          "value": 60107003.67030356,
+          "unit": "Hz"
+        },
+        "Kvco": {
+          "value": 32143091.464135423,
+          "unit": "Hz/V"
+        },
+        "Vctrl_min": {
+          "value": 0,
+          "unit": "V"
+        },
+        "Vctrl_max": {
+          "value": 1.2,
+          "unit": "V"
+        },
+        "Kvco2": {
+          "value": 0,
+          "unit": "Hz/V^2"
+        },
+        "CP_mismatch": {
+          "value": 0,
+          "unit": "1"
+        },
+        "CP_leakage": {
+          "value": 0,
+          "unit": "A"
+        },
+        "q0": {
+          "value": 0,
+          "unit": "C"
+        },
+        "PFD_reset_delay": {
+          "value": 0,
+          "unit": "s"
+        },
+        "Cload": {
+          "value": 0,
+          "unit": "F"
+        },
+        "Gload": {
+          "value": 0,
+          "unit": "S"
+        }
+      }
+    },
+    "output": {
+      "status": "OK",
+      "reason": "",
+      "model_level": "M1",
+      "model_id": "ideal_cppll_locked_continuous_m1_v1",
+      "parameter_sha256": "4a875f775d54a20db0495ad3e66f433d5950bba0546c68b0016cec6ec4568bd3",
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.6188887074503279,
+        "Kvco_local_Hz_per_V": 32143091.464135423,
+        "UGF_Hz": 219173.8823354356,
+        "BW_Hz": 295000.0000002603,
+        "PM_deg": 72.24720983805331
+      },
+      "units": {
+        "output_frequency_Hz": "Hz",
+        "Vctrl_required_V": "V",
+        "Kvco_local_Hz_per_V": "Hz/V",
+        "UGF_Hz": "Hz",
+        "BW_Hz": "Hz",
+        "PM_deg": "deg"
+      },
+      "protocols": {
+        "output_frequency_Hz": "conditional_locked_tuning_frequency",
+        "Vctrl_required_V": "linear_vco_static_tuning_solution",
+        "Kvco_local_Hz_per_V": "vco_derivative_at_tuning_point",
+        "UGF_Hz": "continuous_L_first_downward_unity_crossing",
+        "BW_Hz": "continuous_normalized_T_first_downward_minus3dB",
+        "PM_deg": "180_plus_continuous_L_phase_at_UGF"
+      },
+      "factors": {
+        "F_FREQ_PLAN": {
+          "f_target_Hz": 80000000,
+          "source": "model/solve_tuning_point.m"
+        },
+        "F_TUNING": {
+          "Vctrl_required_V": 0.6188887074503279,
+          "Kvco_local_Hz_per_V": 32143091.464135423,
+          "feasible": true,
+          "voltage_margin_V": 0.5811112925496721,
+          "tuning_frequency_min_Hz": 60107003.67030356,
+          "tuning_frequency_max_Hz": 98678713.42726606,
+          "source": "model/solve_tuning_point.m; model/vco_model.m"
+        },
+        "F_KPFD": {
+          "Kpfd_A_per_rad": 2.405036905788037e-05,
+          "Iup_A": 0.0001511129254967205,
+          "Idown_A": 0.0001511129254967205,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LF_TF": {
+          "zero_Hz": 34229.209712020944,
+          "poles_rad_per_s": [
+            0,
+            -8817807.16909649
+          ],
+          "nonzero_pole_Hz": 1403397.5981928587,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LOOP": {
+          "UGF_Hz": 219173.8823354356,
+          "BW_Hz": 295000.0000002603,
+          "PM_deg": 72.24720983805331,
+          "characteristic_descending": [
+            2.3248410411883067e-16,
+            2.05e-09,
+            0.0028230757402725438,
+            607.1545732067711
+          ],
+          "routh_stable": true,
+          "T_definition": "L/(1+L); normalized reference phase response; H_ref=N*T",
+          "source": "model/pll_linear_kernel.m; characterization/characterize_loop.m"
+        }
+      },
+      "diagnostics": {
+        "scan": {
+          "minimum_Hz": 3.4229209712020947,
+          "maximum_Hz": 1000000000,
+          "points": 8000
+        },
+        "UGF_over_fref": 0.02191738823354356,
+        "BW_over_fref": 0.02950000000002603,
+        "sampling_equivalence": "NOT_ESTABLISHED",
+        "transient_lock": "NOT_EVALUATED",
+        "MATLAB_runtime_calls": 0,
+        "behavioral_TB_calls": 0
+      },
+      "response": [],
+      "scope": "CONDITIONAL_LOCKED_CONTINUOUS_SMALL_SIGNAL_ONLY",
+      "verified_joint_block_spec": false
+    },
+    "elapsed_s": 0.0501450999872759
+  },
+  {
+    "index": 15,
+    "kind": "candidate_generations"
+  },
+  {
+    "index": 16,
+    "kind": "M1_calls",
+    "status": "RETURNED",
+    "input": {
+      "schema_version": "pll-physics-mapping-2.0",
+      "conventions": {
+        "vco_f0": "frequency_at_zero_volts",
+        "phase_error": "reference_minus_feedback_rad",
+        "lf_topology": "C1_shunt_Rz_series_C2",
+        "cp_leakage": "positive_injected_into_lf"
+      },
+      "values": {
+        "f_ref": {
+          "value": 10000000,
+          "unit": "Hz"
+        },
+        "N": {
+          "value": 8,
+          "unit": "1"
+        },
+        "Icp": {
+          "value": 0.0001511129254967205,
+          "unit": "A"
+        },
+        "Rz": {
+          "value": 2324.8410411883065,
+          "unit": "Ohm"
+        },
+        "C1": {
+          "value": 5e-11,
+          "unit": "F"
+        },
+        "C2": {
+          "value": 2e-09,
+          "unit": "F"
+        },
+        "f0": {
+          "value": 61321286.57273393,
+          "unit": "Hz"
+        },
+        "Kvco": {
+          "value": 32143091.464135423,
+          "unit": "Hz/V"
+        },
+        "Vctrl_min": {
+          "value": 0,
+          "unit": "V"
+        },
+        "Vctrl_max": {
+          "value": 1.2,
+          "unit": "V"
+        },
+        "Kvco2": {
+          "value": 0,
+          "unit": "Hz/V^2"
+        },
+        "CP_mismatch": {
+          "value": 0,
+          "unit": "1"
+        },
+        "CP_leakage": {
+          "value": 0,
+          "unit": "A"
+        },
+        "q0": {
+          "value": 0,
+          "unit": "C"
+        },
+        "PFD_reset_delay": {
+          "value": 0,
+          "unit": "s"
+        },
+        "Cload": {
+          "value": 0,
+          "unit": "F"
+        },
+        "Gload": {
+          "value": 0,
+          "unit": "S"
+        }
+      }
+    },
+    "output": {
+      "status": "OK",
+      "reason": "",
+      "model_level": "M1",
+      "model_id": "ideal_cppll_locked_continuous_m1_v1",
+      "parameter_sha256": "8a78afe8b3d125efd3cb7e10b81b00106b9caea3c7a84ebc3e5db3bb8356843b",
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.5811112925496721,
+        "Kvco_local_Hz_per_V": 32143091.464135423,
+        "UGF_Hz": 219173.8823354356,
+        "BW_Hz": 295000.0000002603,
+        "PM_deg": 72.24720983805331
+      },
+      "units": {
+        "output_frequency_Hz": "Hz",
+        "Vctrl_required_V": "V",
+        "Kvco_local_Hz_per_V": "Hz/V",
+        "UGF_Hz": "Hz",
+        "BW_Hz": "Hz",
+        "PM_deg": "deg"
+      },
+      "protocols": {
+        "output_frequency_Hz": "conditional_locked_tuning_frequency",
+        "Vctrl_required_V": "linear_vco_static_tuning_solution",
+        "Kvco_local_Hz_per_V": "vco_derivative_at_tuning_point",
+        "UGF_Hz": "continuous_L_first_downward_unity_crossing",
+        "BW_Hz": "continuous_normalized_T_first_downward_minus3dB",
+        "PM_deg": "180_plus_continuous_L_phase_at_UGF"
+      },
+      "factors": {
+        "F_FREQ_PLAN": {
+          "f_target_Hz": 80000000,
+          "source": "model/solve_tuning_point.m"
+        },
+        "F_TUNING": {
+          "Vctrl_required_V": 0.5811112925496721,
+          "Kvco_local_Hz_per_V": 32143091.464135423,
+          "feasible": true,
+          "voltage_margin_V": 0.5811112925496721,
+          "tuning_frequency_min_Hz": 61321286.57273393,
+          "tuning_frequency_max_Hz": 99892996.32969645,
+          "source": "model/solve_tuning_point.m; model/vco_model.m"
+        },
+        "F_KPFD": {
+          "Kpfd_A_per_rad": 2.405036905788037e-05,
+          "Iup_A": 0.0001511129254967205,
+          "Idown_A": 0.0001511129254967205,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LF_TF": {
+          "zero_Hz": 34229.209712020944,
+          "poles_rad_per_s": [
+            0,
+            -8817807.16909649
+          ],
+          "nonzero_pole_Hz": 1403397.5981928587,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LOOP": {
+          "UGF_Hz": 219173.8823354356,
+          "BW_Hz": 295000.0000002603,
+          "PM_deg": 72.24720983805331,
+          "characteristic_descending": [
+            2.3248410411883067e-16,
+            2.05e-09,
+            0.0028230757402725438,
+            607.1545732067711
+          ],
+          "routh_stable": true,
+          "T_definition": "L/(1+L); normalized reference phase response; H_ref=N*T",
+          "source": "model/pll_linear_kernel.m; characterization/characterize_loop.m"
+        }
+      },
+      "diagnostics": {
+        "scan": {
+          "minimum_Hz": 3.4229209712020947,
+          "maximum_Hz": 1000000000,
+          "points": 8000
+        },
+        "UGF_over_fref": 0.02191738823354356,
+        "BW_over_fref": 0.02950000000002603,
+        "sampling_equivalence": "NOT_ESTABLISHED",
+        "transient_lock": "NOT_EVALUATED",
+        "MATLAB_runtime_calls": 0,
+        "behavioral_TB_calls": 0
+      },
+      "response": [],
+      "scope": "CONDITIONAL_LOCKED_CONTINUOUS_SMALL_SIGNAL_ONLY",
+      "verified_joint_block_spec": false
+    },
+    "elapsed_s": 0.05132009997032583
+  },
+  {
+    "index": 17,
+    "kind": "candidate_generations"
+  },
+  {
+    "index": 18,
+    "kind": "M1_calls",
+    "status": "RETURNED",
+    "input": {
+      "schema_version": "pll-physics-mapping-2.0",
+      "conventions": {
+        "vco_f0": "frequency_at_zero_volts",
+        "phase_error": "reference_minus_feedback_rad",
+        "lf_topology": "C1_shunt_Rz_series_C2",
+        "cp_leakage": "positive_injected_into_lf"
+      },
+      "values": {
+        "f_ref": {
+          "value": 10000000,
+          "unit": "Hz"
+        },
+        "N": {
+          "value": 8,
+          "unit": "1"
+        },
+        "Icp": {
+          "value": 0.0001511129254967205,
+          "unit": "A"
+        },
+        "Rz": {
+          "value": 2324.8410411883065,
+          "unit": "Ohm"
+        },
+        "C1": {
+          "value": 5e-11,
+          "unit": "F"
+        },
+        "C2": {
+          "value": 2e-09,
+          "unit": "F"
+        },
+        "f0": {
+          "value": 60714145.121518746,
+          "unit": "Hz"
+        },
+        "Kvco": {
+          "value": 31821660.54949407,
+          "unit": "Hz/V"
+        },
+        "Vctrl_min": {
+          "value": 0,
+          "unit": "V"
+        },
+        "Vctrl_max": {
+          "value": 1.2,
+          "unit": "V"
+        },
+        "Kvco2": {
+          "value": 0,
+          "unit": "Hz/V^2"
+        },
+        "CP_mismatch": {
+          "value": 0,
+          "unit": "1"
+        },
+        "CP_leakage": {
+          "value": 0,
+          "unit": "A"
+        },
+        "q0": {
+          "value": 0,
+          "unit": "C"
+        },
+        "PFD_reset_delay": {
+          "value": 0,
+          "unit": "s"
+        },
+        "Cload": {
+          "value": 0,
+          "unit": "F"
+        },
+        "Gload": {
+          "value": 0,
+          "unit": "S"
+        }
+      }
+    },
+    "output": {
+      "status": "OK",
+      "reason": "",
+      "model_level": "M1",
+      "model_id": "ideal_cppll_locked_continuous_m1_v1",
+      "parameter_sha256": "7c99544a9025fc7f2faac85d129c502a9cbc630dddc6c2df4909378d9e8c3d83",
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.6060606060606061,
+        "Kvco_local_Hz_per_V": 31821660.54949407,
+        "UGF_Hz": 217081.29625765546,
+        "BW_Hz": 291984.55966716795,
+        "PM_deg": 72.24644418931796
+      },
+      "units": {
+        "output_frequency_Hz": "Hz",
+        "Vctrl_required_V": "V",
+        "Kvco_local_Hz_per_V": "Hz/V",
+        "UGF_Hz": "Hz",
+        "BW_Hz": "Hz",
+        "PM_deg": "deg"
+      },
+      "protocols": {
+        "output_frequency_Hz": "conditional_locked_tuning_frequency",
+        "Vctrl_required_V": "linear_vco_static_tuning_solution",
+        "Kvco_local_Hz_per_V": "vco_derivative_at_tuning_point",
+        "UGF_Hz": "continuous_L_first_downward_unity_crossing",
+        "BW_Hz": "continuous_normalized_T_first_downward_minus3dB",
+        "PM_deg": "180_plus_continuous_L_phase_at_UGF"
+      },
+      "factors": {
+        "F_FREQ_PLAN": {
+          "f_target_Hz": 80000000,
+          "source": "model/solve_tuning_point.m"
+        },
+        "F_TUNING": {
+          "Vctrl_required_V": 0.6060606060606061,
+          "Kvco_local_Hz_per_V": 31821660.54949407,
+          "feasible": true,
+          "voltage_margin_V": 0.5939393939393939,
+          "tuning_frequency_min_Hz": 60714145.121518746,
+          "tuning_frequency_max_Hz": 98900137.78091162,
+          "source": "model/solve_tuning_point.m; model/vco_model.m"
+        },
+        "F_KPFD": {
+          "Kpfd_A_per_rad": 2.405036905788037e-05,
+          "Iup_A": 0.0001511129254967205,
+          "Idown_A": 0.0001511129254967205,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LF_TF": {
+          "zero_Hz": 34229.209712020944,
+          "poles_rad_per_s": [
+            0,
+            -8817807.16909649
+          ],
+          "nonzero_pole_Hz": 1403397.5981928587,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LOOP": {
+          "UGF_Hz": 217081.29625765546,
+          "BW_Hz": 291984.55966716795,
+          "PM_deg": 72.24644418931796,
+          "characteristic_descending": [
+            2.3248410411883067e-16,
+            2.05e-09,
+            0.002794844982869818,
+            601.0830274747034
+          ],
+          "routh_stable": true,
+          "T_definition": "L/(1+L); normalized reference phase response; H_ref=N*T",
+          "source": "model/pll_linear_kernel.m; characterization/characterize_loop.m"
+        }
+      },
+      "diagnostics": {
+        "scan": {
+          "minimum_Hz": 3.4229209712020947,
+          "maximum_Hz": 1000000000,
+          "points": 8000
+        },
+        "UGF_over_fref": 0.021708129625765547,
+        "BW_over_fref": 0.029198455966716795,
+        "sampling_equivalence": "NOT_ESTABLISHED",
+        "transient_lock": "NOT_EVALUATED",
+        "MATLAB_runtime_calls": 0,
+        "behavioral_TB_calls": 0
+      },
+      "response": [],
+      "scope": "CONDITIONAL_LOCKED_CONTINUOUS_SMALL_SIGNAL_ONLY",
+      "verified_joint_block_spec": false
+    },
+    "elapsed_s": 0.05614400003105402
+  },
+  {
+    "index": 19,
+    "kind": "candidate_generations"
+  },
+  {
+    "index": 20,
+    "kind": "M1_calls",
+    "status": "RETURNED",
+    "input": {
+      "schema_version": "pll-physics-mapping-2.0",
+      "conventions": {
+        "vco_f0": "frequency_at_zero_volts",
+        "phase_error": "reference_minus_feedback_rad",
+        "lf_topology": "C1_shunt_Rz_series_C2",
+        "cp_leakage": "positive_injected_into_lf"
+      },
+      "values": {
+        "f_ref": {
+          "value": 10000000,
+          "unit": "Hz"
+        },
+        "N": {
+          "value": 8,
+          "unit": "1"
+        },
+        "Icp": {
+          "value": 0.0001511129254967205,
+          "unit": "A"
+        },
+        "Rz": {
+          "value": 2324.8410411883065,
+          "unit": "Ohm"
+        },
+        "C1": {
+          "value": 5e-11,
+          "unit": "F"
+        },
+        "C2": {
+          "value": 2e-09,
+          "unit": "F"
+        },
+        "f0": {
+          "value": 60714145.121518746,
+          "unit": "Hz"
+        },
+        "Kvco": {
+          "value": 32464522.378776778,
+          "unit": "Hz/V"
+        },
+        "Vctrl_min": {
+          "value": 0,
+          "unit": "V"
+        },
+        "Vctrl_max": {
+          "value": 1.2,
+          "unit": "V"
+        },
+        "Kvco2": {
+          "value": 0,
+          "unit": "Hz/V^2"
+        },
+        "CP_mismatch": {
+          "value": 0,
+          "unit": "1"
+        },
+        "CP_leakage": {
+          "value": 0,
+          "unit": "A"
+        },
+        "q0": {
+          "value": 0,
+          "unit": "C"
+        },
+        "PFD_reset_delay": {
+          "value": 0,
+          "unit": "s"
+        },
+        "Cload": {
+          "value": 0,
+          "unit": "F"
+        },
+        "Gload": {
+          "value": 0,
+          "unit": "S"
+        }
+      }
+    },
+    "output": {
+      "status": "OK",
+      "reason": "",
+      "model_level": "M1",
+      "model_id": "ideal_cppll_locked_continuous_m1_v1",
+      "parameter_sha256": "4b893dafc275a960b7978249046700c5f3ef93985de17f23e51defa184f52ccb",
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.594059405940594,
+        "Kvco_local_Hz_per_V": 32464522.378776778,
+        "UGF_Hz": 221265.51749316862,
+        "BW_Hz": 298022.7359740257,
+        "PM_deg": 72.24645935052742
+      },
+      "units": {
+        "output_frequency_Hz": "Hz",
+        "Vctrl_required_V": "V",
+        "Kvco_local_Hz_per_V": "Hz/V",
+        "UGF_Hz": "Hz",
+        "BW_Hz": "Hz",
+        "PM_deg": "deg"
+      },
+      "protocols": {
+        "output_frequency_Hz": "conditional_locked_tuning_frequency",
+        "Vctrl_required_V": "linear_vco_static_tuning_solution",
+        "Kvco_local_Hz_per_V": "vco_derivative_at_tuning_point",
+        "UGF_Hz": "continuous_L_first_downward_unity_crossing",
+        "BW_Hz": "continuous_normalized_T_first_downward_minus3dB",
+        "PM_deg": "180_plus_continuous_L_phase_at_UGF"
+      },
+      "factors": {
+        "F_FREQ_PLAN": {
+          "f_target_Hz": 80000000,
+          "source": "model/solve_tuning_point.m"
+        },
+        "F_TUNING": {
+          "Vctrl_required_V": 0.594059405940594,
+          "Kvco_local_Hz_per_V": 32464522.378776778,
+          "feasible": true,
+          "voltage_margin_V": 0.594059405940594,
+          "tuning_frequency_min_Hz": 60714145.121518746,
+          "tuning_frequency_max_Hz": 99671571.97605088,
+          "source": "model/solve_tuning_point.m; model/vco_model.m"
+        },
+        "F_KPFD": {
+          "Kpfd_A_per_rad": 2.405036905788037e-05,
+          "Iup_A": 0.0001511129254967205,
+          "Idown_A": 0.0001511129254967205,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LF_TF": {
+          "zero_Hz": 34229.209712020944,
+          "poles_rad_per_s": [
+            0,
+            -8817807.16909649
+          ],
+          "nonzero_pole_Hz": 1403397.5981928587,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LOOP": {
+          "UGF_Hz": 221265.51749316862,
+          "BW_Hz": 298022.7359740257,
+          "PM_deg": 72.24645935052742,
+          "characteristic_descending": [
+            2.3248410411883067e-16,
+            2.05e-09,
+            0.0028513064976752687,
+            613.2261189388388
+          ],
+          "routh_stable": true,
+          "T_definition": "L/(1+L); normalized reference phase response; H_ref=N*T",
+          "source": "model/pll_linear_kernel.m; characterization/characterize_loop.m"
+        }
+      },
+      "diagnostics": {
+        "scan": {
+          "minimum_Hz": 3.4229209712020947,
+          "maximum_Hz": 1000000000,
+          "points": 8000
+        },
+        "UGF_over_fref": 0.022126551749316863,
+        "BW_over_fref": 0.02980227359740257,
+        "sampling_equivalence": "NOT_ESTABLISHED",
+        "transient_lock": "NOT_EVALUATED",
+        "MATLAB_runtime_calls": 0,
+        "behavioral_TB_calls": 0
+      },
+      "response": [],
+      "scope": "CONDITIONAL_LOCKED_CONTINUOUS_SMALL_SIGNAL_ONLY",
+      "verified_joint_block_spec": false
+    },
+    "elapsed_s": 0.05571899993810803
+  },
+  {
+    "index": 21,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": [
+      41.0,
+      6.4031242374328485
+    ],
+    "output": 1.3459632911407546,
+    "elapsed_s": 5.3999945521354675e-05
+  },
+  {
+    "index": 22,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001511129254967205,
+      "Rz": 2324.8410411883065,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714145.121518746,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6,
+      "Kvco_local_Hz_per_V": 32143091.464135423,
+      "UGF_Hz": 219173.88233521313,
+      "BW_Hz": 294999.9999999999,
+      "PM_deg": 72.24720983805332
+    },
+    "elapsed_s": 6.869994103908539e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001511129254967205,
+      "Rz": 2324.8410411883065,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714145.121518746,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 23,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015111315882835284,
+      "Rz": 2324.8410411883065,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714145.121518746,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6,
+      "Kvco_local_Hz_per_V": 32143091.464135423,
+      "UGF_Hz": 219174.2053760339,
+      "BW_Hz": 295000.46617453615,
+      "PM_deg": 72.24720983803525
+    },
+    "elapsed_s": 9.300000965595245e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015111315882835284,
+      "Rz": 2324.8410411883065,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714145.121518746,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 24,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001511129254967205,
+      "Rz": 2324.8470411883063,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714145.121518746,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6,
+      "Kvco_local_Hz_per_V": 32143091.464135423,
+      "UGF_Hz": 219174.39656123644,
+      "BW_Hz": 295000.79700653284,
+      "PM_deg": 72.24720983785137
+    },
+    "elapsed_s": 6.7099928855896e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001511129254967205,
+      "Rz": 2324.8470411883063,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714145.121518746,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 25,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015111278445914983,
+      "Rz": 2324.8410411883065,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714127.121518746,
+      "Kvco": 32143121.464135427,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6,
+      "Kvco_local_Hz_per_V": 32143121.464135427,
+      "UGF_Hz": 219173.88233521313,
+      "BW_Hz": 294999.9999999999,
+      "PM_deg": 72.24720983805332
+    },
+    "elapsed_s": 6.280001252889633e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015111278445914983,
+      "Rz": 2324.8410411883065,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714127.121518746,
+      "Kvco": 32143121.464135427,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 26,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001511129254967205,
+      "Rz": 2324.8410411883065,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714106.549809635,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6000011999999799,
+      "Kvco_local_Hz_per_V": 32143091.464135423,
+      "UGF_Hz": 219173.88233521313,
+      "BW_Hz": 294999.9999999999,
+      "PM_deg": 72.24720983805332
+    },
+    "elapsed_s": 6.170000415295362e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001511129254967205,
+      "Rz": 2324.8410411883065,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714106.549809635,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 27,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015111292550627357,
+      "Rz": 2324.841041044545,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714145.121518746,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6,
+      "Kvco_local_Hz_per_V": 32143091.464135423,
+      "UGF_Hz": 219173.88233611817,
+      "BW_Hz": 294999.99999998976,
+      "PM_deg": 72.24720983805332
+    },
+    "elapsed_s": 0.00010050006676465273,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015111292550627357,
+      "Rz": 2324.841041044545,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714145.121518746,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 28,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015111315883790596,
+      "Rz": 2324.841041044545,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714145.121518746,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6,
+      "Kvco_local_Hz_per_V": 32143091.464135423,
+      "UGF_Hz": 219174.20537693897,
+      "BW_Hz": 295000.4661745261,
+      "PM_deg": 72.24720983803525
+    },
+    "elapsed_s": 7.159996312111616e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015111315883790596,
+      "Rz": 2324.841041044545,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714145.121518746,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 29,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015111292550627357,
+      "Rz": 2324.8470410445448,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714145.121518746,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6,
+      "Kvco_local_Hz_per_V": 32143091.464135423,
+      "UGF_Hz": 219174.39656214137,
+      "BW_Hz": 295000.7970065224,
+      "PM_deg": 72.24720983785137
+    },
+    "elapsed_s": 0.00011119991540908813,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015111292550627357,
+      "Rz": 2324.8470410445448,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714145.121518746,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 30,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001511127844687029,
+      "Rz": 2324.841041044545,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714127.121518746,
+      "Kvco": 32143121.464135427,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6,
+      "Kvco_local_Hz_per_V": 32143121.464135427,
+      "UGF_Hz": 219173.88233611817,
+      "BW_Hz": 294999.99999998976,
+      "PM_deg": 72.24720983805332
+    },
+    "elapsed_s": 0.00011739996261894703,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.0001511127844687029,
+      "Rz": 2324.841041044545,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714127.121518746,
+      "Kvco": 32143121.464135427,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 31,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015111292550627357,
+      "Rz": 2324.841041044545,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714106.549809635,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6000011999999799,
+      "Kvco_local_Hz_per_V": 32143091.464135423,
+      "UGF_Hz": 219173.88233611817,
+      "BW_Hz": 294999.99999998976,
+      "PM_deg": 72.24720983805332
+    },
+    "elapsed_s": 6.19000056758523e-05,
+    "parameters": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015111292550627357,
+      "Rz": 2324.841041044545,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714106.549809635,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "scope": "ALGEBRAIC_OPTIMIZER_TRIAL_NOT_M1"
+  },
+  {
+    "index": 32,
+    "kind": "candidate_generations"
+  },
+  {
+    "index": 33,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": {
+      "f_ref": 10000000,
+      "N": 8,
+      "Icp": 0.00015111292550627357,
+      "Rz": 2324.841041044545,
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "f0": 60714145.121518746,
+      "Kvco": 32143091.464135423,
+      "Vctrl_min": 0,
+      "Vctrl_max": 1.2,
+      "Kvco2": 0,
+      "CP_mismatch": 0,
+      "CP_leakage": 0,
+      "q0": 0,
+      "PFD_reset_delay": 0,
+      "Cload": 0,
+      "Gload": 0
+    },
+    "output": {
+      "output_frequency_Hz": 80000000,
+      "Vctrl_required_V": 0.6,
+      "Kvco_local_Hz_per_V": 32143091.464135423,
+      "UGF_Hz": 219173.88233611817,
+      "BW_Hz": 294999.99999998976,
+      "PM_deg": 72.24720983805332
+    },
+    "elapsed_s": 6.320001557469368e-05
+  },
+  {
+    "index": 34,
+    "kind": "analytic_calls",
+    "status": "RETURNED",
+    "input": [
+      41.0,
+      6.4031242374328485
+    ],
+    "output": 1.3459632911407546,
+    "elapsed_s": 4.9999915063381195e-05
+  },
+  {
+    "index": 35,
+    "kind": "candidate_generations"
+  },
+  {
+    "index": 36,
+    "kind": "M1_calls",
+    "status": "RETURNED",
+    "input": {
+      "schema_version": "pll-physics-mapping-2.0",
+      "conventions": {
+        "vco_f0": "frequency_at_zero_volts",
+        "phase_error": "reference_minus_feedback_rad",
+        "lf_topology": "C1_shunt_Rz_series_C2",
+        "cp_leakage": "positive_injected_into_lf"
+      },
+      "values": {
+        "f_ref": {
+          "value": 10000000,
+          "unit": "Hz"
+        },
+        "N": {
+          "value": 8,
+          "unit": "1"
+        },
+        "Icp": {
+          "value": 0.0001511129254967205,
+          "unit": "A"
+        },
+        "Rz": {
+          "value": 2324.8410411883065,
+          "unit": "Ohm"
+        },
+        "C1": {
+          "value": 5e-11,
+          "unit": "F"
+        },
+        "C2": {
+          "value": 2e-09,
+          "unit": "F"
+        },
+        "f0": {
+          "value": 60714145.121518746,
+          "unit": "Hz"
+        },
+        "Kvco": {
+          "value": 32143091.464135423,
+          "unit": "Hz/V"
+        },
+        "Vctrl_min": {
+          "value": 0,
+          "unit": "V"
+        },
+        "Vctrl_max": {
+          "value": 1.2,
+          "unit": "V"
+        },
+        "Kvco2": {
+          "value": 0,
+          "unit": "Hz/V^2"
+        },
+        "CP_mismatch": {
+          "value": 0,
+          "unit": "1"
+        },
+        "CP_leakage": {
+          "value": 0,
+          "unit": "A"
+        },
+        "q0": {
+          "value": 0,
+          "unit": "C"
+        },
+        "PFD_reset_delay": {
+          "value": 0,
+          "unit": "s"
+        },
+        "Cload": {
+          "value": 0,
+          "unit": "F"
+        },
+        "Gload": {
+          "value": 0,
+          "unit": "S"
+        }
+      }
+    },
+    "output": {
+      "status": "OK",
+      "reason": "",
+      "model_level": "M1",
+      "model_id": "ideal_cppll_locked_continuous_m1_v1",
+      "parameter_sha256": "d4d5a697482ee8c57188e479fd64a37b033fe889e0c4efbd67b726ddc2a9a774",
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.6,
+        "Kvco_local_Hz_per_V": 32143091.464135423,
+        "UGF_Hz": 219173.8823354356,
+        "BW_Hz": 295000.0000002603,
+        "PM_deg": 72.24720983805331
+      },
+      "units": {
+        "output_frequency_Hz": "Hz",
+        "Vctrl_required_V": "V",
+        "Kvco_local_Hz_per_V": "Hz/V",
+        "UGF_Hz": "Hz",
+        "BW_Hz": "Hz",
+        "PM_deg": "deg"
+      },
+      "protocols": {
+        "output_frequency_Hz": "conditional_locked_tuning_frequency",
+        "Vctrl_required_V": "linear_vco_static_tuning_solution",
+        "Kvco_local_Hz_per_V": "vco_derivative_at_tuning_point",
+        "UGF_Hz": "continuous_L_first_downward_unity_crossing",
+        "BW_Hz": "continuous_normalized_T_first_downward_minus3dB",
+        "PM_deg": "180_plus_continuous_L_phase_at_UGF"
+      },
+      "factors": {
+        "F_FREQ_PLAN": {
+          "f_target_Hz": 80000000,
+          "source": "model/solve_tuning_point.m"
+        },
+        "F_TUNING": {
+          "Vctrl_required_V": 0.6,
+          "Kvco_local_Hz_per_V": 32143091.464135423,
+          "feasible": true,
+          "voltage_margin_V": 0.6,
+          "tuning_frequency_min_Hz": 60714145.121518746,
+          "tuning_frequency_max_Hz": 99285854.87848125,
+          "source": "model/solve_tuning_point.m; model/vco_model.m"
+        },
+        "F_KPFD": {
+          "Kpfd_A_per_rad": 2.405036905788037e-05,
+          "Iup_A": 0.0001511129254967205,
+          "Idown_A": 0.0001511129254967205,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LF_TF": {
+          "zero_Hz": 34229.209712020944,
+          "poles_rad_per_s": [
+            0,
+            -8817807.16909649
+          ],
+          "nonzero_pole_Hz": 1403397.5981928587,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LOOP": {
+          "UGF_Hz": 219173.8823354356,
+          "BW_Hz": 295000.0000002603,
+          "PM_deg": 72.24720983805331,
+          "characteristic_descending": [
+            2.3248410411883067e-16,
+            2.05e-09,
+            0.0028230757402725438,
+            607.1545732067711
+          ],
+          "routh_stable": true,
+          "T_definition": "L/(1+L); normalized reference phase response; H_ref=N*T",
+          "source": "model/pll_linear_kernel.m; characterization/characterize_loop.m"
+        }
+      },
+      "diagnostics": {
+        "scan": {
+          "minimum_Hz": 3.4229209712020947,
+          "maximum_Hz": 1000000000,
+          "points": 8000
+        },
+        "UGF_over_fref": 0.02191738823354356,
+        "BW_over_fref": 0.02950000000002603,
+        "sampling_equivalence": "NOT_ESTABLISHED",
+        "transient_lock": "NOT_EVALUATED",
+        "MATLAB_runtime_calls": 0,
+        "behavioral_TB_calls": 0
+      },
+      "response": [],
+      "scope": "CONDITIONAL_LOCKED_CONTINUOUS_SMALL_SIGNAL_ONLY",
+      "verified_joint_block_spec": false
+    },
+    "elapsed_s": 0.035992100019939244
+  },
+  {
+    "index": 37,
+    "kind": "candidate_generations"
+  },
+  {
+    "index": 38,
+    "kind": "M1_calls",
+    "status": "RETURNED",
+    "input": {
+      "schema_version": "pll-physics-mapping-2.0",
+      "conventions": {
+        "vco_f0": "frequency_at_zero_volts",
+        "phase_error": "reference_minus_feedback_rad",
+        "lf_topology": "C1_shunt_Rz_series_C2",
+        "cp_leakage": "positive_injected_into_lf"
+      },
+      "values": {
+        "f_ref": {
+          "value": 10000000,
+          "unit": "Hz"
+        },
+        "N": {
+          "value": 8,
+          "unit": "1"
+        },
+        "Icp": {
+          "value": 0.00017215307614544878,
+          "unit": "A"
+        },
+        "Rz": {
+          "value": 2324.8410411883065,
+          "unit": "Ohm"
+        },
+        "C1": {
+          "value": 5e-11,
+          "unit": "F"
+        },
+        "C2": {
+          "value": 2e-09,
+          "unit": "F"
+        },
+        "f0": {
+          "value": 63071217.68227813,
+          "unit": "Hz"
+        },
+        "Kvco": {
+          "value": 28214637.19620313,
+          "unit": "Hz/V"
+        },
+        "Vctrl_min": {
+          "value": 0,
+          "unit": "V"
+        },
+        "Vctrl_max": {
+          "value": 1.2,
+          "unit": "V"
+        },
+        "Kvco2": {
+          "value": 0,
+          "unit": "Hz/V^2"
+        },
+        "CP_mismatch": {
+          "value": 0,
+          "unit": "1"
+        },
+        "CP_leakage": {
+          "value": 0,
+          "unit": "A"
+        },
+        "q0": {
+          "value": 0,
+          "unit": "C"
+        },
+        "PFD_reset_delay": {
+          "value": 0,
+          "unit": "s"
+        },
+        "Cload": {
+          "value": 0,
+          "unit": "F"
+        },
+        "Gload": {
+          "value": 0,
+          "unit": "S"
+        }
+      }
+    },
+    "output": {
+      "status": "OK",
+      "reason": "",
+      "model_level": "M1",
+      "model_id": "ideal_cppll_locked_continuous_m1_v1",
+      "parameter_sha256": "a449d8b33a6435aa445f17a605dd80a6c0971351db6559d710c38a8ffc7bca82",
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.5999999999999999,
+        "Kvco_local_Hz_per_V": 28214637.19620313,
+        "UGF_Hz": 219173.8823354356,
+        "BW_Hz": 295000.0000002603,
+        "PM_deg": 72.24720983805331
+      },
+      "units": {
+        "output_frequency_Hz": "Hz",
+        "Vctrl_required_V": "V",
+        "Kvco_local_Hz_per_V": "Hz/V",
+        "UGF_Hz": "Hz",
+        "BW_Hz": "Hz",
+        "PM_deg": "deg"
+      },
+      "protocols": {
+        "output_frequency_Hz": "conditional_locked_tuning_frequency",
+        "Vctrl_required_V": "linear_vco_static_tuning_solution",
+        "Kvco_local_Hz_per_V": "vco_derivative_at_tuning_point",
+        "UGF_Hz": "continuous_L_first_downward_unity_crossing",
+        "BW_Hz": "continuous_normalized_T_first_downward_minus3dB",
+        "PM_deg": "180_plus_continuous_L_phase_at_UGF"
+      },
+      "factors": {
+        "F_FREQ_PLAN": {
+          "f_target_Hz": 80000000,
+          "source": "model/solve_tuning_point.m"
+        },
+        "F_TUNING": {
+          "Vctrl_required_V": 0.5999999999999999,
+          "Kvco_local_Hz_per_V": 28214637.19620313,
+          "feasible": true,
+          "voltage_margin_V": 0.5999999999999999,
+          "tuning_frequency_min_Hz": 63071217.68227813,
+          "tuning_frequency_max_Hz": 96928782.31772187,
+          "source": "model/solve_tuning_point.m; model/vco_model.m"
+        },
+        "F_KPFD": {
+          "Kpfd_A_per_rad": 2.7399013037023626e-05,
+          "Iup_A": 0.00017215307614544878,
+          "Idown_A": 0.00017215307614544878,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LF_TF": {
+          "zero_Hz": 34229.209712020944,
+          "poles_rad_per_s": [
+            0,
+            -8817807.16909649
+          ],
+          "nonzero_pole_Hz": 1403397.5981928587,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LOOP": {
+          "UGF_Hz": 219173.8823354356,
+          "BW_Hz": 295000.0000002603,
+          "PM_deg": 72.24720983805331,
+          "characteristic_descending": [
+            2.3248410411883067e-16,
+            2.05e-09,
+            0.0028230757402725438,
+            607.1545732067711
+          ],
+          "routh_stable": true,
+          "T_definition": "L/(1+L); normalized reference phase response; H_ref=N*T",
+          "source": "model/pll_linear_kernel.m; characterization/characterize_loop.m"
+        }
+      },
+      "diagnostics": {
+        "scan": {
+          "minimum_Hz": 3.4229209712020947,
+          "maximum_Hz": 1000000000,
+          "points": 8000
+        },
+        "UGF_over_fref": 0.02191738823354356,
+        "BW_over_fref": 0.02950000000002603,
+        "sampling_equivalence": "NOT_ESTABLISHED",
+        "transient_lock": "NOT_EVALUATED",
+        "MATLAB_runtime_calls": 0,
+        "behavioral_TB_calls": 0
+      },
+      "response": [],
+      "scope": "CONDITIONAL_LOCKED_CONTINUOUS_SMALL_SIGNAL_ONLY",
+      "verified_joint_block_spec": false
+    },
+    "elapsed_s": 0.035239099990576506
+  },
+  {
+    "index": 39,
+    "kind": "candidate_generations"
+  },
+  {
+    "index": 40,
+    "kind": "M1_calls",
+    "status": "RETURNED",
+    "input": {
+      "schema_version": "pll-physics-mapping-2.0",
+      "conventions": {
+        "vco_f0": "frequency_at_zero_volts",
+        "phase_error": "reference_minus_feedback_rad",
+        "lf_topology": "C1_shunt_Rz_series_C2",
+        "cp_leakage": "positive_injected_into_lf"
+      },
+      "values": {
+        "f_ref": {
+          "value": 10000000,
+          "unit": "Hz"
+        },
+        "N": {
+          "value": 8,
+          "unit": "1"
+        },
+        "Icp": {
+          "value": 0.00013465562639684918,
+          "unit": "A"
+        },
+        "Rz": {
+          "value": 2324.8410411883065,
+          "unit": "Ohm"
+        },
+        "C1": {
+          "value": 5e-11,
+          "unit": "F"
+        },
+        "C2": {
+          "value": 2e-09,
+          "unit": "F"
+        },
+        "f0": {
+          "value": 60000000,
+          "unit": "Hz"
+        },
+        "Kvco": {
+          "value": 36071545.73206771,
+          "unit": "Hz/V"
+        },
+        "Vctrl_min": {
+          "value": 0,
+          "unit": "V"
+        },
+        "Vctrl_max": {
+          "value": 1.2,
+          "unit": "V"
+        },
+        "Kvco2": {
+          "value": 0,
+          "unit": "Hz/V^2"
+        },
+        "CP_mismatch": {
+          "value": 0,
+          "unit": "1"
+        },
+        "CP_leakage": {
+          "value": 0,
+          "unit": "A"
+        },
+        "q0": {
+          "value": 0,
+          "unit": "C"
+        },
+        "PFD_reset_delay": {
+          "value": 0,
+          "unit": "s"
+        },
+        "Cload": {
+          "value": 0,
+          "unit": "F"
+        },
+        "Gload": {
+          "value": 0,
+          "unit": "S"
+        }
+      }
+    },
+    "output": {
+      "status": "OK",
+      "reason": "",
+      "model_level": "M1",
+      "model_id": "ideal_cppll_locked_continuous_m1_v1",
+      "parameter_sha256": "79fcd396baf38c8150fd635536751690b4cc919bf005bb0d997901698733e05b",
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.5544536446692924,
+        "Kvco_local_Hz_per_V": 36071545.73206771,
+        "UGF_Hz": 219173.8823354356,
+        "BW_Hz": 295000.0000002603,
+        "PM_deg": 72.24720983805331
+      },
+      "units": {
+        "output_frequency_Hz": "Hz",
+        "Vctrl_required_V": "V",
+        "Kvco_local_Hz_per_V": "Hz/V",
+        "UGF_Hz": "Hz",
+        "BW_Hz": "Hz",
+        "PM_deg": "deg"
+      },
+      "protocols": {
+        "output_frequency_Hz": "conditional_locked_tuning_frequency",
+        "Vctrl_required_V": "linear_vco_static_tuning_solution",
+        "Kvco_local_Hz_per_V": "vco_derivative_at_tuning_point",
+        "UGF_Hz": "continuous_L_first_downward_unity_crossing",
+        "BW_Hz": "continuous_normalized_T_first_downward_minus3dB",
+        "PM_deg": "180_plus_continuous_L_phase_at_UGF"
+      },
+      "factors": {
+        "F_FREQ_PLAN": {
+          "f_target_Hz": 80000000,
+          "source": "model/solve_tuning_point.m"
+        },
+        "F_TUNING": {
+          "Vctrl_required_V": 0.5544536446692924,
+          "Kvco_local_Hz_per_V": 36071545.73206771,
+          "feasible": true,
+          "voltage_margin_V": 0.5544536446692924,
+          "tuning_frequency_min_Hz": 60000000.0,
+          "tuning_frequency_max_Hz": 103285854.87848125,
+          "source": "model/solve_tuning_point.m; model/vco_model.m"
+        },
+        "F_KPFD": {
+          "Kpfd_A_per_rad": 2.143110855619405e-05,
+          "Iup_A": 0.00013465562639684918,
+          "Idown_A": 0.00013465562639684918,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LF_TF": {
+          "zero_Hz": 34229.209712020944,
+          "poles_rad_per_s": [
+            0,
+            -8817807.16909649
+          ],
+          "nonzero_pole_Hz": 1403397.5981928587,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LOOP": {
+          "UGF_Hz": 219173.8823354356,
+          "BW_Hz": 295000.0000002603,
+          "PM_deg": 72.24720983805331,
+          "characteristic_descending": [
+            2.3248410411883067e-16,
+            2.05e-09,
+            0.0028230757402725438,
+            607.1545732067711
+          ],
+          "routh_stable": true,
+          "T_definition": "L/(1+L); normalized reference phase response; H_ref=N*T",
+          "source": "model/pll_linear_kernel.m; characterization/characterize_loop.m"
+        }
+      },
+      "diagnostics": {
+        "scan": {
+          "minimum_Hz": 3.4229209712020947,
+          "maximum_Hz": 1000000000,
+          "points": 8000
+        },
+        "UGF_over_fref": 0.02191738823354356,
+        "BW_over_fref": 0.02950000000002603,
+        "sampling_equivalence": "NOT_ESTABLISHED",
+        "transient_lock": "NOT_EVALUATED",
+        "MATLAB_runtime_calls": 0,
+        "behavioral_TB_calls": 0
+      },
+      "response": [],
+      "scope": "CONDITIONAL_LOCKED_CONTINUOUS_SMALL_SIGNAL_ONLY",
+      "verified_joint_block_spec": false
+    },
+    "elapsed_s": 0.0349906999617815
+  },
+  {
+    "index": 41,
+    "kind": "candidate_generations"
+  },
+  {
+    "index": 42,
+    "kind": "M1_calls",
+    "status": "RETURNED",
+    "input": {
+      "schema_version": "pll-physics-mapping-2.0",
+      "conventions": {
+        "vco_f0": "frequency_at_zero_volts",
+        "phase_error": "reference_minus_feedback_rad",
+        "lf_topology": "C1_shunt_Rz_series_C2",
+        "cp_leakage": "positive_injected_into_lf"
+      },
+      "values": {
+        "f_ref": {
+          "value": 10000000,
+          "unit": "Hz"
+        },
+        "N": {
+          "value": 8,
+          "unit": "1"
+        },
+        "Icp": {
+          "value": 0.00015111292550627357,
+          "unit": "A"
+        },
+        "Rz": {
+          "value": 2324.841041044545,
+          "unit": "Ohm"
+        },
+        "C1": {
+          "value": 5e-11,
+          "unit": "F"
+        },
+        "C2": {
+          "value": 2e-09,
+          "unit": "F"
+        },
+        "f0": {
+          "value": 60714145.121518746,
+          "unit": "Hz"
+        },
+        "Kvco": {
+          "value": 32143091.464135423,
+          "unit": "Hz/V"
+        },
+        "Vctrl_min": {
+          "value": 0,
+          "unit": "V"
+        },
+        "Vctrl_max": {
+          "value": 1.2,
+          "unit": "V"
+        },
+        "Kvco2": {
+          "value": 0,
+          "unit": "Hz/V^2"
+        },
+        "CP_mismatch": {
+          "value": 0,
+          "unit": "1"
+        },
+        "CP_leakage": {
+          "value": 0,
+          "unit": "A"
+        },
+        "q0": {
+          "value": 0,
+          "unit": "C"
+        },
+        "PFD_reset_delay": {
+          "value": 0,
+          "unit": "s"
+        },
+        "Cload": {
+          "value": 0,
+          "unit": "F"
+        },
+        "Gload": {
+          "value": 0,
+          "unit": "S"
+        }
+      }
+    },
+    "output": {
+      "status": "OK",
+      "reason": "",
+      "model_level": "M1",
+      "model_id": "ideal_cppll_locked_continuous_m1_v1",
+      "parameter_sha256": "7c49ce3cf00fbbeb27036fbe25e89520dad559b3710228e37e3f3b00f3751e42",
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.6,
+        "Kvco_local_Hz_per_V": 32143091.464135423,
+        "UGF_Hz": 219173.88233631995,
+        "BW_Hz": 294999.99999983195,
+        "PM_deg": 72.24720983805331
+      },
+      "units": {
+        "output_frequency_Hz": "Hz",
+        "Vctrl_required_V": "V",
+        "Kvco_local_Hz_per_V": "Hz/V",
+        "UGF_Hz": "Hz",
+        "BW_Hz": "Hz",
+        "PM_deg": "deg"
+      },
+      "protocols": {
+        "output_frequency_Hz": "conditional_locked_tuning_frequency",
+        "Vctrl_required_V": "linear_vco_static_tuning_solution",
+        "Kvco_local_Hz_per_V": "vco_derivative_at_tuning_point",
+        "UGF_Hz": "continuous_L_first_downward_unity_crossing",
+        "BW_Hz": "continuous_normalized_T_first_downward_minus3dB",
+        "PM_deg": "180_plus_continuous_L_phase_at_UGF"
+      },
+      "factors": {
+        "F_FREQ_PLAN": {
+          "f_target_Hz": 80000000,
+          "source": "model/solve_tuning_point.m"
+        },
+        "F_TUNING": {
+          "Vctrl_required_V": 0.6,
+          "Kvco_local_Hz_per_V": 32143091.464135423,
+          "feasible": true,
+          "voltage_margin_V": 0.6,
+          "tuning_frequency_min_Hz": 60714145.121518746,
+          "tuning_frequency_max_Hz": 99285854.87848125,
+          "source": "model/solve_tuning_point.m; model/vco_model.m"
+        },
+        "F_KPFD": {
+          "Kpfd_A_per_rad": 2.4050369059400792e-05,
+          "Iup_A": 0.00015111292550627357,
+          "Idown_A": 0.00015111292550627357,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LF_TF": {
+          "zero_Hz": 34229.209714137585,
+          "poles_rad_per_s": [
+            0,
+            -8817807.16964176
+          ],
+          "nonzero_pole_Hz": 1403397.598279641,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LOOP": {
+          "UGF_Hz": 219173.88233631995,
+          "BW_Hz": 294999.99999983195,
+          "PM_deg": 72.24720983805331,
+          "characteristic_descending": [
+            2.324841041044545e-16,
+            2.05e-09,
+            0.002823075740276442,
+            607.1545732451543
+          ],
+          "routh_stable": true,
+          "T_definition": "L/(1+L); normalized reference phase response; H_ref=N*T",
+          "source": "model/pll_linear_kernel.m; characterization/characterize_loop.m"
+        }
+      },
+      "diagnostics": {
+        "scan": {
+          "minimum_Hz": 3.4229209714137587,
+          "maximum_Hz": 1000000000,
+          "points": 8000
+        },
+        "UGF_over_fref": 0.021917388233631995,
+        "BW_over_fref": 0.029499999999983196,
+        "sampling_equivalence": "NOT_ESTABLISHED",
+        "transient_lock": "NOT_EVALUATED",
+        "MATLAB_runtime_calls": 0,
+        "behavioral_TB_calls": 0
+      },
+      "response": [],
+      "scope": "CONDITIONAL_LOCKED_CONTINUOUS_SMALL_SIGNAL_ONLY",
+      "verified_joint_block_spec": false
+    },
+    "elapsed_s": 0.03472270001657307
+  },
+  {
+    "index": 43,
+    "kind": "M1_calls",
+    "status": "RETURNED",
+    "input": {
+      "schema_version": "pll-physics-mapping-2.0",
+      "conventions": {
+        "vco_f0": "frequency_at_zero_volts",
+        "phase_error": "reference_minus_feedback_rad",
+        "lf_topology": "C1_shunt_Rz_series_C2",
+        "cp_leakage": "positive_injected_into_lf"
+      },
+      "values": {
+        "f_ref": {
+          "value": 10000000,
+          "unit": "Hz"
+        },
+        "N": {
+          "value": 8,
+          "unit": "1"
+        },
+        "Icp": {
+          "value": 0.00015111292550627357,
+          "unit": "A"
+        },
+        "Rz": {
+          "value": 2324.841041044545,
+          "unit": "Ohm"
+        },
+        "C1": {
+          "value": 5e-11,
+          "unit": "F"
+        },
+        "C2": {
+          "value": 2e-09,
+          "unit": "F"
+        },
+        "f0": {
+          "value": 60714145.121518746,
+          "unit": "Hz"
+        },
+        "Kvco": {
+          "value": 32143091.464135423,
+          "unit": "Hz/V"
+        },
+        "Vctrl_min": {
+          "value": 0,
+          "unit": "V"
+        },
+        "Vctrl_max": {
+          "value": 1.2,
+          "unit": "V"
+        },
+        "Kvco2": {
+          "value": 0,
+          "unit": "Hz/V^2"
+        },
+        "CP_mismatch": {
+          "value": 0,
+          "unit": "1"
+        },
+        "CP_leakage": {
+          "value": 0,
+          "unit": "A"
+        },
+        "q0": {
+          "value": 0,
+          "unit": "C"
+        },
+        "PFD_reset_delay": {
+          "value": 0,
+          "unit": "s"
+        },
+        "Cload": {
+          "value": 0,
+          "unit": "F"
+        },
+        "Gload": {
+          "value": 0,
+          "unit": "S"
+        }
+      }
+    },
+    "output": {
+      "status": "OK",
+      "reason": "",
+      "model_level": "M1",
+      "model_id": "ideal_cppll_locked_continuous_m1_v1",
+      "parameter_sha256": "7c49ce3cf00fbbeb27036fbe25e89520dad559b3710228e37e3f3b00f3751e42",
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.6,
+        "Kvco_local_Hz_per_V": 32143091.464135423,
+        "UGF_Hz": 219173.88233631995,
+        "BW_Hz": 294999.99999983195,
+        "PM_deg": 72.24720983805331
+      },
+      "units": {
+        "output_frequency_Hz": "Hz",
+        "Vctrl_required_V": "V",
+        "Kvco_local_Hz_per_V": "Hz/V",
+        "UGF_Hz": "Hz",
+        "BW_Hz": "Hz",
+        "PM_deg": "deg"
+      },
+      "protocols": {
+        "output_frequency_Hz": "conditional_locked_tuning_frequency",
+        "Vctrl_required_V": "linear_vco_static_tuning_solution",
+        "Kvco_local_Hz_per_V": "vco_derivative_at_tuning_point",
+        "UGF_Hz": "continuous_L_first_downward_unity_crossing",
+        "BW_Hz": "continuous_normalized_T_first_downward_minus3dB",
+        "PM_deg": "180_plus_continuous_L_phase_at_UGF"
+      },
+      "factors": {
+        "F_FREQ_PLAN": {
+          "f_target_Hz": 80000000,
+          "source": "model/solve_tuning_point.m"
+        },
+        "F_TUNING": {
+          "Vctrl_required_V": 0.6,
+          "Kvco_local_Hz_per_V": 32143091.464135423,
+          "feasible": true,
+          "voltage_margin_V": 0.6,
+          "tuning_frequency_min_Hz": 60714145.121518746,
+          "tuning_frequency_max_Hz": 99285854.87848125,
+          "source": "model/solve_tuning_point.m; model/vco_model.m"
+        },
+        "F_KPFD": {
+          "Kpfd_A_per_rad": 2.4050369059400792e-05,
+          "Iup_A": 0.00015111292550627357,
+          "Idown_A": 0.00015111292550627357,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LF_TF": {
+          "zero_Hz": 34229.209714137585,
+          "poles_rad_per_s": [
+            0,
+            -8817807.16964176
+          ],
+          "nonzero_pole_Hz": 1403397.598279641,
+          "source": "model/pll_linear_kernel.m"
+        },
+        "F_LOOP": {
+          "UGF_Hz": 219173.88233631995,
+          "BW_Hz": 294999.99999983195,
+          "PM_deg": 72.24720983805331,
+          "characteristic_descending": [
+            2.324841041044545e-16,
+            2.05e-09,
+            0.002823075740276442,
+            607.1545732451543
+          ],
+          "routh_stable": true,
+          "T_definition": "L/(1+L); normalized reference phase response; H_ref=N*T",
+          "source": "model/pll_linear_kernel.m; characterization/characterize_loop.m"
+        }
+      },
+      "diagnostics": {
+        "scan": {
+          "minimum_Hz": 3.4229209714137587,
+          "maximum_Hz": 1000000000,
+          "points": 8000
+        },
+        "UGF_over_fref": 0.021917388233631995,
+        "BW_over_fref": 0.029499999999983196,
+        "sampling_equivalence": "NOT_ESTABLISHED",
+        "transient_lock": "NOT_EVALUATED",
+        "MATLAB_runtime_calls": 0,
+        "behavioral_TB_calls": 0
+      },
+      "response": [],
+      "scope": "CONDITIONAL_LOCKED_CONTINUOUS_SMALL_SIGNAL_ONLY",
+      "verified_joint_block_spec": false
+    },
+    "elapsed_s": 0.03552379994653165
+  },
+  {
+    "index": 44,
+    "kind": "M1_calls",
+    "origin": "ORIGINAL_CHILD_PRETB_OR_POSTHOC",
+    "child": "experiments/stage6b/reproduction_01/runs/B2_B/candidate_001/full_pipeline"
+  },
+  {
+    "index": 45,
+    "kind": "M1_calls",
+    "origin": "ORIGINAL_CHILD_PRETB_OR_POSTHOC",
+    "child": "experiments/stage6b/reproduction_01/runs/B2_B/candidate_001/full_pipeline"
+  },
+  {
+    "index": 46,
+    "kind": "M2_calls",
+    "child": "experiments/stage6b/reproduction_01/runs/B2_B/candidate_001/full_pipeline"
+  }
+]

@@ -1,0 +1,47 @@
+{
+  "rows": 37,
+  "measured": 31,
+  "M1_BW_M2_decision_disagreements": [],
+  "BW_error_min": [
+    0.14379883298070162,
+    "S3__random__11",
+    "FEEDBACK_REPAIR"
+  ],
+  "BW_error_max": [
+    0.8166690641817187,
+    "S2__analytical",
+    "FIRST_SHOT"
+  ],
+  "firstshot_counts": [
+    {
+      "key": [
+        "analytical",
+        "M1_PREDICTED_FEASIBLE",
+        "PASS"
+      ],
+      "count": 4
+    },
+    {
+      "key": [
+        "random",
+        "M1_NOT_PREDICTED_FEASIBLE",
+        "FAIL"
+      ],
+      "count": 12
+    },
+    {
+      "key": [
+        "llm_agent",
+        "M1_PREDICTED_FEASIBLE",
+        "PASS"
+      ],
+      "count": 3
+    }
+  ],
+  "repaired_M1fail": [
+    [
+      "S3__random__11",
+      "45.66136907858953"
+    ]
+  ]
+}

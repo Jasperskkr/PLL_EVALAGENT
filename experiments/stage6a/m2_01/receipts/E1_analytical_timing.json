@@ -1,0 +1,72 @@
+{
+  "formal_module": "python -B -m pll_allocation",
+  "sys_argv": [
+    "pll_allocation",
+    "pipeline",
+    "--strategy",
+    "analytical",
+    "--proposal",
+    "experiments\\stage6a\\frozen_01\\E1_analytical_proposal.json",
+    "--m2-budget",
+    "1",
+    "--repair-budget",
+    "0",
+    "--out",
+    "experiments\\stage6a\\m2_01\\runs\\E1_analytical"
+  ],
+  "exit_code": 0,
+  "observed_module_wall_s": 9.714387299958616,
+  "events": [
+    {
+      "component": "full_M1_evaluate",
+      "status": "RETURNED",
+      "wall_s": 0.03377790004014969
+    },
+    {
+      "component": "capture_pair",
+      "status": "RETURNED",
+      "wall_s": 0.12078919995110482
+    },
+    {
+      "component": "response_sweep",
+      "status": "RETURNED",
+      "folder": "C:\\Users\\Lenovo\\.codex\\worktrees\\stage6a-multispec-feasibility\\PLL_allocation\\experiments\\stage6a\\m2_01\\runs\\E1_analytical\\raw\\attempt_001\\base",
+      "wall_s": 1.7876731000142172
+    },
+    {
+      "component": "response_sweep",
+      "status": "RETURNED",
+      "folder": "C:\\Users\\Lenovo\\.codex\\worktrees\\stage6a-multispec-feasibility\\PLL_allocation\\experiments\\stage6a\\m2_01\\runs\\E1_analytical\\raw\\attempt_001\\amplitude_half",
+      "wall_s": 1.7145439001033083
+    },
+    {
+      "component": "response_sweep",
+      "status": "RETURNED",
+      "folder": "C:\\Users\\Lenovo\\.codex\\worktrees\\stage6a-multispec-feasibility\\PLL_allocation\\experiments\\stage6a\\m2_01\\runs\\E1_analytical\\raw\\attempt_001\\step_half",
+      "wall_s": 2.1341729999985546
+    },
+    {
+      "component": "response_sweep",
+      "status": "RETURNED",
+      "folder": "C:\\Users\\Lenovo\\.codex\\worktrees\\stage6a-multispec-feasibility\\PLL_allocation\\experiments\\stage6a\\m2_01\\runs\\E1_analytical\\raw\\attempt_001\\window_double",
+      "wall_s": 2.421782199991867
+    },
+    {
+      "component": "comparison_after_measurement",
+      "status": "RETURNED",
+      "wall_s": 0.03510780003853142
+    },
+    {
+      "component": "full_M1_evaluate",
+      "status": "RETURNED",
+      "wall_s": 0.03471209993585944
+    },
+    {
+      "component": "assemble_result",
+      "status": "RETURNED",
+      "wall_s": 0.002942599938251078
+    }
+  ],
+  "method": "in-memory timing wrappers invoke unchanged functions exactly once; inputs and return values unchanged; source never edited",
+  "overlap": "full_M1_evaluate is nested inside comparison_after_measurement; do not add nested times twice"
+}
