@@ -20,3 +20,7 @@ handoff_exports 中的重复解压/验证副本不逐个放入 Git；最终便�
 发布准备：`python outputs/github_sync_20261110_01/prepare.py`。原树读取使用 `git ls-files -z --cached --others --exclude-standard`；逐文件 SHA256 检查与敏感模式扫描；对象使用 `git hash-object -w --no-filters --stdin-paths`；通过临时 index、write-tree、commit-tree 建立发布快照。远端覆盖使用带旧 main SHA 的 force-with-lease；其余分支正常更新。
 
 上传后另行核对 GitHub refs、关键文档/源码、Release 附件大小及服务器 SHA256。最终发布回执作为 Release 的 FINAL_SYNC_RECEIPT.json 提供，只有该回执能证明上传验证已完成。本次不重跑研究仿真、测试或 LLM，不改变历史验收结论。
+
+## 大附件传输适配
+
+长连接上传曾出现 HTTP 408 / TLS EOF，未改变原始文件。其余大附件改为 32 MiB 分片；实际片段与 SHA256 对应见 [TRANSFER_MANIFEST.json](TRANSFER_MANIFEST.json)，恢复方法见 [README_ASSET_TRANSFER.md](README_ASSET_TRANSFER.md)。先重组原始附件，再使用 restore_evidence.py 恢复研究目录。Git 历史对象分批传输后发布原始快照提交，临时传输分支在最终验证后删除。

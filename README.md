@@ -32,3 +32,5 @@
 正式入口仍为 `python -m pll_allocation pipeline`；Windows 原生事件核按 `pll_allocation/verification/build_kernel.cmd` 从源码构建。精确运行命令及环境要求见各阶段报告和 [复现说明](docs/handoff/REPRODUCIBILITY.md)。输出必须写入新目录。
 
 本次是内容同步与完整性校验，没有重跑研究 TB 或付费 LLM；以上测试数均引用已有真实验收记录。同步覆盖、Release 附件和验证命令见 [同步报告](docs/github_sync/SYNC_REPORT.md)。早期根 README 原文保存在 [ORIGINAL_README.md](docs/github_sync/ORIGINAL_README.md)。
+
+大型 Release 附件按 32 MiB 分片传输；[下载与恢复说明](docs/github_sync/README_ASSET_TRANSFER.md) 提供 SHA256 校验和重组命令。
