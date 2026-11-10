@@ -33,4 +33,4 @@
 
 本次是内容同步与完整性校验，没有重跑研究 TB 或付费 LLM；以上测试数均引用已有真实验收记录。同步覆盖、Release 附件和验证命令见 [同步报告](docs/github_sync/SYNC_REPORT.md)。早期根 README 原文保存在 [ORIGINAL_README.md](docs/github_sync/ORIGINAL_README.md)。
 
-大型 Release 附件按 32 MiB 分片传输；[下载与恢复说明](docs/github_sync/README_ASSET_TRANSFER.md) 提供 SHA256 校验和重组命令。
+大型 Release 附件按 8–32 MiB 分片传输；[下载与恢复说明](docs/github_sync/README_ASSET_TRANSFER.md) 提供 SHA256 校验和重组命令。

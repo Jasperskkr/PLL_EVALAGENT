@@ -1,6 +1,6 @@
 # Release 文件下载与恢复
 
-网络对长时间大文件上传不稳定，因此除已经完整上传并校验的交接包外，大附件按 32 MiB 切成 `.part001` 等传输片段。所有片段均按 GitHub 返回的 SHA256 和大小验证。`ASSET_MANIFEST.json` 描述原始完整文件，`TRANSFER_MANIFEST.json` 描述它们与实际附件片段的对应关系。
+网络对长时间大文件上传不稳定，因此除已经完整上传并校验的交接包外，大附件按 8–32 MiB 切成 `.part001` 等传输片段。所有片段均按 GitHub 返回的 SHA256 和大小验证。`ASSET_MANIFEST.json` 描述原始完整文件，`TRANSFER_MANIFEST.json` 描述它们与实际附件片段的对应关系。
 
 下载本 Release 的全部附件至同一目录，然后运行：
 

@@ -23,4 +23,4 @@ handoff_exports 中的重复解压/验证副本不逐个放入 Git；最终便�
 
 ## 大附件传输适配
 
-长连接上传曾出现 HTTP 408 / TLS EOF，未改变原始文件。其余大附件改为 32 MiB 分片；实际片段与 SHA256 对应见 [TRANSFER_MANIFEST.json](TRANSFER_MANIFEST.json)，恢复方法见 [README_ASSET_TRANSFER.md](README_ASSET_TRANSFER.md)。先重组原始附件，再使用 restore_evidence.py 恢复研究目录。Git 历史对象分批传输后发布原始快照提交，临时传输分支在最终验证后删除。
+长连接上传曾出现 HTTP 408 / TLS EOF，未改变原始文件。其余大附件改为 8–32 MiB 分片；实际片段与 SHA256 对应见 [TRANSFER_MANIFEST.json](TRANSFER_MANIFEST.json)，恢复方法见 [README_ASSET_TRANSFER.md](README_ASSET_TRANSFER.md)。先重组原始附件，再使用 restore_evidence.py 恢复研究目录。Git 历史对象分批传输后发布原始快照提交，临时传输分支在最终验证后删除。
