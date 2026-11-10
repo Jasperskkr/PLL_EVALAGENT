@@ -72,3 +72,19 @@ D011补充：0.1实际发现开放端口低频DC频差超预设门限；原记�
 依据用户Stage4.1全文，先保护未提交Stage4与历史证据，再checkpoint到含Stage4.2 Registry的短期分支。仅新增隔离的平滑参考相位阶跃入口/观测/后处理与研究可信度合同，原物理更新、M1、六轴域、SystemSpec及draft元数据、Protocol1.1、Stage4方法和Agent不变。阈值在首轮M2前落盘，C01–C08开发，源码/协议/分析结果锁落盘后才跑C09/C10；局部映射标签不升级正式PM/频率或整体PASS。开发修正、失败和实测成本单独保留。完成后停止待Leader，不推进Stage4.3。
 
 Stage3A.1为提交基线，Stage4未提交成果先备份/哈希保护，只读取其证据。当前工作区完整回归与干净基线导出验收分别记录实际结果，不混用。研究程序M2/LLM均0；测试内TB另计。独立Commit只含Stage4.2新增文件及本条/状态增量，不纳入此前脏改动。完成后停止等待Leader，不推进Stage4.1。
+
+## D014 · 2026-11-05 · 暂停 Stage 5，先归并并验证主分支
+
+用户明确暂停 Stage 5，要求核验 Stage4/4.1/4.2 提交、正式功能归属和合并后 Baseline，并明确选择 `master` 为统一主分支。三阶段原已同属 `cd70cf4` 祖先链，但旧 master 停在 acf49b8；本次经祖先及旧引用校验快进 master 到 cd70cf4，再切换相同文件树，保留历史分支及所有既有工作树改动。
+
+M1 正式评价归属 physics_mapping，Agent/分配归属 allocation，M2 归属 verification；旧 Track A 核心仅兼容别名。唯一正式研究运行入口仍为 `python -m pll_allocation pipeline`。本次不改算法、物理公式、事件动力学、冻结输入或测量门限；仅新增审查回执及状态记录。合并后 Baseline 真实重跑与历史候选/M1/M2 语义结果一致，严格 PM 和频率精度保持 UNKNOWN。完整结果和实际命令见 `docs/mainline_consolidation_20261105_01/VERIFICATION_REPORT.md` 及其最终回执。Stage 5 场景/策略实验未继续，恢复需用户指示。
+
+## D015 · 2026-11-05 · 用户恢复 Stage 5 端到端比较
+
+用户授权继续完成Stage5。在master@cd70cf4和已真实复现Baseline基础上，先冻结S0–S4、Random seeds11/23/47、每arm最多3次M2、分离首发与确定性反馈修复。新增显式研究场景合同及正式Pipeline小接口，原冻结配置、M1公式、策略实现、M2事件方程和协议保持；M2场景适配独立重判实测BW并保留原验证器结果，不删除哈希检查。真实LLM依既有服务调用，无服务/失败如实报告。局部工程证据预先限定解析S0/S3，全域结论与完整PM/频率认证不升级。计划及合同见docs/stage5；完成后停止等待Leader，不进入5.1/6。
+
+D015执行结果：25首发arm和12确定性修复arm全部留档，S4仅M1假设不可行；主实验31完整M2，局部490native，真实LLM10请求含1JSON失败。解析4/4首发BW通过，随机0/12首发、修复12/12 BW通过但1候选仍M1 PM失败；成功LLM与解析完全相同。原始M1/M2指标与逐约束UNKNOWN/FAIL不合并成完整PASS。351测试及297审计通过，源码/参数/协议保护成立。后处理错误与helper变动见DEVELOPMENT_AND_PROVENANCE；权威summary_02。Stage5完成待Leader审阅，未来先补研究问题3验证认证缺口，但本次不实施下一阶段。
+
+## D016 · 2026-11-06 · Block 变量关系与条件可行域图谱
+
+依据用户本轮表格参考请求，新增只读块级 Variables / Relations / Domains 总表与机器目录，覆盖原 41 项语义及六自由变量，推导声明域内调谐、PM 形状、BW/R/乘积及增益分摊的条件交集。先落盘方案 `block_relations_20261106_01/A0_SCOPE_AND_AUDIT.md`。图内 ADC 内容仅为呈现参考，不迁移其变量或数值；不改变原始研究主线、冻结输入、原公式/分配策略/验证器。新数值证据限 M1，局部历史 M2 支持和完整认证缺口分别列示，不扩域、不自动向 Agent 注入、不启动 Stage5.1/6。

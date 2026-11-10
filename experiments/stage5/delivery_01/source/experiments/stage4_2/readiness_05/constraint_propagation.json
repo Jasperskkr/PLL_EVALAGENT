@@ -1,0 +1,181 @@
+{
+  "existing_propagate_result": {
+    "status": "NECESSARY_CONDITIONS_ONLY",
+    "certificates": [],
+    "capacitor_pairs": [
+      {
+        "C1": 5e-11,
+        "C2": 5e-10,
+        "PM_ceiling_deg": 56.44269023807929,
+        "x_interval": [
+          1.6260225720276658,
+          6.764973739745134
+        ]
+      },
+      {
+        "C1": 5e-11,
+        "C2": 1e-09,
+        "PM_ceiling_deg": 65.3800226713429,
+        "x_interval": [
+          1.361855602967439,
+          15.420137020578162
+        ]
+      },
+      {
+        "C1": 5e-11,
+        "C2": 2e-09,
+        "PM_ceiling_deg": 72.24720983805331,
+        "x_interval": [
+          1.2695693306896791,
+          32.29441591640152
+        ]
+      },
+      {
+        "C1": 1e-10,
+        "C2": 5e-10,
+        "PM_ceiling_deg": 45.58469140280703,
+        "x_interval": null
+      },
+      {
+        "C1": 1e-10,
+        "C2": 1e-09,
+        "PM_ceiling_deg": 56.44269023807929,
+        "x_interval": [
+          1.6260225720276658,
+          6.764973739745134
+        ]
+      },
+      {
+        "C1": 1e-10,
+        "C2": 2e-09,
+        "PM_ceiling_deg": 65.3800226713429,
+        "x_interval": [
+          1.361855602967439,
+          15.420137020578162
+        ]
+      },
+      {
+        "C1": 2e-10,
+        "C2": 5e-10,
+        "PM_ceiling_deg": 33.74898859588859,
+        "x_interval": null
+      },
+      {
+        "C1": 2e-10,
+        "C2": 1e-09,
+        "PM_ceiling_deg": 45.58469140280703,
+        "x_interval": null
+      },
+      {
+        "C1": 2e-10,
+        "C2": 2e-09,
+        "PM_ceiling_deg": 56.44269023807929,
+        "x_interval": [
+          1.6260225720276658,
+          6.764973739745134
+        ]
+      }
+    ],
+    "gain_product_interval": [
+      500.0,
+      8000.0
+    ],
+    "not_proven": "BW/gain/R/tuning intersection needs solving; no certificate is not proof of feasibility"
+  },
+  "capacitor_pairs": [
+    {
+      "C1": 5e-11,
+      "C2": 5e-10,
+      "PM_ceiling_deg": 56.44269023807929,
+      "x_interval": [
+        1.6260225720276658,
+        6.764973739745134
+      ],
+      "C2_over_C1": 10.0,
+      "can_reach_PM50_in_unbounded_gain_shape": true
+    },
+    {
+      "C1": 5e-11,
+      "C2": 1e-09,
+      "PM_ceiling_deg": 65.3800226713429,
+      "x_interval": [
+        1.361855602967439,
+        15.420137020578162
+      ],
+      "C2_over_C1": 20.0,
+      "can_reach_PM50_in_unbounded_gain_shape": true
+    },
+    {
+      "C1": 5e-11,
+      "C2": 2e-09,
+      "PM_ceiling_deg": 72.24720983805331,
+      "x_interval": [
+        1.2695693306896791,
+        32.29441591640152
+      ],
+      "C2_over_C1": 40.0,
+      "can_reach_PM50_in_unbounded_gain_shape": true
+    },
+    {
+      "C1": 1e-10,
+      "C2": 5e-10,
+      "PM_ceiling_deg": 45.58469140280703,
+      "x_interval": null,
+      "C2_over_C1": 5.0,
+      "can_reach_PM50_in_unbounded_gain_shape": false
+    },
+    {
+      "C1": 1e-10,
+      "C2": 1e-09,
+      "PM_ceiling_deg": 56.44269023807929,
+      "x_interval": [
+        1.6260225720276658,
+        6.764973739745134
+      ],
+      "C2_over_C1": 10.0,
+      "can_reach_PM50_in_unbounded_gain_shape": true
+    },
+    {
+      "C1": 1e-10,
+      "C2": 2e-09,
+      "PM_ceiling_deg": 65.3800226713429,
+      "x_interval": [
+        1.361855602967439,
+        15.420137020578162
+      ],
+      "C2_over_C1": 20.0,
+      "can_reach_PM50_in_unbounded_gain_shape": true
+    },
+    {
+      "C1": 2e-10,
+      "C2": 5e-10,
+      "PM_ceiling_deg": 33.74898859588859,
+      "x_interval": null,
+      "C2_over_C1": 2.5,
+      "can_reach_PM50_in_unbounded_gain_shape": false
+    },
+    {
+      "C1": 2e-10,
+      "C2": 1e-09,
+      "PM_ceiling_deg": 45.58469140280703,
+      "x_interval": null,
+      "C2_over_C1": 5.0,
+      "can_reach_PM50_in_unbounded_gain_shape": false
+    },
+    {
+      "C1": 2e-10,
+      "C2": 2e-09,
+      "PM_ceiling_deg": 56.44269023807929,
+      "x_interval": [
+        1.6260225720276658,
+        6.764973739745134
+      ],
+      "C2_over_C1": 10.0,
+      "can_reach_PM50_in_unbounded_gain_shape": true
+    }
+  ],
+  "tuning_inequality": "Kvco>(80e6-f0)/1.2 with fixed positive zero lower rail",
+  "tuning_uniform_rectangle_fraction": 0.9444444444444444,
+  "fraction_derivation": "rejected triangle area .5*(8e6)*(20e6/3) divided by (16e6*30e6); assumes uniform independent continuous f0,Kvco, not capability probability",
+  "formal_domain_unchanged": true
+}

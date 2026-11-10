@@ -1,0 +1,101 @@
+{
+  "classification": "BW_SUBSET_PASS_WITH_M1_PM_FAIL",
+  "M1": {
+    "output_frequency_Hz": 80000000,
+    "Vctrl_required_V": 0.4299013573942633,
+    "Kvco_local_Hz_per_V": 27621544.865496907,
+    "UGF_Hz": 178134.78991794767,
+    "BW_Hz": 294221.22857271484,
+    "PM_deg": 45.66136907858953
+  },
+  "M1_judgment": {
+    "verdict": "M1_SPEC_FAIL",
+    "checks": [
+      {
+        "metric": "output_frequency_Hz",
+        "actual": 80000000,
+        "unit": "Hz",
+        "margin": 1e-06,
+        "status": "SATISFIED"
+      },
+      {
+        "metric": "BW_Hz",
+        "actual": 294221.22857271484,
+        "unit": "Hz",
+        "margin": 4221.228572714841,
+        "status": "SATISFIED"
+      },
+      {
+        "metric": "PM_deg",
+        "actual": 45.66136907858953,
+        "unit": "deg",
+        "margin": -4.33863092141047,
+        "status": "VIOLATED"
+      }
+    ],
+    "issues": [],
+    "scope": "RESEARCH_DRAFT_CONTINUOUS_M1_ONLY",
+    "verified_joint_block_spec": false,
+    "M2_behavioral_verdict": "NOT_EVALUATED"
+  },
+  "M2_BW": {
+    "value": 294644.31526578387,
+    "unit": "Hz",
+    "status": "MEASURED_CONVERGED",
+    "numerical_envelope": [
+      294506.2711379798,
+      294782.088529304
+    ],
+    "confidence": "LOCAL_WARM_START_SAMPLED_POINTS_ONLY",
+    "observable": "continuous divided VCO phase fundamental / reference phase fundamental",
+    "edge_only_equivalence": "NOT_ESTABLISHED; edge timestamp harmonic fits show different sampled response",
+    "envelope_scope": "bracketing and amplitude/step/window refinements; excludes cross-observable systematic difference"
+  },
+  "M2_constraints": [
+    {
+      "metric": "output_frequency_Hz",
+      "target": {
+        "metric": "output_frequency_Hz",
+        "unit": "Hz",
+        "min": 80000000,
+        "max": 80000000,
+        "tolerance": 1e-06,
+        "evaluator": "M1",
+        "protocol": "conditional_locked_tuning_frequency",
+        "source": "User: 10 MHz x 8; conditional static frequency, not a transient measurement"
+      },
+      "status": "UNKNOWN",
+      "reason": "UNKNOWN_REQUIRED_PRECISION: frozen 1e-6 Hz tolerance not independently validated"
+    },
+    {
+      "metric": "BW_Hz",
+      "target": {
+        "metric": "BW_Hz",
+        "unit": "Hz",
+        "min": 290000,
+        "max": 300000,
+        "tolerance": 0,
+        "evaluator": "M1",
+        "protocol": "continuous_normalized_T_first_downward_minus3dB",
+        "source": "User: experimental BW target"
+      },
+      "status": "PASS",
+      "reason": "research threshold over unchanged measured BW numerical envelope"
+    },
+    {
+      "metric": "PM_deg",
+      "target": {
+        "metric": "PM_deg",
+        "unit": "deg",
+        "min": 50,
+        "tolerance": 0,
+        "evaluator": "M1",
+        "protocol": "180_plus_continuous_L_phase_at_UGF",
+        "source": "User: experimental PM target"
+      },
+      "status": "UNKNOWN",
+      "reason": "PM_M2_UNKNOWN"
+    }
+  ],
+  "interpretation": "M1 BW and M2 BW both pass; M1 PM<50 fails while strict M2 PM remains UNKNOWN. This is no observed BW pass/fail disagreement and cannot establish joint feasibility."
+}

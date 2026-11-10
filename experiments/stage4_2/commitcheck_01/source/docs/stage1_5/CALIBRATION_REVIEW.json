@@ -1,0 +1,25 @@
+{
+  "schema_version": "calibration-followup-review-1.0",
+  "parent_case": "C130",
+  "parameter_sha256": "712726d3f0a717d16fe1f72f31f58ac9901804e57f60c5ae854fecdbcf8e16d8",
+  "original_classification": "UNRESOLVED",
+  "cause_tags": [
+    "FORMULA_ASSUMPTION_INVALID",
+    "MISSING_BEHAVIORAL_EFFECT",
+    "MEASUREMENT_PROTOCOL_MISMATCH"
+  ],
+  "interpretation": "M1 assumes locked small signal; cold acquisition near rail is not equivalent to a steady locked measurement. This does not establish an error in the M1 frequency formula.",
+  "evidence": [
+    "outputs/block_space_v1_20261104_01/cases/C130/result.json",
+    "outputs/block_space_boundary_diagnostic_20261104_01/result.json",
+    "outputs/block_space_warmstart_diagnostic_20261104_01/result.json"
+  ],
+  "known_limitations": [
+    "two resolutions and finite windows are not proof of eventual noncapture",
+    "summary-only source gives no complete raw trajectory",
+    "BW/PM not measured"
+  ],
+  "recommended_calibration_action": "Do not fit frequency residual on unacquired cases. Establish capture protocol and trajectory evidence first; version any future dynamic model separately.",
+  "raw_formula_modified": false,
+  "prediction_error": "retained in parent and follow-up records; not treated as same-protocol model residual"
+}

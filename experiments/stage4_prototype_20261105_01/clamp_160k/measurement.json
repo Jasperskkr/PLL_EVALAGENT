@@ -1,0 +1,111 @@
+{
+  "status": "MEASURED",
+  "reasons": [],
+  "frequency_Hz": 160000,
+  "L_complex": [
+    -0.4692373662751625,
+    -0.6997881865656076
+  ],
+  "magnitude": 0.8425480472742386,
+  "phase_deg": -123.84351265136945,
+  "phasors": {
+    "return_Y": [
+      -0.0023002481277333217,
+      -0.008105404354340167
+    ],
+    "actual_feedback_X": [
+      -0.009510565162946611,
+      -0.00309016994374957
+    ],
+    "disturbance_D": [
+      -0.009510565162951533,
+      -0.0030901699437495098
+    ]
+  },
+  "quality": {
+    "THD": 3.0067011422603753e-09,
+    "sideband_RSS_relative": 0.001135565667890315,
+    "residual_relative": 0.00014494121844658913,
+    "half_window_complex": 2.0204882247645104e-10,
+    "loop_error_peak_rad": 0.009999968417105265,
+    "mean_control_offset_V": 0.00014867928169209899,
+    "control_drift_V": 8.591885130436623e-10,
+    "frequency_error_ppm": 35.96344116078428,
+    "clamp_events": 0
+  },
+  "settings": {
+    "frequency_Hz": 160000,
+    "amplitude_rad": 0.01,
+    "mode": "clamp",
+    "dt_s": 4e-10,
+    "onset_s": 2e-05,
+    "duration_s": 0.000145,
+    "record_interval_s": 1e-08,
+    "initial_control_V": 0.4,
+    "phase_normalization": "divided_reference_rate_rad"
+  },
+  "measurement_window_s": [
+    7.000000000000001e-05,
+    0.000145
+  ],
+  "raw_DC_diagnostics": {
+    "voltage_offset_V": [
+      -0.00014867928169209899,
+      0.00013892252040259567
+    ],
+    "voltage_drift_V": [
+      -4.6186320518237637e-10,
+      -8.591885130436623e-10
+    ],
+    "frequency_offset_ppm": [
+      -35.96344116078428,
+      35.95709376669661
+    ],
+    "CP_charge_C": [
+      2.2582901598334856e-23,
+      4.516529710447637e-23
+    ],
+    "phase_trend_rad": [
+      -0.16938885700110282,
+      6.418476861114186e-16,
+      -1.3552527156068805e-18
+    ],
+    "edge_counts": [
+      {
+        "ref": 1450,
+        "feedback": 1450
+      },
+      {
+        "ref": 1450,
+        "feedback": 1450
+      }
+    ]
+  },
+  "return_sidebands": [
+    [
+      -6.453990606109308e-06,
+      1.8885626718520565e-06
+    ],
+    [
+      -5.954156084272966e-06,
+      -2.119242760140194e-06
+    ],
+    [
+      -1.7214313839872264e-06,
+      5.607699200271821e-07
+    ],
+    [
+      -1.6749298961220294e-06,
+      -5.418624899680702e-07
+    ]
+  ],
+  "sideband_frequencies_Hz": [
+    9840000.0,
+    10160000.0,
+    19840000.0,
+    20160000.0
+  ],
+  "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+  "method": "clamp",
+  "M1_used_for_measurement": false
+}

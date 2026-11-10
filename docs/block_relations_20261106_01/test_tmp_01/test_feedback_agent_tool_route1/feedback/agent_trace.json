@@ -1,0 +1,370 @@
+[
+  {
+    "step": 1,
+    "policy": "MOCK_FEEDBACK_POLICY_NOT_LLM",
+    "action": {
+      "tool": "InterpretVerificationFeedback",
+      "args": {},
+      "reason": "Inspect bound failure category before selecting a repair."
+    },
+    "observation": {
+      "kind": "PM",
+      "source": "SIMULATED",
+      "real_repair_success": "NOT_MEASURED",
+      "remaining_M2_required": true
+    },
+    "decision": "Inspect bound failure category before selecting a repair.",
+    "cost_to_date": {
+      "analytic_calls": 0,
+      "M1_calls": 0,
+      "candidate_generations": 0,
+      "M2_calls": 0,
+      "LLM_calls": 0
+    }
+  },
+  {
+    "step": 2,
+    "policy": "MOCK_FEEDBACK_POLICY_NOT_LLM",
+    "action": {
+      "tool": "RepairCandidate",
+      "args": {},
+      "reason": "Use the failure-specific coupled physical repair; this policy is a mock."
+    },
+    "observation": {
+      "kind": "PM",
+      "source": "SIMULATED",
+      "real_repair_success": "NOT_MEASURED",
+      "remaining_M2_required": true,
+      "action": "RESELECT_LF_RATIO_AND_SHAPE",
+      "reason": "Check phase ceiling before gain tuning; peak lead needs C2/C1 and coordinated R/product.",
+      "changes": {
+        "Icp": {
+          "old": 0.0001,
+          "new": 0.00010440430018626411
+        },
+        "Rz": {
+          "old": 3820,
+          "new": 3048.124920669113
+        },
+        "C1": {
+          "old": 1e-10,
+          "new": 5e-11
+        },
+        "C2": {
+          "old": 1e-09,
+          "new": 2e-09
+        },
+        "f0": {
+          "old": 72000000,
+          "new": 63761604.09970568
+        },
+        "Kvco": {
+          "old": 20000000,
+          "new": 27063993.167157203
+        }
+      },
+      "solver_metadata": {
+        "status": "PROPOSED",
+        "propagation": {
+          "status": "NECESSARY_CONDITIONS_ONLY",
+          "certificates": [],
+          "capacitor_pairs": [
+            {
+              "C1": 5e-11,
+              "C2": 5e-10,
+              "PM_ceiling_deg": 56.44269023807929,
+              "x_interval": [
+                1.6260225720276658,
+                6.764973739745134
+              ]
+            },
+            {
+              "C1": 5e-11,
+              "C2": 1e-09,
+              "PM_ceiling_deg": 65.3800226713429,
+              "x_interval": [
+                1.361855602967439,
+                15.420137020578162
+              ]
+            },
+            {
+              "C1": 5e-11,
+              "C2": 2e-09,
+              "PM_ceiling_deg": 72.24720983805331,
+              "x_interval": [
+                1.2695693306896791,
+                32.29441591640152
+              ]
+            },
+            {
+              "C1": 1e-10,
+              "C2": 5e-10,
+              "PM_ceiling_deg": 45.58469140280703,
+              "x_interval": null
+            },
+            {
+              "C1": 1e-10,
+              "C2": 1e-09,
+              "PM_ceiling_deg": 56.44269023807929,
+              "x_interval": [
+                1.6260225720276658,
+                6.764973739745134
+              ]
+            },
+            {
+              "C1": 1e-10,
+              "C2": 2e-09,
+              "PM_ceiling_deg": 65.3800226713429,
+              "x_interval": [
+                1.361855602967439,
+                15.420137020578162
+              ]
+            },
+            {
+              "C1": 2e-10,
+              "C2": 5e-10,
+              "PM_ceiling_deg": 33.74898859588859,
+              "x_interval": null
+            },
+            {
+              "C1": 2e-10,
+              "C2": 1e-09,
+              "PM_ceiling_deg": 45.58469140280703,
+              "x_interval": null
+            },
+            {
+              "C1": 2e-10,
+              "C2": 2e-09,
+              "PM_ceiling_deg": 56.44269023807929,
+              "x_interval": [
+                1.6260225720276658,
+                6.764973739745134
+              ]
+            }
+          ],
+          "gain_product_interval": [
+            500.0,
+            8000.0
+          ],
+          "not_proven": "BW/gain/R/tuning intersection needs solving; no certificate is not proof of feasibility"
+        },
+        "target_BW_Hz": 225000.0,
+        "free_variables": [
+          "capacitor_pair",
+          "x=sqrt(q)",
+          "Kvco_gain_split",
+          "f0_tuning_center"
+        ],
+        "analytically_derived": [
+          "Rz",
+          "Icp_from_product"
+        ],
+        "numerically_solved": [
+          "BW/UGF ratio"
+        ],
+        "rationale": "Choose peak phase-lead shape per capacitor ratio, set BW scale, split gain within bounds, center tuning then project f0.",
+        "cheap_prediction": {
+          "output_frequency_Hz": 80000000,
+          "Vctrl_required_V": 0.5999999999999999,
+          "Kvco_local_Hz_per_V": 27063993.167157203,
+          "UGF_Hz": 167166.52042516257,
+          "BW_Hz": 225000.0000000001,
+          "PM_deg": 72.24720983805332
+        },
+        "selection_score": 0.34937497355637104,
+        "candidate_pairs": 5,
+        "rejected_pairs": [
+          {
+            "C1": 2e-10,
+            "C2": 2e-09,
+            "reason": "Rz: outside declared block space"
+          }
+        ]
+      },
+      "validation_level": "REPAIR_PROPOSED_NOT_M2_VERIFIED",
+      "feedback": {
+        "schema_version": "allocation-feedback-1.0",
+        "parameter_sha256": "9b116a350e5009606dde3a27a04d85b4a74f32f0d6ae67cc908a6546ea947e7c",
+        "source": "SIMULATED",
+        "kind": "PM",
+        "verdict": "FAIL",
+        "measurements": {
+          "BW_Hz": {
+            "value": 310000.0,
+            "unit": "Hz",
+            "reliable": true
+          }
+        }
+      }
+    },
+    "decision": "Use the failure-specific coupled physical repair; this policy is a mock.",
+    "cost_to_date": {
+      "analytic_calls": 11,
+      "M1_calls": 0,
+      "candidate_generations": 6,
+      "M2_calls": 0,
+      "LLM_calls": 0
+    }
+  },
+  {
+    "step": 3,
+    "policy": "MOCK_FEEDBACK_POLICY_NOT_LLM",
+    "action": {
+      "tool": "SubmitRepairForM2",
+      "args": {},
+      "reason": "Stage complete changed candidate for independent M2; no success claim."
+    },
+    "observation": {
+      "M1": {
+        "domain": {
+          "declared_domain": "IN_DECLARED_DOMAIN",
+          "model_validity": "VALID",
+          "derived": {
+            "f_target_Hz": 80000000,
+            "Vctrl_required_V": 0.5999999999999999,
+            "voltage_margin_V": 0.5999999999999999,
+            "Icp_Kvco_over_N": 353.1996583578602,
+            "Routh_bc_minus_ad": 4.306386722449642e-12,
+            "wz_rad_s": 164035.27185173295,
+            "wp_rad_s": 6725446.1459210515
+          },
+          "issues": [],
+          "system_feasibility": "NOT_EVALUATED"
+        },
+        "prediction": {
+          "status": "OK",
+          "reason": "",
+          "model_level": "M1",
+          "model_id": "ideal_cppll_locked_continuous_m1_v1",
+          "parameter_sha256": "74864b2e3b6a8cbb9aac7610632ae0d8c5428be38c8a7e1d1c85038526ff050b",
+          "metrics": {
+            "output_frequency_Hz": 80000000,
+            "Vctrl_required_V": 0.5999999999999999,
+            "Kvco_local_Hz_per_V": 27063993.167157203,
+            "UGF_Hz": 167166.52042501146,
+            "BW_Hz": 225000.0000001216,
+            "PM_deg": 72.24720983805331
+          },
+          "units": {
+            "output_frequency_Hz": "Hz",
+            "Vctrl_required_V": "V",
+            "Kvco_local_Hz_per_V": "Hz/V",
+            "UGF_Hz": "Hz",
+            "BW_Hz": "Hz",
+            "PM_deg": "deg"
+          },
+          "protocols": {
+            "output_frequency_Hz": "conditional_locked_tuning_frequency",
+            "Vctrl_required_V": "linear_vco_static_tuning_solution",
+            "Kvco_local_Hz_per_V": "vco_derivative_at_tuning_point",
+            "UGF_Hz": "continuous_L_first_downward_unity_crossing",
+            "BW_Hz": "continuous_normalized_T_first_downward_minus3dB",
+            "PM_deg": "180_plus_continuous_L_phase_at_UGF"
+          },
+          "factors": {
+            "F_FREQ_PLAN": {
+              "f_target_Hz": 80000000,
+              "source": "model/solve_tuning_point.m"
+            },
+            "F_TUNING": {
+              "Vctrl_required_V": 0.5999999999999999,
+              "Kvco_local_Hz_per_V": 27063993.167157203,
+              "feasible": true,
+              "voltage_margin_V": 0.5999999999999999,
+              "tuning_frequency_min_Hz": 63761604.09970568,
+              "tuning_frequency_max_Hz": 96238395.90029432,
+              "source": "model/solve_tuning_point.m; model/vco_model.m"
+            },
+            "F_KPFD": {
+              "Kpfd_A_per_rad": 1.661646045469402e-05,
+              "Iup_A": 0.00010440430018626411,
+              "Idown_A": 0.00010440430018626411,
+              "source": "model/pll_linear_kernel.m"
+            },
+            "F_LF_TF": {
+              "zero_Hz": 26107.02435662614,
+              "poles_rad_per_s": [
+                0,
+                -6725446.145921052
+              ],
+              "nonzero_pole_Hz": 1070387.998621672,
+              "source": "model/pll_linear_kernel.m"
+            },
+            "F_LOOP": {
+              "UGF_Hz": 167166.52042501146,
+              "BW_Hz": 225000.0000001216,
+              "PM_deg": 72.24720983805331,
+              "characteristic_descending": [
+                3.048124920669114e-16,
+                2.05e-09,
+                0.002153193361224821,
+                353.1996583578602
+              ],
+              "routh_stable": true,
+              "T_definition": "L/(1+L); normalized reference phase response; H_ref=N*T",
+              "source": "model/pll_linear_kernel.m; characterization/characterize_loop.m"
+            }
+          },
+          "diagnostics": {
+            "scan": {
+              "minimum_Hz": 2.6107024356626143,
+              "maximum_Hz": 1000000000,
+              "points": 8000
+            },
+            "UGF_over_fref": 0.016716652042501147,
+            "BW_over_fref": 0.02250000000001216,
+            "sampling_equivalence": "NOT_ESTABLISHED",
+            "transient_lock": "NOT_EVALUATED",
+            "MATLAB_runtime_calls": 0,
+            "behavioral_TB_calls": 0
+          },
+          "response": [],
+          "scope": "CONDITIONAL_LOCKED_CONTINUOUS_SMALL_SIGNAL_ONLY",
+          "verified_joint_block_spec": false
+        },
+        "judgment": {
+          "verdict": "M1_SPEC_PASS",
+          "checks": [
+            {
+              "metric": "output_frequency_Hz",
+              "actual": 80000000,
+              "unit": "Hz",
+              "margin": 1e-06,
+              "status": "SATISFIED"
+            },
+            {
+              "metric": "BW_Hz",
+              "actual": 225000.0000001216,
+              "unit": "Hz",
+              "margin": 74999.9999998784,
+              "status": "SATISFIED"
+            },
+            {
+              "metric": "PM_deg",
+              "actual": 72.24720983805331,
+              "unit": "deg",
+              "margin": 22.24720983805331,
+              "status": "SATISFIED"
+            }
+          ],
+          "issues": [],
+          "scope": "RESEARCH_DRAFT_CONTINUOUS_M1_ONLY",
+          "verified_joint_block_spec": false,
+          "M2_behavioral_verdict": "NOT_EVALUATED"
+        },
+        "validation_level": "M1_VALIDATED",
+        "verified_joint_block_spec": false
+      },
+      "M2_status": "DEFERRED_TO_TRACK_B",
+      "feedback_source": "SIMULATED"
+    },
+    "decision": "Stage complete changed candidate for independent M2; no success claim.",
+    "cost_to_date": {
+      "analytic_calls": 11,
+      "M1_calls": 1,
+      "candidate_generations": 6,
+      "M2_calls": 0,
+      "LLM_calls": 0
+    }
+  }
+]

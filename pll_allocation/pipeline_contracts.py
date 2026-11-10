@@ -40,6 +40,11 @@ def load_inputs(config_path=None):
 def check_result(item, proposal, protocol):
     if item.get('schema_version') != RESULT_SCHEMA or item.get('overall_status') not in ('PASS', 'FAIL', 'UNKNOWN'):
         raise ValueError('unsupported BehavioralVerificationResult')
+    if proposal.get('research_scenario') is not None:
+        from .scenarios import validate_proposal_scenario
+        binding = validate_proposal_scenario(proposal)[4]
+        if item.get('scenario_binding') != binding or item.get('research_scenario') != proposal['research_scenario']:
+            raise ValueError('M2 scenario binding mismatch')
     if item.get('validation_level') == 'NOT_VALIDATED' and item['overall_status'] == 'UNKNOWN':
         if not item.get('failure_reasons') or item.get('metrics'):
             raise ValueError('invalid failure result')
@@ -67,6 +72,12 @@ def check_result(item, proposal, protocol):
     for check in checks:
         if check['target'] != by_name[check['metric']] or check['status'] not in ('PASS', 'FAIL', 'UNKNOWN'):
             raise ValueError('M2 target/status mismatch')
+        if proposal.get('research_scenario') is not None and check['metric'] == 'BW_Hz':
+            from .verification.verify import interval_judgment
+            bw = item['metrics']['BW_Hz']
+            expected_bw = interval_judgment(bw.get('numerical_envelope'), check['target']) if bw['status'] == 'MEASURED_CONVERGED' else 'UNKNOWN'
+            if check['status'] != expected_bw:
+                raise ValueError('M2 research BW judgment mismatch')
     if any(c['status'] == 'PASS' and c['metric'] in ('PM_deg', 'output_frequency_Hz') for c in checks):
         raise ValueError('unsupported precision/PM cannot pass current M2')
     expected = 'FAIL' if any(c['status'] == 'FAIL' for c in checks) else 'PASS' if all(c['status'] == 'PASS' for c in checks) else 'UNKNOWN'
@@ -100,7 +111,8 @@ def make_feedback(proposal, result, protocol, remaining):
     measurements = deepcopy(result.get('metrics', {}))
     if 'BW_Hz' in measurements:
         measurements['BW_Hz']['reliable'] = bw.get('status') == 'MEASURED_CONVERGED'
-    return {'schema_version': 'allocation-feedback-1.0', 'source': 'M2',
+    return {**({'scenario_binding': deepcopy(proposal['scenario_binding'])} if 'scenario_binding' in proposal else {}),
+            'schema_version': 'allocation-feedback-1.0', 'source': 'M2',
             'parameter_sha256': proposal['parameter_sha256'], 'candidate_id': proposal['candidate_id'],
             'system_spec_sha256': proposal['system_spec_sha256'], 'block_space_sha256': proposal['block_space_sha256'],
             'protocol_id': protocol['protocol_id'], 'protocol_sha256': fingerprint(protocol),

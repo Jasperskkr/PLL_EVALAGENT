@@ -1,0 +1,58 @@
+{
+  "schema_version": "pll-return-ratio-protocol-0.1",
+  "protocol_id": "stage4_return_ratio_0.1",
+  "base_protocol_id": "track_b_metrics_1.1",
+  "status": "RESEARCH_EXTENSION_NOT_REPLACEMENT",
+  "injection_point": "divider_phase_to_PFD_feedback_phase",
+  "phase_units": "rad_at_reference_rate_already_divided_by_N",
+  "grid_Hz": [
+    25000,
+    40000,
+    63000,
+    100000,
+    160000,
+    250000,
+    400000,
+    630000,
+    1000000
+  ],
+  "offset_grid_Hz": [
+    32000,
+    80000,
+    125000,
+    200000,
+    320000,
+    500000,
+    800000
+  ],
+  "onset_s": 2e-05,
+  "discard_cycles": 8,
+  "minimum_discard_s": 4e-05,
+  "measurement_cycles": 12,
+  "amplitude_rad": 0.01,
+  "dt_s": 4e-10,
+  "record_interval_s": 1e-08,
+  "maximum_frequency_Hz": 1000000,
+  "crossing_bracket_relative_width": 0.002,
+  "max_refinements": 16,
+  "limits": {
+    "THD": 0.03,
+    "half_window_complex": 0.02,
+    "residual_relative": 0.05,
+    "loop_error_peak_rad": 0.3,
+    "mean_control_offset_V": 0.001,
+    "control_drift_V": 0.0001,
+    "frequency_error_ppm": 100,
+    "complex_refinement": 0.03,
+    "phase_refinement_deg": 1.5,
+    "UGF_relative_refinement": 0.02,
+    "PM_refinement_deg": 1.5,
+    "sideband_RSS_relative": 0.03,
+    "zero_clamp_events": 0
+  },
+  "model_disagreement": {
+    "UGF_relative": 0.05,
+    "PM_absolute_deg": 3.0
+  },
+  "certification_rule": "convergence is necessary but not sufficient; no full periodic stability claim without harmonic-coupling justification; original protocol1.1 result never upgraded by this extension"
+}

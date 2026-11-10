@@ -1,0 +1,111 @@
+{
+  "status": "MEASURED",
+  "reasons": [],
+  "frequency_Hz": 160000,
+  "L_complex": [
+    -0.470198468853471,
+    -0.7012179817939004
+  ],
+  "magnitude": 0.8442708440442909,
+  "phase_deg": -123.84364594625806,
+  "phasors": {
+    "return_Y": [
+      0.005792487825954415,
+      -0.007663578951274177
+    ],
+    "actual_feedback_X": [
+      -0.003718077336992196,
+      -0.010753748895023747
+    ],
+    "disturbance_D": [
+      -0.009510565162951533,
+      -0.0030901699437495098
+    ]
+  },
+  "quality": {
+    "THD": 3.972017030241031e-09,
+    "sideband_RSS_relative": 0.0011355655548780559,
+    "residual_relative": 0.0001449411297253374,
+    "half_window_complex": 2.8010759338117064e-10,
+    "loop_error_peak_rad": 0.011401495435165998,
+    "mean_control_offset_V": 5.548015445944188e-06,
+    "control_drift_V": 4.002430254572988e-08,
+    "frequency_error_ppm": 0.004553286828474814,
+    "clamp_events": 0
+  },
+  "settings": {
+    "frequency_Hz": 160000,
+    "amplitude_rad": 0.01,
+    "mode": "series",
+    "dt_s": 4e-10,
+    "onset_s": 2e-05,
+    "duration_s": 0.000145,
+    "record_interval_s": 1e-08,
+    "initial_control_V": 0.4,
+    "phase_normalization": "divided_reference_rate_rad"
+  },
+  "measurement_window_s": [
+    7.000000000000001e-05,
+    0.000145
+  ],
+  "raw_DC_diagnostics": {
+    "voltage_offset_V": [
+      -5.548015445944188e-06,
+      -5.548010222677924e-06
+    ],
+    "voltage_drift_V": [
+      4.002430254572988e-08,
+      2.406781316210785e-08
+    ],
+    "frequency_offset_ppm": [
+      0.004540181872870284,
+      -0.004553286828474814
+    ],
+    "CP_charge_C": [
+      1.447669826660725e-14,
+      3.341912920829507e-22
+    ],
+    "phase_trend_rad": [
+      -2.7693842191944514e-09,
+      -2.7693835802876637e-09,
+      -1.3552527156068805e-18
+    ],
+    "edge_counts": [
+      {
+        "ref": 1450,
+        "feedback": 1450
+      },
+      {
+        "ref": 1450,
+        "feedback": 1449
+      }
+    ]
+  },
+  "return_sidebands": [
+    [
+      -2.7179526612543117e-06,
+      7.16926365891205e-06
+    ],
+    [
+      -2.1645543043856217e-06,
+      -6.873112811403468e-06
+    ],
+    [
+      -6.730473293454482e-07,
+      1.9514201815218145e-06
+    ],
+    [
+      -6.582858055243297e-07,
+      -1.8961211179509704e-06
+    ]
+  ],
+  "sideband_frequencies_Hz": [
+    9840000.0,
+    10160000.0,
+    19840000.0,
+    20160000.0
+  ],
+  "definition": "-raw_return_Y / actual_PFD_feedback_X; exp(+jwt), reference-rate rad",
+  "method": "series",
+  "M1_used_for_measurement": false
+}

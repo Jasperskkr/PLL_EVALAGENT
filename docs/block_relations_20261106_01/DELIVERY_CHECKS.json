@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "authoritative_artifact": "atlas_03",
+  "source_bindings_checked": 20,
+  "html_tables": 5,
+  "html_remote_dependencies": 0,
+  "html_scripts": 0,
+  "final_related_regression": {
+    "tests": 83,
+    "failures": 0,
+    "errors": 0
+  },
+  "M1_research_generation_calls": 36,
+  "conditional_beta_calls": 72,
+  "M2_calls": 0,
+  "real_LLM_calls": 0,
+  "all_existing_tracked_except_authorized_docs_unchanged": true,
+  "new_code": [
+    "tools/build_block_relation_atlas.py",
+    "tests/test_block_relation_atlas.py"
+  ],
+  "verification_scope": "table/math/domain + relevant existing regression; not a new behavioral certification"
+}

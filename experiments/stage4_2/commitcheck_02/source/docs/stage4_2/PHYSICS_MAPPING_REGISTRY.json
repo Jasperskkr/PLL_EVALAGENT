@@ -1,0 +1,743 @@
+{
+  "schema_version": "pll-physics-mapping-registry-0.1",
+  "status": "RESEARCH_REVIEW_ONLY",
+  "replaces_formal_model": false,
+  "baseline_commit": "47afcb72011636e838b03d81cf91bcec49744a77",
+  "block_space_sha256": "879c2748c1d74d5d05c651f905af6fa818e3f994e97206d93b295ca4b62097c0",
+  "system_spec_sha256": "9acdbf00d9b095e3cc23400024628f2301220549a45e8301aa42a08490fa598c",
+  "model_versions": {
+    "formula_version": "stage1_m1_1.0.0",
+    "parameter_domain_version": "stage1_declared_domain_1.0.0",
+    "behavioral_model_version": "reference_python_edge_euler_sha256_f6f550276228"
+  },
+  "source_bindings": [
+    {
+      "path": "configs/BLOCK_SPACE_MODEL_V1.json",
+      "sha256": "9fe4b6025f344701b74c27834ab1fac1cf6cb58eb58c80c49a5e117e749ae518",
+      "bytes": 56672,
+      "normalized_lf_sha256": "d416d04ed08c8f578891a7cff93a1e0d0b024f1eec540ff3c1998eace5aa5b9c",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "configs/SYSTEM_SPEC_STAGE1_5.json",
+      "sha256": "49531ea5da98b87e5c5b219018fd54a86e1f30ba196d89caa7e755cb11bfeba3",
+      "bytes": 972,
+      "normalized_lf_sha256": "5a5f80c8f7482f4dec0b063b7d288cea8e864b87ec2022edad46005fcdc36aa0",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "configs/PLL_EQUATION_REGISTRY_V1.json",
+      "sha256": "2f38369d268e57ee3e9549d3a5aac27ee90d059ef40ad8c20499dd7830be96fb",
+      "bytes": 25933,
+      "normalized_lf_sha256": "fc4fd642c1db86e0a74fb68c631f013e39c3d89095929c1d653d8c4e5286c27c",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "configs/verification/protocol_v1_1.json",
+      "sha256": "7de5162bd57ad886170415e2d02e1d060878654d2c9e1f46b095ec7163b8399b",
+      "bytes": 3612,
+      "normalized_lf_sha256": "9263bf0b11ff4e5c155be42b67e1a2589f916749ba31b552e7428a2de783fa34",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "pll_allocation/physics_mapping/model.py",
+      "sha256": "412dbbbec9a499c56fe10781f2ff1debb525ead8fb411a2f72f056d36e8a2e34",
+      "bytes": 14711,
+      "normalized_lf_sha256": "412dbbbec9a499c56fe10781f2ff1debb525ead8fb411a2f72f056d36e8a2e34",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "pll_allocation/physics_mapping/validation.py",
+      "sha256": "2ed722b72c1dc87ce58d64f2004e6c6e9b518932db8a1a344fed7e5c0ae85e81",
+      "bytes": 9986,
+      "normalized_lf_sha256": "2ed722b72c1dc87ce58d64f2004e6c6e9b518932db8a1a344fed7e5c0ae85e81",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "pll_allocation/block_space/contracts.py",
+      "sha256": "8aa26fc3520c52f3037332b306d0ec36074ae0c5541061f1c6a7be011924eaab",
+      "bytes": 5820,
+      "normalized_lf_sha256": "8aa26fc3520c52f3037332b306d0ec36074ae0c5541061f1c6a7be011924eaab",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "pll_allocation/allocation/physics.py",
+      "sha256": "f10aa7d11044d484a18bd6aaa3b420f08f69f1215ce9c7d746132a4e72872860",
+      "bytes": 5300,
+      "normalized_lf_sha256": "f10aa7d11044d484a18bd6aaa3b420f08f69f1215ce9c7d746132a4e72872860",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "pll_allocation/allocation/allocate.py",
+      "sha256": "bf570c5e05f29afc1f0d75723fca0a1f781fa321a20a4ab459ffe64ee4cb1535",
+      "bytes": 11243,
+      "normalized_lf_sha256": "bf570c5e05f29afc1f0d75723fca0a1f781fa321a20a4ab459ffe64ee4cb1535",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "pll_allocation/allocation/core.py",
+      "sha256": "2c04824cc0bf86831050e059ee424c2b8c2ed539751a4971632ba833441a320c",
+      "bytes": 10115,
+      "normalized_lf_sha256": "2c04824cc0bf86831050e059ee424c2b8c2ed539751a4971632ba833441a320c",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "pll_allocation/verification/verify.py",
+      "sha256": "8c7a653d395fedb0552df073871afd08b59500afce80fde56ad92d6afa1048b3",
+      "bytes": 13129,
+      "normalized_lf_sha256": "8c7a653d395fedb0552df073871afd08b59500afce80fde56ad92d6afa1048b3",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "pll_allocation/verification/kernel.cpp",
+      "sha256": "befdd779cd69c73f1a2fb8667e895f77efff979cb3186d80a83113c0321c9f54",
+      "bytes": 3577,
+      "normalized_lf_sha256": "befdd779cd69c73f1a2fb8667e895f77efff979cb3186d80a83113c0321c9f54",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "pll_allocation/verification/simulator.py",
+      "sha256": "3c350efbb64cad3c7afb43b0f6946c819c52914d9a19893a749dffd48ee97750",
+      "bytes": 4251,
+      "normalized_lf_sha256": "3c350efbb64cad3c7afb43b0f6946c819c52914d9a19893a749dffd48ee97750",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    {
+      "path": "pll_allocation/_legacy/physics/cp.py",
+      "sha256": "21ac82286bc7df9e7a9ad5f7c7d6466a8f4f2524e6cada216000916ce73b6e77",
+      "bytes": 597,
+      "normalized_lf_sha256": "21ac82286bc7df9e7a9ad5f7c7d6466a8f4f2524e6cada216000916ce73b6e77",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    }
+  ],
+  "evidence_catalog": {
+    "S15": {
+      "evidence_id": "S15",
+      "source": {
+        "path": "outputs/block_space_v1_20261104_01/summary.json",
+        "sha256": "40292cbd250c750d3a22a4c1cad5065a6e734a17f470a0256140f9a7649e2eaf",
+        "bytes": 2377,
+        "normalized_lf_sha256": "c17eaad342c25b1aaddc5115cb4bfe05fdf8b4faa28e632a3feb8b48dd3a60b3",
+        "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+      },
+      "snapshot": {
+        "path": "experiments/stage4_2/readiness_05/evidence/S15.json",
+        "sha256": "40292cbd250c750d3a22a4c1cad5065a6e734a17f470a0256140f9a7649e2eaf",
+        "bytes": 2377,
+        "normalized_lf_sha256": "c17eaad342c25b1aaddc5115cb4bfe05fdf8b4faa28e632a3feb8b48dd3a60b3",
+        "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+      },
+      "interpretation": "historical read-only evidence; not a new Stage4.2 simulation"
+    },
+    "S4": {
+      "records": [
+        {
+          "evidence_id": "S4_nominal",
+          "source": {
+            "path": "experiments/stage4_summary_20261105_05/nominal_extension.json",
+            "sha256": "34139f52001ee0eb82890c7d2a6a340d99f3b1d0e2cf0f418bdf12f26ef98e86",
+            "bytes": 22886,
+            "normalized_lf_sha256": "b9616ebd026a890a736dc97d9a27511f56ce4f7da038fb9e87b228cf4446b657",
+            "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+          },
+          "snapshot": {
+            "path": "experiments/stage4_2/readiness_05/evidence/S4_nominal.json",
+            "sha256": "34139f52001ee0eb82890c7d2a6a340d99f3b1d0e2cf0f418bdf12f26ef98e86",
+            "bytes": 22886,
+            "normalized_lf_sha256": "b9616ebd026a890a736dc97d9a27511f56ce4f7da038fb9e87b228cf4446b657",
+            "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+          },
+          "interpretation": "historical read-only evidence; not a new Stage4.2 simulation"
+        },
+        {
+          "evidence_id": "S4_agent",
+          "source": {
+            "path": "experiments/stage4_summary_20261105_05/real_agent_extension.json",
+            "sha256": "06aeca4dc7ccfc56983859cee5f894cad8bae88a8d5eff6ab612fa5223b90320",
+            "bytes": 22632,
+            "normalized_lf_sha256": "fe1ed5790befd3204e22832317380926d02c7315725864754b41dc6dbbafc568",
+            "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+          },
+          "snapshot": {
+            "path": "experiments/stage4_2/readiness_05/evidence/S4_agent.json",
+            "sha256": "06aeca4dc7ccfc56983859cee5f894cad8bae88a8d5eff6ab612fa5223b90320",
+            "bytes": 22632,
+            "normalized_lf_sha256": "fe1ed5790befd3204e22832317380926d02c7315725864754b41dc6dbbafc568",
+            "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+          },
+          "interpretation": "historical read-only evidence; not a new Stage4.2 simulation"
+        },
+        {
+          "evidence_id": "S4_boundary",
+          "source": {
+            "path": "experiments/stage4_summary_20261105_05/pm_boundary_extension.json",
+            "sha256": "8c578a7a65206c173d154d25975a1801fcc7c1a74a63c0ae1e2aed376116fe7e",
+            "bytes": 23054,
+            "normalized_lf_sha256": "611b516355ebf60bf1b7e81c31fd99e25646bca64f97499672b982b7ae954c6b",
+            "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+          },
+          "snapshot": {
+            "path": "experiments/stage4_2/readiness_05/evidence/S4_boundary.json",
+            "sha256": "8c578a7a65206c173d154d25975a1801fcc7c1a74a63c0ae1e2aed376116fe7e",
+            "bytes": 23054,
+            "normalized_lf_sha256": "611b516355ebf60bf1b7e81c31fd99e25646bca64f97499672b982b7ae954c6b",
+            "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+          },
+          "interpretation": "historical read-only evidence; not a new Stage4.2 simulation"
+        }
+      ],
+      "scope": "three local points; UGF/PM UNKNOWN"
+    },
+    "CURRENT_SCAN": {
+      "path": "experiments/stage4_2/readiness_05/summary.json",
+      "sha256": "73b8c8227fcd0fd3072548dc049e5f8b5901445e8759f15dad3d10dadb1a5bde",
+      "bytes": 1053,
+      "normalized_lf_sha256": "45fdf0391e99fe67f50d99ee011b0c81bbd9e23700ed3159dcdfb150a675f49a",
+      "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+    },
+    "SOURCE_AUDIT": {
+      "report": "docs/stage4_2/EQUATION_AND_DOMAIN_AUDIT.md"
+    },
+    "LEGACY_CP": {
+      "source": {
+        "path": "pll_allocation/_legacy/physics/cp.py",
+        "sha256": "21ac82286bc7df9e7a9ad5f7c7d6466a8f4f2524e6cada216000916ce73b6e77",
+        "bytes": 597,
+        "normalized_lf_sha256": "21ac82286bc7df9e7a9ad5f7c7d6466a8f4f2524e6cada216000916ce73b6e77",
+        "byte_policy": "EXACT_OR_CRLF_LF_EQUIVALENT"
+      },
+      "scope": "charge algebra only; incompatible contexts must not be mixed"
+    }
+  },
+  "research_relations": [
+    {
+      "equation_id": "R_SHAPE",
+      "expression": "q=1+C2/C1; x=wu*Rz*C2; PM=atan(x)-atan(x/q); Icp*Kvco=N*(C1+C2)*wu^2*sqrt((1+(x/q)^2)/(1+x^2))",
+      "status": "RESEARCH_DERIVATION_NOT_FORMAL_REGISTRY_REPLACEMENT",
+      "source": "allocation/physics.py RELATIONS",
+      "domain": "ideal locked continuous positive RC; same units as existing model"
+    },
+    {
+      "equation_id": "R_PM_CEILING",
+      "expression": "PMmax=asin((q-1)/(q+1)); x_peak=sqrt(q); tan(PM)*x^2-(q-1)*x+q*tan(PM)<=0",
+      "status": "RESEARCH_DERIVATION_NOT_FORMAL_REGISTRY_REPLACEMENT",
+      "source": "allocation/physics.py pm_ceiling, phase_interval",
+      "domain": "ideal locked continuous positive RC; same units as existing model"
+    },
+    {
+      "equation_id": "R_SCALE",
+      "expression": "fixed C: Rnew=R/a; (Icp*Kvco)new=a^2*(Icp*Kvco); UGF/BW scale by a and PM unchanged",
+      "status": "RESEARCH_DERIVATION_NOT_FORMAL_REGISTRY_REPLACEMENT",
+      "source": "allocation/physics.py RELATIONS scaling",
+      "domain": "ideal locked continuous positive RC; same units as existing model"
+    },
+    {
+      "equation_id": "R_CHARGE_BALANCE",
+      "expression": "q0+I_branch*delta_t=0; phi_rad=2*pi*f_ref*delta_t; q_cycle=I_leak/f_ref if explicitly defined",
+      "status": "RESEARCH_DERIVATION_NOT_FORMAL_REGISTRY_REPLACEMENT",
+      "source": "_legacy/physics/cp.py equilibrium_timing; supplemental charge conservation",
+      "domain": "ideal locked continuous positive RC; same units as existing model"
+    }
+  ],
+  "mappings": [
+    {
+      "system_metric_id": "output_frequency_Hz",
+      "unit": "Hz",
+      "definition": "conditional locked f_out=N*f_ref, not proof of capture or 1e-6Hz finite-window accuracy",
+      "enabled_in_frozen_SystemSpec": true,
+      "related_block_variables": [
+        "f_ref",
+        "N",
+        "f0",
+        "Kvco",
+        "Vctrl_min",
+        "Vctrl_max"
+      ],
+      "equation_ids": [
+        "E_FREQ_PLAN",
+        "E_TUNING"
+      ],
+      "forward_model": "pll_allocation.physics_mapping.model.evaluate",
+      "inverse_capability": "ANALYTICAL_INVERSE",
+      "constraint_propagation_method": "fixed frequency plan check; Vmin<(N*f_ref-f0)/Kvco<Vmax; f0=F-Kvco*Vreq",
+      "supported_domain": [
+        "unchanged Stage1.5 complete SI envelope and six-variable declared space",
+        "fixed f_ref=10MHz, integer N=8; ideal symmetric CP; zero nonideal context",
+        "interior tuning; continuous M1 is locked small-signal only"
+      ],
+      "verification_evidence": [
+        "S15",
+        "S4"
+      ],
+      "model_limitations": [
+        "fixed N/f_ref are not allocation degrees of freedom",
+        "static tuning does not establish acquisition"
+      ],
+      "available_solver_tool": [
+        "block_space.contracts.check_parameters",
+        "pll_allocation.physics_mapping.model.evaluate",
+        "pll_allocation.verification.verify.verify (complete saved AllocationProposal, new output directory)"
+      ],
+      "M1_support": "IMPLEMENTED_CONDITIONAL",
+      "M2_support": "tracking/control measured; frozen microHz equality UNKNOWN",
+      "confidence_status": {
+        "mathematical_definition": "DEFINED_IN_SCOPE",
+        "numerical_implementation": "IMPLEMENTED_CONDITIONAL",
+        "behavioral_support": "tracking/control measured; frozen microHz equality UNKNOWN",
+        "validated_parameter_domain": "finite evidence points only; no full-domain behavioral certificate",
+        "unvalidated_generalization": "devices, nonidealities, global capture, periodic stability and noise remain excluded"
+      }
+    },
+    {
+      "system_metric_id": "Vctrl_required_V",
+      "unit": "V",
+      "definition": "(N*f_ref-f0)/Kvco; f0 is zero-volt intercept",
+      "enabled_in_frozen_SystemSpec": false,
+      "related_block_variables": [
+        "f0",
+        "Kvco",
+        "f_ref",
+        "N",
+        "Vctrl_min",
+        "Vctrl_max"
+      ],
+      "equation_ids": [
+        "E_TUNING"
+      ],
+      "forward_model": "pll_allocation.physics_mapping.model.evaluate",
+      "inverse_capability": "ANALYTICAL_INVERSE",
+      "constraint_propagation_method": "f0=F-Kvco*V; Kvco=(F-f0)/V for V>0; intersect original f0/Kvco bounds and strict rails",
+      "supported_domain": [
+        "unchanged Stage1.5 complete SI envelope and six-variable declared space",
+        "fixed f_ref=10MHz, integer N=8; ideal symmetric CP; zero nonideal context",
+        "interior tuning; continuous M1 is locked small-signal only"
+      ],
+      "verification_evidence": [
+        "S15",
+        "S4"
+      ],
+      "model_limitations": [
+        "Kvco positive and linear; no curvature or PVT",
+        "no new voltage margin constraint is enabled"
+      ],
+      "available_solver_tool": [
+        "pll_allocation.physics_mapping.model.evaluate",
+        "block_space.contracts.check_parameters"
+      ],
+      "M1_support": "IMPLEMENTED",
+      "M2_support": "steady control supported at sparse points",
+      "confidence_status": {
+        "mathematical_definition": "DEFINED_IN_SCOPE",
+        "numerical_implementation": "IMPLEMENTED",
+        "behavioral_support": "steady control supported at sparse points",
+        "validated_parameter_domain": "finite evidence points only; no full-domain behavioral certificate",
+        "unvalidated_generalization": "devices, nonidealities, global capture, periodic stability and noise remain excluded"
+      }
+    },
+    {
+      "system_metric_id": "BW_Hz",
+      "unit": "Hz",
+      "definition": "unique downward |T(j2pi f)|=1/sqrt(2), T=L/(1+L), normalized divided-phase response",
+      "enabled_in_frozen_SystemSpec": true,
+      "related_block_variables": [
+        "Icp",
+        "Kvco",
+        "Rz",
+        "C1",
+        "C2",
+        "N"
+      ],
+      "equation_ids": [
+        "E_KPFD",
+        "E_LF",
+        "E_OPEN",
+        "E_CLOSED",
+        "E_BW",
+        "R_SHAPE",
+        "R_SCALE"
+      ],
+      "forward_model": "pll_allocation.physics_mapping.model.evaluate",
+      "inverse_capability": "NUMERICAL_INVERSE",
+      "constraint_propagation_method": "enumerate C1/C2; phase ceiling screening; solve BW/UGF scalar root then reconstruct R/gain and check bounded intersection",
+      "supported_domain": [
+        "unchanged Stage1.5 complete SI envelope and six-variable declared space",
+        "fixed f_ref=10MHz, integer N=8; ideal symmetric CP; zero nonideal context",
+        "interior tuning; continuous M1 is locked small-signal only"
+      ],
+      "verification_evidence": [
+        "S15",
+        "S4",
+        "CURRENT_SCAN"
+      ],
+      "model_limitations": [
+        "analytical strategy contains bandwidth_ratio numerical root",
+        "not equivalent to UGF",
+        "local M2 evidence is not domain-wide"
+      ],
+      "available_solver_tool": [
+        "allocation.physics.propagate",
+        "allocation.physics.inverse_at_shape",
+        "allocation.allocate.analytical",
+        "allocation.allocate.optimize",
+        "pll_allocation.physics_mapping.model.evaluate",
+        "pll_allocation.verification.verify.verify (complete saved AllocationProposal, new output directory)"
+      ],
+      "M1_support": "IMPLEMENTED_NUMERIC_CROSSING",
+      "M2_support": "Protocol1.1 converged local measured BW; observable-dependent",
+      "confidence_status": {
+        "mathematical_definition": "DEFINED_IN_SCOPE",
+        "numerical_implementation": "IMPLEMENTED_NUMERIC_CROSSING",
+        "behavioral_support": "Protocol1.1 converged local measured BW; observable-dependent",
+        "validated_parameter_domain": "finite evidence points only; no full-domain behavioral certificate",
+        "unvalidated_generalization": "devices, nonidealities, global capture, periodic stability and noise remain excluded"
+      }
+    },
+    {
+      "system_metric_id": "PM_deg",
+      "unit": "deg",
+      "definition": "180+arg L at valid unity crossing; ideal phase lead atan(x)-atan(x/q)",
+      "enabled_in_frozen_SystemSpec": true,
+      "related_block_variables": [
+        "Icp",
+        "Kvco",
+        "Rz",
+        "C1",
+        "C2",
+        "N"
+      ],
+      "equation_ids": [
+        "E_PM",
+        "E_UGF",
+        "R_SHAPE",
+        "R_PM_CEILING"
+      ],
+      "forward_model": "pll_allocation.physics_mapping.model.evaluate",
+      "inverse_capability": "NUMERICAL_INVERSE",
+      "constraint_propagation_method": "analytic capacitor ratio ceiling and x interval; remaining BW/gain/R/tuning intersection requires existing bounded solver",
+      "supported_domain": [
+        "unchanged Stage1.5 complete SI envelope and six-variable declared space",
+        "fixed f_ref=10MHz, integer N=8; ideal symmetric CP; zero nonideal context",
+        "interior tuning; continuous M1 is locked small-signal only"
+      ],
+      "verification_evidence": [
+        "S15",
+        "S4",
+        "CURRENT_SCAN"
+      ],
+      "model_limitations": [
+        "analytic x interval is a necessary shape condition, not complete allocation",
+        "no sampled/harmonic stability certificate"
+      ],
+      "available_solver_tool": [
+        "allocation.physics.pm_ceiling",
+        "allocation.physics.phase_interval",
+        "allocation.physics.propagate",
+        "allocation.allocate.optimize",
+        "pll_allocation.physics_mapping.model.evaluate"
+      ],
+      "M1_support": "IMPLEMENTED_CONTINUOUS_ONLY",
+      "M2_support": "Stage4 numerical phase-port diagnostics converge; formal periodic PM UNKNOWN",
+      "confidence_status": {
+        "mathematical_definition": "DEFINED_IN_SCOPE",
+        "numerical_implementation": "IMPLEMENTED_CONTINUOUS_ONLY",
+        "behavioral_support": "Stage4 numerical phase-port diagnostics converge; formal periodic PM UNKNOWN",
+        "validated_parameter_domain": "finite evidence points only; no full-domain behavioral certificate",
+        "unvalidated_generalization": "devices, nonidealities, global capture, periodic stability and noise remain excluded"
+      }
+    },
+    {
+      "system_metric_id": "UGF_Hz",
+      "unit": "Hz",
+      "definition": "unique downward |L(j2pi f)|=1; diagnostic only in current frozen SystemSpec",
+      "enabled_in_frozen_SystemSpec": false,
+      "related_block_variables": [
+        "Icp",
+        "Kvco",
+        "Rz",
+        "C1",
+        "C2",
+        "N"
+      ],
+      "equation_ids": [
+        "E_UGF",
+        "R_SHAPE"
+      ],
+      "forward_model": "pll_allocation.physics_mapping.model.evaluate",
+      "inverse_capability": "NUMERICAL_INVERSE",
+      "constraint_propagation_method": "conditional closed-form product/R at fixed legal C and x; full constrained allocation numerical; existing official solver has no UGF target field",
+      "supported_domain": [
+        "unchanged Stage1.5 complete SI envelope and six-variable declared space",
+        "fixed f_ref=10MHz, integer N=8; ideal symmetric CP; zero nonideal context",
+        "interior tuning; continuous M1 is locked small-signal only"
+      ],
+      "verification_evidence": [
+        "S4",
+        "CURRENT_SCAN"
+      ],
+      "model_limitations": [
+        "forward query is not an exposed official UGF-target policy",
+        "do not replace BW by UGF or silently enable a constraint"
+      ],
+      "available_solver_tool": [
+        "pll_allocation.physics_mapping.model.evaluate",
+        "allocation.physics.raw_prediction",
+        "allocation.physics.phase_interval"
+      ],
+      "M1_support": "IMPLEMENTED_CONTINUOUS_ONLY",
+      "M2_support": "Stage4 local Series/Clamp crossings; formal UGF UNKNOWN",
+      "confidence_status": {
+        "mathematical_definition": "DEFINED_IN_SCOPE",
+        "numerical_implementation": "IMPLEMENTED_CONTINUOUS_ONLY",
+        "behavioral_support": "Stage4 local Series/Clamp crossings; formal UGF UNKNOWN",
+        "validated_parameter_domain": "finite evidence points only; no full-domain behavioral certificate",
+        "unvalidated_generalization": "devices, nonidealities, global capture, periodic stability and noise remain excluded"
+      }
+    },
+    {
+      "system_metric_id": "RUR",
+      "unit": "1",
+      "definition": "not defined in formal config/code; no assumed orientation or threshold",
+      "enabled_in_frozen_SystemSpec": false,
+      "related_block_variables": [],
+      "equation_ids": [],
+      "forward_model": null,
+      "inverse_capability": "UNSUPPORTED",
+      "constraint_propagation_method": "request an approved definition; UGF/f_ref and f_ref/UGF may be separate diagnostics only",
+      "supported_domain": [
+        "unchanged Stage1.5 complete SI envelope and six-variable declared space",
+        "fixed f_ref=10MHz, integer N=8; ideal symmetric CP; zero nonideal context",
+        "interior tuning; continuous M1 is locked small-signal only"
+      ],
+      "verification_evidence": [
+        "SOURCE_AUDIT"
+      ],
+      "model_limitations": [
+        "no authoritative definition; not a constraint",
+        "ratio is not proof of sampled equivalence"
+      ],
+      "available_solver_tool": [],
+      "M1_support": "NOT_IMPLEMENTED",
+      "M2_support": "NOT_IMPLEMENTED",
+      "confidence_status": {
+        "mathematical_definition": "UNDEFINED",
+        "numerical_implementation": "NOT_IMPLEMENTED",
+        "behavioral_support": "NOT_IMPLEMENTED",
+        "validated_parameter_domain": "finite evidence points only; no full-domain behavioral certificate",
+        "unvalidated_generalization": "devices, nonidealities, global capture, periodic stability and noise remain excluded"
+      }
+    },
+    {
+      "system_metric_id": "static_phase_error_deg",
+      "unit": "deg",
+      "definition": "wrapped reference-minus-divided-output steady phase; supplemental charge relation phi=-2pi*f_ref*q0/Icp when assumptions hold",
+      "enabled_in_frozen_SystemSpec": false,
+      "related_block_variables": [
+        "Icp",
+        "CP_leakage",
+        "q0",
+        "CP_mismatch",
+        "PFD_reset_delay",
+        "f_ref"
+      ],
+      "equation_ids": [
+        "R_CHARGE_BALANCE"
+      ],
+      "forward_model": "legacy CP equilibrium_timing; not an enabled M1 metric",
+      "inverse_capability": "PHYSICS_SCREENING",
+      "constraint_propagation_method": "q0+I_branch*delta_t=0; phi_deg=360*f_ref*delta_t; bound signed charge if phase budget is approved",
+      "supported_domain": [
+        "unchanged Stage1.5 complete SI envelope and six-variable declared space",
+        "fixed f_ref=10MHz, integer N=8; ideal symmetric CP; zero nonideal context",
+        "interior tuning; continuous M1 is locked small-signal only"
+      ],
+      "verification_evidence": [
+        "LEGACY_CP",
+        "SOURCE_AUDIT"
+      ],
+      "model_limitations": [
+        "q0/leakage/reset/mismatch fixed zero; cannot claim nonzero-bias allocation readiness",
+        "legacy q0 includes proxy load; do not transfer to Stage1.5 without sign/charge semantics audit"
+      ],
+      "available_solver_tool": [
+        "_legacy.physics.cp.equilibrium_timing",
+        "_legacy.physics.cp.charge_window"
+      ],
+      "M1_support": "NO_FORMAL_METRIC; ideal zero bias only",
+      "M2_support": "raw tail wrapped phase observable, no independent enabled static spec",
+      "confidence_status": {
+        "mathematical_definition": "DEFINED_IN_SCOPE",
+        "numerical_implementation": "NO_FORMAL_METRIC; ideal zero bias only",
+        "behavioral_support": "raw tail wrapped phase observable, no independent enabled static spec",
+        "validated_parameter_domain": "finite evidence points only; no full-domain behavioral certificate",
+        "unvalidated_generalization": "devices, nonidealities, global capture, periodic stability and noise remain excluded"
+      }
+    },
+    {
+      "system_metric_id": "lock_time_s",
+      "unit": "s",
+      "definition": "earliest beginning of terminal sustained valid blocks under Protocol1.1 initial-condition/window definition",
+      "enabled_in_frozen_SystemSpec": false,
+      "related_block_variables": [
+        "Icp",
+        "Kvco",
+        "Rz",
+        "C1",
+        "C2",
+        "N",
+        "f0",
+        "Vctrl_min",
+        "Vctrl_max"
+      ],
+      "equation_ids": [
+        "E_TUNING",
+        "E_STABILITY"
+      ],
+      "forward_model": "Protocol1.1 capture measurement only",
+      "inverse_capability": "BEHAVIORAL_ONLY",
+      "constraint_propagation_method": "tuning/rail necessary screening then full M2; PM or RC constants cannot guarantee acquisition time",
+      "supported_domain": [
+        "unchanged Stage1.5 complete SI envelope and six-variable declared space",
+        "fixed f_ref=10MHz, integer N=8; ideal symmetric CP; zero nonideal context",
+        "interior tuning; continuous M1 is locked small-signal only"
+      ],
+      "verification_evidence": [
+        "S15",
+        "S4",
+        "SOURCE_AUDIT"
+      ],
+      "model_limitations": [
+        "initial state/window and cycle-slip interpretation required",
+        "no enabled hard lock-time constraint",
+        "no validated analytical inverse"
+      ],
+      "available_solver_tool": [
+        "pll_allocation.verification.verify.verify (complete saved AllocationProposal, new output directory)"
+      ],
+      "M1_support": "NOT_IMPLEMENTED",
+      "M2_support": "IMPLEMENTED_WINDOW_CONDITIONAL",
+      "confidence_status": {
+        "mathematical_definition": "DEFINED_IN_SCOPE",
+        "numerical_implementation": "NOT_IMPLEMENTED",
+        "behavioral_support": "IMPLEMENTED_WINDOW_CONDITIONAL",
+        "validated_parameter_domain": "finite evidence points only; no full-domain behavioral certificate",
+        "unvalidated_generalization": "devices, nonidealities, global capture, periodic stability and noise remain excluded"
+      }
+    },
+    {
+      "system_metric_id": "capture",
+      "unit": "1",
+      "definition": "CAPTURED_WITHIN_WINDOW or NOT_CAPTURED_WITHIN_WINDOW; not global nonlockability",
+      "enabled_in_frozen_SystemSpec": false,
+      "related_block_variables": [
+        "Icp",
+        "Kvco",
+        "Rz",
+        "C1",
+        "C2",
+        "N",
+        "f0",
+        "Vctrl_min",
+        "Vctrl_max"
+      ],
+      "equation_ids": [
+        "E_TUNING",
+        "E_STABILITY"
+      ],
+      "forward_model": "Protocol1.1 capture measurement only",
+      "inverse_capability": "BEHAVIORAL_ONLY",
+      "constraint_propagation_method": "tuning/rail necessary screening then full M2; PM or RC constants cannot guarantee acquisition time",
+      "supported_domain": [
+        "unchanged Stage1.5 complete SI envelope and six-variable declared space",
+        "fixed f_ref=10MHz, integer N=8; ideal symmetric CP; zero nonideal context",
+        "interior tuning; continuous M1 is locked small-signal only"
+      ],
+      "verification_evidence": [
+        "S15",
+        "S4",
+        "SOURCE_AUDIT"
+      ],
+      "model_limitations": [
+        "initial state/window and cycle-slip interpretation required",
+        "no enabled hard lock-time constraint",
+        "no validated analytical inverse"
+      ],
+      "available_solver_tool": [
+        "pll_allocation.verification.verify.verify (complete saved AllocationProposal, new output directory)"
+      ],
+      "M1_support": "NOT_IMPLEMENTED",
+      "M2_support": "IMPLEMENTED_WINDOW_CONDITIONAL",
+      "confidence_status": {
+        "mathematical_definition": "DEFINED_IN_SCOPE",
+        "numerical_implementation": "NOT_IMPLEMENTED",
+        "behavioral_support": "IMPLEMENTED_WINDOW_CONDITIONAL",
+        "validated_parameter_domain": "finite evidence points only; no full-domain behavioral certificate",
+        "unvalidated_generalization": "devices, nonidealities, global capture, periodic stability and noise remain excluded"
+      }
+    },
+    {
+      "system_metric_id": "jitter_s",
+      "unit": "s",
+      "definition": "needs explicit integration band, source PSD/correlation and timing observable",
+      "enabled_in_frozen_SystemSpec": false,
+      "related_block_variables": [],
+      "equation_ids": [],
+      "forward_model": null,
+      "inverse_capability": "UNSUPPORTED",
+      "constraint_propagation_method": "no trusted allocation without noise sources/band/protocol",
+      "supported_domain": [
+        "unchanged Stage1.5 complete SI envelope and six-variable declared space",
+        "fixed f_ref=10MHz, integer N=8; ideal symmetric CP; zero nonideal context",
+        "interior tuning; continuous M1 is locked small-signal only"
+      ],
+      "verification_evidence": [
+        "SOURCE_AUDIT"
+      ],
+      "model_limitations": [
+        "noise-free event model has no reference/CP/VCO/divider PSD model"
+      ],
+      "available_solver_tool": [],
+      "M1_support": "NOT_IMPLEMENTED",
+      "M2_support": "NOT_IMPLEMENTED",
+      "confidence_status": {
+        "mathematical_definition": "DEFINED_IN_SCOPE",
+        "numerical_implementation": "NOT_IMPLEMENTED",
+        "behavioral_support": "NOT_IMPLEMENTED",
+        "validated_parameter_domain": "finite evidence points only; no full-domain behavioral certificate",
+        "unvalidated_generalization": "devices, nonidealities, global capture, periodic stability and noise remain excluded"
+      }
+    },
+    {
+      "system_metric_id": "power_W",
+      "unit": "W",
+      "definition": "needs declared supplies and per-block static/dynamic power model",
+      "enabled_in_frozen_SystemSpec": false,
+      "related_block_variables": [],
+      "equation_ids": [],
+      "forward_model": null,
+      "inverse_capability": "UNSUPPORTED",
+      "constraint_propagation_method": "no trusted allocation from CP current alone",
+      "supported_domain": [
+        "unchanged Stage1.5 complete SI envelope and six-variable declared space",
+        "fixed f_ref=10MHz, integer N=8; ideal symmetric CP; zero nonideal context",
+        "interior tuning; continuous M1 is locked small-signal only"
+      ],
+      "verification_evidence": [
+        "SOURCE_AUDIT"
+      ],
+      "model_limitations": [
+        "Icp is pulse magnitude; not total DC supply current or VCO/divider power"
+      ],
+      "available_solver_tool": [],
+      "M1_support": "NOT_IMPLEMENTED",
+      "M2_support": "NOT_IMPLEMENTED",
+      "confidence_status": {
+        "mathematical_definition": "DEFINED_IN_SCOPE",
+        "numerical_implementation": "NOT_IMPLEMENTED",
+        "behavioral_support": "NOT_IMPLEMENTED",
+        "validated_parameter_domain": "finite evidence points only; no full-domain behavioral certificate",
+        "unvalidated_generalization": "devices, nonidealities, global capture, periodic stability and noise remain excluded"
+      }
+    }
+  ],
+  "trust_policy": "M1 inverse produces a prediction candidate only; Runner owns domain/budgets/M2/PASS; registry never executes solver or enables spec"
+}

@@ -1,0 +1,190 @@
+{
+  "schema_version": "pll-unified-run-result-1.0",
+  "status": "M2_PARTIAL_PASS",
+  "strategy": "analytical",
+  "candidate_origin": "FEEDBACK_CONTINUATION",
+  "scenario_binding": {
+    "schema_version": "pll-research-scenario-1.0",
+    "scenario_id": "S1",
+    "version": "1.0.0",
+    "scenario_sha256": "a95c1ef4bbc336edf6685f7a2ea30228ce663ff64874ebec93c64e9a36ca5e1f",
+    "effective_system_spec_sha256": "16c742810150518852f2ba7f183ce5c9fa763518d1b59414a9fd7b719558992e",
+    "base_system_spec_sha256": "9acdbf00d9b095e3cc23400024628f2301220549a45e8301aa42a08490fa598c"
+  },
+  "feedback_parent": "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\stage5\\firstshot_01\\runs\\S1__random__47\\attempt_001",
+  "attempts": [
+    {
+      "stage": "FEEDBACK_REPAIR",
+      "parameter_sha256": "d885f5da414514aead703df9f52214d38fd146375d058b31c7fce9968f1e9311",
+      "validation_level": "M1_VALIDATED",
+      "M1_status": "M1_PASS",
+      "directory": "attempt_001",
+      "M2_status": "M2_PARTIAL_PASS",
+      "generation_elapsed_s": 1.897536400007084,
+      "scenario_binding": {
+        "schema_version": "pll-research-scenario-1.0",
+        "scenario_id": "S1",
+        "version": "1.0.0",
+        "scenario_sha256": "a95c1ef4bbc336edf6685f7a2ea30228ce663ff64874ebec93c64e9a36ca5e1f",
+        "effective_system_spec_sha256": "16c742810150518852f2ba7f183ce5c9fa763518d1b59414a9fd7b719558992e",
+        "base_system_spec_sha256": "9acdbf00d9b095e3cc23400024628f2301220549a45e8301aa42a08490fa598c"
+      },
+      "first_shot_kind": "FEEDBACK_REPAIR",
+      "M2_overall_status": "UNKNOWN",
+      "metrics": {
+        "output_frequency_Hz": {
+          "value": 79999999.99994303,
+          "unit": "Hz",
+          "status": "MEASURED_STEADY",
+          "numerical_envelope": [
+            79999999.98994303,
+            80000000.00994304
+          ],
+          "required_precision_validated": false,
+          "uncertainty_basis": "empirical two-step difference with 0.01 Hz reporting floor; not a certified confidence bound",
+          "confidence": "CONDITIONAL_ON_TRACE_WINDOW"
+        },
+        "steady_control_V": {
+          "value": 0.5999999999058019,
+          "unit": "V",
+          "status": "MEASURED_STEADY",
+          "step_difference_V": 1.0891909596466576e-10
+        },
+        "capture": {
+          "value": "CAPTURED_WITHIN_WINDOW",
+          "status": "MEASURED_WINDOW_CONDITIONAL",
+          "initial_control_V": 0.15,
+          "duration_s": 0.00016
+        },
+        "lock_time_s": {
+          "value": 3.6e-05,
+          "unit": "s",
+          "status": "MEASURED_WINDOW_CONDITIONAL",
+          "resolution_s": 1e-06,
+          "step_difference_s": 0.0
+        },
+        "BW_Hz": {
+          "value": 206057.00479093005,
+          "unit": "Hz",
+          "status": "MEASURED_CONVERGED",
+          "numerical_envelope": [
+            205957.4171665852,
+            206090.80124207438
+          ],
+          "confidence": "LOCAL_WARM_START_SAMPLED_POINTS_ONLY",
+          "observable": "continuous divided VCO phase fundamental / reference phase fundamental",
+          "edge_only_equivalence": "NOT_ESTABLISHED; edge timestamp harmonic fits show different sampled response",
+          "envelope_scope": "bracketing and amplitude/step/window refinements; excludes cross-observable systematic difference"
+        },
+        "PM_deg": {
+          "value": null,
+          "unit": "deg",
+          "status": "PM_M2_UNKNOWN"
+        },
+        "UGF_Hz": {
+          "value": null,
+          "unit": "Hz",
+          "status": "UNKNOWN_NO_DIRECT_LOOP_INJECTION"
+        }
+      },
+      "constraints": [
+        {
+          "metric": "output_frequency_Hz",
+          "target": {
+            "metric": "output_frequency_Hz",
+            "unit": "Hz",
+            "min": 80000000,
+            "max": 80000000,
+            "tolerance": 1e-06,
+            "evaluator": "M1",
+            "protocol": "conditional_locked_tuning_frequency",
+            "source": "User: 10 MHz x 8; conditional static frequency, not a transient measurement"
+          },
+          "status": "UNKNOWN",
+          "reason": "UNKNOWN_REQUIRED_PRECISION: frozen 1e-6 Hz tolerance not independently validated"
+        },
+        {
+          "metric": "BW_Hz",
+          "target": {
+            "metric": "BW_Hz",
+            "unit": "Hz",
+            "min": 180000,
+            "max": 230000,
+            "tolerance": 0,
+            "evaluator": "M1",
+            "protocol": "continuous_normalized_T_first_downward_minus3dB",
+            "source": "User: experimental BW target"
+          },
+          "status": "PASS",
+          "reason": "research threshold over unchanged measured BW numerical envelope"
+        },
+        {
+          "metric": "PM_deg",
+          "target": {
+            "metric": "PM_deg",
+            "unit": "deg",
+            "min": 60,
+            "tolerance": 0,
+            "evaluator": "M1",
+            "protocol": "180_plus_continuous_L_phase_at_UGF",
+            "source": "User: experimental PM target"
+          },
+          "status": "UNKNOWN",
+          "reason": "PM_M2_UNKNOWN"
+        }
+      ],
+      "prediction_errors": {
+        "BW_Hz": {
+          "M1_prediction": 204998.52299591553,
+          "M2_measurement": 206057.00479093005,
+          "comparable": true,
+          "absolute_error": 1058.4817950145225,
+          "relative_error": 0.005163363030842971
+        },
+        "output_frequency_Hz": {
+          "M1_prediction": 80000000,
+          "M2_measurement": 79999999.99994303,
+          "comparable": true,
+          "absolute_error": -5.696713924407959e-05,
+          "relative_error": -7.120970479945754e-13
+        },
+        "steady_control_V": {
+          "M1_prediction": 0.6000000000000002,
+          "M2_measurement": 0.5999999999058019,
+          "comparable": true,
+          "absolute_error": -9.419831581425342e-11,
+          "relative_error": -1.569971930237557e-10
+        }
+      },
+      "execution_cost": {
+        "completed_native_runs": 106,
+        "integration_points": 95724491,
+        "native_elapsed_s": 2.9786832002573647,
+        "failed_attempts": 0
+      },
+      "M1_posthoc_calls": 1
+    }
+  ],
+  "cost": {
+    "analytic_calls": 36,
+    "M1_calls": 10,
+    "candidate_generations": 12,
+    "M2_calls": 1,
+    "LLM_calls": 0,
+    "native_completed_runs": 106,
+    "native_failed_attempts": 0,
+    "integration_points": 95724491,
+    "native_elapsed_s": 2.9786832002573647,
+    "native_failure_elapsed_s": 0,
+    "M1_posthoc_calls": 1,
+    "M1_total_calls": 11,
+    "total_elapsed_s": 11.28626969998004,
+    "monetary_cost": null
+  },
+  "failure": null,
+  "first_shot": null,
+  "verified_joint_block_spec": false,
+  "full_behavioral_pass": false,
+  "LLM_execution": "NOT_APPLICABLE",
+  "feedback_received_by_agent": true
+}
