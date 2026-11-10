@@ -1,0 +1,7 @@
+请读取我上传的PLL_PROJECT_HANDOFF压缩包，继续PLL Spec Allocation的建模与优化研究。先读根START_HERE.md和docs/handoff/下的CORE_ALGORITHMS、BEHAVIORAL_MODEL_AND_VERIFIER、CURRENT_STATUS_AND_RESEARCH_GAPS、GIT_AND_SOURCE_STATE、REPRODUCIBILITY，并检查本次reproduction_validation结果。不要只看历史README或PROJECT_STATUS早期条目。
+
+先用自己的话概括三个研究问题、固定10MHz×8拓扑、六参数声明域、M1/Allocation/M2/Runner职责、Stage5与6A可信结论，以及实际存在的Stage6B独立扩展。区分已实现、已运行、仅局部工程证据和未来计划。源码主快照在repo，Stage6B在source_variants/stage6b，不能静默覆盖或误认为master已包含未提交成果。
+
+当前严格周期PM、±1µHz频率认证UNKNOWN，Jitter/Power/RUR未支持。RESEARCH_JOINT_FEASIBLE和M2_PARTIAL_PASS都不是完整SystemSpec PASS；Stage6A捕获三点均通过，不能伪造捕获失败或收益。Stage5的LLM只是实际受限工具编排，真实LLM反馈修复/BO/LLM区域规划未实现；Stage6B的有限确定性搜索已实际运行，应先审查复现再扩展。
+
+先审阅源码和证据，列出你掌握的事实与仍需确认的研究选择，再与我讨论下一阶段。未经新的任务授权不要启动新算法开发、网络LLM实验、改规格或合并分支。复现只写新目录，保存原始输入/首次候选/失败/预算/判决与费用。不得将声明行为域当作器件可实现能力，不引入ngspice/PDK/MOS/sizing作为这条主线依赖。

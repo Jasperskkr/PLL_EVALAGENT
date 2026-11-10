@@ -1,0 +1,522 @@
+{
+  "stage_status": {
+    "P0": "COMPLETE",
+    "P1": "COMPLETE_MINIMAL",
+    "P2": "COMPLETE_MINIMAL",
+    "P3": "PARTIAL_REAL_LLM_ACCEPTANCE_INCOMPLETE",
+    "P4": "DETERMINISTIC_SMOKE_COMPLETE_LLM_COMPARISON_INCOMPLETE",
+    "P5": "PARTIAL_DELIVERY_AUDITED"
+  },
+  "tests": {
+    "tests": 93,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "run_count": 20,
+  "behavioral_evaluations": 198,
+  "runs": [
+    {
+      "case": "regular80",
+      "policy": "rule",
+      "status": "VERIFIED_BEHAVIORAL_PASS",
+      "behavioral_evaluations": 1,
+      "constraint_violation": 0,
+      "evaluation_runtime_s": 0.0063476999930571765,
+      "evaluations_to_first_feasible": 1,
+      "first_pass_feasible": true,
+      "llm_calls": 0,
+      "minimum_normalized_margin": 0.017817001961826645,
+      "predicted_vs_verified_metric_error": {
+        "mean_phase_abs_deg": 7.296324399833076e-05
+      },
+      "proposal_attempts": 1,
+      "scope": "DECLARED_BEHAVIORAL_MODEL_ONLY",
+      "strategy_runtime_s": 0.0019738999981200323,
+      "success_within_budget": true
+    },
+    {
+      "case": "regular80",
+      "policy": "grid",
+      "status": "VERIFIED_BEHAVIORAL_PASS",
+      "behavioral_evaluations": 19,
+      "constraint_violation": 0,
+      "evaluation_runtime_s": 0.12322839999978896,
+      "evaluations_to_first_feasible": 19,
+      "first_pass_feasible": false,
+      "llm_calls": 0,
+      "minimum_normalized_margin": 0.017817001961826645,
+      "predicted_vs_verified_metric_error": {
+        "mean_phase_abs_deg": 7.296324399833076e-05
+      },
+      "proposal_attempts": 19,
+      "scope": "DECLARED_BEHAVIORAL_MODEL_ONLY",
+      "strategy_runtime_s": 0.026230800009216182,
+      "success_within_budget": true
+    },
+    {
+      "case": "regular80",
+      "policy": "random",
+      "status": "VERIFIED_BEHAVIORAL_PASS",
+      "behavioral_evaluations": 3,
+      "constraint_violation": 0,
+      "evaluation_runtime_s": 0.01848680000694003,
+      "evaluations_to_first_feasible": 3,
+      "first_pass_feasible": false,
+      "llm_calls": 0,
+      "minimum_normalized_margin": 0.017817001961826645,
+      "predicted_vs_verified_metric_error": {
+        "mean_phase_abs_deg": 7.296324399833076e-05
+      },
+      "proposal_attempts": 3,
+      "scope": "DECLARED_BEHAVIORAL_MODEL_ONLY",
+      "strategy_runtime_s": 0.002643200001330115,
+      "success_within_budget": true
+    },
+    {
+      "case": "regular80",
+      "policy": "feedback",
+      "status": "VERIFIED_BEHAVIORAL_PASS",
+      "behavioral_evaluations": 2,
+      "constraint_violation": 0,
+      "evaluation_runtime_s": 0.012840600000345148,
+      "evaluations_to_first_feasible": 2,
+      "first_pass_feasible": false,
+      "llm_calls": 0,
+      "minimum_normalized_margin": 0.017817001961826645,
+      "predicted_vs_verified_metric_error": {
+        "mean_phase_abs_deg": 7.296324399833076e-05
+      },
+      "proposal_attempts": 2,
+      "scope": "DECLARED_BEHAVIORAL_MODEL_ONLY",
+      "strategy_runtime_s": 0.0029814000008627772,
+      "success_within_budget": true
+    },
+    {
+      "case": "tight80",
+      "policy": "rule",
+      "status": "VERIFIED_BEHAVIORAL_PASS",
+      "behavioral_evaluations": 1,
+      "constraint_violation": 0,
+      "evaluation_runtime_s": 0.006187100007082336,
+      "evaluations_to_first_feasible": 1,
+      "first_pass_feasible": true,
+      "llm_calls": 0,
+      "minimum_normalized_margin": 0.05227096101128402,
+      "predicted_vs_verified_metric_error": {
+        "mean_phase_abs_deg": 6.851740785604465e-05
+      },
+      "proposal_attempts": 1,
+      "scope": "DECLARED_BEHAVIORAL_MODEL_ONLY",
+      "strategy_runtime_s": 0.0019076000025961548,
+      "success_within_budget": true
+    },
+    {
+      "case": "tight80",
+      "policy": "grid",
+      "status": "VERIFIED_BEHAVIORAL_PASS",
+      "behavioral_evaluations": 25,
+      "constraint_violation": 0,
+      "evaluation_runtime_s": 0.1530691000079969,
+      "evaluations_to_first_feasible": 25,
+      "first_pass_feasible": false,
+      "llm_calls": 0,
+      "minimum_normalized_margin": 0.05227096101128402,
+      "predicted_vs_verified_metric_error": {
+        "mean_phase_abs_deg": 6.851740785604465e-05
+      },
+      "proposal_attempts": 25,
+      "scope": "DECLARED_BEHAVIORAL_MODEL_ONLY",
+      "strategy_runtime_s": 0.04420089995255694,
+      "success_within_budget": true
+    },
+    {
+      "case": "tight80",
+      "policy": "random",
+      "status": "VERIFIED_BEHAVIORAL_PASS",
+      "behavioral_evaluations": 12,
+      "constraint_violation": 0,
+      "evaluation_runtime_s": 0.07299320001038723,
+      "evaluations_to_first_feasible": 12,
+      "first_pass_feasible": false,
+      "llm_calls": 0,
+      "minimum_normalized_margin": 0.0494996464129272,
+      "predicted_vs_verified_metric_error": {
+        "mean_phase_abs_deg": 0.0005950671815438402
+      },
+      "proposal_attempts": 12,
+      "scope": "DECLARED_BEHAVIORAL_MODEL_ONLY",
+      "strategy_runtime_s": 0.016505299980053678,
+      "success_within_budget": true
+    },
+    {
+      "case": "tight80",
+      "policy": "feedback",
+      "status": "VERIFIED_BEHAVIORAL_PASS",
+      "behavioral_evaluations": 2,
+      "constraint_violation": 0,
+      "evaluation_runtime_s": 0.012111099989851937,
+      "evaluations_to_first_feasible": 2,
+      "first_pass_feasible": false,
+      "llm_calls": 0,
+      "minimum_normalized_margin": 0.05227096101128402,
+      "predicted_vs_verified_metric_error": {
+        "mean_phase_abs_deg": 6.851740785604465e-05
+      },
+      "proposal_attempts": 2,
+      "scope": "DECLARED_BEHAVIORAL_MODEL_ONLY",
+      "strategy_runtime_s": 0.0031219000229611993,
+      "success_within_budget": true
+    },
+    {
+      "case": "finite_domain80",
+      "policy": "rule",
+      "status": "BUDGET_EXHAUSTED",
+      "behavioral_evaluations": 30,
+      "constraint_violation": 3.508493549332521,
+      "evaluation_runtime_s": 0.1874268000246957,
+      "evaluations_to_first_feasible": null,
+      "first_pass_feasible": false,
+      "llm_calls": 0,
+      "minimum_normalized_margin": -3.508493549332521,
+      "predicted_vs_verified_metric_error": {
+        "mean_phase_abs_deg": 0.0008493549332521666
+      },
+      "proposal_attempts": 30,
+      "scope": "DECLARED_BEHAVIORAL_MODEL_ONLY",
+      "strategy_runtime_s": 0.10621489996265154,
+      "success_within_budget": false
+    },
+    {
+      "case": "finite_domain80",
+      "policy": "grid",
+      "status": "BUDGET_EXHAUSTED",
+      "behavioral_evaluations": 30,
+      "constraint_violation": 2.005961905039206,
+      "evaluation_runtime_s": 0.19946690001233947,
+      "evaluations_to_first_feasible": null,
+      "first_pass_feasible": false,
+      "llm_calls": 0,
+      "minimum_normalized_margin": -2.005961905039206,
+      "predicted_vs_verified_metric_error": {
+        "mean_phase_abs_deg": 0.0005961905039206239
+      },
+      "proposal_attempts": 30,
+      "scope": "DECLARED_BEHAVIORAL_MODEL_ONLY",
+      "strategy_runtime_s": 0.06686269996862393,
+      "success_within_budget": false
+    },
+    {
+      "case": "finite_domain80",
+      "policy": "random",
+      "status": "BUDGET_EXHAUSTED",
+      "behavioral_evaluations": 30,
+      "constraint_violation": 1.4059562884273227,
+      "evaluation_runtime_s": 0.21270389996061567,
+      "evaluations_to_first_feasible": null,
+      "first_pass_feasible": false,
+      "llm_calls": 0,
+      "minimum_normalized_margin": -1.4059562884273227,
+      "predicted_vs_verified_metric_error": {
+        "mean_phase_abs_deg": 0.0005956288427322598
+      },
+      "proposal_attempts": 30,
+      "scope": "DECLARED_BEHAVIORAL_MODEL_ONLY",
+      "strategy_runtime_s": 0.0820454000349855,
+      "success_within_budget": false
+    },
+    {
+      "case": "finite_domain80",
+      "policy": "feedback",
+      "status": "BUDGET_EXHAUSTED",
+      "behavioral_evaluations": 30,
+      "constraint_violation": 3.508493549332521,
+      "evaluation_runtime_s": 0.19533509998291265,
+      "evaluations_to_first_feasible": null,
+      "first_pass_feasible": false,
+      "llm_calls": 0,
+      "minimum_normalized_margin": -3.508493549332521,
+      "predicted_vs_verified_metric_error": {
+        "mean_phase_abs_deg": 0.0008493549332521666
+      },
+      "proposal_attempts": 30,
+      "scope": "DECLARED_BEHAVIORAL_MODEL_ONLY",
+      "strategy_runtime_s": 0.10519509999721777,
+      "success_within_budget": false
+    },
+    {
+      "case": "joint84",
+      "policy": "rule",
+      "status": "VERIFIED_BEHAVIORAL_PASS",
+      "behavioral_evaluations": 1,
+      "constraint_violation": 0,
+      "evaluation_runtime_s": 0.006823200004873797,
+      "evaluations_to_first_feasible": 1,
+      "first_pass_feasible": true,
+      "llm_calls": 0,
+      "minimum_normalized_margin": 0.5273974983941532,
+      "predicted_vs_verified_metric_error": {
+        "mean_phase_abs_deg": 2.0500321169361624e-05
+      },
+      "proposal_attempts": 1,
+      "scope": "DECLARED_BEHAVIORAL_MODEL_ONLY",
+      "strategy_runtime_s": 0.02472230000421405,
+      "success_within_budget": true
+    },
+    {
+      "case": "joint84",
+      "policy": "grid",
+      "status": "VERIFIED_BEHAVIORAL_PASS",
+      "behavioral_evaluations": 3,
+      "constraint_violation": 0,
+      "evaluation_runtime_s": 0.019251599995186552,
+      "evaluations_to_first_feasible": 3,
+      "first_pass_feasible": false,
+      "llm_calls": 0,
+      "minimum_normalized_margin": 0.5322079886012927,
+      "predicted_vs_verified_metric_error": {
+        "mean_phase_abs_deg": -0.0009415977202585357
+      },
+      "proposal_attempts": 3,
+      "scope": "DECLARED_BEHAVIORAL_MODEL_ONLY",
+      "strategy_runtime_s": 0.0009820000122999772,
+      "success_within_budget": true
+    },
+    {
+      "case": "joint84",
+      "policy": "random",
+      "status": "VERIFIED_BEHAVIORAL_PASS",
+      "behavioral_evaluations": 3,
+      "constraint_violation": 0,
+      "evaluation_runtime_s": 0.01948519998404663,
+      "evaluations_to_first_feasible": 3,
+      "first_pass_feasible": false,
+      "llm_calls": 0,
+      "minimum_normalized_margin": 0.0521088676464912,
+      "predicted_vs_verified_metric_error": {
+        "mean_phase_abs_deg": 0.0005782264707017981
+      },
+      "proposal_attempts": 3,
+      "scope": "DECLARED_BEHAVIORAL_MODEL_ONLY",
+      "strategy_runtime_s": 0.024240899991127662,
+      "success_within_budget": true
+    },
+    {
+      "case": "joint84",
+      "policy": "feedback",
+      "status": "VERIFIED_BEHAVIORAL_PASS",
+      "behavioral_evaluations": 2,
+      "constraint_violation": 0,
+      "evaluation_runtime_s": 0.013808200004859827,
+      "evaluations_to_first_feasible": 2,
+      "first_pass_feasible": false,
+      "llm_calls": 0,
+      "minimum_normalized_margin": 0.5307710675391877,
+      "predicted_vs_verified_metric_error": {
+        "mean_phase_abs_deg": -0.0006542135078375227
+      },
+      "proposal_attempts": 2,
+      "scope": "DECLARED_BEHAVIORAL_MODEL_ONLY",
+      "strategy_runtime_s": 0.03158070000063162,
+      "success_within_budget": true
+    },
+    {
+      "case": "unsupported_jitter80",
+      "policy": "rule",
+      "status": "UNSUPPORTED_SYSTEM_SPEC",
+      "behavioral_evaluations": 1,
+      "constraint_violation": 0,
+      "evaluation_runtime_s": 0.006309100004727952,
+      "evaluations_to_first_feasible": null,
+      "first_pass_feasible": false,
+      "llm_calls": 0,
+      "minimum_normalized_margin": 0.017817001961826645,
+      "predicted_vs_verified_metric_error": {
+        "mean_phase_abs_deg": 7.296324399833076e-05
+      },
+      "proposal_attempts": 1,
+      "scope": "DECLARED_BEHAVIORAL_MODEL_ONLY",
+      "strategy_runtime_s": 0.0019040999904973432,
+      "success_within_budget": false
+    },
+    {
+      "case": "unsupported_jitter80",
+      "policy": "grid",
+      "status": "UNSUPPORTED_SYSTEM_SPEC",
+      "behavioral_evaluations": 1,
+      "constraint_violation": 0.35044834482386433,
+      "evaluation_runtime_s": 0.006514699998660944,
+      "evaluations_to_first_feasible": null,
+      "first_pass_feasible": false,
+      "llm_calls": 0,
+      "minimum_normalized_margin": -0.35044834482386433,
+      "predicted_vs_verified_metric_error": {
+        "mean_phase_abs_deg": 8.966896477291542e-05
+      },
+      "proposal_attempts": 1,
+      "scope": "DECLARED_BEHAVIORAL_MODEL_ONLY",
+      "strategy_runtime_s": 0.00022849999368190765,
+      "success_within_budget": false
+    },
+    {
+      "case": "unsupported_jitter80",
+      "policy": "random",
+      "status": "UNSUPPORTED_SYSTEM_SPEC",
+      "behavioral_evaluations": 1,
+      "constraint_violation": 0.8042407319916652,
+      "evaluation_runtime_s": 0.006238700007088482,
+      "evaluations_to_first_feasible": null,
+      "first_pass_feasible": false,
+      "llm_calls": 0,
+      "minimum_normalized_margin": -0.8042407319916652,
+      "predicted_vs_verified_metric_error": {
+        "mean_phase_abs_deg": 0.0008481463983330828
+      },
+      "proposal_attempts": 1,
+      "scope": "DECLARED_BEHAVIORAL_MODEL_ONLY",
+      "strategy_runtime_s": 0.0007684999873163179,
+      "success_within_budget": false
+    },
+    {
+      "case": "unsupported_jitter80",
+      "policy": "feedback",
+      "status": "UNSUPPORTED_SYSTEM_SPEC",
+      "behavioral_evaluations": 1,
+      "constraint_violation": 0.35044834482386433,
+      "evaluation_runtime_s": 0.006653300006291829,
+      "evaluations_to_first_feasible": null,
+      "first_pass_feasible": false,
+      "llm_calls": 0,
+      "minimum_normalized_margin": -0.35044834482386433,
+      "predicted_vs_verified_metric_error": {
+        "mean_phase_abs_deg": 8.966896477291542e-05
+      },
+      "proposal_attempts": 1,
+      "scope": "DECLARED_BEHAVIORAL_MODEL_ONLY",
+      "strategy_runtime_s": 0.00020960000983905047,
+      "success_within_budget": false
+    }
+  ],
+  "strategy_aggregate_metrics": {
+    "feedback": {
+      "supported_cases": 4,
+      "first_pass_feasible_rate": 0.0,
+      "success_within_budget_rate": 0.75,
+      "feasible_case_subset": {
+        "cases": [
+          "regular80",
+          "tight80",
+          "joint84"
+        ],
+        "first_pass_feasible_rate": 0.0,
+        "success_within_budget_rate": 1.0
+      },
+      "total_behavioral_evaluations": 37,
+      "strategy_runtime_s": 0.14308870003151242,
+      "evaluation_runtime_s": 0.2407482999842614,
+      "statistical_status": "single fixed suite and random seed; not a general population estimate"
+    },
+    "grid": {
+      "supported_cases": 4,
+      "first_pass_feasible_rate": 0.0,
+      "success_within_budget_rate": 0.75,
+      "feasible_case_subset": {
+        "cases": [
+          "regular80",
+          "tight80",
+          "joint84"
+        ],
+        "first_pass_feasible_rate": 0.0,
+        "success_within_budget_rate": 1.0
+      },
+      "total_behavioral_evaluations": 78,
+      "strategy_runtime_s": 0.13850489993637893,
+      "evaluation_runtime_s": 0.5015307000139728,
+      "statistical_status": "single fixed suite and random seed; not a general population estimate"
+    },
+    "random": {
+      "supported_cases": 4,
+      "first_pass_feasible_rate": 0.0,
+      "success_within_budget_rate": 0.75,
+      "feasible_case_subset": {
+        "cases": [
+          "regular80",
+          "tight80",
+          "joint84"
+        ],
+        "first_pass_feasible_rate": 0.0,
+        "success_within_budget_rate": 1.0
+      },
+      "total_behavioral_evaluations": 49,
+      "strategy_runtime_s": 0.12620329999481328,
+      "evaluation_runtime_s": 0.32990779996907804,
+      "statistical_status": "single fixed suite and random seed; not a general population estimate"
+    },
+    "rule": {
+      "supported_cases": 4,
+      "first_pass_feasible_rate": 0.75,
+      "success_within_budget_rate": 0.75,
+      "feasible_case_subset": {
+        "cases": [
+          "regular80",
+          "tight80",
+          "joint84"
+        ],
+        "first_pass_feasible_rate": 1.0,
+        "success_within_budget_rate": 1.0
+      },
+      "total_behavioral_evaluations": 34,
+      "strategy_runtime_s": 0.13672279995807912,
+      "evaluation_runtime_s": 0.21309390003443696,
+      "statistical_status": "single fixed suite and random seed; not a general population estimate"
+    }
+  },
+  "joint84_reproducible_decision_sha256": "be84793b43ea445edfb32b7c74775cea1e932e54e746c8c3dde298aa8c45b530",
+  "old_source_protection": {
+    "checked": 2425,
+    "changed_or_missing": [],
+    "new_source_paths": [],
+    "scope": "audited source files and provenance-linked historical artifacts; raw waveform contents not rehashed"
+  },
+  "llm_runs": [
+    {
+      "run": "p3_live_initial",
+      "status": "POLICY_UNAVAILABLE",
+      "reason": "LLM_TRANSPORT_TimeoutError",
+      "calls": [
+        {
+          "elapsed_s": 120.57067499999539,
+          "error_type": "TimeoutError",
+          "http_status": 200,
+          "model": "deepseek-v4-pro",
+          "policy_version": "physics_informed_llm_v1",
+          "provider": "configured_messages_provider",
+          "real_network_call": true,
+          "status": "SERVICE_UNAVAILABLE",
+          "usage": null
+        }
+      ],
+      "behavioral_evaluations": 0
+    },
+    {
+      "run": "p3_live_bounded",
+      "status": "POLICY_UNAVAILABLE",
+      "reason": "LLM_TOTAL_PROCESS_TIMEOUT",
+      "calls": [
+        {
+          "elapsed_s": 60.02959910000209,
+          "error_type": "TOTAL_PROCESS_TIMEOUT",
+          "http_status": 200,
+          "model": "deepseek-v4-pro",
+          "policy_version": "physics_informed_llm_v1",
+          "provider": "configured_messages_provider",
+          "real_network_call": true,
+          "status": "SERVICE_UNAVAILABLE",
+          "usage": null
+        }
+      ],
+      "behavioral_evaluations": 0
+    }
+  ],
+  "scope": "DECLARED_BEHAVIORAL_MODEL_ONLY; not transistor or physical qualification"
+}

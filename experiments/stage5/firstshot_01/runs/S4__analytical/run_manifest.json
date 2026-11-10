@@ -1,0 +1,46 @@
+{
+  "schema_version": "pll-pipeline-manifest-1.0",
+  "created_at": "2026-11-05T17:20:44.486108+08:00",
+  "strategy": "analytical",
+  "candidate_origin": "NEW_ALLOCATION",
+  "run_scope": "RESEARCH_SCENARIO",
+  "scenario_binding": {
+    "schema_version": "pll-research-scenario-1.0",
+    "scenario_id": "S4",
+    "version": "1.0.0",
+    "scenario_sha256": "24c3a1675ce960969262ae65422f6d65df4eaa2f4983c3e5c91628d6c0580aea",
+    "effective_system_spec_sha256": "420befbaccb3e919abc301f1bbcee9d93949b16add3e0452d9751e934bb748d9",
+    "base_system_spec_sha256": "9acdbf00d9b095e3cc23400024628f2301220549a45e8301aa42a08490fa598c"
+  },
+  "scenario_file_sha256": "ba5eefe66948a1ebebe11b7e0239a76af82ab0b9da0bd338471c89a4bfb1ad37",
+  "seed": 23,
+  "first_shot_scope": "No current-run M2 feedback before initial submission; design M1 calls counted",
+  "versions": {
+    "formula_version": "stage1_m1_1.0.0",
+    "parameter_domain_version": "stage1_declared_domain_1.0.0",
+    "behavioral_model_version": "reference_python_edge_euler_sha256_f6f550276228"
+  },
+  "block_space_sha256": "879c2748c1d74d5d05c651f905af6fa818e3f994e97206d93b295ca4b62097c0",
+  "system_spec_sha256": "420befbaccb3e919abc301f1bbcee9d93949b16add3e0452d9751e934bb748d9",
+  "protocol_id": "track_b_metrics_1.1",
+  "protocol_sha256": "250f8e4d3f186bfd286028c71a3515d6010876f57fa4a219567c99aa71f69280",
+  "protocol_hash_encoding": "sorted_compact_json_utf8",
+  "budget": {
+    "cheap_calls": 2000,
+    "M1_calls": 16,
+    "M2_verifications": 1,
+    "feedback_repairs": 0
+  },
+  "llm": null,
+  "source_manifest_sha256": "47b08f5de0a82c762b72fe4d11f1c80ffd3ea1549fff449794bf897451bd7764",
+  "environment": {
+    "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "dependencies": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1"
+    }
+  },
+  "cost_scope": "M2_verifications count full TB invocations, each contains paired capture plus four full sweeps; native runs separately counted",
+  "state": "STARTED; terminal state is result.json"
+}

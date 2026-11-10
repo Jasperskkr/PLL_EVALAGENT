@@ -1,0 +1,1570 @@
+{
+  "model": {
+    "schema_version": "behavioral-block-space-1.0",
+    "model_id": "integer_n_cppll_behavioral_space_v1",
+    "versions": {
+      "formula_version": "stage1_m1_1.0.0",
+      "parameter_domain_version": "stage1_declared_domain_1.0.0",
+      "behavioral_model_version": "reference_python_edge_euler_sha256_f6f550276228"
+    },
+    "scope": "BEHAVIORAL_ONLY_NO_IMPLEMENTATION_CAPABILITY_CLAIM",
+    "experiment_freeze": {
+      "status": "FROZEN_FOR_STAGE_1_5_VALIDATION_ONLY",
+      "source_path": "F:\\LJP\\概伦AI\\PLL_allocation\\configs\\physics_mapping_stage1_v2.json",
+      "source_file_sha256": "00c63e2516485d57e1c8444b376aefb4ea5887931f2b0e34a8b5fbad790a0b4e",
+      "experiment_sha256": "4872a8d64f03ecc2bbe642a572a8fc2ea5fa6cfcb50b55917d14055fd7f46aeb",
+      "global_research_spec_frozen": false,
+      "conflict_resolution": "Stage 1 draft retained byte-semantically; no global promotion. Older MATLAB/v1 metrics excluded."
+    },
+    "topology": {
+      "id": "integer_n_cppll",
+      "blocks": [
+        "PFD",
+        "CP",
+        "LF",
+        "VCO",
+        "Divider"
+      ],
+      "connections": [
+        [
+          "PFD",
+          "CP"
+        ],
+        [
+          "CP",
+          "LF"
+        ],
+        [
+          "LF",
+          "VCO"
+        ],
+        [
+          "VCO",
+          "Divider"
+        ],
+        [
+          "Divider",
+          "PFD"
+        ]
+      ]
+    },
+    "experiment": {
+      "schema_version": "pll-physics-experiment-2.0",
+      "topology": "integer_n_cppll",
+      "conventions": {
+        "vco_f0": "frequency_at_zero_volts",
+        "phase_error": "reference_minus_feedback_rad",
+        "lf_topology": "C1_shunt_Rz_series_C2",
+        "cp_leakage": "positive_injected_into_lf"
+      },
+      "system_spec": {
+        "version": "0",
+        "draft": true,
+        "source": "User Stage 1 research targets, 2026-11-04; not frozen",
+        "metrics": [
+          {
+            "metric": "output_frequency_Hz",
+            "unit": "Hz",
+            "min": 80000000,
+            "max": 80000000,
+            "tolerance": 1e-06,
+            "evaluator": "M1",
+            "protocol": "conditional_locked_tuning_frequency",
+            "source": "User: 10 MHz x 8; conditional static frequency, not a transient measurement"
+          },
+          {
+            "metric": "BW_Hz",
+            "unit": "Hz",
+            "min": 150000,
+            "max": 300000,
+            "tolerance": 0,
+            "evaluator": "M1",
+            "protocol": "continuous_normalized_T_first_downward_minus3dB",
+            "source": "User: experimental BW target"
+          },
+          {
+            "metric": "PM_deg",
+            "unit": "deg",
+            "min": 50,
+            "tolerance": 0,
+            "evaluator": "M1",
+            "protocol": "180_plus_continuous_L_phase_at_UGF",
+            "source": "User: experimental PM target"
+          }
+        ]
+      },
+      "diagnostic_metrics": [
+        "UGF_Hz"
+      ],
+      "block_space": {
+        "version": "2",
+        "capability_claim": "BEHAVIORAL_DECLARED_DOMAIN_ONLY",
+        "variables": {
+          "f_ref": {
+            "block": "Reference",
+            "role": "Context",
+            "unit": "Hz",
+            "fixed": 10000000,
+            "default": 10000000,
+            "source": "User Stage 1",
+            "validity": "positive reference frequency"
+          },
+          "N": {
+            "block": "Divider",
+            "role": "BlockSpec",
+            "unit": "1",
+            "fixed": 8,
+            "default": 8,
+            "source": "User Stage 1",
+            "validity": "positive integer"
+          },
+          "Icp": {
+            "block": "CP",
+            "role": "BlockSpec",
+            "unit": "A",
+            "range": {
+              "min": 5e-05,
+              "max": 0.0002
+            },
+            "default": 0.0001,
+            "source": "Stage 1 declared local domain about MATLAB pll_params; not a measured capability",
+            "validity": "positive symmetric ideal current"
+          },
+          "Rz": {
+            "block": "LF",
+            "role": "BlockSpec",
+            "unit": "Ohm",
+            "range": {
+              "min": 2000,
+              "max": 8000
+            },
+            "default": 3820,
+            "source": "Stage 1 declared local domain; default MATLAB pll_params",
+            "validity": "positive ideal series resistance"
+          },
+          "C1": {
+            "block": "LF",
+            "role": "BlockSpec",
+            "unit": "F",
+            "choices": [
+              5e-11,
+              1e-10,
+              2e-10
+            ],
+            "default": 1e-10,
+            "source": "Stage 1 declared choices; default MATLAB pll_params",
+            "validity": "positive shunt capacitance"
+          },
+          "C2": {
+            "block": "LF",
+            "role": "BlockSpec",
+            "unit": "F",
+            "choices": [
+              5e-10,
+              1e-09,
+              2e-09
+            ],
+            "default": 1e-09,
+            "source": "Stage 1 declared choices; default MATLAB pll_params",
+            "validity": "positive series-branch capacitance"
+          },
+          "f0": {
+            "block": "VCO",
+            "role": "BlockSpec",
+            "unit": "Hz",
+            "range": {
+              "min": 60000000,
+              "max": 76000000
+            },
+            "default": 72000000,
+            "source": "Stage 1 declared local domain; default MATLAB pll_params",
+            "validity": "zero-voltage intercept; positive f(V) on full domain; candidate tuning must be checked"
+          },
+          "Kvco": {
+            "block": "VCO",
+            "role": "BlockSpec",
+            "unit": "Hz/V",
+            "range": {
+              "min": 10000000,
+              "max": 40000000
+            },
+            "default": 20000000,
+            "source": "Stage 1 declared local domain; default MATLAB pll_params",
+            "validity": "positive linear frequency slope, not angular gain"
+          },
+          "Vctrl_min": {
+            "block": "VCO",
+            "role": "BlockSpec",
+            "unit": "V",
+            "fixed": 0,
+            "default": 0,
+            "source": "User / MATLAB ideal point",
+            "validity": "strictly below Vctrl_max; M1 lock point interior"
+          },
+          "Vctrl_max": {
+            "block": "VCO",
+            "role": "BlockSpec",
+            "unit": "V",
+            "fixed": 1.2,
+            "default": 1.2,
+            "source": "User / MATLAB ideal point",
+            "validity": "declared functional limit, not CP compliance from PDK"
+          },
+          "Kvco2": {
+            "block": "VCO",
+            "role": "Context",
+            "unit": "Hz/V^2",
+            "fixed": 0,
+            "default": 0,
+            "source": "MATLAB pll_params; Stage 1 supported subset",
+            "validity": "nonzero is UNSUPPORTED"
+          },
+          "CP_mismatch": {
+            "block": "CP",
+            "role": "Context",
+            "unit": "1",
+            "fixed": 0,
+            "default": 0,
+            "source": "MATLAB pll_params; Stage 1 supported subset",
+            "validity": "(Iup-Idown)/Icp; nonzero is UNSUPPORTED"
+          },
+          "CP_leakage": {
+            "block": "CP",
+            "role": "Context",
+            "unit": "A",
+            "fixed": 0,
+            "default": 0,
+            "source": "MATLAB pll_params; Stage 1 supported subset",
+            "validity": "positive injection; nonzero is UNSUPPORTED"
+          },
+          "q0": {
+            "block": "CP",
+            "role": "Context",
+            "unit": "C",
+            "fixed": 0,
+            "default": 0,
+            "source": "Python v1 semantic audit; explicit zero for M1",
+            "validity": "balance charge including proxy demand; nonzero is UNSUPPORTED"
+          },
+          "PFD_reset_delay": {
+            "block": "PFD",
+            "role": "Context",
+            "unit": "s",
+            "fixed": 0,
+            "default": 0,
+            "source": "MATLAB pll_params; Stage 1 supported subset",
+            "validity": "nonzero is UNSUPPORTED; negative or >= reference period is OUT_OF_DOMAIN"
+          },
+          "Cload": {
+            "block": "LF",
+            "role": "Context",
+            "unit": "F",
+            "fixed": 0,
+            "default": 0,
+            "source": "Python v1 semantic audit; no proxy load migrated",
+            "validity": "nonzero is UNSUPPORTED"
+          },
+          "Gload": {
+            "block": "LF",
+            "role": "Context",
+            "unit": "S",
+            "fixed": 0,
+            "default": 0,
+            "source": "Explicit unloaded ideal LF; not inferred from v1 Rload",
+            "validity": "nonzero is UNSUPPORTED"
+          }
+        }
+      }
+    },
+    "variables": {
+      "f_ref": {
+        "block": "Reference",
+        "role": "Context",
+        "unit": "Hz",
+        "fixed": 10000000,
+        "default": 10000000,
+        "source": "User Stage 1",
+        "validity": "positive reference frequency",
+        "kind": "fixed_condition",
+        "participates_in_calculation": true,
+        "domain_mode": "fixed",
+        "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+        "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+      },
+      "N": {
+        "block": "Divider",
+        "role": "BlockSpec",
+        "unit": "1",
+        "fixed": 8,
+        "default": 8,
+        "source": "User Stage 1",
+        "validity": "positive integer",
+        "kind": "fixed_condition",
+        "participates_in_calculation": true,
+        "domain_mode": "fixed",
+        "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+        "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+      },
+      "Icp": {
+        "block": "CP",
+        "role": "BlockSpec",
+        "unit": "A",
+        "range": {
+          "min": 5e-05,
+          "max": 0.0002
+        },
+        "default": 0.0001,
+        "source": "Stage 1 declared local domain about MATLAB pll_params; not a measured capability",
+        "validity": "positive symmetric ideal current",
+        "kind": "free_allocation_parameter",
+        "participates_in_calculation": true,
+        "domain_mode": "range",
+        "range_provenance": "MANUALLY_DECLARED_BEHAVIORAL_EXPERIMENT",
+        "range_rationale": "Factor-of-two local gain exploration about 100uA; preserve Stage 1 declared bounds, not device evidence."
+      },
+      "Rz": {
+        "block": "LF",
+        "role": "BlockSpec",
+        "unit": "Ohm",
+        "range": {
+          "min": 2000,
+          "max": 8000
+        },
+        "default": 3820,
+        "source": "Stage 1 declared local domain; default MATLAB pll_params",
+        "validity": "positive ideal series resistance",
+        "kind": "free_allocation_parameter",
+        "participates_in_calculation": true,
+        "domain_mode": "range",
+        "range_provenance": "MANUALLY_DECLARED_BEHAVIORAL_EXPERIMENT",
+        "range_rationale": "Probe zero/pole and damping tradeoff around 3820 Ohm without changing Stage 1 bounds."
+      },
+      "C1": {
+        "block": "LF",
+        "role": "BlockSpec",
+        "unit": "F",
+        "choices": [
+          5e-11,
+          1e-10,
+          2e-10
+        ],
+        "default": 1e-10,
+        "source": "Stage 1 declared choices; default MATLAB pll_params",
+        "validity": "positive shunt capacitance",
+        "kind": "free_allocation_parameter",
+        "participates_in_calculation": true,
+        "domain_mode": "choices",
+        "range_provenance": "MANUALLY_DECLARED_BEHAVIORAL_EXPERIMENT",
+        "range_rationale": "Three declared shunt capacitances, spanning 0.5x to 2x nominal."
+      },
+      "C2": {
+        "block": "LF",
+        "role": "BlockSpec",
+        "unit": "F",
+        "choices": [
+          5e-10,
+          1e-09,
+          2e-09
+        ],
+        "default": 1e-09,
+        "source": "Stage 1 declared choices; default MATLAB pll_params",
+        "validity": "positive series-branch capacitance",
+        "kind": "free_allocation_parameter",
+        "participates_in_calculation": true,
+        "domain_mode": "choices",
+        "range_provenance": "MANUALLY_DECLARED_BEHAVIORAL_EXPERIMENT",
+        "range_rationale": "Three declared branch capacitances, spanning 0.5x to 2x nominal."
+      },
+      "f0": {
+        "block": "VCO",
+        "role": "BlockSpec",
+        "unit": "Hz",
+        "range": {
+          "min": 60000000,
+          "max": 76000000
+        },
+        "default": 72000000,
+        "source": "Stage 1 declared local domain; default MATLAB pll_params",
+        "validity": "zero-voltage intercept; positive f(V) on full domain; candidate tuning must be checked",
+        "kind": "free_allocation_parameter",
+        "participates_in_calculation": true,
+        "domain_mode": "range",
+        "range_provenance": "MANUALLY_DECLARED_BEHAVIORAL_EXPERIMENT",
+        "range_rationale": "Zero-volt intercept choices permit both interior tuning and unreachable cases."
+      },
+      "Kvco": {
+        "block": "VCO",
+        "role": "BlockSpec",
+        "unit": "Hz/V",
+        "range": {
+          "min": 10000000,
+          "max": 40000000
+        },
+        "default": 20000000,
+        "source": "Stage 1 declared local domain; default MATLAB pll_params",
+        "validity": "positive linear frequency slope, not angular gain",
+        "kind": "free_allocation_parameter",
+        "participates_in_calculation": true,
+        "domain_mode": "range",
+        "range_provenance": "MANUALLY_DECLARED_BEHAVIORAL_EXPERIMENT",
+        "range_rationale": "Positive frequency slope spanning 0.5x to 2x nominal; jointly constrained by tuning."
+      },
+      "Vctrl_min": {
+        "block": "VCO",
+        "role": "BlockSpec",
+        "unit": "V",
+        "fixed": 0,
+        "default": 0,
+        "source": "User / MATLAB ideal point",
+        "validity": "strictly below Vctrl_max; M1 lock point interior",
+        "kind": "fixed_condition",
+        "participates_in_calculation": true,
+        "domain_mode": "fixed",
+        "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+        "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+      },
+      "Vctrl_max": {
+        "block": "VCO",
+        "role": "BlockSpec",
+        "unit": "V",
+        "fixed": 1.2,
+        "default": 1.2,
+        "source": "User / MATLAB ideal point",
+        "validity": "declared functional limit, not CP compliance from PDK",
+        "kind": "fixed_condition",
+        "participates_in_calculation": true,
+        "domain_mode": "fixed",
+        "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+        "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+      },
+      "Kvco2": {
+        "block": "VCO",
+        "role": "Context",
+        "unit": "Hz/V^2",
+        "fixed": 0,
+        "default": 0,
+        "source": "MATLAB pll_params; Stage 1 supported subset",
+        "validity": "nonzero is UNSUPPORTED",
+        "kind": "model_assumption",
+        "participates_in_calculation": true,
+        "domain_mode": "fixed",
+        "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+        "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+      },
+      "CP_mismatch": {
+        "block": "CP",
+        "role": "Context",
+        "unit": "1",
+        "fixed": 0,
+        "default": 0,
+        "source": "MATLAB pll_params; Stage 1 supported subset",
+        "validity": "(Iup-Idown)/Icp; nonzero is UNSUPPORTED",
+        "kind": "model_assumption",
+        "participates_in_calculation": true,
+        "domain_mode": "fixed",
+        "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+        "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+      },
+      "CP_leakage": {
+        "block": "CP",
+        "role": "Context",
+        "unit": "A",
+        "fixed": 0,
+        "default": 0,
+        "source": "MATLAB pll_params; Stage 1 supported subset",
+        "validity": "positive injection; nonzero is UNSUPPORTED",
+        "kind": "model_assumption",
+        "participates_in_calculation": true,
+        "domain_mode": "fixed",
+        "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+        "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+      },
+      "q0": {
+        "block": "CP",
+        "role": "Context",
+        "unit": "C",
+        "fixed": 0,
+        "default": 0,
+        "source": "Python v1 semantic audit; explicit zero for M1",
+        "validity": "balance charge including proxy demand; nonzero is UNSUPPORTED",
+        "kind": "model_assumption",
+        "participates_in_calculation": true,
+        "domain_mode": "fixed",
+        "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+        "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+      },
+      "PFD_reset_delay": {
+        "block": "PFD",
+        "role": "Context",
+        "unit": "s",
+        "fixed": 0,
+        "default": 0,
+        "source": "MATLAB pll_params; Stage 1 supported subset",
+        "validity": "nonzero is UNSUPPORTED; negative or >= reference period is OUT_OF_DOMAIN",
+        "kind": "model_assumption",
+        "participates_in_calculation": true,
+        "domain_mode": "fixed",
+        "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+        "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+      },
+      "Cload": {
+        "block": "LF",
+        "role": "Context",
+        "unit": "F",
+        "fixed": 0,
+        "default": 0,
+        "source": "Python v1 semantic audit; no proxy load migrated",
+        "validity": "nonzero is UNSUPPORTED",
+        "kind": "model_assumption",
+        "participates_in_calculation": true,
+        "domain_mode": "fixed",
+        "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+        "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+      },
+      "Gload": {
+        "block": "LF",
+        "role": "Context",
+        "unit": "S",
+        "fixed": 0,
+        "default": 0,
+        "source": "Explicit unloaded ideal LF; not inferred from v1 Rload",
+        "validity": "nonzero is UNSUPPORTED",
+        "kind": "model_assumption",
+        "participates_in_calculation": true,
+        "domain_mode": "fixed",
+        "range_provenance": "FIXED_EXPERIMENT_OR_IDEAL_ASSUMPTION",
+        "range_rationale": "Preserve Stage 1 fixed context or ideal-model assumption; no extension authorized."
+      }
+    },
+    "variable_catalog": [
+      {
+        "id": "f_ref",
+        "kind": "fixed_condition",
+        "block": "Reference",
+        "unit": "Hz",
+        "participation": "M1_input_or_domain_gate",
+        "stage1_mapping": {
+          "Variable ID": "f_ref",
+          "Block": "Reference",
+          "Unit": "Hz",
+          "MATLAB definition": "p.f_ref",
+          "Python v1 definition": "operating_context.fref_Hz",
+          "Python v2 definition": "values.f_ref",
+          "Role": "Context",
+          "Source formula or file": "model/pll_params.m; User Stage 1",
+          "Default": "10000000",
+          "Experiment range": "{\"fixed\": 10000000}",
+          "Validity": "positive reference frequency",
+          "Semantic conflict": "registry calls it block_design; this experiment fixes it as Context"
+        }
+      },
+      {
+        "id": "N",
+        "kind": "fixed_condition",
+        "block": "Divider",
+        "unit": "1",
+        "participation": "M1_input_or_domain_gate",
+        "stage1_mapping": {
+          "Variable ID": "N",
+          "Block": "Divider",
+          "Unit": "1",
+          "MATLAB definition": "p.n_div",
+          "Python v1 definition": "operating_context.N and Divider.N must agree",
+          "Python v2 definition": "values.N",
+          "Role": "BlockSpec",
+          "Source formula or file": "model/pll_params.m; User Stage 1",
+          "Default": "8",
+          "Experiment range": "{\"fixed\": 8}",
+          "Validity": "positive integer",
+          "Semantic conflict": "none; v1 hard domain N=8 remains untouched"
+        }
+      },
+      {
+        "id": "Icp",
+        "kind": "free_allocation_parameter",
+        "block": "CP",
+        "unit": "A",
+        "participation": "M1_input_or_domain_gate",
+        "stage1_mapping": {
+          "Variable ID": "Icp",
+          "Block": "CP",
+          "Unit": "A",
+          "MATLAB definition": "p.i_cp; symmetric nominal UP/DOWN A",
+          "Python v1 definition": "no single Icp; CP.I_up_A and I_down_A",
+          "Python v2 definition": "values.Icp",
+          "Role": "BlockSpec",
+          "Source formula or file": "model/pfd_cp_event_step.m; Stage 1 declared local domain about MATLAB pll_params; not a measured capability",
+          "Default": "0.0001",
+          "Experiment range": "{\"range\": {\"min\": 5e-05, \"max\": 0.0002}}",
+          "Validity": "positive symmetric ideal current",
+          "Semantic conflict": "directional timing slopes require explicit equal-current assumption"
+        }
+      },
+      {
+        "id": "Rz",
+        "kind": "free_allocation_parameter",
+        "block": "LF",
+        "unit": "Ohm",
+        "participation": "M1_input_or_domain_gate",
+        "stage1_mapping": {
+          "Variable ID": "Rz",
+          "Block": "LF",
+          "Unit": "Ohm",
+          "MATLAB definition": "p.rz; between vctrl and vc2",
+          "Python v1 definition": "LF.Rz_Ohm; same connection",
+          "Python v2 definition": "values.Rz",
+          "Role": "BlockSpec",
+          "Source formula or file": "model/loop_filter_model.m; Stage 1 declared local domain; default MATLAB pll_params",
+          "Default": "3820",
+          "Experiment range": "{\"range\": {\"min\": 2000, \"max\": 8000}}",
+          "Validity": "positive ideal series resistance",
+          "Semantic conflict": "none in ideal topology"
+        }
+      },
+      {
+        "id": "C1",
+        "kind": "free_allocation_parameter",
+        "block": "LF",
+        "unit": "F",
+        "participation": "M1_input_or_domain_gate",
+        "stage1_mapping": {
+          "Variable ID": "C1",
+          "Block": "LF",
+          "Unit": "F",
+          "MATLAB definition": "p.c1; vctrl to ground",
+          "Python v1 definition": "LF.C1_F with Cload_F added at input",
+          "Python v2 definition": "values.C1",
+          "Role": "BlockSpec",
+          "Source formula or file": "model/loop_filter_model.m; Stage 1 declared choices; default MATLAB pll_params",
+          "Default": "1e-10",
+          "Experiment range": "{\"choices\": [5e-11, 1e-10, 2e-10]}",
+          "Validity": "positive shunt capacitance",
+          "Semantic conflict": "v1 effective shunt includes Cload; v2 rejects nonzero load"
+        }
+      },
+      {
+        "id": "C2",
+        "kind": "free_allocation_parameter",
+        "block": "LF",
+        "unit": "F",
+        "participation": "M1_input_or_domain_gate",
+        "stage1_mapping": {
+          "Variable ID": "C2",
+          "Block": "LF",
+          "Unit": "F",
+          "MATLAB definition": "p.c2; vc2 to ground below Rz",
+          "Python v1 definition": "LF.C2_F; same connection",
+          "Python v2 definition": "values.C2",
+          "Role": "BlockSpec",
+          "Source formula or file": "model/loop_filter_model.m; Stage 1 declared choices; default MATLAB pll_params",
+          "Default": "1e-09",
+          "Experiment range": "{\"choices\": [5e-10, 1e-09, 2e-09]}",
+          "Validity": "positive series-branch capacitance",
+          "Semantic conflict": "none; must not swap with C1"
+        }
+      },
+      {
+        "id": "f0",
+        "kind": "free_allocation_parameter",
+        "block": "VCO",
+        "unit": "Hz",
+        "participation": "M1_input_or_domain_gate",
+        "stage1_mapping": {
+          "Variable ID": "f0",
+          "Block": "VCO",
+          "Unit": "Hz",
+          "MATLAB definition": "p.f0; f(V=0)",
+          "Python v1 definition": "VCO.f0_Hz; f(V=V0_V)",
+          "Python v2 definition": "values.f0",
+          "Role": "BlockSpec",
+          "Source formula or file": "model/vco_model.m; Stage 1 declared local domain; default MATLAB pll_params",
+          "Default": "72000000",
+          "Experiment range": "{\"range\": {\"min\": 60000000, \"max\": 76000000}}",
+          "Validity": "zero-voltage intercept; positive f(V) on full domain; candidate tuning must be checked",
+          "Semantic conflict": "YES: f0_v2=f0_v1-Kvco*V0 for linear VCO"
+        }
+      },
+      {
+        "id": "Kvco",
+        "kind": "free_allocation_parameter",
+        "block": "VCO",
+        "unit": "Hz/V",
+        "participation": "M1_input_or_domain_gate",
+        "stage1_mapping": {
+          "Variable ID": "Kvco",
+          "Block": "VCO",
+          "Unit": "Hz/V",
+          "MATLAB definition": "p.kvco; coefficient in Hz/V",
+          "Python v1 definition": "VCO.Kvco_Hz_per_V",
+          "Python v2 definition": "values.Kvco",
+          "Role": "BlockSpec",
+          "Source formula or file": "model/vco_model.m; Stage 1 declared local domain; default MATLAB pll_params",
+          "Default": "20000000",
+          "Experiment range": "{\"range\": {\"min\": 10000000, \"max\": 40000000}}",
+          "Validity": "positive linear frequency slope, not angular gain",
+          "Semantic conflict": "both Hz/V; angular gain requires explicit 2*pi"
+        }
+      },
+      {
+        "id": "Vctrl_min",
+        "kind": "fixed_condition",
+        "block": "VCO",
+        "unit": "V",
+        "participation": "M1_input_or_domain_gate",
+        "stage1_mapping": {
+          "Variable ID": "Vctrl_min",
+          "Block": "VCO",
+          "Unit": "V",
+          "MATLAB definition": "p.vctrl_min; assumed functional limit",
+          "Python v1 definition": "VCO.voltage_min_V; v1 additionally >0",
+          "Python v2 definition": "values.Vctrl_min",
+          "Role": "BlockSpec",
+          "Source formula or file": "model/validate_pll_params.m; User / MATLAB ideal point",
+          "Default": "0",
+          "Experiment range": "{\"fixed\": 0}",
+          "Validity": "strictly below Vctrl_max; M1 lock point interior",
+          "Semantic conflict": "v2 ideal default 0 V cannot pass v1; separate contract"
+        }
+      },
+      {
+        "id": "Vctrl_max",
+        "kind": "fixed_condition",
+        "block": "VCO",
+        "unit": "V",
+        "participation": "M1_input_or_domain_gate",
+        "stage1_mapping": {
+          "Variable ID": "Vctrl_max",
+          "Block": "VCO",
+          "Unit": "V",
+          "MATLAB definition": "p.vctrl_max; assumed functional limit",
+          "Python v1 definition": "VCO.voltage_max_V; v1 < VDD",
+          "Python v2 definition": "values.Vctrl_max",
+          "Role": "BlockSpec",
+          "Source formula or file": "model/validate_pll_params.m; User / MATLAB ideal point",
+          "Default": "1.2",
+          "Experiment range": "{\"fixed\": 1.2}",
+          "Validity": "declared functional limit, not CP compliance from PDK",
+          "Semantic conflict": "v2 has no fabricated VDD/PDK condition"
+        }
+      },
+      {
+        "id": "Kvco2",
+        "kind": "model_assumption",
+        "block": "VCO",
+        "unit": "Hz/V^2",
+        "participation": "M1_input_or_domain_gate",
+        "stage1_mapping": {
+          "Variable ID": "Kvco2",
+          "Block": "VCO",
+          "Unit": "Hz/V^2",
+          "MATLAB definition": "p.kvco2; f(V) curvature Hz/V^2",
+          "Python v1 definition": "not implemented in v1",
+          "Python v2 definition": "values.Kvco2",
+          "Role": "Context",
+          "Source formula or file": "model/vco_model.m; MATLAB pll_params; Stage 1 supported subset",
+          "Default": "0",
+          "Experiment range": "{\"fixed\": 0}",
+          "Validity": "nonzero is UNSUPPORTED",
+          "Semantic conflict": "nonzero UNSUPPORTED; no silent linearization"
+        }
+      },
+      {
+        "id": "CP_mismatch",
+        "kind": "model_assumption",
+        "block": "CP",
+        "unit": "1",
+        "participation": "M1_input_or_domain_gate",
+        "stage1_mapping": {
+          "Variable ID": "CP_mismatch",
+          "Block": "CP",
+          "Unit": "1",
+          "MATLAB definition": "p.cp_mismatch_frac=(Iup-Idown)/Icp",
+          "Python v1 definition": "I_up/I_down explicit; v1 constraint requires equality",
+          "Python v2 definition": "values.CP_mismatch",
+          "Role": "Context",
+          "Source formula or file": "model/pfd_cp_event_step.m; MATLAB pll_params; Stage 1 supported subset",
+          "Default": "0",
+          "Experiment range": "{\"fixed\": 0}",
+          "Validity": "(Iup-Idown)/Icp; nonzero is UNSUPPORTED",
+          "Semantic conflict": "mismatch has one-sided slopes; nonzero UNSUPPORTED"
+        }
+      },
+      {
+        "id": "CP_leakage",
+        "kind": "model_assumption",
+        "block": "CP",
+        "unit": "A",
+        "participation": "M1_input_or_domain_gate",
+        "stage1_mapping": {
+          "Variable ID": "CP_leakage",
+          "Block": "CP",
+          "Unit": "A",
+          "MATLAB definition": "p.cp_leakage_A; signed positive injection into LF",
+          "Python v1 definition": "not independent; q0 includes proxy demand",
+          "Python v2 definition": "values.CP_leakage",
+          "Role": "Context",
+          "Source formula or file": "model/pfd_cp_event_step.m; MATLAB pll_params; Stage 1 supported subset",
+          "Default": "0",
+          "Experiment range": "{\"fixed\": 0}",
+          "Validity": "positive injection; nonzero is UNSUPPORTED",
+          "Semantic conflict": "YES: signed current is not net proxy balance charge"
+        }
+      },
+      {
+        "id": "q0",
+        "kind": "model_assumption",
+        "block": "CP",
+        "unit": "C",
+        "participation": "M1_input_or_domain_gate",
+        "stage1_mapping": {
+          "Variable ID": "q0",
+          "Block": "CP",
+          "Unit": "C",
+          "MATLAB definition": "absent as independent variable",
+          "Python v1 definition": "CP.q0_C; net balance charge includes local proxy demand",
+          "Python v2 definition": "values.q0",
+          "Role": "Context",
+          "Source formula or file": "pll_allocation/_legacy/physics/cp.py; Python v1 semantic audit; explicit zero for M1",
+          "Default": "0",
+          "Experiment range": "{\"fixed\": 0}",
+          "Validity": "balance charge including proxy demand; nonzero is UNSUPPORTED",
+          "Semantic conflict": "YES: cannot subtract leakage again; nonzero UNSUPPORTED"
+        }
+      },
+      {
+        "id": "PFD_reset_delay",
+        "kind": "model_assumption",
+        "block": "PFD",
+        "unit": "s",
+        "participation": "M1_input_or_domain_gate",
+        "stage1_mapping": {
+          "Variable ID": "PFD_reset_delay",
+          "Block": "PFD",
+          "Unit": "s",
+          "MATLAB definition": "p.pfd_reset_delay_s; event reset_remaining_s",
+          "Python v1 definition": "PFD.reset_s; timing clip limit only",
+          "Python v2 definition": "values.PFD_reset_delay",
+          "Role": "Context",
+          "Source formula or file": "model/pfd_cp_event_step.m; MATLAB pll_params; Stage 1 supported subset",
+          "Default": "0",
+          "Experiment range": "{\"fixed\": 0}",
+          "Validity": "nonzero is UNSUPPORTED; negative or >= reference period is OUT_OF_DOMAIN",
+          "Semantic conflict": "YES: event delay and charge timing clip are different models"
+        }
+      },
+      {
+        "id": "Cload",
+        "kind": "model_assumption",
+        "block": "LF",
+        "unit": "F",
+        "participation": "M1_input_or_domain_gate",
+        "stage1_mapping": {
+          "Variable ID": "Cload",
+          "Block": "LF",
+          "Unit": "F",
+          "MATLAB definition": "absent; unloaded ideal LF",
+          "Python v1 definition": "LF.Cload_F; added to C1",
+          "Python v2 definition": "values.Cload",
+          "Role": "Context",
+          "Source formula or file": "pll_allocation/_legacy/physics/lf.py; Python v1 semantic audit; no proxy load migrated",
+          "Default": "0",
+          "Experiment range": "{\"fixed\": 0}",
+          "Validity": "nonzero is UNSUPPORTED",
+          "Semantic conflict": "v1 50fF proxy is not measured admittance; nonzero UNSUPPORTED"
+        }
+      },
+      {
+        "id": "Gload",
+        "kind": "model_assumption",
+        "block": "LF",
+        "unit": "S",
+        "participation": "M1_input_or_domain_gate",
+        "stage1_mapping": {
+          "Variable ID": "Gload",
+          "Block": "LF",
+          "Unit": "S",
+          "MATLAB definition": "absent; unloaded ideal LF",
+          "Python v1 definition": "LF.Rload_Ohm stored but incremental conductance omitted",
+          "Python v2 definition": "values.Gload",
+          "Role": "Context",
+          "Source formula or file": "pll_allocation/_legacy/physics/lf.py; Explicit unloaded ideal LF; not inferred from v1 Rload",
+          "Default": "0",
+          "Experiment range": "{\"fixed\": 0}",
+          "Validity": "nonzero is UNSUPPORTED",
+          "Semantic conflict": "YES: do not claim v1 Rload was dynamically integrated"
+        }
+      },
+      {
+        "id": "f_target",
+        "kind": "derived_parameter",
+        "block": "System",
+        "unit": "Hz",
+        "participation": "M1_derived",
+        "stage1_mapping": {
+          "Variable ID": "f_target",
+          "Block": "System",
+          "Unit": "Hz",
+          "MATLAB definition": "p.n_div*p.f_ref",
+          "Python v1 definition": "fout_target_Hz checked against N*fref",
+          "Python v2 definition": "F_FREQ_PLAN.f_target_Hz",
+          "Role": "Derived",
+          "Source formula or file": "model/solve_tuning_point.m",
+          "Default": "80000000.0",
+          "Experiment range": "derived; no independent axis",
+          "Validity": "N positive integer; fref>0",
+          "Semantic conflict": "derived target is not a transient measurement"
+        }
+      },
+      {
+        "id": "Vctrl_required",
+        "kind": "derived_parameter",
+        "block": "VCO",
+        "unit": "V",
+        "participation": "M1_derived",
+        "stage1_mapping": {
+          "Variable ID": "Vctrl_required",
+          "Block": "VCO",
+          "Unit": "V",
+          "MATLAB definition": "fzero on monotonic f(V) within declared limits",
+          "Python v1 definition": "V0+(fout-f0)/Kvco",
+          "Python v2 definition": "F_TUNING.Vctrl_required_V=(N*fref-f0)/Kvco",
+          "Role": "Derived",
+          "Source formula or file": "model/solve_tuning_point.m",
+          "Default": "0.4",
+          "Experiment range": "derived; no independent axis",
+          "Validity": "interior voltage point required for M1",
+          "Semantic conflict": "v1 V0 anchor differs"
+        }
+      },
+      {
+        "id": "tuning_feasible",
+        "kind": "derived_parameter",
+        "block": "VCO",
+        "unit": "1",
+        "participation": "M1_derived",
+        "stage1_mapping": {
+          "Variable ID": "tuning_feasible",
+          "Block": "VCO",
+          "Unit": "1",
+          "MATLAB definition": "target between f(Vmin),f(Vmax), endpoints inclusive",
+          "Python v1 definition": "candidate voltage check; separate trajectory domain",
+          "Python v2 definition": "F_TUNING.feasible",
+          "Role": "Derived",
+          "Source formula or file": "model/solve_tuning_point.m",
+          "Default": "True",
+          "Experiment range": "derived; no independent axis",
+          "Validity": "positive monotonic linear VCO",
+          "Semantic conflict": "YES: endpoint feasible is not valid two-sided M1"
+        }
+      },
+      {
+        "id": "Kvco_local",
+        "kind": "derived_parameter",
+        "block": "VCO",
+        "unit": "Hz/V",
+        "participation": "M1_derived",
+        "stage1_mapping": {
+          "Variable ID": "Kvco_local",
+          "Block": "VCO",
+          "Unit": "Hz/V",
+          "MATLAB definition": "p.kvco+2*p.kvco2*Vreq",
+          "Python v1 definition": "constant Kvco_Hz_per_V",
+          "Python v2 definition": "F_TUNING.Kvco_local_Hz_per_V",
+          "Role": "Derived",
+          "Source formula or file": "model/vco_model.m",
+          "Default": "20000000.0",
+          "Experiment range": "derived; no independent axis",
+          "Validity": "Stage 1 Kvco2=0",
+          "Semantic conflict": "nonzero curvature deferred"
+        }
+      },
+      {
+        "id": "Kvco_angular",
+        "kind": "derived_parameter",
+        "block": "VCO",
+        "unit": "rad/s/V",
+        "participation": "M1_derived",
+        "stage1_mapping": {
+          "Variable ID": "Kvco_angular",
+          "Block": "VCO",
+          "Unit": "rad/s/V",
+          "MATLAB definition": "2*pi*Kvco_local",
+          "Python v1 definition": "not a v1 input",
+          "Python v2 definition": "explicit internal 2*pi*Kvco",
+          "Role": "Derived",
+          "Source formula or file": "model/pll_linear_kernel.m",
+          "Default": "125663706.14359173",
+          "Experiment range": "derived; no independent axis",
+          "Validity": "do not accept as Hz/V input",
+          "Semantic conflict": "unit conversion explicit"
+        }
+      },
+      {
+        "id": "Iup",
+        "kind": "derived_parameter",
+        "block": "CP",
+        "unit": "A",
+        "participation": "M1_derived",
+        "stage1_mapping": {
+          "Variable ID": "Iup",
+          "Block": "CP",
+          "Unit": "A",
+          "MATLAB definition": "Icp*(1+m/2)",
+          "Python v1 definition": "CP.I_up_A positive timing slope",
+          "Python v2 definition": "F_KPFD.Iup_A",
+          "Role": "Derived",
+          "Source formula or file": "model/pfd_cp_event_step.m",
+          "Default": "0.0001",
+          "Experiment range": "derived; no independent axis",
+          "Validity": "M1 m=0",
+          "Semantic conflict": "v1 declared slope not observed device current"
+        }
+      },
+      {
+        "id": "Idown",
+        "kind": "derived_parameter",
+        "block": "CP",
+        "unit": "A",
+        "participation": "M1_derived",
+        "stage1_mapping": {
+          "Variable ID": "Idown",
+          "Block": "CP",
+          "Unit": "A",
+          "MATLAB definition": "Icp*(1-m/2)",
+          "Python v1 definition": "CP.I_down_A positive timing slope",
+          "Python v2 definition": "F_KPFD.Idown_A",
+          "Role": "Derived",
+          "Source formula or file": "model/pfd_cp_event_step.m",
+          "Default": "0.0001",
+          "Experiment range": "derived; no independent axis",
+          "Validity": "M1 m=0",
+          "Semantic conflict": "DOWN current subtracted by state logic"
+        }
+      },
+      {
+        "id": "Kpfd",
+        "kind": "derived_parameter",
+        "block": "PFD/CP",
+        "unit": "A/rad",
+        "participation": "M1_derived",
+        "stage1_mapping": {
+          "Variable ID": "Kpfd",
+          "Block": "PFD/CP",
+          "Unit": "A/rad",
+          "MATLAB definition": "p.i_cp/(2*pi)",
+          "Python v1 definition": "no explicit continuous Kpfd in v1",
+          "Python v2 definition": "F_KPFD.Kpfd_A_per_rad",
+          "Role": "Derived",
+          "Source formula or file": "model/pll_linear_kernel.m",
+          "Default": "1.5915494309189534e-05",
+          "Experiment range": "derived; no independent axis",
+          "Validity": "symmetric ideal zero-leakage/reset CP",
+          "Semantic conflict": "do not infer gain from event reset approximation"
+        }
+      },
+      {
+        "id": "Zlf",
+        "kind": "derived_parameter",
+        "block": "LF",
+        "unit": "Ohm",
+        "participation": "M1_derived",
+        "stage1_mapping": {
+          "Variable ID": "Zlf",
+          "Block": "LF",
+          "Unit": "Ohm",
+          "MATLAB definition": "(1+s*Rz*C2)/(s*(C1+C2)+s^2*Rz*C1*C2)",
+          "Python v1 definition": "impedance uses C1+Cload",
+          "Python v2 definition": "response.Zlf_Ohm [real,imag]",
+          "Role": "Derived",
+          "Source formula or file": "model/pll_linear_kernel.m; legacy/physics/lf.py",
+          "Default": "frequency dependent",
+          "Experiment range": "derived; no independent axis",
+          "Validity": "s=j*2*pi*f; f>0; positive ideal RC; no load",
+          "Semantic conflict": "Cload/proxy semantics differ"
+        }
+      },
+      {
+        "id": "fz",
+        "kind": "derived_parameter",
+        "block": "LF",
+        "unit": "Hz",
+        "participation": "M1_derived",
+        "stage1_mapping": {
+          "Variable ID": "fz",
+          "Block": "LF",
+          "Unit": "Hz",
+          "MATLAB definition": "1/(2*pi*Rz*C2)",
+          "Python v1 definition": "requirements.zero_Hz",
+          "Python v2 definition": "F_LF_TF.zero_Hz",
+          "Role": "Derived",
+          "Source formula or file": "characterization/characterize_loop.m",
+          "Default": "41663.59766803543",
+          "Experiment range": "derived; no independent axis",
+          "Validity": "positive RC",
+          "Semantic conflict": "none"
+        }
+      },
+      {
+        "id": "fp",
+        "kind": "derived_parameter",
+        "block": "LF",
+        "unit": "Hz",
+        "participation": "M1_derived",
+        "stage1_mapping": {
+          "Variable ID": "fp",
+          "Block": "LF",
+          "Unit": "Hz",
+          "MATLAB definition": "(C1+C2)/(2*pi*Rz*C1*C2)",
+          "Python v1 definition": "C1 effective includes Cload",
+          "Python v2 definition": "F_LF_TF.nonzero_pole_Hz",
+          "Role": "Derived",
+          "Source formula or file": "characterization/characterize_loop.m",
+          "Default": "458299.57434838975",
+          "Experiment range": "derived; no independent axis",
+          "Validity": "positive RC; also integrator at 0",
+          "Semantic conflict": "proxy load not carried over"
+        }
+      },
+      {
+        "id": "L",
+        "kind": "derived_parameter",
+        "block": "Loop",
+        "unit": "1",
+        "participation": "M1_derived",
+        "stage1_mapping": {
+          "Variable ID": "L",
+          "Block": "Loop",
+          "Unit": "1",
+          "MATLAB definition": "Kpfd*2*pi*Kvco_local*Zlf/(N*s)",
+          "Python v1 definition": "not validated in v1 backend",
+          "Python v2 definition": "response.L [real,imag]",
+          "Role": "Derived",
+          "Source formula or file": "model/pll_linear_kernel.m",
+          "Default": "frequency dependent",
+          "Experiment range": "derived; no independent axis",
+          "Validity": "locked continuous small signal; ideal subset",
+          "Semantic conflict": "no sampled-loop equivalence established"
+        }
+      },
+      {
+        "id": "T",
+        "kind": "derived_parameter",
+        "block": "Loop",
+        "unit": "1",
+        "participation": "M1_derived",
+        "stage1_mapping": {
+          "Variable ID": "T",
+          "Block": "Loop",
+          "Unit": "1",
+          "MATLAB definition": "L/(1+L)",
+          "Python v1 definition": "not implemented in v1 backend",
+          "Python v2 definition": "response.T [real,imag]",
+          "Role": "Derived",
+          "Source formula or file": "model/pll_linear_kernel.m",
+          "Default": "DC limit 1",
+          "Experiment range": "derived; no independent axis",
+          "Validity": "normalized; H_ref=N*T",
+          "Semantic conflict": "BW from normalized T not absolute H_ref"
+        }
+      },
+      {
+        "id": "UGF",
+        "kind": "system_measurement",
+        "block": "Loop",
+        "unit": "Hz",
+        "participation": "M1_derived",
+        "stage1_mapping": {
+          "Variable ID": "UGF",
+          "Block": "Loop",
+          "Unit": "Hz",
+          "MATLAB definition": "first downward |L|=1 crossing",
+          "Python v1 definition": "unsupported v1",
+          "Python v2 definition": "metrics.UGF_Hz",
+          "Role": "Measurement",
+          "Source formula or file": "characterization/characterize_loop.m",
+          "Default": "138176.4411317168",
+          "Experiment range": "derived; no independent axis",
+          "Validity": "finite bracketed unique crossing; diagnostic only",
+          "Semantic conflict": "frequency-domain derived measurement, not M2 measurement"
+        }
+      },
+      {
+        "id": "BW",
+        "kind": "system_measurement",
+        "block": "Loop",
+        "unit": "Hz",
+        "participation": "M1_derived",
+        "stage1_mapping": {
+          "Variable ID": "BW",
+          "Block": "Loop",
+          "Unit": "Hz",
+          "MATLAB definition": "first downward |T|=1/sqrt(2) crossing",
+          "Python v1 definition": "unsupported v1",
+          "Python v2 definition": "metrics.BW_Hz",
+          "Role": "Measurement",
+          "Source formula or file": "characterization/characterize_loop.m",
+          "Default": "222379.18349260243",
+          "Experiment range": "derived; no independent axis",
+          "Validity": "stable continuous M1; finite bracket",
+          "Semantic conflict": "not UGF; not sampled bandwidth"
+        }
+      },
+      {
+        "id": "PM",
+        "kind": "system_measurement",
+        "block": "Loop",
+        "unit": "deg",
+        "participation": "M1_derived",
+        "stage1_mapping": {
+          "Variable ID": "PM",
+          "Block": "Loop",
+          "Unit": "deg",
+          "MATLAB definition": "180+angle(L_at_UGF)*180/pi",
+          "Python v1 definition": "unsupported v1",
+          "Python v2 definition": "metrics.PM_deg",
+          "Role": "Measurement",
+          "Source formula or file": "characterization/characterize_loop.m",
+          "Default": "56.44269021253223",
+          "Experiment range": "derived; no independent axis",
+          "Validity": "valid UGF; stable continuous M1",
+          "Semantic conflict": "radians converted once"
+        }
+      },
+      {
+        "id": "V0",
+        "kind": "context_not_executed",
+        "block": "VCO",
+        "unit": "V",
+        "participation": "semantic_reference_not_executed",
+        "stage1_mapping": {
+          "Variable ID": "V0",
+          "Block": "VCO",
+          "Unit": "V",
+          "MATLAB definition": "implicit 0 V origin",
+          "Python v1 definition": "VCO.V0_V frequency anchor voltage",
+          "Python v2 definition": "no v2 independent anchor",
+          "Role": "Context",
+          "Source formula or file": "behavioral.py PHYSICS; model/vco_model.m",
+          "Default": "MATLAB=0; v1 varies",
+          "Experiment range": "not a v2 axis",
+          "Validity": "linear conversion only",
+          "Semantic conflict": "YES: f0 offset required"
+        }
+      },
+      {
+        "id": "phase_err",
+        "kind": "derived_parameter",
+        "block": "PFD",
+        "unit": "rad",
+        "participation": "semantic_reference_not_executed",
+        "stage1_mapping": {
+          "Variable ID": "phase_err",
+          "Block": "PFD",
+          "Unit": "rad",
+          "MATLAB definition": "wrap(phi_ref-phi_div) in radians",
+          "Python v1 definition": "wrap(feedback-reference) cycles, phase_deg=360*cycles",
+          "Python v2 definition": "reference-minus-feedback radians",
+          "Role": "Derived",
+          "Source formula or file": "model/pll_behavioral_model.m; legacy/evaluation/python_behavioral.py",
+          "Default": "ideal lock 0",
+          "Experiment range": "[-pi,pi)",
+          "Validity": "no time-domain M1 waveform",
+          "Semantic conflict": "YES: e_v2_rad=-e_v1_deg*pi/180"
+        }
+      },
+      {
+        "id": "f_offset",
+        "kind": "context_not_executed",
+        "block": "Loop",
+        "unit": "Hz",
+        "participation": "semantic_reference_not_executed",
+        "stage1_mapping": {
+          "Variable ID": "f_offset",
+          "Block": "Loop",
+          "Unit": "Hz",
+          "MATLAB definition": "positive logspace grid",
+          "Python v1 definition": "legacy LF uses positive probe frequencies",
+          "Python v2 definition": "FrequencyScan; response_frequencies_Hz",
+          "Role": "Context",
+          "Source formula or file": "characterization/characterize_loop.m",
+          "Default": "8000 points; bounds derived from fz/fp/fref",
+          "Experiment range": "positive; custom scan explicit",
+          "Validity": "missing crossing => NUMERICAL_FAILURE",
+          "Semantic conflict": "no units hidden in angular axis"
+        }
+      },
+      {
+        "id": "Vctrl0",
+        "kind": "context_not_executed",
+        "block": "VCO",
+        "unit": "V",
+        "participation": "semantic_reference_not_executed",
+        "stage1_mapping": {
+          "Variable ID": "Vctrl0",
+          "Block": "VCO",
+          "Unit": "V",
+          "MATLAB definition": "p.vctrl0=0.15; acquisition initial value",
+          "Python v1 definition": "initialization.Vctrl_V and Vc2_V",
+          "Python v2 definition": "not executed in M1",
+          "Role": "Context",
+          "Source formula or file": "model/pll_params.m; model/pll_behavioral_model.m",
+          "Default": "0.15",
+          "Experiment range": "no Stage 1 axis",
+          "Validity": "M2 only; initial lock not assumed proven",
+          "Semantic conflict": "different initial conditions in v1 history"
+        }
+      },
+      {
+        "id": "Rload",
+        "kind": "context_not_executed",
+        "block": "LF",
+        "unit": "Ohm",
+        "participation": "semantic_reference_not_executed",
+        "stage1_mapping": {
+          "Variable ID": "Rload",
+          "Block": "LF",
+          "Unit": "Ohm",
+          "MATLAB definition": "absent",
+          "Python v1 definition": "LF.Rload_Ohm; DC in q0; incremental conductance omitted",
+          "Python v2 definition": "no proxy resistance axis; Gload=0",
+          "Role": "Context",
+          "Source formula or file": "legacy/physics/lf.py; legacy/evaluation/python_behavioral.py",
+          "Default": "v1 proxy 1e9",
+          "Experiment range": "no Stage 1 axis",
+          "Validity": "nonzero Gload unsupported",
+          "Semantic conflict": "YES: finite stored Rload not a dynamic shunt"
+        }
+      },
+      {
+        "id": "spec_output_frequency_Hz",
+        "kind": "system_requirement",
+        "block": "System",
+        "unit": "Hz",
+        "participation": "acceptance_bound",
+        "stage1_mapping": {
+          "Variable ID": "spec_output_frequency_Hz",
+          "Block": "System",
+          "Unit": "Hz",
+          "MATLAB definition": "N*fref",
+          "Python v1 definition": "v1 frozen phase/frequency/lock targets; unchanged",
+          "Python v2 definition": "conditional_locked_tuning_frequency",
+          "Role": "SystemSpec",
+          "Source formula or file": "User: 10 MHz x 8; conditional static frequency, not a transient measurement; factors/pll_default_specs.m",
+          "Default": "{\"min\": 80000000, \"max\": 80000000}",
+          "Experiment range": "draft v0 fixed experiment bounds",
+          "Validity": "research target; continuous M1 only",
+          "Semantic conflict": "new experimental targets are not old v1 constraints"
+        }
+      },
+      {
+        "id": "spec_BW_Hz",
+        "kind": "system_requirement",
+        "block": "System",
+        "unit": "Hz",
+        "participation": "acceptance_bound",
+        "stage1_mapping": {
+          "Variable ID": "spec_BW_Hz",
+          "Block": "System",
+          "Unit": "Hz",
+          "MATLAB definition": "historical illustrative BW 100-400kHz",
+          "Python v1 definition": "v1 frozen phase/frequency/lock targets; unchanged",
+          "Python v2 definition": "continuous_normalized_T_first_downward_minus3dB",
+          "Role": "SystemSpec",
+          "Source formula or file": "User: experimental BW target; factors/pll_default_specs.m",
+          "Default": "{\"min\": 150000, \"max\": 300000}",
+          "Experiment range": "draft v0 fixed experiment bounds",
+          "Validity": "research target; continuous M1 only",
+          "Semantic conflict": "new experimental targets are not old v1 constraints"
+        }
+      },
+      {
+        "id": "spec_PM_deg",
+        "kind": "system_requirement",
+        "block": "System",
+        "unit": "deg",
+        "participation": "acceptance_bound",
+        "stage1_mapping": {
+          "Variable ID": "spec_PM_deg",
+          "Block": "System",
+          "Unit": "deg",
+          "MATLAB definition": "historical illustrative PM>=45deg",
+          "Python v1 definition": "v1 frozen phase/frequency/lock targets; unchanged",
+          "Python v2 definition": "180_plus_continuous_L_phase_at_UGF",
+          "Role": "SystemSpec",
+          "Source formula or file": "User: experimental PM target; factors/pll_default_specs.m",
+          "Default": "{\"min\": 50}",
+          "Experiment range": "draft v0 fixed experiment bounds",
+          "Validity": "research target; continuous M1 only",
+          "Semantic conflict": "new experimental targets are not old v1 constraints"
+        }
+      }
+    ],
+    "joint_constraints": [
+      {
+        "id": "J_FREQ",
+        "layer": "model_validity",
+        "expression": "f_target=N*f_ref=80e6 Hz",
+        "implementation": "contracts.check_parameters"
+      },
+      {
+        "id": "J_TUNING",
+        "layer": "model_validity",
+        "expression": "Vmin < (N*f_ref-f0)/Kvco < Vmax",
+        "implementation": "contracts.check_parameters"
+      },
+      {
+        "id": "J_GAIN",
+        "layer": "coupling",
+        "expression": "G=Icp*Kvco/N; equal products preserve continuous L, not Vreq",
+        "implementation": "Stage1 M1Evaluator"
+      },
+      {
+        "id": "J_LF",
+        "layer": "coupling",
+        "expression": "wz=1/(Rz*C2); wp=(C1+C2)/(Rz*C1*C2)",
+        "implementation": "Stage1 M1Evaluator"
+      },
+      {
+        "id": "J_STABILITY",
+        "layer": "model_validity",
+        "expression": "b*c-a*d=(Icp*Kvco/N)*Rz*C2^2>0 for positive declared values",
+        "implementation": "contracts.check_parameters"
+      },
+      {
+        "id": "J_IDEAL",
+        "layer": "model_validity",
+        "expression": "Kvco2=mismatch=leakage=q0=reset=Cload=Gload=0",
+        "implementation": "Stage1 parse_parameters"
+      },
+      {
+        "id": "J_SYSTEM",
+        "layer": "system_feasible_region",
+        "expression": "interior tuning AND 150e3<=BW<=300e3 AND PM>=50deg",
+        "implementation": "contracts.forward"
+      }
+    ],
+    "metric_support": {
+      "output_frequency_Hz": {
+        "evaluator": "M1",
+        "status": "CONDITIONAL_STATIC_TUNING",
+        "behavioral_validation": "SPARSE_CONDITIONAL_EVENT_FREQUENCY_CONTROL_CHECKS_ONLY",
+        "evidence": "outputs/block_space_v1_20261104_01/FORWARD_MODEL_VALIDATION.csv"
+      },
+      "BW_Hz": {
+        "evaluator": "M1",
+        "status": "CONTINUOUS_FORMULA_NUMERICAL_VALIDATION",
+        "behavioral_validation": "NOT_MEASURED_NO_INJECTION_PROTOCOL",
+        "evidence": "outputs/block_space_v1_20261104_01/FORWARD_MODEL_VALIDATION.csv"
+      },
+      "PM_deg": {
+        "evaluator": "M1",
+        "status": "CONTINUOUS_FORMULA_NUMERICAL_VALIDATION",
+        "behavioral_validation": "NOT_MEASURED_NO_INJECTION_PROTOCOL",
+        "evidence": "outputs/block_space_v1_20261104_01/FORWARD_MODEL_VALIDATION.csv"
+      },
+      "UGF_Hz": {
+        "evaluator": "M1",
+        "role": "diagnostic",
+        "status": "CONTINUOUS_FORMULA_NUMERICAL_VALIDATION",
+        "evidence": "outputs/block_space_v1_20261104_01/FORWARD_MODEL_VALIDATION.csv"
+      },
+      "Jitter": {
+        "status": "UNSUPPORTED"
+      },
+      "Lock_Time": {
+        "status": "UNSUPPORTED"
+      },
+      "Static_Phase_Error": {
+        "status": "UNSUPPORTED_AS_SYSTEMSPEC"
+      },
+      "Power": {
+        "status": "UNSUPPORTED"
+      }
+    },
+    "equation_registry": "configs/PLL_EQUATION_REGISTRY_V1.json",
+    "source_manifest": "docs/stage1_5/audit/source_manifest.json",
+    "validation_evidence": {
+      "status": "M1_DOMAIN_SCAN_COMPLETE_SPARSE_EVENT_CHECKS",
+      "report": "docs/stage1_5/DOMAIN_VALIDATION_REPORT.md",
+      "per_case_evidence_required": true,
+      "coverage_claim": "representative_samples_not_entire_domain",
+      "validated_experiment_sha256": "4872a8d64f03ecc2bbe642a572a8fc2ea5fa6cfcb50b55917d14055fd7f46aeb",
+      "validation_input_model_sha256": "900c274aa714c4ff7e3ccba7e7bd4aa0f9f85b654a4fca212f3325a14c58fdb5",
+      "summary": "outputs/block_space_v1_20261104_01/summary.json",
+      "summary_file_sha256": "40292cbd250c750d3a22a4c1cad5065a6e734a17f470a0256140f9a7649e2eaf",
+      "numerical_cases": 124,
+      "event_checked_cases": 32,
+      "event_frequency_control_agreement_cases": 26,
+      "BW_PM_UGF_behavioral_validation": "NOT_ESTABLISHED",
+      "reference_blockspec": "outputs/block_space_v1_20261104_01/REFERENCE_BLOCKSPEC.json",
+      "known_weak_region": "near-rail tuning; see C130 160us and 640us diagnostics; no domain-wide capture guarantee"
+    },
+    "calibration_policy": {
+      "raw_physics_immutable": true,
+      "residual_model": "NOT_IMPLEMENTED",
+      "record_schema": "prediction-discrepancy-1.0",
+      "required_fields": [
+        "formula_version",
+        "parameter_domain_version",
+        "behavioral_model_version",
+        "parameter_sha256",
+        "metric",
+        "prediction",
+        "reference",
+        "unit",
+        "prediction_protocol",
+        "reference_protocol",
+        "validation_evidence",
+        "prediction_error",
+        "known_limitations",
+        "recommended_calibration_action",
+        "classification"
+      ],
+      "classifications": [
+        "NUMERICAL_IMPLEMENTATION_ERROR",
+        "FORMULA_ASSUMPTION_INVALID",
+        "PARAMETER_SEMANTICS_MISMATCH",
+        "MISSING_BEHAVIORAL_EFFECT",
+        "MEASUREMENT_PROTOCOL_MISMATCH",
+        "UNRESOLVED"
+      ]
+    }
+  },
+  "SystemSpec": {
+    "version": "0",
+    "draft": true,
+    "source": "User Stage 1 research targets, 2026-11-04; not frozen",
+    "metrics": [
+      {
+        "metric": "output_frequency_Hz",
+        "unit": "Hz",
+        "min": 80000000,
+        "max": 80000000,
+        "tolerance": 1e-06,
+        "evaluator": "M1",
+        "protocol": "conditional_locked_tuning_frequency",
+        "source": "User: 10 MHz x 8; conditional static frequency, not a transient measurement"
+      },
+      {
+        "metric": "BW_Hz",
+        "unit": "Hz",
+        "min": 150000,
+        "max": 300000,
+        "tolerance": 0,
+        "evaluator": "M1",
+        "protocol": "continuous_normalized_T_first_downward_minus3dB",
+        "source": "User: experimental BW target"
+      },
+      {
+        "metric": "PM_deg",
+        "unit": "deg",
+        "min": 50,
+        "tolerance": 0,
+        "evaluator": "M1",
+        "protocol": "180_plus_continuous_L_phase_at_UGF",
+        "source": "User: experimental PM target"
+      }
+    ]
+  },
+  "plan_sha256": "6b29ab73475a3da776894318bd94f44d2e30c4e8fa4c15889041d520af252fc7"
+}

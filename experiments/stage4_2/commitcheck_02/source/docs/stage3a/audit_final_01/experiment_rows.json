@@ -1,0 +1,374 @@
+[
+  {
+    "run": "stage3a_analytical_20261104_01",
+    "strategy": "analytical",
+    "stage": "FIRST_SHOT",
+    "origin": "NEW_ALLOCATION",
+    "M1_status": "M1_PASS",
+    "M2_status": "M2_PARTIAL_PASS",
+    "M1_BW_Hz": 225000.0000001216,
+    "M2_BW_Hz": 226403.93447205875,
+    "BW_relative_error": 0.006239708764161689,
+    "constraints": [
+      {
+        "metric": "output_frequency_Hz",
+        "target": {
+          "metric": "output_frequency_Hz",
+          "unit": "Hz",
+          "min": 80000000,
+          "max": 80000000,
+          "tolerance": 1e-06,
+          "evaluator": "M1",
+          "protocol": "conditional_locked_tuning_frequency",
+          "source": "User: 10 MHz x 8; conditional static frequency, not a transient measurement"
+        },
+        "status": "UNKNOWN",
+        "reason": "UNKNOWN_REQUIRED_PRECISION: frozen 1e-6 Hz tolerance not independently validated"
+      },
+      {
+        "metric": "BW_Hz",
+        "target": {
+          "metric": "BW_Hz",
+          "unit": "Hz",
+          "min": 150000,
+          "max": 300000,
+          "tolerance": 0,
+          "evaluator": "M1",
+          "protocol": "continuous_normalized_T_first_downward_minus3dB",
+          "source": "User: experimental BW target"
+        },
+        "status": "PASS",
+        "reason": "converged measured BW envelope"
+      },
+      {
+        "metric": "PM_deg",
+        "target": {
+          "metric": "PM_deg",
+          "unit": "deg",
+          "min": 50,
+          "tolerance": 0,
+          "evaluator": "M1",
+          "protocol": "180_plus_continuous_L_phase_at_UGF",
+          "source": "User: experimental PM target"
+        },
+        "status": "UNKNOWN",
+        "reason": "PM_M2_UNKNOWN"
+      }
+    ],
+    "native_runs": 106,
+    "parameter_sha256": "74864b2e3b6a8cbb9aac7610632ae0d8c5428be38c8a7e1d1c85038526ff050b",
+    "overall_status": "UNKNOWN",
+    "protocol_sha256": "250f8e4d3f186bfd286028c71a3515d6010876f57fa4a219567c99aa71f69280",
+    "verified_joint_block_spec": false
+  },
+  {
+    "run": "stage3a_optimization_20261104_01",
+    "strategy": "sensitivity_optimization",
+    "stage": "FIRST_SHOT",
+    "origin": "NEW_ALLOCATION",
+    "M1_status": "M1_PASS",
+    "M2_status": "M2_PARTIAL_PASS",
+    "M1_BW_Hz": 204356.65129092903,
+    "M2_BW_Hz": 205385.56797859407,
+    "BW_relative_error": 0.005034906772866554,
+    "constraints": [
+      {
+        "metric": "output_frequency_Hz",
+        "target": {
+          "metric": "output_frequency_Hz",
+          "unit": "Hz",
+          "min": 80000000,
+          "max": 80000000,
+          "tolerance": 1e-06,
+          "evaluator": "M1",
+          "protocol": "conditional_locked_tuning_frequency",
+          "source": "User: 10 MHz x 8; conditional static frequency, not a transient measurement"
+        },
+        "status": "UNKNOWN",
+        "reason": "UNKNOWN_REQUIRED_PRECISION: frozen 1e-6 Hz tolerance not independently validated"
+      },
+      {
+        "metric": "BW_Hz",
+        "target": {
+          "metric": "BW_Hz",
+          "unit": "Hz",
+          "min": 150000,
+          "max": 300000,
+          "tolerance": 0,
+          "evaluator": "M1",
+          "protocol": "continuous_normalized_T_first_downward_minus3dB",
+          "source": "User: experimental BW target"
+        },
+        "status": "PASS",
+        "reason": "converged measured BW envelope"
+      },
+      {
+        "metric": "PM_deg",
+        "target": {
+          "metric": "PM_deg",
+          "unit": "deg",
+          "min": 50,
+          "tolerance": 0,
+          "evaluator": "M1",
+          "protocol": "180_plus_continuous_L_phase_at_UGF",
+          "source": "User: experimental PM target"
+        },
+        "status": "UNKNOWN",
+        "reason": "PM_M2_UNKNOWN"
+      }
+    ],
+    "native_runs": 106,
+    "parameter_sha256": "0680aca64244af0f48c368688ba890ac16b9aeee3b7bdd17b7b683ab33d5db19",
+    "overall_status": "UNKNOWN",
+    "protocol_sha256": "250f8e4d3f186bfd286028c71a3515d6010876f57fa4a219567c99aa71f69280",
+    "verified_joint_block_spec": false
+  },
+  {
+    "run": "stage3a_llm_20261104_01",
+    "strategy": "llm_agent",
+    "stage": "FIRST_SHOT",
+    "origin": "NEW_ALLOCATION",
+    "M1_status": "M1_PASS",
+    "M2_status": "M2_PARTIAL_PASS",
+    "M1_BW_Hz": 225000.0000001216,
+    "M2_BW_Hz": 226403.93447205875,
+    "BW_relative_error": 0.006239708764161689,
+    "constraints": [
+      {
+        "metric": "output_frequency_Hz",
+        "target": {
+          "metric": "output_frequency_Hz",
+          "unit": "Hz",
+          "min": 80000000,
+          "max": 80000000,
+          "tolerance": 1e-06,
+          "evaluator": "M1",
+          "protocol": "conditional_locked_tuning_frequency",
+          "source": "User: 10 MHz x 8; conditional static frequency, not a transient measurement"
+        },
+        "status": "UNKNOWN",
+        "reason": "UNKNOWN_REQUIRED_PRECISION: frozen 1e-6 Hz tolerance not independently validated"
+      },
+      {
+        "metric": "BW_Hz",
+        "target": {
+          "metric": "BW_Hz",
+          "unit": "Hz",
+          "min": 150000,
+          "max": 300000,
+          "tolerance": 0,
+          "evaluator": "M1",
+          "protocol": "continuous_normalized_T_first_downward_minus3dB",
+          "source": "User: experimental BW target"
+        },
+        "status": "PASS",
+        "reason": "converged measured BW envelope"
+      },
+      {
+        "metric": "PM_deg",
+        "target": {
+          "metric": "PM_deg",
+          "unit": "deg",
+          "min": 50,
+          "tolerance": 0,
+          "evaluator": "M1",
+          "protocol": "180_plus_continuous_L_phase_at_UGF",
+          "source": "User: experimental PM target"
+        },
+        "status": "UNKNOWN",
+        "reason": "PM_M2_UNKNOWN"
+      }
+    ],
+    "native_runs": 106,
+    "parameter_sha256": "74864b2e3b6a8cbb9aac7610632ae0d8c5428be38c8a7e1d1c85038526ff050b",
+    "overall_status": "UNKNOWN",
+    "protocol_sha256": "250f8e4d3f186bfd286028c71a3515d6010876f57fa4a219567c99aa71f69280",
+    "verified_joint_block_spec": false
+  },
+  {
+    "run": "stage3a_feedback_repair_20261104_01",
+    "strategy": "random",
+    "stage": "FIRST_SHOT",
+    "origin": "NEW_ALLOCATION",
+    "M1_status": "M1_FAIL",
+    "M2_status": "M2_FAIL",
+    "M1_BW_Hz": 709216.5657616763,
+    "M2_BW_Hz": 713783.7917007345,
+    "BW_relative_error": 0.006439818469487157,
+    "constraints": [
+      {
+        "metric": "output_frequency_Hz",
+        "target": {
+          "metric": "output_frequency_Hz",
+          "unit": "Hz",
+          "min": 80000000,
+          "max": 80000000,
+          "tolerance": 1e-06,
+          "evaluator": "M1",
+          "protocol": "conditional_locked_tuning_frequency",
+          "source": "User: 10 MHz x 8; conditional static frequency, not a transient measurement"
+        },
+        "status": "UNKNOWN",
+        "reason": "UNKNOWN_REQUIRED_PRECISION: frozen 1e-6 Hz tolerance not independently validated"
+      },
+      {
+        "metric": "BW_Hz",
+        "target": {
+          "metric": "BW_Hz",
+          "unit": "Hz",
+          "min": 150000,
+          "max": 300000,
+          "tolerance": 0,
+          "evaluator": "M1",
+          "protocol": "continuous_normalized_T_first_downward_minus3dB",
+          "source": "User: experimental BW target"
+        },
+        "status": "FAIL",
+        "reason": "converged measured BW envelope"
+      },
+      {
+        "metric": "PM_deg",
+        "target": {
+          "metric": "PM_deg",
+          "unit": "deg",
+          "min": 50,
+          "tolerance": 0,
+          "evaluator": "M1",
+          "protocol": "180_plus_continuous_L_phase_at_UGF",
+          "source": "User: experimental PM target"
+        },
+        "status": "UNKNOWN",
+        "reason": "PM_M2_UNKNOWN"
+      }
+    ],
+    "native_runs": 114,
+    "parameter_sha256": "f8262bad9fb562cec340372cde32e0d2c998a514f1b4942205055515dc18a6dd",
+    "overall_status": "FAIL",
+    "protocol_sha256": "250f8e4d3f186bfd286028c71a3515d6010876f57fa4a219567c99aa71f69280",
+    "verified_joint_block_spec": false
+  },
+  {
+    "run": "stage3a_feedback_repair_20261104_01",
+    "strategy": "random",
+    "stage": "FEEDBACK_REPAIR",
+    "origin": "NEW_ALLOCATION",
+    "M1_status": "M1_PASS",
+    "M2_status": "M2_PARTIAL_PASS",
+    "M1_BW_Hz": 204356.65129092903,
+    "M2_BW_Hz": 205385.56797859407,
+    "BW_relative_error": 0.005034906772866554,
+    "constraints": [
+      {
+        "metric": "output_frequency_Hz",
+        "target": {
+          "metric": "output_frequency_Hz",
+          "unit": "Hz",
+          "min": 80000000,
+          "max": 80000000,
+          "tolerance": 1e-06,
+          "evaluator": "M1",
+          "protocol": "conditional_locked_tuning_frequency",
+          "source": "User: 10 MHz x 8; conditional static frequency, not a transient measurement"
+        },
+        "status": "UNKNOWN",
+        "reason": "UNKNOWN_REQUIRED_PRECISION: frozen 1e-6 Hz tolerance not independently validated"
+      },
+      {
+        "metric": "BW_Hz",
+        "target": {
+          "metric": "BW_Hz",
+          "unit": "Hz",
+          "min": 150000,
+          "max": 300000,
+          "tolerance": 0,
+          "evaluator": "M1",
+          "protocol": "continuous_normalized_T_first_downward_minus3dB",
+          "source": "User: experimental BW target"
+        },
+        "status": "PASS",
+        "reason": "converged measured BW envelope"
+      },
+      {
+        "metric": "PM_deg",
+        "target": {
+          "metric": "PM_deg",
+          "unit": "deg",
+          "min": 50,
+          "tolerance": 0,
+          "evaluator": "M1",
+          "protocol": "180_plus_continuous_L_phase_at_UGF",
+          "source": "User: experimental PM target"
+        },
+        "status": "UNKNOWN",
+        "reason": "PM_M2_UNKNOWN"
+      }
+    ],
+    "native_runs": 106,
+    "parameter_sha256": "0680aca64244af0f48c368688ba890ac16b9aeee3b7bdd17b7b683ab33d5db19",
+    "overall_status": "UNKNOWN",
+    "protocol_sha256": "250f8e4d3f186bfd286028c71a3515d6010876f57fa4a219567c99aa71f69280",
+    "verified_joint_block_spec": false
+  },
+  {
+    "run": "stage3a_reverify_20261104_01",
+    "strategy": "analytical",
+    "stage": "FIRST_SHOT",
+    "origin": "EXISTING_PROPOSAL_REVERIFICATION",
+    "M1_status": "M1_PASS",
+    "M2_status": "M2_PARTIAL_PASS",
+    "M1_BW_Hz": 225000.0000001216,
+    "M2_BW_Hz": 226403.93447205875,
+    "BW_relative_error": 0.006239708764161689,
+    "constraints": [
+      {
+        "metric": "output_frequency_Hz",
+        "target": {
+          "metric": "output_frequency_Hz",
+          "unit": "Hz",
+          "min": 80000000,
+          "max": 80000000,
+          "tolerance": 1e-06,
+          "evaluator": "M1",
+          "protocol": "conditional_locked_tuning_frequency",
+          "source": "User: 10 MHz x 8; conditional static frequency, not a transient measurement"
+        },
+        "status": "UNKNOWN",
+        "reason": "UNKNOWN_REQUIRED_PRECISION: frozen 1e-6 Hz tolerance not independently validated"
+      },
+      {
+        "metric": "BW_Hz",
+        "target": {
+          "metric": "BW_Hz",
+          "unit": "Hz",
+          "min": 150000,
+          "max": 300000,
+          "tolerance": 0,
+          "evaluator": "M1",
+          "protocol": "continuous_normalized_T_first_downward_minus3dB",
+          "source": "User: experimental BW target"
+        },
+        "status": "PASS",
+        "reason": "converged measured BW envelope"
+      },
+      {
+        "metric": "PM_deg",
+        "target": {
+          "metric": "PM_deg",
+          "unit": "deg",
+          "min": 50,
+          "tolerance": 0,
+          "evaluator": "M1",
+          "protocol": "180_plus_continuous_L_phase_at_UGF",
+          "source": "User: experimental PM target"
+        },
+        "status": "UNKNOWN",
+        "reason": "PM_M2_UNKNOWN"
+      }
+    ],
+    "native_runs": 106,
+    "parameter_sha256": "74864b2e3b6a8cbb9aac7610632ae0d8c5428be38c8a7e1d1c85038526ff050b",
+    "overall_status": "UNKNOWN",
+    "protocol_sha256": "250f8e4d3f186bfd286028c71a3515d6010876f57fa4a219567c99aa71f69280",
+    "verified_joint_block_spec": false
+  }
+]

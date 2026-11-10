@@ -1,0 +1,324 @@
+[
+  {
+    "system_metric_id": "Vctrl_required_V",
+    "inverse_capability": "ANALYTICAL_INVERSE",
+    "enabled_in_frozen_SystemSpec": false,
+    "suggested_tools": [
+      "pll_allocation.physics_mapping.model.evaluate",
+      "block_space.contracts.check_parameters"
+    ],
+    "action": "solve conditional algebra, then check full SI domain and M1",
+    "executes_solver": false,
+    "may_change_SystemSpec": false,
+    "model_versions": {
+      "formula_version": "stage1_m1_1.0.0",
+      "parameter_domain_version": "stage1_declared_domain_1.0.0",
+      "behavioral_model_version": "reference_python_edge_euler_sha256_f6f550276228"
+    },
+    "source_binding_checks": [
+      {
+        "path": "configs/BLOCK_SPACE_MODEL_V1.json",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "configs/SYSTEM_SPEC_STAGE1_5.json",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "configs/PLL_EQUATION_REGISTRY_V1.json",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "configs/verification/protocol_v1_1.json",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/physics_mapping/model.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/physics_mapping/validation.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/block_space/contracts.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/allocation/physics.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/allocation/allocate.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/allocation/core.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/verification/verify.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/verification/kernel.cpp",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/verification/simulator.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/_legacy/physics/cp.py",
+        "match": "EXACT_BYTES"
+      }
+    ],
+    "may_issue_behavioral_PASS": false,
+    "model_limitations": [
+      "Kvco positive and linear; no curvature or PVT",
+      "no new voltage margin constraint is enabled"
+    ]
+  },
+  {
+    "system_metric_id": "BW_Hz",
+    "inverse_capability": "NUMERICAL_INVERSE",
+    "enabled_in_frozen_SystemSpec": true,
+    "suggested_tools": [
+      "allocation.physics.propagate",
+      "allocation.physics.inverse_at_shape",
+      "allocation.allocate.analytical",
+      "allocation.allocate.optimize",
+      "pll_allocation.physics_mapping.model.evaluate",
+      "pll_allocation.verification.verify.verify (complete saved AllocationProposal, new output directory)"
+    ],
+    "action": "propagate necessary constraints, use existing bounded M1 solver, then independent M2",
+    "executes_solver": false,
+    "may_change_SystemSpec": false,
+    "model_versions": {
+      "formula_version": "stage1_m1_1.0.0",
+      "parameter_domain_version": "stage1_declared_domain_1.0.0",
+      "behavioral_model_version": "reference_python_edge_euler_sha256_f6f550276228"
+    },
+    "source_binding_checks": [
+      {
+        "path": "configs/BLOCK_SPACE_MODEL_V1.json",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "configs/SYSTEM_SPEC_STAGE1_5.json",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "configs/PLL_EQUATION_REGISTRY_V1.json",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "configs/verification/protocol_v1_1.json",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/physics_mapping/model.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/physics_mapping/validation.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/block_space/contracts.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/allocation/physics.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/allocation/allocate.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/allocation/core.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/verification/verify.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/verification/kernel.cpp",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/verification/simulator.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/_legacy/physics/cp.py",
+        "match": "EXACT_BYTES"
+      }
+    ],
+    "may_issue_behavioral_PASS": false,
+    "model_limitations": [
+      "analytical strategy contains bandwidth_ratio numerical root",
+      "not equivalent to UGF",
+      "local M2 evidence is not domain-wide"
+    ]
+  },
+  {
+    "system_metric_id": "capture",
+    "inverse_capability": "BEHAVIORAL_ONLY",
+    "enabled_in_frozen_SystemSpec": false,
+    "suggested_tools": [
+      "pll_allocation.verification.verify.verify (complete saved AllocationProposal, new output directory)"
+    ],
+    "action": "screen tuning/domain, then request unchanged full M2 at declared initial conditions",
+    "executes_solver": false,
+    "may_change_SystemSpec": false,
+    "model_versions": {
+      "formula_version": "stage1_m1_1.0.0",
+      "parameter_domain_version": "stage1_declared_domain_1.0.0",
+      "behavioral_model_version": "reference_python_edge_euler_sha256_f6f550276228"
+    },
+    "source_binding_checks": [
+      {
+        "path": "configs/BLOCK_SPACE_MODEL_V1.json",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "configs/SYSTEM_SPEC_STAGE1_5.json",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "configs/PLL_EQUATION_REGISTRY_V1.json",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "configs/verification/protocol_v1_1.json",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/physics_mapping/model.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/physics_mapping/validation.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/block_space/contracts.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/allocation/physics.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/allocation/allocate.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/allocation/core.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/verification/verify.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/verification/kernel.cpp",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/verification/simulator.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/_legacy/physics/cp.py",
+        "match": "EXACT_BYTES"
+      }
+    ],
+    "may_issue_behavioral_PASS": false,
+    "model_limitations": [
+      "initial state/window and cycle-slip interpretation required",
+      "no enabled hard lock-time constraint",
+      "no validated analytical inverse"
+    ]
+  },
+  {
+    "system_metric_id": "RUR",
+    "inverse_capability": "UNSUPPORTED",
+    "enabled_in_frozen_SystemSpec": false,
+    "suggested_tools": [],
+    "action": "report missing definition/mechanism; do not allocate or certify",
+    "executes_solver": false,
+    "may_change_SystemSpec": false,
+    "model_versions": {
+      "formula_version": "stage1_m1_1.0.0",
+      "parameter_domain_version": "stage1_declared_domain_1.0.0",
+      "behavioral_model_version": "reference_python_edge_euler_sha256_f6f550276228"
+    },
+    "source_binding_checks": [
+      {
+        "path": "configs/BLOCK_SPACE_MODEL_V1.json",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "configs/SYSTEM_SPEC_STAGE1_5.json",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "configs/PLL_EQUATION_REGISTRY_V1.json",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "configs/verification/protocol_v1_1.json",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/physics_mapping/model.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/physics_mapping/validation.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/block_space/contracts.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/allocation/physics.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/allocation/allocate.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/allocation/core.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/verification/verify.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/verification/kernel.cpp",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/verification/simulator.py",
+        "match": "EXACT_BYTES"
+      },
+      {
+        "path": "pll_allocation/_legacy/physics/cp.py",
+        "match": "EXACT_BYTES"
+      }
+    ],
+    "may_issue_behavioral_PASS": false,
+    "model_limitations": [
+      "no authoritative definition; not a constraint",
+      "ratio is not proof of sampled equivalence"
+    ]
+  }
+]

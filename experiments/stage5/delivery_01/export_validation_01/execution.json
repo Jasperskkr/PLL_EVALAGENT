@@ -1,0 +1,13 @@
+{
+  "returncode": 0,
+  "wall_s": 1.2224271000013687,
+  "command": [
+    "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "-B",
+    "-c",
+    "from pathlib import Path\nimport json\nimport pll_allocation\nfrom pll_allocation.pipeline import run_pipeline\nfrom pll_allocation.pipeline_contracts import load_inputs\nfrom pll_allocation.physics_mapping.registry import load_registry\nfrom tools.audit_mainline import audit\nroot=Path.cwd()\nassert Path(pll_allocation.__file__).resolve().is_relative_to(root)\nassert not list((root/'pll_allocation').rglob('*.dll'))\nassert not list(root.rglob('*.npz'))\nassert not (root/'track_b').exists()\nload_inputs()\nregistry=load_registry(root/'docs/stage4_2/PHYSICS_MAPPING_REGISTRY.json')\nassert audit(root)['passed']\nresult=run_pipeline(root.parent/'export_validation_01/S4_no_simulation','analytical',scenario_path=root/'experiments/stage5/scenarios/S4.json')\nassert result['status']=='INFEASIBLE_UNDER_M1_ASSUMPTIONS'\nassert result['cost']['M2_calls']==result['cost']['LLM_calls']==0\nprint(json.dumps({'source_root':str(root),'scenario_contract':'PASS','registry_bindings':'PASS','ownership_audit':'PASS','no_DLL_or_raw_history':True,'S4_preflight':result['status'],'M2_calls':0,'LLM_calls':0}))\n"
+  ],
+  "scope": "Isolated exported source only, no native compilation/simulation, no wheel installation",
+  "new_M2_calls": 0,
+  "new_LLM_calls": 0
+}

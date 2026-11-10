@@ -1,0 +1,118 @@
+[
+  {
+    "requirement": {
+      "metric": "output_frequency_Hz",
+      "unit": "Hz",
+      "min": 80000000,
+      "max": 80000000,
+      "tolerance": 1e-06,
+      "evaluator": "M1",
+      "protocol": "conditional_locked_tuning_frequency",
+      "source": "User: 10 MHz x 8; conditional static frequency, not a transient measurement"
+    },
+    "M1_prediction": 80000000,
+    "M2_measurement": {
+      "value": 80000000.01240176,
+      "unit": "Hz",
+      "status": "MEASURED_STEADY",
+      "numerical_envelope": [
+        80000000.00240175,
+        80000000.02240176
+      ],
+      "required_precision_validated": false,
+      "uncertainty_basis": "empirical two-step difference with 0.01 Hz reporting floor; not a certified confidence bound",
+      "confidence": "CONDITIONAL_ON_TRACE_WINDOW"
+    },
+    "measurement_validity": "MEASURED_STEADY",
+    "status": "UNKNOWN",
+    "error": {
+      "M1_prediction": 80000000,
+      "M2_measurement": 80000000.01240176,
+      "comparable": true,
+      "absolute_error": 0.012401759624481201,
+      "relative_error": 1.5502199524064508e-10
+    },
+    "evidence": "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\stage5\\firstshot_01\\runs\\S2__random__47\\attempt_001\\BehavioralVerificationResult.json",
+    "scenario_binding": {
+      "schema_version": "pll-research-scenario-1.0",
+      "scenario_id": "S2",
+      "version": "1.0.0",
+      "scenario_sha256": "14c77bb4de3426197f6321740b019dd97adb049993faa59d02f2cee3511a2f02",
+      "effective_system_spec_sha256": "6b813f198b65209ecbb281bfa560a0a1eb9e739ca7996675b92a1125bc54e092",
+      "base_system_spec_sha256": "9acdbf00d9b095e3cc23400024628f2301220549a45e8301aa42a08490fa598c"
+    }
+  },
+  {
+    "requirement": {
+      "metric": "BW_Hz",
+      "unit": "Hz",
+      "min": 240000,
+      "max": 280000,
+      "tolerance": 0,
+      "evaluator": "M1",
+      "protocol": "continuous_normalized_T_first_downward_minus3dB",
+      "source": "User: experimental BW target"
+    },
+    "M1_prediction": 325978.71779820236,
+    "M2_measurement": {
+      "value": 326827.8945111977,
+      "unit": "Hz",
+      "status": "MEASURED_CONVERGED",
+      "numerical_envelope": [
+        326737.23072975315,
+        326921.67173602676
+      ],
+      "confidence": "LOCAL_WARM_START_SAMPLED_POINTS_ONLY",
+      "observable": "continuous divided VCO phase fundamental / reference phase fundamental",
+      "edge_only_equivalence": "NOT_ESTABLISHED; edge timestamp harmonic fits show different sampled response",
+      "envelope_scope": "bracketing and amplitude/step/window refinements; excludes cross-observable systematic difference"
+    },
+    "measurement_validity": "MEASURED_CONVERGED",
+    "status": "FAIL",
+    "error": {
+      "M1_prediction": 325978.71779820236,
+      "M2_measurement": 326827.8945111977,
+      "comparable": true,
+      "absolute_error": 849.1767129953369,
+      "relative_error": 0.0026050066051275245
+    },
+    "evidence": "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\stage5\\firstshot_01\\runs\\S2__random__47\\attempt_001\\BehavioralVerificationResult.json",
+    "scenario_binding": {
+      "schema_version": "pll-research-scenario-1.0",
+      "scenario_id": "S2",
+      "version": "1.0.0",
+      "scenario_sha256": "14c77bb4de3426197f6321740b019dd97adb049993faa59d02f2cee3511a2f02",
+      "effective_system_spec_sha256": "6b813f198b65209ecbb281bfa560a0a1eb9e739ca7996675b92a1125bc54e092",
+      "base_system_spec_sha256": "9acdbf00d9b095e3cc23400024628f2301220549a45e8301aa42a08490fa598c"
+    }
+  },
+  {
+    "requirement": {
+      "metric": "PM_deg",
+      "unit": "deg",
+      "min": 55,
+      "tolerance": 0,
+      "evaluator": "M1",
+      "protocol": "180_plus_continuous_L_phase_at_UGF",
+      "source": "User: experimental PM target"
+    },
+    "M1_prediction": 56.361690085400696,
+    "M2_measurement": {
+      "value": null,
+      "unit": "deg",
+      "status": "PM_M2_UNKNOWN"
+    },
+    "measurement_validity": "PM_M2_UNKNOWN",
+    "status": "UNKNOWN",
+    "error": null,
+    "evidence": "F:\\LJP\\概伦AI\\PLL_allocation\\experiments\\stage5\\firstshot_01\\runs\\S2__random__47\\attempt_001\\BehavioralVerificationResult.json",
+    "scenario_binding": {
+      "schema_version": "pll-research-scenario-1.0",
+      "scenario_id": "S2",
+      "version": "1.0.0",
+      "scenario_sha256": "14c77bb4de3426197f6321740b019dd97adb049993faa59d02f2cee3511a2f02",
+      "effective_system_spec_sha256": "6b813f198b65209ecbb281bfa560a0a1eb9e739ca7996675b92a1125bc54e092",
+      "base_system_spec_sha256": "9acdbf00d9b095e3cc23400024628f2301220549a45e8301aa42a08490fa598c"
+    }
+  }
+]

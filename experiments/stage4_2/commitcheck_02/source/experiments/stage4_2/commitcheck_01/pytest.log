@@ -1,0 +1,20 @@
+........................F............................................... [ 24%]
+........................................................................ [ 48%]
+........................................................................ [ 72%]
+........................................................................ [ 97%]
+........                                                                 [100%]
+================================== FAILURES ===================================
+_________________ test_extracted_files_remain_byte_identical __________________
+
+    def test_extracted_files_remain_byte_identical():
+        for row in json.loads((ROOT/'data/legacy/legacy_manifest.json').read_text(encoding='utf-8')):
+>           assert hashlib.sha256((ROOT/row['destination']).read_bytes()).hexdigest()==row['sha256']
+E           AssertionError: assert '1dac9d8fc3cf...8d4a7362543c5' == '162b47730c95...c5e1ad4d4127a'
+E             
+E             - 162b47730c951eb2d61c157de4fa9e336555812fd7982811e98c5e1ad4d4127a
+E             + 1dac9d8fc3cff07bbe4f47d9085d3c586b197054cd07db6fee78d4a7362543c5
+
+tests\test_behavioral.py:28: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_behavioral.py::test_extracted_files_remain_byte_identical
+1 failed, 295 passed in 28.89s

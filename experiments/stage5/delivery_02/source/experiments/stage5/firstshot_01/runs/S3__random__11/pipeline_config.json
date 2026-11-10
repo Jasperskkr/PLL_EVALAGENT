@@ -1,0 +1,36 @@
+{
+  "schema_version": "pll-unified-pipeline-1.0",
+  "model": "BLOCK_SPACE_MODEL_V1.json",
+  "system_spec": "SYSTEM_SPEC_STAGE1_5.json",
+  "equations": "PLL_EQUATION_REGISTRY_V1.json",
+  "protocol": "verification/protocol_v1_1.json",
+  "bindings": {
+    "model_sha256": "879c2748c1d74d5d05c651f905af6fa818e3f994e97206d93b295ca4b62097c0",
+    "versions": {
+      "formula_version": "stage1_m1_1.0.0",
+      "parameter_domain_version": "stage1_declared_domain_1.0.0",
+      "behavioral_model_version": "reference_python_edge_euler_sha256_f6f550276228"
+    },
+    "system_spec_sha256": "9acdbf00d9b095e3cc23400024628f2301220549a45e8301aa42a08490fa598c",
+    "protocol_sha256": "250f8e4d3f186bfd286028c71a3515d6010876f57fa4a219567c99aa71f69280",
+    "equations_sha256": "fa08cd092b8376f1c4cd2eedc9ed9e137f09b1f54a9f3dfac3fd2c90fb8da6f4",
+    "kernel_sha256": "befdd779cd69c73f1a2fb8667e895f77efff979cb3186d80a83113c0321c9f54"
+  },
+  "budgets": {
+    "cheap_calls": 2000,
+    "M1_calls": 16,
+    "M2_verifications": 1,
+    "feedback_repairs": 0
+  },
+  "seed": 23,
+  "llm": {
+    "provider": "configured_messages_provider",
+    "model_env": "ANTHROPIC_MODEL",
+    "api_key_env": "ANTHROPIC_AUTH_TOKEN",
+    "base_url_env": "ANTHROPIC_BASE_URL",
+    "auth_mode": "bearer",
+    "max_tokens": 1500,
+    "timeout_s": 45,
+    "max_calls": 4
+  }
+}

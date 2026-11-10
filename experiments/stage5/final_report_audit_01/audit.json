@@ -1,0 +1,206 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "37_rows_31_measured_14_unique",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "31_conditional_captures_within_window",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "31_strict_PM_and_frequency_UNKNOWN",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "all_full_certifications_unverified",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "12_repair_BW_pass_one_M1_PM_fail",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "S0_capacitor_necessary_exclusions",
+      "passed": true,
+      "details": {
+        "excluded": 3,
+        "total": 9
+      }
+    },
+    {
+      "name": "S1_capacitor_necessary_exclusions",
+      "passed": true,
+      "details": {
+        "excluded": 6,
+        "total": 9
+      }
+    },
+    {
+      "name": "S2_capacitor_necessary_exclusions",
+      "passed": true,
+      "details": {
+        "excluded": 3,
+        "total": 9
+      }
+    },
+    {
+      "name": "S3_capacitor_necessary_exclusions",
+      "passed": true,
+      "details": {
+        "excluded": 3,
+        "total": 9
+      }
+    },
+    {
+      "name": "S4_capacitor_necessary_exclusions",
+      "passed": true,
+      "details": {
+        "excluded": 9,
+        "total": 9
+      }
+    },
+    {
+      "name": "4_analytical_first_M1_and_BW_pass",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "12_random_first_M1_and_BW_fail",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "five_S4_assumption_infeasibility",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "S0_LLM_tools_and_identical_solver_candidate",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "S1_LLM_tools_and_identical_solver_candidate",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "S2_HTTP200_max_tokens_JSON_failure",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "S3_LLM_tools_and_identical_solver_candidate",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "10_actual_HTTP200_calls_one_JSON_failure",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "LLM_usage_exact_provider_fields",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "core_study_cost_exact",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "experiments_baselines_scoped_separately",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "test_kernels_not_strategy_samples",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "no_BW_prediction_measurement_verdict_disagreement",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "largest_BW_error_0_816669_percent",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "LLM_scope_caveat_present",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "helper_mutation_and_local_failure_and_seed_error_disclosed",
+      "passed": true,
+      "details": null
+    }
+  ],
+  "check_count": 26,
+  "blocking_factual_discrepancies": [],
+  "nonblocking_wording_findings": [
+    {
+      "severity": "wording_clarification",
+      "file": "docs/stage5/END_TO_END_FEASIBILITY_REPORT.md",
+      "location": "opening conclusion: 本轮四个可行场景",
+      "suggestion": "Prefer 四个M1预测可行且M2 BW子集通过的场景, because strict PM/frequency remain UNKNOWN. Later paragraphs already explain this boundary; no numerical error."
+    },
+    {
+      "severity": "wording_clarification",
+      "file": "docs/stage5/END_TO_END_FEASIBILITY_REPORT.md",
+      "location": "RQ1: S4五arm共避免5次无意义完整TB",
+      "suggestion": "Prefer S4五个arm在预检后均未进入M2（实际调用0）; 5 avoided calls is counterfactual budget interpretation, whereas observed fact is five skipped arms and zero M2."
+    },
+    {
+      "severity": "wording_clarification",
+      "file": "docs/stage5/DEVELOPMENT_AND_PROVENANCE.md",
+      "location": "Current helper is frozen before PhaseB/local",
+      "suggestion": "Use helper re-frozen before PhaseB and separately after local cost-schema fix for S3 continuation; current wording can imply one helper hash across both local attempts, although next paragraph correctly discloses the change."
+    }
+  ],
+  "report_hashes": [
+    {
+      "path": "docs\\stage5\\STRATEGY_COMPARISON_REPORT.md",
+      "sha256": "14fb7e5b523b5ccf270a01102d1b1e6cbebac0e102d61a2358f0224399392981"
+    },
+    {
+      "path": "docs\\stage5\\END_TO_END_FEASIBILITY_REPORT.md",
+      "sha256": "d8e3d1db716285e279ef1e350161dc72e39261f3b061a036aa5edd0a063f17e6"
+    },
+    {
+      "path": "docs\\stage5\\VALIDATION_AND_COSTS.md",
+      "sha256": "277e8ea141be2e41ecc711bf07e814341ecd6ad3696944cf630d1db1e1948d03"
+    },
+    {
+      "path": "docs\\stage5\\COST_ACCOUNTING.json",
+      "sha256": "ebaaf2d15e8764c12ee4d06df5e4ca285753ac591ec27c348af8300e0e6e40a4"
+    },
+    {
+      "path": "docs\\stage5\\DEVELOPMENT_AND_PROVENANCE.md",
+      "sha256": "04cc7aab298b3e3b4e74f2b271421a14f92a4ab7c1467dfff7798ba2b58b352e"
+    },
+    {
+      "path": "docs\\PROJECT_STATUS.md",
+      "sha256": "6a99d03eb2c2d42bb1b39a0e21bf8ac7479fee916df16a9a342728ef33c43b65"
+    },
+    {
+      "path": "docs\\DECISIONS.md",
+      "sha256": "5184e05304ec4ca27aa3d7e938531fe69be9d365c2d861f787c96f1d22b7cf31"
+    }
+  ],
+  "M2_calls_this_audit": 0,
+  "LLM_calls_this_audit": 0,
+  "simulations_tests_reruns_this_audit": 0,
+  "scope": "Read-only reports/CSV/raw-log consistency audit; no mutation of source or prior results"
+}

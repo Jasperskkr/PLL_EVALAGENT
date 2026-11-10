@@ -1,0 +1,24 @@
+{
+  "transport": "Messages API text JSON action, not native function-calling schema",
+  "actions": [
+    "ReadSystemSpec",
+    "InspectBlockSpace",
+    "QueryPhysicalRelations",
+    "PropagateConstraints",
+    "AnalyzeSensitivity",
+    "SolveInverseAllocation",
+    "OptimizeCandidate",
+    "EvaluateM1",
+    "SubmitCandidateForM2",
+    "InterpretVerificationFeedback",
+    "Stop"
+  ],
+  "response_contract": {
+    "tool": "one allowed name",
+    "args": {
+      "handle": "required for EvaluateM1 and SubmitCandidateForM2"
+    },
+    "reason": "string"
+  },
+  "source": "repo/pll_allocation/allocation/agent.py"
+}

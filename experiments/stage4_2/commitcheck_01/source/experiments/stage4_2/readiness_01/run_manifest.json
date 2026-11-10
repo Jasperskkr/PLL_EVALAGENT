@@ -1,0 +1,193 @@
+{
+  "command": [
+    "tools/run_stage4_2.py",
+    "--out",
+    "experiments/stage4_2/readiness_01"
+  ],
+  "Python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "baseline_commit": "47afcb72011636e838b03d81cf91bcec49744a77",
+  "model_versions": {
+    "formula_version": "stage1_m1_1.0.0",
+    "parameter_domain_version": "stage1_declared_domain_1.0.0",
+    "behavioral_model_version": "reference_python_edge_euler_sha256_f6f550276228"
+  },
+  "source_bindings": [
+    {
+      "path": "configs/BLOCK_SPACE_MODEL_V1.json",
+      "sha256": "9fe4b6025f344701b74c27834ab1fac1cf6cb58eb58c80c49a5e117e749ae518",
+      "bytes": 56672
+    },
+    {
+      "path": "configs/SYSTEM_SPEC_STAGE1_5.json",
+      "sha256": "49531ea5da98b87e5c5b219018fd54a86e1f30ba196d89caa7e755cb11bfeba3",
+      "bytes": 972
+    },
+    {
+      "path": "configs/PLL_EQUATION_REGISTRY_V1.json",
+      "sha256": "2f38369d268e57ee3e9549d3a5aac27ee90d059ef40ad8c20499dd7830be96fb",
+      "bytes": 25933
+    },
+    {
+      "path": "configs/verification/protocol_v1_1.json",
+      "sha256": "7de5162bd57ad886170415e2d02e1d060878654d2c9e1f46b095ec7163b8399b",
+      "bytes": 3612
+    },
+    {
+      "path": "pll_allocation/physics_mapping/model.py",
+      "sha256": "412dbbbec9a499c56fe10781f2ff1debb525ead8fb411a2f72f056d36e8a2e34",
+      "bytes": 14711
+    },
+    {
+      "path": "pll_allocation/physics_mapping/validation.py",
+      "sha256": "2ed722b72c1dc87ce58d64f2004e6c6e9b518932db8a1a344fed7e5c0ae85e81",
+      "bytes": 9986
+    },
+    {
+      "path": "pll_allocation/block_space/contracts.py",
+      "sha256": "8aa26fc3520c52f3037332b306d0ec36074ae0c5541061f1c6a7be011924eaab",
+      "bytes": 5820
+    },
+    {
+      "path": "pll_allocation/allocation/physics.py",
+      "sha256": "f10aa7d11044d484a18bd6aaa3b420f08f69f1215ce9c7d746132a4e72872860",
+      "bytes": 5300
+    },
+    {
+      "path": "pll_allocation/allocation/allocate.py",
+      "sha256": "bf570c5e05f29afc1f0d75723fca0a1f781fa321a20a4ab459ffe64ee4cb1535",
+      "bytes": 11243
+    },
+    {
+      "path": "pll_allocation/allocation/core.py",
+      "sha256": "2c04824cc0bf86831050e059ee424c2b8c2ed539751a4971632ba833441a320c",
+      "bytes": 10115
+    },
+    {
+      "path": "pll_allocation/verification/verify.py",
+      "sha256": "8c7a653d395fedb0552df073871afd08b59500afce80fde56ad92d6afa1048b3",
+      "bytes": 13129
+    },
+    {
+      "path": "pll_allocation/verification/kernel.cpp",
+      "sha256": "befdd779cd69c73f1a2fb8667e895f77efff979cb3186d80a83113c0321c9f54",
+      "bytes": 3577
+    },
+    {
+      "path": "pll_allocation/verification/simulator.py",
+      "sha256": "3c350efbb64cad3c7afb43b0f6946c819c52914d9a19893a749dffd48ee97750",
+      "bytes": 4251
+    },
+    {
+      "path": "pll_allocation/_legacy/physics/cp.py",
+      "sha256": "21ac82286bc7df9e7a9ad5f7c7d6466a8f4f2524e6cada216000916ce73b6e77",
+      "bytes": 597
+    },
+    {
+      "path": "tools/run_stage4_2.py",
+      "sha256": "8a4d78da01161bf6529e94961d6f8a26551064cd36c98418cca45b573ac7f477",
+      "bytes": 25309
+    },
+    {
+      "path": "pll_allocation/physics_mapping/registry.py",
+      "sha256": "f6a7bce211cab92840d9e1a762a835b39f9fc621c48ea3032f72801b249eb662",
+      "bytes": 5581
+    }
+  ],
+  "output_file_hashes": [
+    {
+      "path": "experiments/stage4_2/readiness_01/agent_query_examples.json",
+      "sha256": "6b5caf7c8309d95dd2c315ee9cc2cc9c0f776cf8600a2860ed49da36f7e5534e",
+      "bytes": 2692
+    },
+    {
+      "path": "experiments/stage4_2/readiness_01/candidate_selection_before_prediction.json",
+      "sha256": "58f8cbecbfe2c58787c382a5db6462ed682d25663a41181516bfcd202f5fce1c",
+      "bytes": 19589
+    },
+    {
+      "path": "experiments/stage4_2/readiness_01/constraint_propagation.json",
+      "sha256": "a9ee09da02fc8199b794dd8bc2fc74921b032b37493bfdf24d49ce167e5215ff",
+      "bytes": 4572
+    },
+    {
+      "path": "experiments/stage4_2/readiness_01/coupling_and_sensitivity.json",
+      "sha256": "18946076b50ef9bce1103ab810212c980be207665a24732c9faef2ac4ba79bbd",
+      "bytes": 11545
+    },
+    {
+      "path": "experiments/stage4_2/readiness_01/domain_scan.csv",
+      "sha256": "d06506404a36bc8d9cc9a52c25e1a41a9e625acb3086dbfc6370de2d655ca39c",
+      "bytes": 366265
+    },
+    {
+      "path": "experiments/stage4_2/readiness_01/evidence/S15.json",
+      "sha256": "40292cbd250c750d3a22a4c1cad5065a6e734a17f470a0256140f9a7649e2eaf",
+      "bytes": 2377
+    },
+    {
+      "path": "experiments/stage4_2/readiness_01/evidence/S4_agent.json",
+      "sha256": "06aeca4dc7ccfc56983859cee5f894cad8bae88a8d5eff6ab612fa5223b90320",
+      "bytes": 22632
+    },
+    {
+      "path": "experiments/stage4_2/readiness_01/evidence/S4_boundary.json",
+      "sha256": "8c578a7a65206c173d154d25975a1801fcc7c1a74a63c0ae1e2aed376116fe7e",
+      "bytes": 23054
+    },
+    {
+      "path": "experiments/stage4_2/readiness_01/evidence/S4_nominal.json",
+      "sha256": "34139f52001ee0eb82890c7d2a6a340d99f3b1d0e2cf0f418bdf12f26ef98e86",
+      "bytes": 22886
+    },
+    {
+      "path": "experiments/stage4_2/readiness_01/evidence/saved_agent_Proposal.json",
+      "sha256": "e8fdc291ea07e72a8e2295bdec9da7af268447ec40c980be5edcb5e2d4d5635b",
+      "bytes": 21454
+    },
+    {
+      "path": "experiments/stage4_2/readiness_01/evidence_manifest.json",
+      "sha256": "ce570e7b9a0e68b55ccf93854ba83b3c6bbf87828afeeffb77a13e7c701d92ae",
+      "bytes": 2196
+    },
+    {
+      "path": "experiments/stage4_2/readiness_01/formal_M1_evaluations.json",
+      "sha256": "729f66327dd9807502e6ec000bf63f1899b0619ecbb5e624376323fcccd2ff17",
+      "bytes": 478407
+    },
+    {
+      "path": "experiments/stage4_2/readiness_01/input_snapshot.json",
+      "sha256": "7b6b55c26b09a16a67d37d17df2f1113f2ec7d93ca4f78b1b09cd6e9cac9a44a",
+      "bytes": 60894
+    },
+    {
+      "path": "experiments/stage4_2/readiness_01/scan_plan.json",
+      "sha256": "f2666a6d6ff55bb1784a261f0a5a4366bccf58bf5236c48d225e2b4a10b8dc26",
+      "bytes": 741
+    },
+    {
+      "path": "experiments/stage4_2/readiness_01/summary.json",
+      "sha256": "b064e04790f3322865a56fc53fdc9b32fd2664deb51c407c7890bb35eb3a9248",
+      "bytes": 1054
+    }
+  ],
+  "registry": {
+    "path": "docs/stage4_2/PHYSICS_MAPPING_REGISTRY.json",
+    "sha256": "5c3ad806933f30fd0391936c2e5e6c430d8c9481b9fbc8790ca5d1287b3265f9",
+    "bytes": 29593
+  },
+  "candidates": {
+    "path": "docs/stage4_2/M2_VALIDATION_CANDIDATES.json",
+    "sha256": "cde9b236ba7c57868a7be7cde5902becd1fd73c798c952972971d3d3f5816715",
+    "bytes": 86982
+  },
+  "cost": {
+    "domain_checks": 1738,
+    "cheap_prediction_calls": 1512,
+    "polynomial_reference_calls": 1512,
+    "formal_M1_calls": 94
+  },
+  "M2_calls": 0,
+  "LLM_calls": 0,
+  "verified_joint_block_spec": false
+}

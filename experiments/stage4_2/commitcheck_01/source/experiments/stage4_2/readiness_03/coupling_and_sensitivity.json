@@ -1,0 +1,463 @@
+{
+  "invariance_and_scale": [
+    {
+      "name": "equal_gain_product",
+      "parameters": {
+        "schema_version": "pll-physics-mapping-2.0",
+        "conventions": {
+          "vco_f0": "frequency_at_zero_volts",
+          "phase_error": "reference_minus_feedback_rad",
+          "lf_topology": "C1_shunt_Rz_series_C2",
+          "cp_leakage": "positive_injected_into_lf"
+        },
+        "values": {
+          "f_ref": {
+            "value": 10000000,
+            "unit": "Hz"
+          },
+          "N": {
+            "value": 8,
+            "unit": "1"
+          },
+          "Icp": {
+            "value": 0.00016,
+            "unit": "A"
+          },
+          "Rz": {
+            "value": 3820,
+            "unit": "Ohm"
+          },
+          "C1": {
+            "value": 1e-10,
+            "unit": "F"
+          },
+          "C2": {
+            "value": 1e-09,
+            "unit": "F"
+          },
+          "f0": {
+            "value": 72000000,
+            "unit": "Hz"
+          },
+          "Kvco": {
+            "value": 12500000.0,
+            "unit": "Hz/V"
+          },
+          "Vctrl_min": {
+            "value": 0,
+            "unit": "V"
+          },
+          "Vctrl_max": {
+            "value": 1.2,
+            "unit": "V"
+          },
+          "Kvco2": {
+            "value": 0,
+            "unit": "Hz/V^2"
+          },
+          "CP_mismatch": {
+            "value": 0,
+            "unit": "1"
+          },
+          "CP_leakage": {
+            "value": 0,
+            "unit": "A"
+          },
+          "q0": {
+            "value": 0,
+            "unit": "C"
+          },
+          "PFD_reset_delay": {
+            "value": 0,
+            "unit": "s"
+          },
+          "Cload": {
+            "value": 0,
+            "unit": "F"
+          },
+          "Gload": {
+            "value": 0,
+            "unit": "S"
+          }
+        }
+      },
+      "prediction": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.64,
+        "Kvco_local_Hz_per_V": 12500000.0,
+        "UGF_Hz": 138176.44113161,
+        "BW_Hz": 222379.1834929631,
+        "PM_deg": 56.44269021253223
+      },
+      "normalized_errors": {
+        "BW_Hz": 0.0,
+        "UGF_Hz": 0.0,
+        "PM_deg": 0.0
+      }
+    },
+    {
+      "name": "f0_only",
+      "parameters": {
+        "schema_version": "pll-physics-mapping-2.0",
+        "conventions": {
+          "vco_f0": "frequency_at_zero_volts",
+          "phase_error": "reference_minus_feedback_rad",
+          "lf_topology": "C1_shunt_Rz_series_C2",
+          "cp_leakage": "positive_injected_into_lf"
+        },
+        "values": {
+          "f_ref": {
+            "value": 10000000,
+            "unit": "Hz"
+          },
+          "N": {
+            "value": 8,
+            "unit": "1"
+          },
+          "Icp": {
+            "value": 0.0001,
+            "unit": "A"
+          },
+          "Rz": {
+            "value": 3820,
+            "unit": "Ohm"
+          },
+          "C1": {
+            "value": 1e-10,
+            "unit": "F"
+          },
+          "C2": {
+            "value": 1e-09,
+            "unit": "F"
+          },
+          "f0": {
+            "value": 68000000.0,
+            "unit": "Hz"
+          },
+          "Kvco": {
+            "value": 20000000,
+            "unit": "Hz/V"
+          },
+          "Vctrl_min": {
+            "value": 0,
+            "unit": "V"
+          },
+          "Vctrl_max": {
+            "value": 1.2,
+            "unit": "V"
+          },
+          "Kvco2": {
+            "value": 0,
+            "unit": "Hz/V^2"
+          },
+          "CP_mismatch": {
+            "value": 0,
+            "unit": "1"
+          },
+          "CP_leakage": {
+            "value": 0,
+            "unit": "A"
+          },
+          "q0": {
+            "value": 0,
+            "unit": "C"
+          },
+          "PFD_reset_delay": {
+            "value": 0,
+            "unit": "s"
+          },
+          "Cload": {
+            "value": 0,
+            "unit": "F"
+          },
+          "Gload": {
+            "value": 0,
+            "unit": "S"
+          }
+        }
+      },
+      "prediction": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.6,
+        "Kvco_local_Hz_per_V": 20000000,
+        "UGF_Hz": 138176.44113161,
+        "BW_Hz": 222379.1834929631,
+        "PM_deg": 56.44269021253223
+      },
+      "normalized_errors": {
+        "BW_Hz": 0.0,
+        "UGF_Hz": 0.0,
+        "PM_deg": 0.0
+      }
+    },
+    {
+      "name": "scale_0.9",
+      "parameters": {
+        "schema_version": "pll-physics-mapping-2.0",
+        "conventions": {
+          "vco_f0": "frequency_at_zero_volts",
+          "phase_error": "reference_minus_feedback_rad",
+          "lf_topology": "C1_shunt_Rz_series_C2",
+          "cp_leakage": "positive_injected_into_lf"
+        },
+        "values": {
+          "f_ref": {
+            "value": 10000000,
+            "unit": "Hz"
+          },
+          "N": {
+            "value": 8,
+            "unit": "1"
+          },
+          "Icp": {
+            "value": 8.1e-05,
+            "unit": "A"
+          },
+          "Rz": {
+            "value": 4244.444444444444,
+            "unit": "Ohm"
+          },
+          "C1": {
+            "value": 1e-10,
+            "unit": "F"
+          },
+          "C2": {
+            "value": 1e-09,
+            "unit": "F"
+          },
+          "f0": {
+            "value": 72000000,
+            "unit": "Hz"
+          },
+          "Kvco": {
+            "value": 20000000,
+            "unit": "Hz/V"
+          },
+          "Vctrl_min": {
+            "value": 0,
+            "unit": "V"
+          },
+          "Vctrl_max": {
+            "value": 1.2,
+            "unit": "V"
+          },
+          "Kvco2": {
+            "value": 0,
+            "unit": "Hz/V^2"
+          },
+          "CP_mismatch": {
+            "value": 0,
+            "unit": "1"
+          },
+          "CP_leakage": {
+            "value": 0,
+            "unit": "A"
+          },
+          "q0": {
+            "value": 0,
+            "unit": "C"
+          },
+          "PFD_reset_delay": {
+            "value": 0,
+            "unit": "s"
+          },
+          "Cload": {
+            "value": 0,
+            "unit": "F"
+          },
+          "Gload": {
+            "value": 0,
+            "unit": "S"
+          }
+        }
+      },
+      "prediction": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.4,
+        "Kvco_local_Hz_per_V": 20000000,
+        "UGF_Hz": 124358.79701867237,
+        "BW_Hz": 200141.2651435765,
+        "PM_deg": 56.44269021253223
+      },
+      "normalized_errors": {
+        "BW_Hz": 4.510836149052011e-13,
+        "UGF_Hz": 1.7961188092385783e-12,
+        "PM_deg": 0.0
+      }
+    },
+    {
+      "name": "scale_1.1",
+      "parameters": {
+        "schema_version": "pll-physics-mapping-2.0",
+        "conventions": {
+          "vco_f0": "frequency_at_zero_volts",
+          "phase_error": "reference_minus_feedback_rad",
+          "lf_topology": "C1_shunt_Rz_series_C2",
+          "cp_leakage": "positive_injected_into_lf"
+        },
+        "values": {
+          "f_ref": {
+            "value": 10000000,
+            "unit": "Hz"
+          },
+          "N": {
+            "value": 8,
+            "unit": "1"
+          },
+          "Icp": {
+            "value": 0.00012100000000000003,
+            "unit": "A"
+          },
+          "Rz": {
+            "value": 3472.7272727272725,
+            "unit": "Ohm"
+          },
+          "C1": {
+            "value": 1e-10,
+            "unit": "F"
+          },
+          "C2": {
+            "value": 1e-09,
+            "unit": "F"
+          },
+          "f0": {
+            "value": 72000000,
+            "unit": "Hz"
+          },
+          "Kvco": {
+            "value": 20000000,
+            "unit": "Hz/V"
+          },
+          "Vctrl_min": {
+            "value": 0,
+            "unit": "V"
+          },
+          "Vctrl_max": {
+            "value": 1.2,
+            "unit": "V"
+          },
+          "Kvco2": {
+            "value": 0,
+            "unit": "Hz/V^2"
+          },
+          "CP_mismatch": {
+            "value": 0,
+            "unit": "1"
+          },
+          "CP_leakage": {
+            "value": 0,
+            "unit": "A"
+          },
+          "q0": {
+            "value": 0,
+            "unit": "C"
+          },
+          "PFD_reset_delay": {
+            "value": 0,
+            "unit": "s"
+          },
+          "Cload": {
+            "value": 0,
+            "unit": "F"
+          },
+          "Gload": {
+            "value": 0,
+            "unit": "S"
+          }
+        }
+      },
+      "prediction": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.4,
+        "Kvco_local_Hz_per_V": 20000000,
+        "UGF_Hz": 151994.08524474374,
+        "BW_Hz": 244617.10184202995,
+        "PM_deg": 56.44269021253224
+      },
+      "normalized_errors": {
+        "BW_Hz": 9.380274335057948e-13,
+        "UGF_Hz": 1.794120407794253e-13,
+        "PM_deg": 1.4210854715202004e-14
+      }
+    }
+  ],
+  "nominal_log_derivatives": {
+    "Icp": {
+      "BW_Hz": 0.9274797721961215,
+      "UGF_Hz": 0.857138274073827,
+      "PM_deg": 0.0019648838409575824,
+      "Vctrl_required_V": 0.0
+    },
+    "Rz": {
+      "BW_Hz": 0.8548953547769745,
+      "UGF_Hz": 0.714249056266906,
+      "PM_deg": 0.005868314663496325,
+      "Vctrl_required_V": 0.0
+    },
+    "f0": {
+      "BW_Hz": 0.0,
+      "UGF_Hz": 0.0,
+      "PM_deg": 0.0,
+      "Vctrl_required_V": -9.024117963633078
+    },
+    "Kvco": {
+      "BW_Hz": 0.9274797721961215,
+      "UGF_Hz": 0.857138274073827,
+      "PM_deg": 0.0019648838409575824,
+      "Vctrl_required_V": -0.9999999999999997
+    }
+  },
+  "derivative_units": "elasticity except PM_deg per ln(parameter); C is categorical",
+  "discrete_C_jumps": [
+    {
+      "parameter": "C1",
+      "value": 5e-11,
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.4,
+        "Kvco_local_Hz_per_V": 20000000,
+        "UGF_Hz": 148249.9745788213,
+        "BW_Hz": 215236.95267188796,
+        "PM_deg": 64.68580394091198
+      }
+    },
+    {
+      "parameter": "C1",
+      "value": 2e-10,
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.4,
+        "Kvco_local_Hz_per_V": 20000000,
+        "UGF_Hz": 120673.1734145216,
+        "BW_Hz": 204198.25961985957,
+        "PM_deg": 45.18434736538282
+      }
+    },
+    {
+      "parameter": "C2",
+      "value": 5e-10,
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.4,
+        "Kvco_local_Hz_per_V": 20000000,
+        "UGF_Hz": 141451.7737772641,
+        "BW_Hz": 234394.40923620085,
+        "PM_deg": 43.700774149443106
+      }
+    },
+    {
+      "parameter": "C2",
+      "value": 2e-09,
+      "metrics": {
+        "output_frequency_Hz": 80000000,
+        "Vctrl_required_V": 0.4,
+        "Kvco_local_Hz_per_V": 20000000,
+        "UGF_Hz": 139448.2538828457,
+        "BW_Hz": 216072.6822454035,
+        "PM_deg": 63.82324678874241
+      }
+    }
+  ],
+  "holdouts_included": false,
+  "causality_claim": false
+}

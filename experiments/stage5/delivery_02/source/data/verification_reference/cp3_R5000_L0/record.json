@@ -1,0 +1,222 @@
+{
+  "execution_status": "complete",
+  "source_type": "matlab_behavioral_system_TB",
+  "candidate_id": "cp3_R5000",
+  "model_name": "L0",
+  "charge_map": {
+    "condition": {
+      "C1_F": 0.0,
+      "C2_F": 0.0,
+      "Cload_F": 5e-14,
+      "N": 8,
+      "Rload_ohm": 1000000000.0,
+      "VDD_V": 1.8,
+      "command_fall_s": 1e-10,
+      "command_rise_s": 1e-10,
+      "delay_s": 2e-07,
+      "driver": "mos",
+      "f_ref_Hz": 10000000.0,
+      "lf_Rz_ohm": null,
+      "load_proxy": "50fF || 1Gohm; declared VCO-input proxy, not measured VCO",
+      "mode": "DC_both_on",
+      "output_condition": "ideal_forced_voltage",
+      "period_s": 1e-07,
+      "qload_rule": "physical Rload integral when loaded; declared proxy demand when forced",
+      "ratio": 1.1,
+      "reset_s": 2e-09,
+      "split_role": "initial",
+      "temperature_degC": 27.0,
+      "timing_s": 0.0,
+      "tmax_s": 5e-12,
+      "tstop_s": 5e-07,
+      "vout_V": 1.17552174473848,
+      "width_down_s": 2e-09,
+      "width_up_s": 2e-09
+    },
+    "model_id": "L0_DC",
+    "q0_C": 1.8021856437762562e-14,
+    "slope_down_A": 0.0001006990528214713,
+    "slope_up_A": 0.0001097687571275895,
+    "source_files": {
+      "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\initial\\cp1.1_dc.json": "f44293bd77f524e74e0dd94509545d776c455153d71724b0bca3598a351b14b9"
+    }
+  },
+  "cfg": {
+    "cp_model": "L1",
+    "cp_L1": {
+      "delta_up": -1.0709074016134871e-12,
+      "delta_dn": 0.0,
+      "nodes_V": [
+        1.13,
+        1.21
+      ],
+      "nodes_iup": [
+        0.0001097687571275895,
+        0.0001097687571275895
+      ],
+      "nodes_idn": [
+        0.0001006990528214713,
+        0.0001006990528214713
+      ]
+    },
+    "qualification": "constant local charge slopes; voltage array is numerical support, not measured validity",
+    "vco_model": "L0_cal",
+    "label": "cp3_R5000_L0",
+    "Rz": 5000.0,
+    "C1": 1.0005e-10,
+    "C2": 1e-09,
+    "f_ref": 10000000.0,
+    "N": 8,
+    "T_ref": 1e-07,
+    "T_reset": 2e-09,
+    "V_init": 1.1774,
+    "t_stop": 4e-05,
+    "steady_window": 5e-06,
+    "initial_error_cycles": 0.0,
+    "p2_legacy_double_lf": false
+  },
+  "measurement": {
+    "execution_status": "complete",
+    "logical_stop_s": 4e-05,
+    "tail_complete_cycles": 50,
+    "phase_mean_deg": 0.644982818537438,
+    "phase_abs_mean_deg": 0.644982818537438,
+    "phase_absmax_deg": 0.6453887858567352,
+    "frequency_mean_Hz": 79999996.8547044,
+    "frequency_mean_error_ppm": -0.0393161952085793,
+    "tail_frequency_absmax_ppm": 0.06212214250117541,
+    "lock_status": "LOCKED",
+    "lock_time_s": 4e-06,
+    "vctrl_pre_mean_V": 1.1755218189586087,
+    "vctrl_time_mean_V": 1.1755217239292792,
+    "vctrl_ripple_V": 3.0916836002425896e-07,
+    "q_balance_mean_C": -1.9576593582680065e-17,
+    "diagnostics": {
+      "logical_stop_s": 4e-05,
+      "sampling_note": "original solver post-impulse samples; adapter reconstructs pre-impulse state and quadrature cycle frequency without changing engine",
+      "waveform_ripple_definition": "quarter-cycle quadrature extrema including pre/post impulse; not native gate-level ripple"
+    },
+    "SystemSpec": {
+      "phase_abs_mean_max_deg": 0.2,
+      "tail_frequency_absmax_ppm": 100.0,
+      "require_lock": true,
+      "scope": "mechanism demonstration, not formal thesis benchmark",
+      "jitter_noise_spur_power_constraints": false
+    },
+    "width_up_command_s_mean": 2e-09,
+    "width_down_command_s_mean": 2.1791618940381767e-09,
+    "width_up_gate_s_mean": null,
+    "width_down_gate_s_mean": null,
+    "overlap_command_s_mean": 2e-09,
+    "charge_conservation_max_residual_C": null,
+    "numerical_spec_verdict": "FAIL",
+    "model_validity": "IN_DECLARED_MODEL_DOMAIN",
+    "validity_unknowns": [
+      "DC constant-current behavior is a prediction, not independently validated dynamic capability"
+    ],
+    "vco_valid": true,
+    "vctrl_range_V": [
+      1.17421931265339,
+      1.17758012850013
+    ],
+    "qualified_verdict": "FAIL",
+    "qualification": "behavioral model verdict, never circuit capability acceptance"
+  },
+  "matlab_payload": {
+    "legacy_metrics": {
+      "label": "cp3_R5000_L0",
+      "vco_model": "L0_cal",
+      "cp_model": "L1",
+      "T_reset_ns": 2,
+      "range_violation_cycles": 0,
+      "vctrl_mean_V": 1.1755216279729086,
+      "charge_step_fC": 0.018957947685860534,
+      "overlap_term_uV": 181.30343440516154,
+      "vctrl_ripple_mV": 0.1814929191396529,
+      "f_mean_Hz": 79999982.35223846,
+      "f_error_ppm": -0.22059701923280953,
+      "phase_mean_deg": 0.6449688290701074,
+      "phase_absmax_deg": 0.6453664218751417,
+      "pulse_up_mean_ns": 2.0000000000000004,
+      "pulse_dn_mean_ns": 2.17915800807503,
+      "Kvco_local_Hz_per_V": 151136039.9333628,
+      "Icp_local_A": 0.0001097687571275895,
+      "lock_time_s": 7.3999999999999995e-06,
+      "lock_status": "LOCKED"
+    },
+    "small_signal": {
+      "vop_V": 1.1755216279729086,
+      "Kvco_Hz_per_V": 151136039.9333628,
+      "Icp_A": 0.0001097687571275895,
+      "unity_gain_Hz": 684036.0591129721,
+      "BW_Hz": 1082952.1322056025,
+      "PM_deg": 24.431940637752035,
+      "f_ref_over_BW": 9.234018478391492
+    },
+    "engine_elapsed_s": 0.0276367,
+    "matlab_version": "9.10.0.1602886 (R2021a)",
+    "original_source_unchanged": true,
+    "legacy_double_lf": false,
+    "export_note": "P2 execution copy removes redundant LF propagation; originals preserved; no fitted model change"
+  },
+  "source_sha256": {
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\experiments\\system_fidelity_crosscheck\\protocol.json": "8846e5ec91a845f186a328b9f1c2ed255e0950ea27fe5f994f7e9faba98d99b6",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\p1_block_space_20261028\\model_space_release\\manifest.json": "581564b627e40253ce94e43a85caeca403503390bc66ff4863eae4265d6d4534",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\p1_block_space_20261028\\model_space_release\\model_cards.json": "5f2cbe02863abdef040916ac8b5fe874250eaf13e3835cb004fda12e38e45b46",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\p1_block_space_20261028\\model_space_release\\module_registry.json": "2b653094daecc971240db320e66223445405f447c69e6c805ed50feeef4a5b05",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_prepared_20261027\\model_bank.json": "89bb8d7fcd10bfd9ba58364eb2ae052b625d5d62a69a28c81ef1e172c44b6350",
+    "F:\\LJP\\概伦AI\\PLLngspice_vs_matlab\\matlab\\stage7\\cppll_run.m": "69ad930335ad7ddc3fc68cdc6ef31fee0e34620a81bde27b8e3a516718947319",
+    "F:\\LJP\\概伦AI\\PLLngspice_vs_matlab\\matlab\\stage7\\cppll_small_signal.m": "b7ea44baaaa0f8ea38ab64e0dfca71d45024907954f444e7a998c060c6dedeac",
+    "F:\\LJP\\概伦AI\\PLLngspice_vs_matlab\\matlab\\stage7\\run_stage7.m": "d7094fc52f55d6819235e497af0a5cb3c89ba87f91f0697e3165f4c8daa9c4c5",
+    "F:\\LJP\\概伦AI\\PLLngspice_vs_matlab\\spice\\stage3\\cp\\cp_core.inc": "d59b68ea3ca4ada79b0c34d3ee6b9bcfb19cbeb1a7b7834d93772a8cd8ae20b9",
+    "F:\\LJP\\概伦AI\\PLLngspice_vs_matlab\\spice\\vco_stage2\\generic_mos.lib": "cab2e7bc722ac993a89139b5a6b2c58d4736e079f40b3183ce8967d2fdf44790",
+    "F:\\LJP\\概伦AI\\PLLngspice_vs_matlab\\results\\stage4\\vco_model_validity.json": "d8d86927ad1061b8cfb4c2d4fa063ec0721f6691213f0b8b4396038c09644660",
+    "F:\\LJP\\概伦AI\\PLLngspice_vs_matlab\\results\\stage5\\cp_model_validity.json": "6a5442d97f80bebcdf2cfa8e81daf8cf9c6eb2f560af580c8b2d2fbf71a3c025",
+    "F:\\LJP\\概伦AI\\PLLngspice_vs_matlab\\results\\stage6\\lf_model_validity.json": "700966d526e34d18f14ddf27328e974ec4b3c14632ee6361faf15b8269e4ada8",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\experiments\\feedback_allocation\\verification_matlab.py": "bdeeeb737a33ded3790b058dc09e718835da122f55a77b72cba37f6f7cb7c479",
+    "E:\\matlabR2021a\\bin\\matlab.exe": "c559a63b3e5b4966ec10b5c44a07eff220204195955e8305fd0d9cf3772a5591",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\initial\\cp1_dc.json": "6cd740cc61c55b0e4cf171e731a41a3af577adbfec7c37e3161097050340a525",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\initial\\cp1.03_dc.json": "653203f53826359f77aa317ab6ea1596a8161d869328fb4d16ce2564ca1b8f3a",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\initial\\cp1.06_dc.json": "fade3cc432dc48a9b7e16efe555f87aaa3425b08816b9884002a9379bc78be22",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\initial\\cp1.1_dc.json": "f44293bd77f524e74e0dd94509545d776c455153d71724b0bca3598a351b14b9",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\purchasable\\cp1_d+0ps.json": "26fc968eda3d072b9343dd4990978285ddd7921e6726dd0fd74d0603f2aaeda6",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\purchasable\\cp1_d+100ps.json": "b98f5433a5d8843bce3d157052b4dbfb62abde7c4d2df4d510829ef2fe4ce908",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\purchasable\\cp1_d-100ps.json": "b145a3b1ed3ff498ca3231ede0c8ef7ff8e150af65b4d63ede208017632c25cb",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\purchasable\\cp1.03_d+0ps.json": "509e31a52c86f7d8b4e52fe128fbda9ef1d920ddaa7c88d74899bc03f75fdf07",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\purchasable\\cp1.03_d+100ps.json": "2bf12bea32f1a1f051ac7a0fa567718f48feae49ffe346f86720865aa307d1a3",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\purchasable\\cp1.03_d-100ps.json": "f1158ff21a75be41be32991e25006f02ae41be9133b6885f65855441b875392b",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\purchasable\\cp1.06_d+0ps.json": "923b0dfa7e5aa3486cb1c4efd60db5d8cafde288682f603f8cd5a195d2730812",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\purchasable\\cp1.06_d+100ps.json": "e971ef46e99577912203a6587a7ae25fa7e2684abb550689a6bc128063ac0d59",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\purchasable\\cp1.06_d-100ps.json": "e05a260ca7db0e5a6e5b50b00ed43895221040488e7f888f69f249b4d618b5fa",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\purchasable\\cp1.1_d+0ps.json": "ff53c45545ca8bcabfe168548d3fb9095c5dcc504cf8013e205b4209df4f72bb",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\purchasable\\cp1.1_d+100ps.json": "ec4c36588f9e74609600cf6ce83ff0d339ebf269920c28838fc3a4318f4f486a",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\m3a_characterization_final_20261027\\purchasable\\cp1.1_d-100ps.json": "aa98d23ed4d7ff60f6e55b988c94dc60e46cce73ec847738c1adc237cf4a8ef4"
+  },
+  "engine_semantics": {
+    "original_sha256": "69ad930335ad7ddc3fc68cdc6ef31fee0e34620a81bde27b8e3a516718947319",
+    "executed_sha256": "24d925387d2081948e0e91fc50f5c748b8d662283952b42aa7e93bc3e60f194b",
+    "single_LF_Tref_correction": true,
+    "initial_phase_override_cycles": 0.0,
+    "model_parameters_changed": false,
+    "original_source_preserved": true
+  },
+  "cost": {
+    "job_wall_s": 0.118005
+  },
+  "physical_capability_verdict": "UNKNOWN",
+  "scope": "corrected behavioral calculation; not independent transistor or mixed-level evidence",
+  "artifacts": {
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\feedback_allocation_20261029\\verification\\matlab_corrected_candidates\\cp3_R5000_L0\\cppll_run_original.m": "69ad930335ad7ddc3fc68cdc6ef31fee0e34620a81bde27b8e3a516718947319",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\feedback_allocation_20261029\\verification\\matlab_corrected_candidates\\cp3_R5000_L0\\cycles.csv": "22aa81cdd37011a1161c5e4269d28f84a326d00edfcd6de8567f69f192f5c269",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\feedback_allocation_20261029\\verification\\matlab_corrected_candidates\\cp3_R5000_L0\\cycles_matlab.csv": "942b0e21a23f301e746927c4e4867ce220bd6850d60809ab447a758837f384b3",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\feedback_allocation_20261029\\verification\\matlab_corrected_candidates\\cp3_R5000_L0\\engine_semantics.json": "1e1eb54922cfe75c70a0a65d022794214e3af63fb122f1eeba08de9d02979adb",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\feedback_allocation_20261029\\verification\\matlab_corrected_candidates\\cp3_R5000_L0\\input_cfg.json": "94ca68f28c0d3468cad1e1c746af558cbddc04e32a9233ed36f131c3fce820cd",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\feedback_allocation_20261029\\verification\\matlab_corrected_candidates\\cp3_R5000_L0\\job.json": "a570804043f59c6d0c7f6bf7f265c28b34c9a9d3de4da756459990183ab90d03",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\feedback_allocation_20261029\\verification\\matlab_corrected_candidates\\cp3_R5000_L0\\job_cost.json": "25bc0fa873298be29f8594fb37405ed9160df2c0b2efb61391ae65f8aff31819",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\feedback_allocation_20261029\\verification\\matlab_corrected_candidates\\cp3_R5000_L0\\observe.m": "c1a4162ad083b1699f98d5898302acf8dd97311e4e378f4f46b11d9f9f7b0586",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\feedback_allocation_20261029\\verification\\matlab_corrected_candidates\\cp3_R5000_L0\\protocol.json": "8846e5ec91a845f186a328b9f1c2ed255e0950ea27fe5f994f7e9faba98d99b6",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\feedback_allocation_20261029\\verification\\matlab_corrected_candidates\\cp3_R5000_L0\\result_matlab.json": "0fbc62d576f1b6634294cb290faee188e1b201b244e9199e783efb99d0d1a8f1",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\feedback_allocation_20261029\\verification\\matlab_corrected_candidates\\cp3_R5000_L0\\model_source\\cppll_run.m": "24d925387d2081948e0e91fc50f5c748b8d662283952b42aa7e93bc3e60f194b",
+    "F:\\LJP\\概伦AI\\PLL_AGENTV2\\PLL_AGENT\\results\\feedback_allocation_20261029\\verification\\matlab_corrected_candidates\\cp3_R5000_L0\\model_source\\cppll_small_signal.m": "b7ea44baaaa0f8ea38ab64e0dfca71d45024907954f444e7a998c060c6dedeac"
+  }
+}

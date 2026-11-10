@@ -1,0 +1,380 @@
+{
+  "phase": "STAGE5_PHASE_B_DETERMINISTIC_REPAIR",
+  "command": [
+    "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "-B",
+    "experiments/stage5/run_stage5.py",
+    "--phase",
+    "repair",
+    "--firstshot",
+    "experiments/stage5/firstshot_01",
+    "--out",
+    "experiments/stage5/repair_01"
+  ],
+  "HEAD": "cd70cf445d2ac6789550b7df2da6736221262045",
+  "branch": "master",
+  "sources": [
+    {
+      "path": "pll_allocation/__init__.py",
+      "sha256": "44a15cfea167426a10684614bfcfb2288508d604e0534762ee31dd8c6f8153d0"
+    },
+    {
+      "path": "pll_allocation/__main__.py",
+      "sha256": "79ee6f134c5c5193377cf9b189cbdcc3e2095e49ba9cec310114441c15a917c4"
+    },
+    {
+      "path": "pll_allocation/_legacy/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pll_allocation/_legacy/evaluation/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pll_allocation/_legacy/evaluation/python_behavioral.py",
+      "sha256": "162b47730c951eb2d61c157de4fa9e336555812fd7982811e98c5e1ad4d4127a"
+    },
+    {
+      "path": "pll_allocation/_legacy/physics/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pll_allocation/_legacy/physics/cp.py",
+      "sha256": "21ac82286bc7df9e7a9ad5f7c7d6466a8f4f2524e6cada216000916ce73b6e77"
+    },
+    {
+      "path": "pll_allocation/_legacy/physics/lf.py",
+      "sha256": "c35c7fed36a4323a7b4a90f7fe674dfad826b4d41898a10b583821302891bbe9"
+    },
+    {
+      "path": "pll_allocation/_legacy/schemas.py",
+      "sha256": "2c8825324458a884dc73641016b8704f77034eeec490b27ef4b3f347e7424540"
+    },
+    {
+      "path": "pll_allocation/_legacy/units.py",
+      "sha256": "53eb5f24f827048dd4cd9e51b1201b436cfb260d4a67930416751d6ab171d87b"
+    },
+    {
+      "path": "pll_allocation/allocation/__init__.py",
+      "sha256": "12acf2bdc7e4364c6d7d1731eed3a1e0b32f41cfdfae4d59026be99d9b99c5a9"
+    },
+    {
+      "path": "pll_allocation/allocation/agent.py",
+      "sha256": "b1c66dc9253ef0c6235d12a088a5538bc8a0744adfd93c3dde9d585cf009b183"
+    },
+    {
+      "path": "pll_allocation/allocation/allocate.py",
+      "sha256": "bf570c5e05f29afc1f0d75723fca0a1f781fa321a20a4ab459ffe64ee4cb1535"
+    },
+    {
+      "path": "pll_allocation/allocation/core.py",
+      "sha256": "2c04824cc0bf86831050e059ee424c2b8c2ed539751a4971632ba833441a320c"
+    },
+    {
+      "path": "pll_allocation/allocation/feedback_agent.py",
+      "sha256": "5250fd9de38117c4b1fcd9a761f12d387b56f660d0f92907689a0ca96a9414c2"
+    },
+    {
+      "path": "pll_allocation/allocation/physics.py",
+      "sha256": "f10aa7d11044d484a18bd6aaa3b420f08f69f1215ce9c7d746132a4e72872860"
+    },
+    {
+      "path": "pll_allocation/allocation/repair.py",
+      "sha256": "4e1b54ae9b5a5b8619f95435c9f9f7994a229a822e39ac58613a865f952c6ea6"
+    },
+    {
+      "path": "pll_allocation/behavioral.py",
+      "sha256": "e63ce635e0b982d74f7b91fd547b1a418c983103431a18e742c2000606464e25"
+    },
+    {
+      "path": "pll_allocation/block_space/__init__.py",
+      "sha256": "6db51e5fc969aed30375d479f1167aed561ea569347fbfd6680570c8c679eb59"
+    },
+    {
+      "path": "pll_allocation/block_space/__main__.py",
+      "sha256": "dcf236cf89d5aa6e9ef60a22663d01c8ce2bbf79d8eb0e5ba8be6648e56f225d"
+    },
+    {
+      "path": "pll_allocation/block_space/calibration.py",
+      "sha256": "15d9b765134de54ef9f95a093e9e85ce3753fcc8261d20435a2501a6419736ec"
+    },
+    {
+      "path": "pll_allocation/block_space/contracts.py",
+      "sha256": "8aa26fc3520c52f3037332b306d0ec36074ae0c5541061f1c6a7be011924eaab"
+    },
+    {
+      "path": "pll_allocation/block_space/event_reference.py",
+      "sha256": "cf6e384bc53d8c1f209aa2ca1aaa7209f37abf0837708911272b285e734bf99f"
+    },
+    {
+      "path": "pll_allocation/block_space/sampling.py",
+      "sha256": "49fd65d6efc56779c23741358e7f8ae00b273588f53287cd89e67f6750e1ab6a"
+    },
+    {
+      "path": "pll_allocation/block_space/validation.py",
+      "sha256": "d9f2823d2ee99f149c561e3adce1a7cff24807e5d1b96c46dd8057bf5403eb44"
+    },
+    {
+      "path": "pll_allocation/cli.py",
+      "sha256": "bf0df22b1e45664cb42cb6710f211395018c787751b3422655cf888391b38ac0"
+    },
+    {
+      "path": "pll_allocation/contracts.py",
+      "sha256": "40726520d4e94147a4ec960b98c9b4cd1090c3d0f0cc646a54ab376d7040657f"
+    },
+    {
+      "path": "pll_allocation/llm_transport.py",
+      "sha256": "7128ec0ee5e1254ceafe997f5cc5fab647ac18e7c335fa8f77e5329a90423e92"
+    },
+    {
+      "path": "pll_allocation/physics_mapping/__init__.py",
+      "sha256": "1ec84ef02eb3a57dc25c3d7b62f8edd00ab6edcb1eb78a63b4a32dfb9dbc11e0"
+    },
+    {
+      "path": "pll_allocation/physics_mapping/__main__.py",
+      "sha256": "d2448eb5d3e952b09b5e363008ffaa52f1a7baa76b446c2742ede4d2dc292bb5"
+    },
+    {
+      "path": "pll_allocation/physics_mapping/experiment.py",
+      "sha256": "850196405effd005887a568bf19521214af1578aad785b25e384c7aecf4ca8de"
+    },
+    {
+      "path": "pll_allocation/physics_mapping/model.py",
+      "sha256": "412dbbbec9a499c56fe10781f2ff1debb525ead8fb411a2f72f056d36e8a2e34"
+    },
+    {
+      "path": "pll_allocation/physics_mapping/registry.py",
+      "sha256": "a032f9e1c8dbef6e07e5c7da2b7213be659973d2e37a909619f40a929b9a8e73"
+    },
+    {
+      "path": "pll_allocation/physics_mapping/validation.py",
+      "sha256": "2ed722b72c1dc87ce58d64f2004e6c6e9b518932db8a1a344fed7e5c0ae85e81"
+    },
+    {
+      "path": "pll_allocation/pipeline.py",
+      "sha256": "bfdd549a4b333ad5e4c39f1c6bebbe0399e1bd051da1c7bdec46b9c9314545d8"
+    },
+    {
+      "path": "pll_allocation/pipeline_contracts.py",
+      "sha256": "db05e76da54574d1efca807e7cf10d17b5b7370c6a8b7d86efb481e380ff97c3"
+    },
+    {
+      "path": "pll_allocation/policies.py",
+      "sha256": "08d23e3c929345b31a8bbb2a348102e02c1a227dd875ea5fe77712b7317291d7"
+    },
+    {
+      "path": "pll_allocation/runner.py",
+      "sha256": "255197574dc3fecfce98c0133f93e3456d9562da16c032229096969bb51ec996"
+    },
+    {
+      "path": "pll_allocation/scenarios.py",
+      "sha256": "8ee9b9696886db304c3b9df44eadd1f594928c85d368166b9be79e145206f86d"
+    },
+    {
+      "path": "pll_allocation/track_a/__init__.py",
+      "sha256": "c1caecb3b677389cf01c36b64b5e5bcb47c428c97d74887745a2ab90babf04ad"
+    },
+    {
+      "path": "pll_allocation/track_a/__main__.py",
+      "sha256": "6ac24b04790e45e0c533e8d55ee11415905a598fe7ddd1fb1070e00ac98c9bf5"
+    },
+    {
+      "path": "pll_allocation/track_a/agent.py",
+      "sha256": "5752be5a59dde24e95eefbf923cc9713c927c9fac40cf4c8a87727b458a774ec"
+    },
+    {
+      "path": "pll_allocation/track_a/allocate.py",
+      "sha256": "3c99a6c298d628db4e4e036ec8a0e26544c748e4bd11216a491ae0ab41ea1c6f"
+    },
+    {
+      "path": "pll_allocation/track_a/audit.py",
+      "sha256": "4c96f2181db21d87b1378013007cbfadfa1530166adc75bad4a6b8dc5917a60b"
+    },
+    {
+      "path": "pll_allocation/track_a/benchmark.py",
+      "sha256": "b184c886bfe5803d6a05f03e3dc1c1597a2f2bcf01b4a87fe0af1941782d1ee9"
+    },
+    {
+      "path": "pll_allocation/track_a/core.py",
+      "sha256": "c62c8254bd8bf29312a242d82659743bb918180d96fb19e1e799bd947bd4c9a2"
+    },
+    {
+      "path": "pll_allocation/track_a/experiments.py",
+      "sha256": "789151f185abc9b277114382c06daa8870c64132c1dfe87afcacbf173d9521ac"
+    },
+    {
+      "path": "pll_allocation/track_a/feedback_agent.py",
+      "sha256": "7b4923205b335083f31399b9e5d3f5bf7e0c16f8a78447459fc41b9b16b2142b"
+    },
+    {
+      "path": "pll_allocation/track_a/physics.py",
+      "sha256": "437c32a8aee94454ffd274250338116b6b9a413ba0e89105aea386149864dbe4"
+    },
+    {
+      "path": "pll_allocation/track_a/repair.py",
+      "sha256": "1d41ae5677ccd3958c9e6ae5727c4b1246422ccf4106c773b73d74444a9ce619"
+    },
+    {
+      "path": "pll_allocation/track_a/report.py",
+      "sha256": "f9ff52dc704a7e0fcf237367379d4e06826bb17e8a0f768177080bae6aa3afac"
+    },
+    {
+      "path": "pll_allocation/track_a/runner.py",
+      "sha256": "d69f8529b5b3194c9764cc869e374444bd1e4416130abe60a4001ffdc84f385f"
+    },
+    {
+      "path": "pll_allocation/verification/__init__.py",
+      "sha256": "9d89d55fdbde528b2b4194f7047ae7fd87c8095eb1c4aed7addc268477a1dd10"
+    },
+    {
+      "path": "pll_allocation/verification/build_closed_loop.cmd",
+      "sha256": "49a688b5689c02dad0a85b5447ba0499af6695e87f5715d519d3899989134971"
+    },
+    {
+      "path": "pll_allocation/verification/build_identity.py",
+      "sha256": "5affd1170528382a8c29e6ebdc584208e098022a0cf8b3bb91fefef9643ef881"
+    },
+    {
+      "path": "pll_allocation/verification/build_kernel.cmd",
+      "sha256": "9bf863f266aca7241e1ad9acac5fd14b9f9bcedbe95359aa2d36101b9fcb6325"
+    },
+    {
+      "path": "pll_allocation/verification/build_return_ratio.cmd",
+      "sha256": "312f48cebf30805c45648166eeed1278d17c1848d44844140eb24b66790c8a1b"
+    },
+    {
+      "path": "pll_allocation/verification/closed_loop.py",
+      "sha256": "165ac676b5e32955f1e4b8bcfcf2bcfdd1af0d267f059c902c7ea556e1a93287"
+    },
+    {
+      "path": "pll_allocation/verification/closed_loop_kernel.cpp",
+      "sha256": "744b3e42b7ff84eafa0860bdd8317e34848f4d2f84c5b8ce4c180a644dff9595"
+    },
+    {
+      "path": "pll_allocation/verification/closed_loop_native.py",
+      "sha256": "73dbbf4d755103d5faa376a89978fbf3881b60a80c81c70975836ee68ff76a3f"
+    },
+    {
+      "path": "pll_allocation/verification/experiments.py",
+      "sha256": "a791c6ffc893c67a3c34a9b45c3344788df43b5b883e3e6309887816f5803f16"
+    },
+    {
+      "path": "pll_allocation/verification/kernel.cpp",
+      "sha256": "befdd779cd69c73f1a2fb8667e895f77efff979cb3186d80a83113c0321c9f54"
+    },
+    {
+      "path": "pll_allocation/verification/measure.py",
+      "sha256": "c59b734e0d58dd877fdbb1cc4335bc8dd2c8024a6a368fc2e58eab6bed962edb"
+    },
+    {
+      "path": "pll_allocation/verification/resources.py",
+      "sha256": "b3c275b462393968c4b3e375cbc3a41a695adee9f7bae80076054164da8eead6"
+    },
+    {
+      "path": "pll_allocation/verification/return_ratio.py",
+      "sha256": "41ce7a78f64815c532f89c3cefa6f0197b5d77b2b3e626f84817eed659c0672a"
+    },
+    {
+      "path": "pll_allocation/verification/return_ratio_kernel.cpp",
+      "sha256": "f632fbceba29b6c07fc9e2370c44737bdaf5e3e86871e1def26fc9d3d0cf7dfc"
+    },
+    {
+      "path": "pll_allocation/verification/return_ratio_native.py",
+      "sha256": "6bcf5a3ec84ffa6f4a6e99d4ca0dbcf57d4453ce8ce6df3e2bc9596341f02cdd"
+    },
+    {
+      "path": "pll_allocation/verification/return_ratio_validity.py",
+      "sha256": "7176b645ebbd8f8d800224934c0737eb833202d252d6b126f8f324cd98416f3a"
+    },
+    {
+      "path": "pll_allocation/verification/run_suite.py",
+      "sha256": "6ab0d1ce08e4266c5de12e391208226d77909232ffb34cef607d914ac4496b0f"
+    },
+    {
+      "path": "pll_allocation/verification/scenario.py",
+      "sha256": "4d4262b718a96c826c6e4cafc0c15abff5fbba9a59e1540424ef0bbead807f3a"
+    },
+    {
+      "path": "pll_allocation/verification/simulator.py",
+      "sha256": "3c350efbb64cad3c7afb43b0f6946c819c52914d9a19893a749dffd48ee97750"
+    },
+    {
+      "path": "pll_allocation/verification/verify.py",
+      "sha256": "8c7a653d395fedb0552df073871afd08b59500afce80fde56ad92d6afa1048b3"
+    },
+    {
+      "path": "configs/BLOCK_SPACE_MODEL_V1.json",
+      "sha256": "9fe4b6025f344701b74c27834ab1fac1cf6cb58eb58c80c49a5e117e749ae518"
+    },
+    {
+      "path": "configs/llm_env.json",
+      "sha256": "a67d26ac843e84c367bf1373fccaf9f98b0e18ad6d384249d58748219c02160a"
+    },
+    {
+      "path": "configs/physics_mapping_stage1_v2.json",
+      "sha256": "00c63e2516485d57e1c8444b376aefb4ea5887931f2b0e34a8b5fbad790a0b4e"
+    },
+    {
+      "path": "configs/pipeline_stage3a.json",
+      "sha256": "1cda586a41731e12ab699d5ff0e2131d9940a13fc0d0896bf6a93baff0bd0ac7"
+    },
+    {
+      "path": "configs/PLL_EQUATION_REGISTRY_V1.json",
+      "sha256": "2f38369d268e57ee3e9549d3a5aac27ee90d059ef40ad8c20499dd7830be96fb"
+    },
+    {
+      "path": "configs/SYSTEM_SPEC_STAGE1_5.json",
+      "sha256": "49531ea5da98b87e5c5b219018fd54a86e1f30ba196d89caa7e755cb11bfeba3"
+    },
+    {
+      "path": "configs/track_a/benchmark_plan.json",
+      "sha256": "ed0ce0c6f468e63d6107ff073bceafe5e51300a89ae7c4b1b328e7071b53b002"
+    },
+    {
+      "path": "configs/verification/closed_loop_stage4_1_v0_1.json",
+      "sha256": "ba3d09c8774ac02cce98340d5e0199a6567670915a67bc9836e307c858cfdece"
+    },
+    {
+      "path": "configs/verification/protocol_v1_1.json",
+      "sha256": "7de5162bd57ad886170415e2d02e1d060878654d2c9e1f46b095ec7163b8399b"
+    },
+    {
+      "path": "configs/verification/return_ratio_stage4_v0_1.json",
+      "sha256": "f8f3985a2b967c461b32c8d1927aef356ba9b04bdc1aea956a00f464ad1a0d71"
+    },
+    {
+      "path": "configs/verification/return_ratio_stage4_v0_2.json",
+      "sha256": "51d7221cde625160e57ffe9a6c00b3866a7d93e30abe77920fb42f6c5072e562"
+    },
+    {
+      "path": "experiments/stage5/run_stage5.py",
+      "sha256": "98ea90cbb9f087f599118c08e771080c8f738e7817001d8926126d8255b06fe2"
+    },
+    {
+      "path": "experiments/stage5/experiment_plan_frozen.json",
+      "sha256": "5e671cf3a1ae9c99e66dca628b3800760ad81702c09749de8b66230fc07780d1"
+    },
+    {
+      "path": "experiments/stage5/scenarios/S0.json",
+      "sha256": "f0d8e44cc39ae81b9b22e0118680d02e198d2aae85818b5dc02ab5e141b912a4"
+    },
+    {
+      "path": "experiments/stage5/scenarios/S1.json",
+      "sha256": "87e5cd253f282fa8dc7dcd48272259ae488f02144060291513f7a464d36032d5"
+    },
+    {
+      "path": "experiments/stage5/scenarios/S2.json",
+      "sha256": "3e49ce72bd923eff7428b18acc436dfa8e24329ec13876f83ea4bc631fa27718"
+    },
+    {
+      "path": "experiments/stage5/scenarios/S3.json",
+      "sha256": "e43cca0797ed62ad3500f0a3400fd2388a40320e3719ec191ecc7f850afae4c7"
+    },
+    {
+      "path": "experiments/stage5/scenarios/S4.json",
+      "sha256": "ba5eefe66948a1ebebe11b7e0239a76af82ab0b9da0bd338471c89a4bfb1ad37"
+    }
+  ],
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0"
+}

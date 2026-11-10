@@ -1,0 +1,26 @@
+schema_version: '1.0'
+cases:
+  - id: baseline_0p2deg
+    config: system_80m_phase.yaml
+  - id: phase_0p19deg_nonzero_q0
+    config: system_80m_phase.yaml
+    overrides:
+      phase_limit_deg: 0.19
+      cp_balance_charge_target_C: {min: 6.0e-15, max: 1.0e-14, step: 2.0e-15, evidence_level: DECLARED_PRIOR_ONLY}
+  - id: phase_0p2deg_nonzero_q0
+    config: system_80m_phase.yaml
+    overrides:
+      cp_balance_charge_target_C: {min: 6.0e-15, max: 1.0e-14, step: 2.0e-15, evidence_level: DECLARED_PRIOR_ONLY}
+  - id: impossible_0p1deg_nonzero_q0
+    config: system_80m_phase.yaml
+    overrides:
+      phase_limit_deg: 0.1
+      cp_balance_charge_target_C: {min: 6.0e-15, max: 1.0e-14, step: 2.0e-15, evidence_level: DECLARED_PRIOR_ONLY}
+  - id: lf5000_only
+    config: system_80m_phase.yaml
+    overrides:
+      lf_Rz_Ohm: [5000.0]
+  - id: library_conditions
+    config: system_80m_phase.yaml
+    overrides:
+      mode: supported_library_match

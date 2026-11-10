@@ -1,0 +1,149 @@
+{
+  "excluded_nonsemantic_M2_fields": [
+    "allocation_metadata",
+    "candidate_id",
+    "cost_to_date",
+    "elapsed_s",
+    "execution_cost",
+    "native_elapsed_s",
+    "path",
+    "total_elapsed_s",
+    "trace"
+  ],
+  "duration_policy": "actual capture duration and measurement windows remain compared; only execution wall costs omitted",
+  "comparisons": {
+    "candidate_vs_premerge_stage5": [],
+    "full_M1_vs_premerge_stage5": [],
+    "M2_semantics_vs_premerge_stage5": [],
+    "candidate_vs_official_fixture": [],
+    "full_M1_vs_official_fixture": [],
+    "M2_semantics_vs_official_fixture": []
+  },
+  "all_equal": true,
+  "M1": {
+    "output_frequency_Hz": 80000000,
+    "Vctrl_required_V": 0.5999999999999999,
+    "Kvco_local_Hz_per_V": 27063993.167157203,
+    "UGF_Hz": 167166.52042501146,
+    "BW_Hz": 225000.0000001216,
+    "PM_deg": 72.24720983805331
+  },
+  "M2_metrics": {
+    "output_frequency_Hz": {
+      "value": 79999999.99990459,
+      "unit": "Hz",
+      "status": "MEASURED_STEADY",
+      "numerical_envelope": [
+        79999999.98990458,
+        80000000.0099046
+      ],
+      "required_precision_validated": false,
+      "uncertainty_basis": "empirical two-step difference with 0.01 Hz reporting floor; not a certified confidence bound",
+      "confidence": "CONDITIONAL_ON_TRACE_WINDOW"
+    },
+    "steady_control_V": {
+      "value": 0.5999999999097713,
+      "unit": "V",
+      "status": "MEASURED_STEADY",
+      "step_difference_V": 1.042375075144264e-10
+    },
+    "capture": {
+      "value": "CAPTURED_WITHIN_WINDOW",
+      "status": "MEASURED_WINDOW_CONDITIONAL",
+      "initial_control_V": 0.15,
+      "duration_s": 0.00016
+    },
+    "lock_time_s": {
+      "value": 3.2999999999999996e-05,
+      "unit": "s",
+      "status": "MEASURED_WINDOW_CONDITIONAL",
+      "resolution_s": 1e-06,
+      "step_difference_s": 0.0
+    },
+    "BW_Hz": {
+      "value": 226403.93447205875,
+      "unit": "Hz",
+      "status": "MEASURED_CONVERGED",
+      "numerical_envelope": [
+        226283.00933770544,
+        226503.68228813985
+      ],
+      "confidence": "LOCAL_WARM_START_SAMPLED_POINTS_ONLY",
+      "observable": "continuous divided VCO phase fundamental / reference phase fundamental",
+      "edge_only_equivalence": "NOT_ESTABLISHED; edge timestamp harmonic fits show different sampled response",
+      "envelope_scope": "bracketing and amplitude/step/window refinements; excludes cross-observable systematic difference"
+    },
+    "PM_deg": {
+      "value": null,
+      "unit": "deg",
+      "status": "PM_M2_UNKNOWN"
+    },
+    "UGF_Hz": {
+      "value": null,
+      "unit": "Hz",
+      "status": "UNKNOWN_NO_DIRECT_LOOP_INJECTION"
+    }
+  },
+  "M2_constraints": [
+    {
+      "metric": "output_frequency_Hz",
+      "target": {
+        "metric": "output_frequency_Hz",
+        "unit": "Hz",
+        "min": 80000000,
+        "max": 80000000,
+        "tolerance": 1e-06,
+        "evaluator": "M1",
+        "protocol": "conditional_locked_tuning_frequency",
+        "source": "User: 10 MHz x 8; conditional static frequency, not a transient measurement"
+      },
+      "status": "UNKNOWN",
+      "reason": "UNKNOWN_REQUIRED_PRECISION: frozen 1e-6 Hz tolerance not independently validated"
+    },
+    {
+      "metric": "BW_Hz",
+      "target": {
+        "metric": "BW_Hz",
+        "unit": "Hz",
+        "min": 150000,
+        "max": 300000,
+        "tolerance": 0,
+        "evaluator": "M1",
+        "protocol": "continuous_normalized_T_first_downward_minus3dB",
+        "source": "User: experimental BW target"
+      },
+      "status": "PASS",
+      "reason": "converged measured BW envelope"
+    },
+    {
+      "metric": "PM_deg",
+      "target": {
+        "metric": "PM_deg",
+        "unit": "deg",
+        "min": 50,
+        "tolerance": 0,
+        "evaluator": "M1",
+        "protocol": "180_plus_continuous_L_phase_at_UGF",
+        "source": "User: experimental PM target"
+      },
+      "status": "UNKNOWN",
+      "reason": "PM_M2_UNKNOWN"
+    }
+  ],
+  "cost": {
+    "analytic_calls": 11,
+    "M1_calls": 1,
+    "candidate_generations": 6,
+    "M2_calls": 1,
+    "LLM_calls": 0,
+    "native_completed_runs": 106,
+    "native_failed_attempts": 0,
+    "integration_points": 95090315,
+    "native_elapsed_s": 2.9994541998021305,
+    "native_failure_elapsed_s": 0,
+    "M1_posthoc_calls": 1,
+    "M1_total_calls": 2,
+    "total_elapsed_s": 9.53721979999682,
+    "monetary_cost": null
+  }
+}
