@@ -25,8 +25,8 @@ def load_registry(path, *, root=ROOT):
         raise ValueError('unsupported research registry schema/status')
     if item.get('replaces_formal_model') is not False:
         raise ValueError('registry cannot replace the frozen model')
-    expected = {'configs/BLOCK_SPACE_MODEL_V1.json', 'configs/SYSTEM_SPEC_STAGE1_5.json',
-        'configs/PLL_EQUATION_REGISTRY_V1.json', 'configs/verification/protocol_v1_1.json',
+    expected = {'configs/model/block_space.json', 'configs/model/reference_system_spec.json',
+        'configs/model/equations.json', 'configs/verification/m2_protocol.json',
         'pll_allocation/physics_mapping/model.py', 'pll_allocation/physics_mapping/validation.py',
         'pll_allocation/block_space/contracts.py', 'pll_allocation/allocation/physics.py',
         'pll_allocation/allocation/allocate.py', 'pll_allocation/allocation/core.py',
@@ -45,12 +45,12 @@ def load_registry(path, *, root=ROOT):
         if hashlib.sha256(content.replace(b'\r\n',b'\n')).hexdigest()!=row['normalized_lf_sha256']:
             raise ValueError('registry source binding mismatch: '+row['path'])
         binding_checks.append({'path':row['path'],'match':'EXACT_BYTES' if exact else 'EXPLICIT_CRLF_LF_EQUIVALENCE'})
-    model = load_model(root/'configs/BLOCK_SPACE_MODEL_V1.json')
+    model = load_model(root/'configs/model/block_space.json')
     if item['model_versions'] != model['versions'] or item['block_space_sha256'] != fingerprint(model):
         raise ValueError('registry model version/hash mismatch')
     if item['system_spec_sha256'] != fingerprint(model['experiment']['system_spec']):
         raise ValueError('registry SystemSpec mismatch')
-    equation_ids = {e['equation_id'] for e in json.loads((root/'configs/PLL_EQUATION_REGISTRY_V1.json').read_text(encoding='utf-8'))['equations']}
+    equation_ids = {e['equation_id'] for e in json.loads((root/'configs/model/equations.json').read_text(encoding='utf-8'))['equations']}
     equation_ids |= {e['equation_id'] for e in item['research_relations']}
     metrics = item['mappings']; ids = [row['system_metric_id'] for row in metrics]
     if len(set(ids)) != len(ids):

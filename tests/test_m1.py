@@ -14,7 +14,7 @@ from pll_allocation.physics_mapping.experiment import (
 from pll_allocation.physics_mapping.validation import HISTORICAL_ANCHOR, polynomial_reference, run_stage1
 
 ROOT = Path(__file__).resolve().parents[1]
-CONFIG = ROOT/'configs/physics_mapping_stage1_v2.json'
+CONFIG = ROOT/'configs/model/m1_experiment.json'
 
 
 @pytest.fixture

@@ -9,7 +9,7 @@ from pll_allocation.block_space.contracts import make_candidate
 from pll_allocation.block_space.extensions import validate_noise,source_psd,validate_nonideal,K_B
 from pll_allocation.physics_mapping.model import evaluate,parse_parameters
 from pll_allocation.physics_mapping.noise import transfers,noise_mapping,noise_sensitivity
-from tools.freeze_stage6c import documents
+from tools.create_verification_profiles import documents
 
 
 @pytest.fixture

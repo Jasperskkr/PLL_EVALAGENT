@@ -54,3 +54,5 @@ flowchart TD
 SLSQP 优化最差归一化 M1 裕量，动态捕获通过外层反馈参与。求解收敛、M1 可行和 M2 通过分别记录。
 
 标准初始分配与联合验证不读取历史实验目录或报告。`studies/` 是可选对照编排，不能作为第二套正式 Pipeline。兼容路径和保留的旧版本键见 COMPATIBILITY。
+
+新连续域Agent建议显式传 `--problem --allocator-config`。旧冻结默认链仍使用 `allocation/AllocationStrategyPolicy`，其旧 `llm_agent` 反馈分支未实现；连续域的真实LLM反馈由 `agent/feedback.py` 接入 `run_initial_allocation`，不能混淆两者。全部维护文件逐项职责见 [CODE_MAP](CODE_MAP.md)。

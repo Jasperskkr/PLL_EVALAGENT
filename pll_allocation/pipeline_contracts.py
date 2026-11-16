@@ -13,7 +13,7 @@ RESULT_SCHEMA = 'behavioral-verification-result-1.0'
 
 
 def load_inputs(config_path=None):
-    path = Path(config_path).resolve() if config_path else CONFIGS/'pipeline_stage3a.json'
+    path = Path(config_path).resolve() if config_path else CONFIGS/'pipeline.json'
     config = read(path)
     if config.get('schema_version') != CONFIG_SCHEMA:
         raise ValueError('unsupported pipeline config version')
@@ -25,9 +25,9 @@ def load_inputs(config_path=None):
         if fingerprint(item) != bindings[name+'_sha256']:
             raise ValueError(name+' version/hash binding mismatch')
     # The extracted backend supports precisely these formal assets. Custom targets are rejected.
-    if model != load_model(CONFIGS/'BLOCK_SPACE_MODEL_V1.json') or spec != model['experiment']['system_spec']:
+    if model != load_model(CONFIGS/'model/block_space.json') or spec != model['experiment']['system_spec']:
         raise ValueError('frozen Block Space/SystemSpec mismatch')
-    if doc != read(CONFIGS/'verification/protocol_v1_1.json') or doc['protocol_id'] != 'track_b_metrics_1.1':
+    if doc != read(CONFIGS/'verification/m2_protocol.json') or doc['protocol_id'] != 'track_b_metrics_1.1':
         raise ValueError('unsupported measurement protocol')
     if bindings['versions'] != model['versions']:
         raise ValueError('physical model version mismatch')

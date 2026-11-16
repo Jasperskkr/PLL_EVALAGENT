@@ -1,6 +1,6 @@
 @echo off
 setlocal
-set "PLL_BUILD_DIR=%~dp0build_stage6c"
+set "PLL_BUILD_DIR=%~dp0build_nonideal"
 if not "%~1"=="" set "PLL_BUILD_DIR=%~f1"
 if exist "%PLL_BUILD_DIR%" (
   echo Build destination already exists; choose a fresh directory.

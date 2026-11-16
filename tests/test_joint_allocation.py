@@ -17,7 +17,7 @@ ROOT=Path(__file__).resolve().parents[1]
 
 
 def problem(name='B1'):
-    return read(ROOT/'configs/stage6b'/(name+'.json'))
+    return read(ROOT/'configs/baselines'/({'B1':'joint_nominal.json','B2':'joint_tight.json'}[name]))
 
 
 def initial(name='B1'):
@@ -179,7 +179,7 @@ def assert_chain(path):
 
 
 def test_runner_cache_budget_trace_and_tampering(tmp_path,monkeypatch):
-    calls=synthetic_child(monkeypatch);cache=tmp_path/'cache';path=ROOT/'configs/stage6b/B1.json'
+    calls=synthetic_child(monkeypatch);cache=tmp_path/'cache';path=ROOT/'configs/baselines/joint_nominal.json'
     a=pipeline.run_multispec(tmp_path/'a',path,'A',cache_path=cache)
     b=pipeline.run_multispec(tmp_path/'b',path,'A',cache_path=cache)
     assert len(calls)==1 and a['cost']['M2_calls']==1 and b['cost']['M2_calls']==0

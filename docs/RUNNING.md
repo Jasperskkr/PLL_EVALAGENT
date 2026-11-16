@@ -19,6 +19,8 @@
 
 新配置复制原合同的数值和版本标识；职责重命名不改变默认问题含义。M1 支持项通过不能填补 Lock 或 jitter 的未知。
 
+完整配置分类与可修改项见 [configs 说明](../configs/README.md)；保留工具见 [tools 说明](../tools/README.md)。
+
 ## 分配与验证
 
 完整命令见根 README。推荐参数为 `--problem --allocator-config` 和 `--handoff --verification-problem --verification-config`，都由同一 pipeline 调度。
@@ -33,12 +35,12 @@ cmd /c pll_allocation\verification\build_kernel.cmd
 
 编译脚本当前定位 VS 2022 Community 标准路径，PATH 中的 python 应为所用虚拟环境。已有构建目录拒绝覆盖；缺 DLL、身份不符会明确失败，不生成模拟替代。
 
-全套可选扩展回归还需要以下原生构建；脚本的旧名称属于保留的来源兼容层：
+全套可选扩展回归还需要以下原生构建：
 
 ```powershell
 cmd /c pll_allocation\verification\build_closed_loop.cmd
 cmd /c pll_allocation\verification\build_return_ratio.cmd
-cmd /c pll_allocation\verification\build_stage6c.cmd
+cmd /c pll_allocation\verification\build_nonideal.cmd
 python -m pytest -q
 ```
 
@@ -76,13 +78,13 @@ M2 的 Lock 限初态0.15V、160µs窗口；PM 未认证。联合通过的结论
 
 ## 本次实际验收（2026-11-16）
 
-在仅含共享文件的普通源码快照中运行，无历史 experiments、GUI 或预编译 DLL。四个构建脚本全部成功；随后 `python -m pytest -q`：**754 passed, 10 skipped，253.20秒**。时间为本机验收耗时，不是策略性能排名。
+在仅含共享文件的普通源码快照中运行，无历史 experiments、GUI 或预编译 DLL。四个构建脚本全部成功；配置/工具清理后执行 `python -m pytest -q`：**750 passed, 10 skipped，203.82秒**。时间为本机验收耗时，不是策略性能排名。比上一共享版删除7项已移除驱动的专属测试，新增3项活动配置迁移/安装目录/profile防覆盖测试。
 
-10 项跳过分别为历史 Agent 观察5项、历史 Handoff 1项、旧数值扫描1项、旧联合 M2 记录2项、旧随机试验1项。档案不存在时显式说明原因，其余独立合同、数值、预算、真实原生验证和 TEST 故障注入测试均执行。
+10 项跳过分别为历史 Agent 观察5项、历史 Handoff 1项、旧数值扫描1项、旧联合 M2 记录2项、旧计算窗口记录1项。档案不存在时显式说明原因，其余独立合同、数值、预算、真实原生验证和 TEST 故障注入测试均执行。
 
 不发布的旧测试模块：test_matlab_trajectories、test_scenarios_stage5、test_joint_verification、test_multi_region_planning、test_spec_allocation_ablation、test_window_contract_fix，因其依赖旧实验脚本或大型档案；test_gui 因共享版不含 GUI 而不发布。本地 GUI 另实跑20项兼容测试，全通过。
 
-真实 CLI 使用 README 中的中性参数，分别执行确定性初始分配与 verify_only：初始分配92次正式 M1，后续1次独立 M1，1次完整 M2 / 106次原生运行 / 95,040,845积分点。LLM_calls=0。
+真实 CLI 使用 README 中的中性参数，分别执行确定性初始分配与 verify_only：初始分配92次正式 M1，后续1次独立 M1，1次完整 M2 / 106次原生运行 / 95,040,845积分点。LLM_calls=0。与上一个共享版逐项比较，六参数、M1指标、M2数值及判决完全相同；真实证据路径存在。
 
 |项目|真实结果|
 |---|---|
@@ -93,3 +95,5 @@ M2 的 Lock 限初态0.15V、160µs窗口；PM 未认证。联合通过的结论
 |最终完整认证|未签发，M2 FAIL|
 
 旧 `--initial-allocation-problem --initial-allocation-config` 另实跑 infeasible_pm 例题，返回 PROVEN_M1_INFEASIBLE，零 M1/M2/LLM 调用。新旧参数的调度等价性也纳入共享测试。
+
+另外实际执行架构审计，六份原分配实现 SHA 均保持；物理关系图谱生成通过独立数值核对（12次正式M1，零M2/LLM）。两个内核生成器与四份 C++ 源码字节不变，计算窗口适配器迁移前后 AST 相同。配置迁移收据与活动 profile 身份均经回归核对。

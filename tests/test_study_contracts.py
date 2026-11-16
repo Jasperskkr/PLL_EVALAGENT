@@ -8,7 +8,7 @@ from pll_allocation.agent.subregion_tools import envelope
 from pll_allocation.exploration.contracts import load_problem, make_parameters
 from pll_allocation.region_explorer.explorer import RegionExplorer
 from pll_allocation.studies.initial_allocation import rule_window, Trial
-from tools.stress_open_domain import scale_context,validate_window
+from pll_allocation.agent.computational_window import scale_context,validate_window
 from pll_allocation.physics_mapping.model import fingerprint
 
 ROOT=Path(__file__).resolve().parents[1]

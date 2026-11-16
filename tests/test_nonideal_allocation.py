@@ -14,7 +14,7 @@ ROOT=Path(__file__).resolve().parents[1]
 
 
 def inputs():
-    config,model,spec,protocol=load_inputs();p=json.loads((ROOT/'configs/stage6c/joint_frozen_01/J0_ideal.json').read_text())
+    config,model,spec,protocol=load_inputs();p=json.loads((ROOT/'configs/baselines/noise_ideal.json').read_text())
     meter=Meter(10000,96);c,_=analytical(model,p['research_system_spec'],meter);a=assess_m1(model,p['research_system_spec'],c,meter)
     return config,model,spec,protocol,p,c,a
 

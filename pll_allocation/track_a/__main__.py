@@ -9,8 +9,8 @@ from .runner import run_first
 def main():
     parser = argparse.ArgumentParser(description='Track A M1-only physics-guided allocation')
     parser.add_argument('command', choices=['run', 'benchmark'])
-    parser.add_argument('--model', default='configs/BLOCK_SPACE_MODEL_V1.json')
-    parser.add_argument('--plan', default='configs/track_a/benchmark_plan.json')
+    parser.add_argument('--model', default='configs/model/block_space.json')
+    parser.add_argument('--plan', default='configs/baselines/m1_allocation.json')
     parser.add_argument('--target', help='separate SystemSpec JSON; omission uses official snapshot')
     parser.add_argument('--strategy', default='analytical', choices=['nominal', 'analytical', 'sensitivity_optimization', 'random', 'mock_agent', 'llm_agent'])
     parser.add_argument('--out', required=True)

@@ -34,7 +34,7 @@ def utc():return datetime.now(timezone.utc).isoformat()
 def append(p,x):
     with Path(p).open('a',encoding='utf-8') as f:f.write(json.dumps(x,ensure_ascii=False,allow_nan=False)+'\n')
 def sources():
-    return {p.relative_to(ROOT).as_posix():sha(p) for p in [*ROOT.joinpath('pll_allocation').rglob('*.py'),ROOT/'tools/stress_open_domain.py']}
+    return {p.relative_to(ROOT).as_posix():sha(p) for p in [*ROOT.joinpath('pll_allocation').rglob('*.py'),ROOT/'pll_allocation/agent/computational_window.py']}
 
 def freeze(out):
     root=Path(out).resolve(); f=root/'frozen'; f.mkdir(exist_ok=False)
@@ -206,7 +206,7 @@ class Trial:
         self.constructions.append(prop); write_new(f/(ident+'_before_M1.json'),prop); return prop
 
     def phase1(self):
-        from tools.stress_open_domain import scale_context,validate_window,PROMPT
+        from pll_allocation.agent.computational_window import scale_context,validate_window,PROMPT
         physics=self.timed('physics','SHARED_SCALE_PRIOR',lambda:scale_context(self.raw))
         physics['numerical_resource_guard']={k:{'min':a['min'],'max':a['max']} for k,a in self.guard.items()}
         physics['M2_applicability']={'status':'NOT_EVALUATED_IN_A_PLUS'}

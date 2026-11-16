@@ -21,12 +21,12 @@ def test_integer_startup_slips_do_not_preclude_terminal_lock():
         np.full(len(t),.4),np.full(len(t),.4),np.zeros(len(t))])
     run={'trace':z,'summary':{'actual_clamp_events':0}}
     old=capture_metrics(run,protocol())
-    corrected=capture_metrics(run,read(CONFIGS/'verification/protocol_v1_1.json'))
+    corrected=capture_metrics(run,read(CONFIGS/'verification/m2_protocol.json'))
     assert old['status']=='NOT_CAPTURED_WITHIN_WINDOW'
     assert corrected['status']=='CAPTURED_WITHIN_WINDOW'
     assert corrected['net_cycle_index']==8
     z[:,1]=2*math.pi*t/1e-6
-    assert capture_metrics(run,read(CONFIGS/'verification/protocol_v1_1.json'))['status']=='NOT_CAPTURED_WITHIN_WINDOW'
+    assert capture_metrics(run,read(CONFIGS/'verification/m2_protocol.json'))['status']=='NOT_CAPTURED_WITHIN_WINDOW'
 
 
 def test_shared_allocation_proposal_and_fixed_bindings():
@@ -58,7 +58,7 @@ def test_constraints_use_measurement_envelopes_and_keep_PM_frequency_unknown():
     prop=example_proposal(candidate())
     fixture=read(FIXTURES/'stage3a_nominal_measured.json')
     capture=fixture['capture'];compared=fixture['comparison']
-    doc=read(CONFIGS/'verification/protocol_v1_1.json')
+    doc=read(CONFIGS/'verification/m2_protocol.json')
     result=assemble_result(prop,doc,{},capture,{},compared)
     checks={x['metric']:x['status'] for x in result['constraints']}
     assert checks=={'output_frequency_Hz':'UNKNOWN','BW_Hz':'PASS','PM_deg':'UNKNOWN'}

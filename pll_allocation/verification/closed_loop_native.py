@@ -29,7 +29,7 @@ def simulate_step(parameters, *, amplitude_rad=.01, dt_s=.4e-9, onset_s=40e-6,
     from .resources import CONFIGS
     from pll_allocation.block_space.contracts import check_parameters, load_model
     p = validate_parameters(parameters)
-    domain = check_parameters(load_model(CONFIGS/'BLOCK_SPACE_MODEL_V1.json'), parameters)
+    domain = check_parameters(load_model(CONFIGS/'model/block_space.json'), parameters)
     if domain['declared_domain'] != 'IN_DECLARED_DOMAIN' or domain['model_validity'] != 'VALID':
         raise ValueError('OUT_OF_DOMAIN: frozen Block Space')
     settings = dict(amplitude_rad=amplitude_rad, dt_s=dt_s, onset_s=onset_s, rise_s=rise_s,

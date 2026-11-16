@@ -27,7 +27,9 @@
 
 新结果名为 verification_handoff.json、verification_result.json、cost_summary.json、feedback_report.md；相应旧文件名仍输出，已有本地 GUI/脚本继续工作。序列化 schema、ready_for_stage9 等键、来源标签和模型版本不做全局文字替换；交接优先查看 gate_status。
 
-冻结配置、可选非理想内核及身份锁仍有少量旧路径/ID，例如 configs/stage6*、verification/stage6c*、track_a 兼容模块。它们不在新的主阅读路径；盲目删除或改写会破坏来源锁和旧回归。后续彻底迁移应单独升级合同版本并验证。
+configs 和 tools 已按职责整理，旧阶段目录及重复配置已移除，详见各目录 README。配置迁移保留数值载荷、冻结 ID 和来源字符串；`pipeline.json` 仅更新文件引用。哈希绑定文件可以迁移，但必须显式记录旧/新身份并重建依赖它的构建。本次收据为 `configs/provenance/config_paths.json`、`verification_profiles.json`，物理映射绑定也已更新。
+
+`verification/stage6c*`、`track_a` 和 `_legacy` 等源码/兼容模块仍实际保留。它们的进一步迁移超出此次 config/tools 清理范围。可选噪声/非理想内核默认构建改用 `build_nonideal.cmd` 和全新 `build_nonideal/`；旧 `PLL_STAGE6C_BUILD_DIR` 显式覆盖仍可用，但源文件身份变化后需重新构建，禁止改写旧身份文件来绕过检查。
 
 configs/provenance 保存原实现 SHA 和物理关系绑定。data/behavioral_space_v1/reference 仅保留参考数值代码与来源合同，供独立回归；这些不是新实验数据。
 

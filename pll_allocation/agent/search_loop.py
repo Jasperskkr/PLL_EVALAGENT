@@ -60,7 +60,7 @@ def source_manifest():
                       *sorted((root/'pll_allocation/region_explorer').glob('*.py')),
                       root/'pll_allocation/llm_transport.py', root/'pll_allocation/pipeline.py',
                       *sorted((root/'pll_allocation/exploration').glob('physics_region*.py')),
-                      root/'configs/PLL_EQUATION_REGISTRY_V1.json']}
+                      root/'configs/model/equations.json']}
 
 
 class AgentSearchLoop:

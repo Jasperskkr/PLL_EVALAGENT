@@ -1,6 +1,6 @@
 # PLLAgent research source
 
-Read README.md, docs/ARCHITECTURE.md, docs/REVIEW_GUIDE.md and PROJECT_CHARTER.md.
+Read README.md, PROJECT_CHARTER.md, docs/ARCHITECTURE.md, docs/CODE_MAP.md and docs/REVIEW_GUIDE.md.
 
 - Official execution entry: python -m pll_allocation pipeline. Keep one Policy/Runner boundary.
 - Scope: fixed-topology behavioral joint allocation, not transistor sizing or circuit capability certification.
@@ -13,4 +13,4 @@ Read README.md, docs/ARCHITECTURE.md, docs/REVIEW_GUIDE.md and PROJECT_CHARTER.m
 - Inspect docs/COMPATIBILITY.md before changing old imports, contracts or frozen source bytes.
 - Run relevant tests; report skipped archive-dependent tests and actual runtime/platform limits.
 - Research claims require real evidence. LLM availability or a successful mock test is not proof of allocation benefit.
-- Record scope changes in docs/RELEASE_NOTES.md; retain the original user charter unchanged.
+- Record scope changes in docs/RELEASE_NOTES.md. PROJECT_CHARTER.md reflects current scope/status; the original user charter is retained in local docs/history/PROJECT_CHARTER_before_20261116.md.

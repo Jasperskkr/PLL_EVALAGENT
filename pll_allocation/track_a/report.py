@@ -13,7 +13,7 @@ def build_report():
     docs = root/'docs'/'track_a'
     bench = root/'outputs'/'track_a_benchmark_20261104_02'
     llmdir = root/'outputs'/'track_a_llm_20261104_01'
-    model = load_model(root/'configs'/'BLOCK_SPACE_MODEL_V1.json')
+    model = load_model(root/'configs'/'model/block_space.json')
     results = read(bench/'all_results.json')
     official = {r['strategy']: r for r in results if r['target_id'] == 'official'}
     llm = read(llmdir/'result.json')

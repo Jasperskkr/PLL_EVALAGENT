@@ -15,11 +15,11 @@ ROOT=Path(__file__).resolve().parents[1]
 
 @pytest.fixture
 def model():
-    return load_model(ROOT/'configs/BLOCK_SPACE_MODEL_V1.json')
+    return load_model(ROOT/'configs/model/block_space.json')
 
 
 def test_experiment_and_domain_exactly_preserve_stage1(model):
-    old=json.loads((ROOT/'configs/physics_mapping_stage1_v2.json').read_text(encoding='utf-8'))
+    old=json.loads((ROOT/'configs/model/m1_experiment.json').read_text(encoding='utf-8'))
     assert model['experiment']==old
     assert model['experiment_freeze']['experiment_sha256']==fingerprint(old)
     assert model['experiment_freeze']['global_research_spec_frozen'] is False
@@ -95,7 +95,7 @@ def test_multiple_and_absent_crossings_rejected_by_original_kernel():
 
 
 def test_equation_registry_sources_and_scope():
-    registry=json.loads((ROOT/'configs/PLL_EQUATION_REGISTRY_V1.json').read_text(encoding='utf-8'))
+    registry=json.loads((ROOT/'configs/model/equations.json').read_text(encoding='utf-8'))
     assert len(registry['equations'])==11
     for equation in registry['equations']:
         assert all(equation.get(key) for key in ('expression','inputs','outputs','units_and_conversions',

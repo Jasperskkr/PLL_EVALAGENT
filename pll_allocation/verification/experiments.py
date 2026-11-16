@@ -25,19 +25,19 @@ def write(path,value):
 
 
 def protocol():
-    return read(CONFIGS/'verification/protocol_v1_1.json')
+    return read(CONFIGS/'verification/m2_protocol.json')
 
 
 def candidate(overrides=None):
     import sys
     from pll_allocation.block_space import make_candidate,load_model
-    return make_candidate(load_model(CONFIGS/'BLOCK_SPACE_MODEL_V1.json'),overrides)
+    return make_candidate(load_model(CONFIGS/'model/block_space.json'),overrides)
 
 
 def save_run(folder,parameters,settings,kind,*,protocol_document=None,simulate_fn=None):
     folder=Path(folder); folder.mkdir(parents=True,exist_ok=False)
     doc=protocol_document if protocol_document is not None else protocol()
-    protocol_hash=hashlib.sha256(json.dumps(doc,sort_keys=True,separators=(',',':'),allow_nan=False).encode()).hexdigest() if protocol_document is not None else hashlib.sha256((CONFIGS/'verification/protocol_v1_1.json').read_bytes()).hexdigest()
+    protocol_hash=hashlib.sha256(json.dumps(doc,sort_keys=True,separators=(',',':'),allow_nan=False).encode()).hexdigest() if protocol_document is not None else hashlib.sha256((CONFIGS/'verification/m2_protocol.json').read_bytes()).hexdigest()
     write(folder/'request.json',{'parameters':parameters,'settings':settings,'kind':kind,
         'protocol_sha256':protocol_hash,'protocol_document':doc,
         'protocol_hash_encoding':'sorted_compact_json_utf8' if protocol_document is not None else 'raw_protocol_json_file_bytes'})

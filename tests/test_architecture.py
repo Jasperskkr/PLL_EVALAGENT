@@ -16,7 +16,7 @@ def test_legacy_import_is_same_formal_module(name):
 
 
 def test_dependency_direction_and_frozen_numerical_implementations():
-    from tools.audit_mainline import audit
+    from tools.audit_architecture import audit
     result = audit(ROOT)
     assert result['passed'], result
 

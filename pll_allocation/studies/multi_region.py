@@ -294,7 +294,7 @@ class MultiTrial(Trial):
         return obs
 
     def phase1(self):
-        from tools.stress_open_domain import scale_context
+        from pll_allocation.agent.computational_window import scale_context
         self.physics=self.timed('physics','SHARED_SCALE_PRIOR',lambda:scale_context(self.raw))
         self.physics['numerical_resource_guard']={k:{'min':a['min'],'max':a['max']} for k,a in self.guard.items()}
         self.physics['M2_applicability']={'status':'NOT_EVALUATED'}

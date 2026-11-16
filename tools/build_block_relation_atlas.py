@@ -260,7 +260,7 @@ def variable_catalog(model, rows):
                        'semantic_conflict': original['Semantic conflict'],
                        'relation_ids': [r['id'] for r in related],
                        'co_variables': sorted({v for r in related for v in r['variable_ids']} - {vid}),
-                       'traceability': 'configs/BLOCK_SPACE_MODEL_V1.json#/variable_catalog/' + vid})
+                       'traceability': 'configs/model/block_space.json#/variable_catalog/' + vid})
     return result
 
 
@@ -429,11 +429,11 @@ def render(out, atlas, cap_rows):
 
 
 SOURCE_PURPOSES = {
-    'configs/BLOCK_SPACE_MODEL_V1.json': '原17输入范围、41变量语义、固定拓扑和版本',
-    'configs/PLL_EQUATION_REGISTRY_V1.json': '11条原公式ID和历史MATLAB来源路径/SHA；不覆盖原文件',
-    'configs/SYSTEM_SPEC_STAGE1_5.json': '原三指标目标及draft元数据',
-    'configs/pipeline_stage3a.json': '正式输入哈希绑定',
-    'configs/verification/protocol_v1_1.json': '独立行为测量定义与正式UNKNOWN边界',
+    'configs/model/block_space.json': '原17输入范围、41变量语义、固定拓扑和版本',
+    'configs/model/equations.json': '11条原公式ID和历史MATLAB来源路径/SHA；不覆盖原文件',
+    'configs/model/reference_system_spec.json': '原三指标目标及draft元数据',
+    'configs/pipeline.json': '正式输入哈希绑定',
+    'configs/verification/m2_protocol.json': '独立行为测量定义与正式UNKNOWN边界',
     'pll_allocation/physics_mapping/model.py': '正式连续M1函数与SI语义；调用复用',
     'pll_allocation/physics_mapping/validation.py': '既有独立数值验证语义参考',
     'pll_allocation/block_space/contracts.py': '原域检查、候选完整性；调用复用',
@@ -453,7 +453,7 @@ def build(out):
     out.mkdir(parents=True, exist_ok=False)
     config, model, spec, protocol = load_inputs()
     rows = relation_rows()
-    equations = read('configs/PLL_EQUATION_REGISTRY_V1.json')
+    equations = read('configs/model/equations.json')
     eqids = {r['equation_id'] for r in equations['equations']}
     if {e for r in rows for e in r['equation_ids']} - eqids:
         raise ValueError('unregistered formula ID')

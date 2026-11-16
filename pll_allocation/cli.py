@@ -19,7 +19,7 @@ def make_policy(name,out,*,seed=0,llm_config=None,replay=None):
     if name=='random': return RandomPolicy(seed)
     if name=='feedback': return FeedbackSearchPolicy()
     if name in {'llm_initial','llm_feedback'}:
-        return LLMPolicy(read(llm_config or 'configs/llm_env.json'),Path(out)/'llm_calls')
+        return LLMPolicy(read(llm_config or 'configs/providers/messages_interactive.json'),Path(out)/'llm_calls')
     if name=='replay' and replay: return ReplayPolicy(replay)
     raise ValueError('invalid policy or missing replay path')
 

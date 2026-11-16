@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 from pll_allocation.verification.noise_tracking import steady_tracking
 from pll_allocation.pipeline_contracts import load_inputs
-from tools.freeze_stage6c import documents
+from tools.create_verification_profiles import documents
 
 
 def fixture():

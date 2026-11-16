@@ -1,0 +1,281 @@
+{
+  "purpose": "Source relocation receipt; frozen IDs and provenance strings retain their historical meaning",
+  "config_moves": [
+    {
+      "old": "configs/BLOCK_SPACE_MODEL_V1.json",
+      "new": "configs/model/block_space.json",
+      "before_sha256": "9fe4b6025f344701b74c27834ab1fac1cf6cb58eb58c80c49a5e117e749ae518",
+      "after_sha256": "9fe4b6025f344701b74c27834ab1fac1cf6cb58eb58c80c49a5e117e749ae518",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/PLL_EQUATION_REGISTRY_V1.json",
+      "new": "configs/model/equations.json",
+      "before_sha256": "2f38369d268e57ee3e9549d3a5aac27ee90d059ef40ad8c20499dd7830be96fb",
+      "after_sha256": "2f38369d268e57ee3e9549d3a5aac27ee90d059ef40ad8c20499dd7830be96fb",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/SYSTEM_SPEC_STAGE1_5.json",
+      "new": "configs/model/reference_system_spec.json",
+      "before_sha256": "49531ea5da98b87e5c5b219018fd54a86e1f30ba196d89caa7e755cb11bfeba3",
+      "after_sha256": "49531ea5da98b87e5c5b219018fd54a86e1f30ba196d89caa7e755cb11bfeba3",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/physics_mapping_stage1_v2.json",
+      "new": "configs/model/m1_experiment.json",
+      "before_sha256": "00c63e2516485d57e1c8444b376aefb4ea5887931f2b0e34a8b5fbad790a0b4e",
+      "after_sha256": "00c63e2516485d57e1c8444b376aefb4ea5887931f2b0e34a8b5fbad790a0b4e",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/pipeline_stage3a.json",
+      "new": "configs/pipeline.json",
+      "before_sha256": "1cda586a41731e12ab699d5ff0e2131d9940a13fc0d0896bf6a93baff0bd0ac7",
+      "after_sha256": "89558aefe55a94fe594f55d6be68dea4ccb63bd53dddc20eb499fc7778f330f8",
+      "mode": "PATH_REFERENCES_UPDATED"
+    },
+    {
+      "old": "configs/llm_env.json",
+      "new": "configs/providers/messages_interactive.json",
+      "before_sha256": "a67d26ac843e84c367bf1373fccaf9f98b0e18ad6d384249d58748219c02160a",
+      "after_sha256": "a67d26ac843e84c367bf1373fccaf9f98b0e18ad6d384249d58748219c02160a",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/verification/protocol_v1_1.json",
+      "new": "configs/verification/m2_protocol.json",
+      "before_sha256": "7de5162bd57ad886170415e2d02e1d060878654d2c9e1f46b095ec7163b8399b",
+      "after_sha256": "7de5162bd57ad886170415e2d02e1d060878654d2c9e1f46b095ec7163b8399b",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/verification/closed_loop_stage4_1_v0_1.json",
+      "new": "configs/verification/phase_step_protocol.json",
+      "before_sha256": "ba3d09c8774ac02cce98340d5e0199a6567670915a67bc9836e307c858cfdece",
+      "after_sha256": "ba3d09c8774ac02cce98340d5e0199a6567670915a67bc9836e307c858cfdece",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/verification/return_ratio_stage4_v0_2.json",
+      "new": "configs/verification/return_ratio_protocol.json",
+      "before_sha256": "51d7221cde625160e57ffe9a6c00b3866a7d93e30abe77920fb42f6c5072e562",
+      "after_sha256": "51d7221cde625160e57ffe9a6c00b3866a7d93e30abe77920fb42f6c5072e562",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/stage6b/B1.json",
+      "new": "configs/baselines/joint_nominal.json",
+      "before_sha256": "a098ef3e6ebfe2066e09ec4a768a38c1f6503101ee44def22dbaee0e322120c6",
+      "after_sha256": "a098ef3e6ebfe2066e09ec4a768a38c1f6503101ee44def22dbaee0e322120c6",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/stage6b/B2.json",
+      "new": "configs/baselines/joint_tight.json",
+      "before_sha256": "a9fed540b0945babfec5b2d9905c7de43d6d37c21b0d0e1500fad295eb925a8b",
+      "after_sha256": "a9fed540b0945babfec5b2d9905c7de43d6d37c21b0d0e1500fad295eb925a8b",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/track_a/benchmark_plan.json",
+      "new": "configs/baselines/m1_allocation.json",
+      "before_sha256": "ed0ce0c6f468e63d6107ff073bceafe5e51300a89ae7c4b1b328e7071b53b002",
+      "after_sha256": "ed0ce0c6f468e63d6107ff073bceafe5e51300a89ae7c4b1b328e7071b53b002",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/stage6c/protocol11_01/noise_protocol.json",
+      "new": "configs/verification/noise_protocol.json",
+      "before_sha256": "40c012def35caf1b395b8f247127462bf9328358d34d3a67b2d0abb80cab0241",
+      "after_sha256": "40c012def35caf1b395b8f247127462bf9328358d34d3a67b2d0abb80cab0241",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/stage6c/joint_frozen_01/J0_ideal.json",
+      "new": "configs/baselines/noise_ideal.json",
+      "before_sha256": "0f2dd3812b7b99e6cce08f2b4b646f36e79e55864ebd366625a0a075b3a19fe5",
+      "after_sha256": "0f2dd3812b7b99e6cce08f2b4b646f36e79e55864ebd366625a0a075b3a19fe5",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/stage6c/joint_frozen_01/J1_nonideal.json",
+      "new": "configs/baselines/noise_nonideal.json",
+      "before_sha256": "196d0af580b4a1cdf650a321eaadce6cd5d85c5b1e695a2207fefbd115e1b513",
+      "after_sha256": "196d0af580b4a1cdf650a321eaadce6cd5d85c5b1e695a2207fefbd115e1b513",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/stage6c/frozen_01/noise_all.json",
+      "new": "configs/verification/profiles/noise_all.json",
+      "before_sha256": "8fee128efc56ce367eae5e1debc1c804ed93f0493a7f56f2c320f560b65efb18",
+      "after_sha256": "8fee128efc56ce367eae5e1debc1c804ed93f0493a7f56f2c320f560b65efb18",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/stage6c/frozen_01/noise_cp.json",
+      "new": "configs/verification/profiles/noise_cp.json",
+      "before_sha256": "754f1506b1a5e6a5a43ada28be864c747fd2aba7cd5b3ffa02c2dfd23f55a705",
+      "after_sha256": "754f1506b1a5e6a5a43ada28be864c747fd2aba7cd5b3ffa02c2dfd23f55a705",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/stage6c/frozen_01/noise_protocol.json",
+      "new": "configs/verification/profiles/noise_protocol.json",
+      "before_sha256": "62f7e3578588f7fc68775eacd58c613e8f31d2d993c7163bf8cdc39b0ae8ab6d",
+      "after_sha256": "62f7e3578588f7fc68775eacd58c613e8f31d2d993c7163bf8cdc39b0ae8ab6d",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/stage6c/frozen_01/noise_reference.json",
+      "new": "configs/verification/profiles/noise_reference.json",
+      "before_sha256": "f8d4d27f0ab76f0fdfe875466c7960b4032c31754fc697db27f027c18f614758",
+      "after_sha256": "f8d4d27f0ab76f0fdfe875466c7960b4032c31754fc697db27f027c18f614758",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/stage6c/frozen_01/noise_resistor.json",
+      "new": "configs/verification/profiles/noise_resistor.json",
+      "before_sha256": "21c28632545c20ba0722faaeaac5eea6e197d99b5dedcf3873cac1a591a447df",
+      "after_sha256": "21c28632545c20ba0722faaeaac5eea6e197d99b5dedcf3873cac1a591a447df",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/stage6c/frozen_01/noise_vco.json",
+      "new": "configs/verification/profiles/noise_vco.json",
+      "before_sha256": "f5514d74e71962a0ce343250387125d8c2a91ebc2b835946cadfa985cfd60452",
+      "after_sha256": "f5514d74e71962a0ce343250387125d8c2a91ebc2b835946cadfa985cfd60452",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/stage6c/frozen_01/noise_zero.json",
+      "new": "configs/verification/profiles/noise_zero.json",
+      "before_sha256": "2678f81b6604430aac1bf2e16e20143b65379708e7546bfba4bdeb18c529f58f",
+      "after_sha256": "2678f81b6604430aac1bf2e16e20143b65379708e7546bfba4bdeb18c529f58f",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/stage6c/frozen_01/nonideal_combined.json",
+      "new": "configs/verification/profiles/nonideal_combined.json",
+      "before_sha256": "c394791813cf617aa8940e7f45b170963ee3227689905510d236d65a7e571f86",
+      "after_sha256": "c394791813cf617aa8940e7f45b170963ee3227689905510d236d65a7e571f86",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/stage6c/frozen_01/nonideal_compliance.json",
+      "new": "configs/verification/profiles/nonideal_compliance.json",
+      "before_sha256": "b9bdc571a3efd9555d73c22d584ba2980d1daca851bdbe5d0a3098e652382283",
+      "after_sha256": "b9bdc571a3efd9555d73c22d584ba2980d1daca851bdbe5d0a3098e652382283",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/stage6c/frozen_01/nonideal_K2_minus.json",
+      "new": "configs/verification/profiles/nonideal_K2_minus.json",
+      "before_sha256": "0e846ba8b4bf5d818c9ec41e32143de57d1e210b003d460822514cc507fa7e0f",
+      "after_sha256": "0e846ba8b4bf5d818c9ec41e32143de57d1e210b003d460822514cc507fa7e0f",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/stage6c/frozen_01/nonideal_K2_plus.json",
+      "new": "configs/verification/profiles/nonideal_K2_plus.json",
+      "before_sha256": "c73bbf05ba51e6835e8c6aef7b17c858f9bca610f5bdc3da94a9470ffed72322",
+      "after_sha256": "c73bbf05ba51e6835e8c6aef7b17c858f9bca610f5bdc3da94a9470ffed72322",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/stage6c/frozen_01/nonideal_leak_minus.json",
+      "new": "configs/verification/profiles/nonideal_leak_minus.json",
+      "before_sha256": "a54925ea1d09f5be894799c9362d7c2a14d1609499e902baada0b53710fe866a",
+      "after_sha256": "a54925ea1d09f5be894799c9362d7c2a14d1609499e902baada0b53710fe866a",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/stage6c/frozen_01/nonideal_leak_plus.json",
+      "new": "configs/verification/profiles/nonideal_leak_plus.json",
+      "before_sha256": "cac8158c67a004a41ccb856b98cee27df239447b077aa2ef9b41f46acab247f6",
+      "after_sha256": "cac8158c67a004a41ccb856b98cee27df239447b077aa2ef9b41f46acab247f6",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/stage6c/frozen_01/nonideal_mismatch_minus.json",
+      "new": "configs/verification/profiles/nonideal_mismatch_minus.json",
+      "before_sha256": "f30e857a4304337bebf3274fb408d84b470d0460036c6668cb810058d57ab689",
+      "after_sha256": "f30e857a4304337bebf3274fb408d84b470d0460036c6668cb810058d57ab689",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/stage6c/frozen_01/nonideal_mismatch_plus.json",
+      "new": "configs/verification/profiles/nonideal_mismatch_plus.json",
+      "before_sha256": "71268577eda8770aa11b46a380995aee7b87be5f913b25201315b2ad7f12cc77",
+      "after_sha256": "71268577eda8770aa11b46a380995aee7b87be5f913b25201315b2ad7f12cc77",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/stage6c/frozen_01/nonideal_reset.json",
+      "new": "configs/verification/profiles/nonideal_reset.json",
+      "before_sha256": "e1831c51863a92f892381779049febac1578fd286fdc7b328bf0a5be8907248e",
+      "after_sha256": "e1831c51863a92f892381779049febac1578fd286fdc7b328bf0a5be8907248e",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    },
+    {
+      "old": "configs/stage6c/frozen_01/nonideal_zero.json",
+      "new": "configs/verification/profiles/nonideal_zero.json",
+      "before_sha256": "d8d15159b23c4f2668cc7f25b587756d67776551ff45a6d87efa8105026ebf27",
+      "after_sha256": "d8d15159b23c4f2668cc7f25b587756d67776551ff45a6d87efa8105026ebf27",
+      "mode": "PATH_ONLY_CONTENT_IDENTICAL"
+    }
+  ],
+  "duplicate_config_removals": [
+    {
+      "path": "configs/initial_allocation/deterministic.json",
+      "reason": "duplicate_configuration",
+      "replacement": "configs/agent/deterministic.json"
+    },
+    {
+      "path": "configs/initial_allocation/physics_tool.json",
+      "reason": "duplicate_configuration",
+      "replacement": "configs/agent/llm_physics.json"
+    },
+    {
+      "path": "configs/stage7/continuous_global_v2.json",
+      "reason": "duplicate_configuration",
+      "replacement": "configs/problems/nominal.json"
+    },
+    {
+      "path": "configs/stage7/continuous_tight_v2.json",
+      "reason": "duplicate_configuration",
+      "replacement": "configs/problems/tight.json"
+    },
+    {
+      "path": "configs/stage7/pm_infeasible_v2.json",
+      "reason": "duplicate_configuration",
+      "replacement": "configs/problems/infeasible_pm.json"
+    },
+    {
+      "path": "configs/stage7_5/pilot.json",
+      "reason": "duplicate_configuration",
+      "replacement": "configs/agent/region_planning.json"
+    },
+    {
+      "path": "configs/stage8b/pilot.json",
+      "reason": "duplicate_configuration",
+      "replacement": "configs/agent/region_search.json"
+    },
+    {
+      "path": "configs/stage8b/messages_pilot.json",
+      "reason": "duplicate_configuration",
+      "replacement": "configs/providers/messages.json"
+    },
+    {
+      "path": "configs/stage9/verify_only.json",
+      "reason": "duplicate_configuration",
+      "replacement": "configs/verification/verify_only.json"
+    },
+    {
+      "path": "configs/stage9/feedback.json",
+      "reason": "duplicate_configuration",
+      "replacement": "configs/verification/feedback.json"
+    }
+  ]
+}

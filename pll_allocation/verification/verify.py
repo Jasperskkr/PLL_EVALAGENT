@@ -21,7 +21,7 @@ RESULT_SCHEMA='behavioral-verification-result-1.0'
 
 
 def frozen_model():
-    return load_model(CONFIGS/'BLOCK_SPACE_MODEL_V1.json')
+    return load_model(CONFIGS/'model/block_space.json')
 
 
 def validate_proposal(item):
@@ -155,7 +155,7 @@ def assemble_result(proposal,doc,domain,capture,response,comparison):
 def verify(proposal,out,*,initial_control_V=.15,capture_duration_s=160e-6):
     out=Path(out).resolve();out.mkdir(parents=True,exist_ok=False)
     write(out/'proposal.json',proposal)  # persisted before any TB
-    doc=read(CONFIGS/'verification/protocol_v1_1.json');write(out/'protocol.json',doc)
+    doc=read(CONFIGS/'verification/m2_protocol.json');write(out/'protocol.json',doc)
     try:
         model,p,domain=validate_proposal(proposal)
         capture=capture_pair(out/'capture',p,initial_control_V,capture_duration_s,protocol_document=doc)

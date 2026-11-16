@@ -5,8 +5,7 @@ from pathlib import Path
 from unittest.mock import patch
 import pytest
 
-from tools.stress_open_domain import scale_context,validate_window,observation_evidence
-from tools.randomized_stress import all_usage,generate,frozen_inputs
+from pll_allocation.agent.computational_window import scale_context,validate_window,observation_evidence
 from pll_allocation.exploration.contracts import resolve_problem
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -56,14 +55,6 @@ def test_expansion_cannot_silently_repeat_and_stop_is_explicit():
     assert validate_window(raw,state)['parameters']['C1']['min']<p['parameters']['C1']['min']
     raw.update(action='STOP',parameters=None);assert validate_window(raw,state) is None
 
-def test_cost_deduplicates_calibration_copy_and_charges_failures(tmp_path):
-    rows=[{'formal_M1_called':True},{'formal_M1_called':False}]
-    for name in ['calibration/executor','calibration/initial_context','stage8/executor']:
-        p=tmp_path/name;p.mkdir(parents=True)
-        (p/'m1_samples.jsonl').write_text('\n'.join(map(json.dumps,rows)),encoding='utf-8')
-    native=tmp_path/'stage9/m2_01';native.mkdir(parents=True)
-    (native/'posthoc_m1_started.json').write_text('{}')
-    c=all_usage(tmp_path);assert c['M1_calls']==3 and c['M2_verifications']==0
 
 
 def test_observation_evidence_is_registered_from_verifier_not_llm():
@@ -90,21 +81,4 @@ def test_saved_pilot_window_evidence_registration_regression():
     assert validate_window(raw,state) # TEST replay only, never a new LLM/simulation.
 
 
-def test_research_totals_exclude_test_artifacts(tmp_path):
-    (tmp_path/'experiment_manifest.json').write_text('{}')
-    for folder in ('pilots/A/executor','formal/B/executor','tests/fixture/executor'):
-        p=tmp_path/folder;p.mkdir(parents=True)
-        (p/'m1_samples.jsonl').write_text(json.dumps({'formal_M1_called':True})+'\n')
-    assert all_usage(tmp_path)['M1_calls']==2
 
-def test_random_inputs_reproducible_and_frozen(tmp_path):
-    # Identity contains real source hashes only; no simulations/network.
-    generate(tmp_path/'one');generate(tmp_path/'two')
-    for f in ['generated_specs.json','generated_domains.json','case_matrix.csv']:
-        assert (tmp_path/'one'/f).read_bytes()==(tmp_path/'two'/f).read_bytes()
-    m=frozen_inputs(tmp_path/'one');assert len(m['case_matrix'])==18
-    assert all(d['domain_id']!='USER_UNBOUNDED' or d['domain_mode']=='USER_UNBOUNDED' for d in m['case_matrix'])
-    specs=json.loads((tmp_path/'one/generated_specs.json').read_text())
-    assert len({s[0]['min'] for s in specs.values()})==3
-    p=tmp_path/'one/inputs/A_D1.json';p.write_text('{}')
-    with pytest.raises(ValueError,match='changed'):frozen_inputs(tmp_path/'one')

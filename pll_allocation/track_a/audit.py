@@ -33,6 +33,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--out', required=True)
     args = parser.parse_args()
-    print(audit('configs/BLOCK_SPACE_MODEL_V1.json', 'docs/track_a/protected_before.json',
+    print(audit('configs/model/block_space.json', 'docs/track_a/protected_before.json',
         'outputs/track_a_benchmark_20261104_01', 'outputs/track_a_benchmark_20261104_02',
         'outputs/track_a_llm_20261104_01', args.out)['accepted'])

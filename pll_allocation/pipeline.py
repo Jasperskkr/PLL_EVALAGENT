@@ -331,7 +331,7 @@ def run_multispec(out, problem_path, method, *, config_path=None, cache_path=Non
         if problem.get('behavioral_extension'):
             from .verification.stage6c_identity import default_build
             extras.extend(default_build().glob('kernel.dll'));extras.extend(default_build().glob('identity.json'))
-            extras.append(package_root/'tools/generate_stage6c_kernel.py')
+            extras.append(package_root/'tools/generate_nonideal_noise_kernel.py')
         for p in extras:
             found[str(p.resolve())]={'path':str(p.resolve()),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}
         return [found[k] for k in sorted(found)]
@@ -643,7 +643,7 @@ def main(argv=None):
                 raise ValueError('Stage8B planner owns configuration and calls Stage8A; cannot mix other modes')
             from .agent.search_loop import run_agent_search
             result = run_agent_search(args.llm_region_context, args.out, config=read(args.planner_config),
-                provider_config=read(args.llm_config or 'configs/llm_env.json'), problem_path=args.planner_problem)
+                provider_config=read(args.llm_config or 'configs/providers/messages_interactive.json'), problem_path=args.planner_problem)
         elif args.region_context or args.search_decisions or args.region_m1_budget is not None:
             if not args.region_context or not args.search_decisions or args.region_m1_budget is None:
                 raise ValueError('Stage8A requires --region-context, --search-decisions and --region-m1-budget')

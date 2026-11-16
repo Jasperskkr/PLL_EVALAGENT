@@ -10,7 +10,7 @@ from pll_allocation.verification.stage6c_native import simulate,noise_levels
 from pll_allocation.verification.noise import seed_interval,aggregate,estimate_phase,validate_protocol
 from pll_allocation.pipeline_contracts import load_inputs
 from pll_allocation.block_space.contracts import make_candidate
-from tools.freeze_stage6c import documents
+from tools.create_verification_profiles import documents
 
 
 def samples(seed,n,dt,snu=100.,si=1e-24,on=.2):

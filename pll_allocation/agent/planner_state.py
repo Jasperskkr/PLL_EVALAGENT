@@ -9,7 +9,7 @@ from ..physics_mapping.model import METRIC_UNITS, fingerprint
 from ..region_explorer.assessment import normalized_point
 from ..region_explorer.explorer import slsqp_cost_model
 
-REGISTRY = Path(__file__).resolve().parents[2]/'configs/PLL_EQUATION_REGISTRY_V1.json'
+REGISTRY = Path(__file__).resolve().parents[2]/'configs/model/equations.json'
 
 
 def compact_sample(row, problem):

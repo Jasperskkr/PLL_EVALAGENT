@@ -13,7 +13,7 @@ from .candidates import rank
 from .subregion_contracts import TOOLS
 from .subregion_context import was_formal_call
 
-REGISTRY=Path(__file__).resolve().parents[2]/'configs/PLL_EQUATION_REGISTRY_V1.json'
+REGISTRY=Path(__file__).resolve().parents[2]/'configs/model/equations.json'
 DEPENDENCIES={
  'frequency':(['N','f_ref','f0','Kvco'],['output_frequency_Hz','Vctrl_required_V']),
  'CP':(['Icp','Kvco'],['BW_Hz','UGF_Hz','PM_deg']),
@@ -28,7 +28,7 @@ DEPENDENCIES={
 
 def physics_relations(model):
     registry=json.loads(REGISTRY.read_text(encoding='utf-8'))
-    source={'path':'configs/PLL_EQUATION_REGISTRY_V1.json','sha256':hashlib.sha256(REGISTRY.read_bytes()).hexdigest()}
+    source={'path':'configs/model/equations.json','sha256':hashlib.sha256(REGISTRY.read_bytes()).hexdigest()}
     relations=[{'evidence_id':e['equation_id'],'category':'ANALYTICAL_RELATION','expression':e['expression'],
         'variables':e['inputs'],'metrics':e['outputs'],'applicability':e['domain'],'limitations':e['limitations'],
         'source':source,'model_fingerprint':model['model_sha256']} for e in registry['equations'] if e['model_level']=='M1']

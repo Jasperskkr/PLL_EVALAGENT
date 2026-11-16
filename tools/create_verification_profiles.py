@@ -47,7 +47,10 @@ def documents():
 if __name__=='__main__':
     import sys
     sys.path.insert(0,str(ROOT))
-    target=ROOT/'configs/stage6c/frozen_01';target.mkdir(parents=True,exist_ok=False)
+    import argparse
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--out',required=True,type=Path,help='Fresh output directory for profiles; never overwrite active configuration')
+    target=parser.parse_args().out.resolve();target.mkdir(parents=True,exist_ok=False)
     manifest=[]
     for name,doc in documents().items():
         path=target/name

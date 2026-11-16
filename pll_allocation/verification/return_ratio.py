@@ -10,7 +10,7 @@ from .return_ratio_native import simulate_port
 
 
 def protocol():
-    return read(CONFIGS/'verification/return_ratio_stage4_v0_2.json')
+    return read(CONFIGS/'verification/return_ratio_protocol.json')
 
 
 def phasor_fit(t, signals, frequency, *, sidebands=True):

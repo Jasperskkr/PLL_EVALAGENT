@@ -23,7 +23,7 @@ def simulate_port(parameters, *, frequency_Hz, amplitude_rad=.01, mode='series',
     from .simulator import validate_parameters
     from .resources import CONFIGS
     from pll_allocation.block_space.contracts import check_parameters, load_model
-    domain = check_parameters(load_model(CONFIGS/'BLOCK_SPACE_MODEL_V1.json'), parameters)
+    domain = check_parameters(load_model(CONFIGS/'model/block_space.json'), parameters)
     if domain['declared_domain'] != 'IN_DECLARED_DOMAIN' or domain['model_validity'] != 'VALID':
         raise ValueError('OUT_OF_DOMAIN: candidate outside frozen Stage1.5 model')
     p = validate_parameters(parameters)

@@ -53,7 +53,7 @@ def test_only_declared_line_ending_difference_is_accepted_and_reported(tmp_path)
 
 
 def test_future_candidates_are_legal_complete_and_keep_negative_controls():
-    model=load_model(ROOT/'configs/BLOCK_SPACE_MODEL_V1.json')
+    model=load_model(ROOT/'configs/model/block_space.json')
     item=json.loads((ROOT/'tests/fixtures/m2_validation_candidates.json').read_text(encoding='utf-8'))
     cases=item['candidates'];assert len(cases)==10
     for case in cases:

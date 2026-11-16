@@ -8,7 +8,7 @@ from .resources import CONFIGS
 
 
 def protocol():
-    doc = read(CONFIGS/'verification/closed_loop_stage4_1_v0_1.json')
+    doc = read(CONFIGS/'verification/phase_step_protocol.json')
     if (doc.get('schema_version') != 'pll-closed-loop-perturbation-0.1'
             or doc.get('protocol_id') != 'stage4_1_phase_step_0.1'
             or doc.get('base_protocol_id') != 'track_b_metrics_1.1'

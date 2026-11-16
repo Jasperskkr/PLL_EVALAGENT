@@ -10,8 +10,8 @@ from pll_allocation.verification.simulator import simulate as original
 from pll_allocation.verification.stage6c_identity import check_build
 from pll_allocation.block_space.contracts import make_candidate
 from pll_allocation.pipeline_contracts import load_inputs
-from tools.freeze_stage6c import documents
-from tools.generate_stage6c_kernel import source,HERE
+from tools.create_verification_profiles import documents
+from tools.generate_nonideal_noise_kernel import source,HERE
 
 
 @pytest.fixture

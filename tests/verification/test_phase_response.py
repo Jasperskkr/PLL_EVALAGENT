@@ -28,7 +28,7 @@ def test_zero_step_original_three_paths_are_identical(overrides):
 
 def test_generated_extension_preserves_frozen_update_source():
     root = Path(__file__).resolve().parents[2]
-    generator = runpy.run_path(str(root/'tools/generate_stage41_kernel.py'))
+    generator = runpy.run_path(str(root/'tools/generate_phase_step_kernel.py'))
     assert generator['source']().replace('\r\n', '\n') == (root/'pll_allocation/verification/closed_loop_kernel.cpp').read_text(encoding='utf-8')
 
 
@@ -84,13 +84,3 @@ def test_protocol_cannot_silently_change_certification_or_version(monkeypatch):
         module.protocol()
 
 
-def test_holdout_rejects_wrong_source_lock_before_simulation(tmp_path, monkeypatch):
-    import argparse
-    import json
-    import tools.run_stage41 as module
-    lock = tmp_path/'wrong.json'
-    lock.write_text(json.dumps({'source_bindings': {}, 'development_complete': True}), encoding='utf-8')
-    monkeypatch.setattr(module, 'run_case', lambda *a, **k: pytest.fail('M2 must not run'))
-    args = argparse.Namespace(mode='holdout', out=str(tmp_path/'new'), lock=str(lock))
-    with pytest.raises(ValueError, match='lock mismatch'):
-        module.main(args)

@@ -87,7 +87,7 @@ def subdomain(template, bounds):
 
 
 def physics_context(template, gauge):
-    from tools.stress_open_domain import scale_context
+    from pll_allocation.agent.computational_window import scale_context
     context = scale_context(template, z_gauge=gauge)
     context['heuristic_gauge_guard_NOT_EXECUTED'] = context['numerical_resource_guard']
     context['numerical_resource_guard'] = {k: {x: a[x] for x in ('min', 'max')}

@@ -11,7 +11,7 @@ from pll_allocation.physics_mapping.model import fingerprint
 
 def classify_feedback(metrics, predictions, constraints, *, validity='VALID', unsupported=(), numerical_ok=True, doc=None):
     """Diagnostic categories compose; an unreliable metric is never a spec violation."""
-    doc = doc or read(CONFIGS/'verification/return_ratio_stage4_v0_2.json')
+    doc = doc or read(CONFIGS/'verification/return_ratio_protocol.json')
     if validity != 'VALID':
         return [{'category': 'OUT_OF_DOMAIN', 'reason': validity}]
     tags = []
@@ -123,7 +123,7 @@ def load_extension(path, proposal):
         expected = proposal['versions'] if key == 'proposal_versions' else proposal[key]
         if item.get(key) != expected:
             raise ValueError('Stage4 evidence binding mismatch: '+key)
-    doc = read(CONFIGS/'verification/return_ratio_stage4_v0_2.json')
+    doc = read(CONFIGS/'verification/return_ratio_protocol.json')
     if item.get('protocol_id') != doc['protocol_id'] or item.get('protocol_sha256') != fingerprint(doc):
         raise ValueError('Stage4 protocol mismatch')
     if set(item['source_hashes']) != {'kernel.cpp', 'return_ratio_kernel.cpp', 'return_ratio_native.py', 'return_ratio.py', 'return_ratio_validity.py'}:

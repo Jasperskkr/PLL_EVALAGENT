@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 @pytest.fixture
 def model():
-    return load_model(ROOT/'configs/BLOCK_SPACE_MODEL_V1.json')
+    return load_model(ROOT/'configs/model/block_space.json')
 
 
 @pytest.fixture
@@ -156,7 +156,7 @@ def test_initial_candidate_saved_before_final_assessment(model, spec, tmp_path, 
         assert (out/'first_submission.json').exists()
         return original(*args)
     monkeypatch.setattr(runner, 'assess_m1', checked)
-    plan = read(ROOT/'configs/track_a/benchmark_plan.json')
+    plan = read(ROOT/'configs/baselines/m1_allocation.json')
     result = run_first(model, spec, 'analytical', out, plan)
     assert result['status'] == 'M1_SPEC_PASS'
     assert result['cost']['M2_calls'] == 0
@@ -175,7 +175,7 @@ def test_agent_uses_tools_and_separate_mock_label(model, spec, tmp_path):
 
 def test_variants_do_not_mutate_official_or_domain(model):
     before = fingerprint(model)
-    targets = build_targets(model, read(ROOT/'configs/track_a/benchmark_plan.json'))
+    targets = build_targets(model, read(ROOT/'configs/baselines/m1_allocation.json'))
     assert targets['official'] == model['experiment']['system_spec']
     assert targets['tight_pm'] != targets['official']
     assert fingerprint(model) == before
@@ -227,7 +227,7 @@ def test_proposal_attached_evidence_binding(model, spec, tamper):
 
 
 def test_post_selection_budget_does_not_erase_formal_pass(model, spec, tmp_path):
-    plan = read(ROOT/'configs/track_a/benchmark_plan.json')
+    plan = read(ROOT/'configs/baselines/m1_allocation.json')
     plan['cheap_budget'] = 11
     result = run_first(model, spec, 'analytical', tmp_path/'budget', plan)
     assert result['status'] == 'M1_SPEC_PASS'
