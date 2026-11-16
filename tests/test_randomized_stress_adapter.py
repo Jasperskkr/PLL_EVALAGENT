@@ -12,7 +12,7 @@ from pll_allocation.exploration.contracts import resolve_problem
 ROOT=Path(__file__).resolve().parents[1]
 
 def template():
-    p=json.loads((ROOT/'configs/stage7/continuous_global_v2.json').read_text(encoding='utf-8'))
+    p=json.loads((ROOT/'configs/problems/nominal.json').read_text(encoding='utf-8'))
     return p
 
 def decision_state():

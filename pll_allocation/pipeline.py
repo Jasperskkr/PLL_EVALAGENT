@@ -1,4 +1,4 @@
-"""Unified SystemSpec -> existing Track A -> real Track B -> Agent feedback runner."""
+"""SystemSpec -> joint allocation -> behavioral verification -> bounded feedback."""
 from __future__ import annotations
 import argparse
 from copy import deepcopy
@@ -518,74 +518,86 @@ def run_multispec(out, problem_path, method, *, config_path=None, cache_path=Non
     return result
 
 
+def _option(parser, name, *aliases, **kwargs):
+    """One parser/dispatcher; retain old spellings without cluttering public help."""
+    destination = kwargs.pop('dest', name[2:].replace('-', '_'))
+    if 'choices' not in kwargs:
+        kwargs.setdefault('metavar', name[2:].replace('-', '_').upper())
+    parser.add_argument(name, dest=destination, **kwargs)
+    if aliases:
+        legacy = {k: v for k, v in kwargs.items() if k not in ('help', 'required', 'default')}
+        parser.add_argument(*aliases, dest=destination, default=argparse.SUPPRESS,
+                            help=argparse.SUPPRESS, **legacy)
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--out', required=True)
-    parser.add_argument('--experiment-a-plus', choices=['freeze','reference','run'], help='Explicit A+ experiment over the existing RegionExplorer; M1 only')
+    _option(parser, '--initial-allocation-study', '--experiment-a-plus', dest='experiment_a_plus', choices=['freeze','reference','run'], help='Optional frozen initial-allocation study; requires study inputs')
     parser.add_argument('--multi-region-study', choices=['freeze','run'], help='Explicit multi-physics subregion scheduling study; existing M1/Builder/Explorer')
     parser.add_argument('--spec-allocation-ablation', choices=['freeze','smoke','task1','task2','task3','report'], help='Sequential M1-only allocation ablations; frozen original evaluator and solver')
     parser.add_argument('--strategy', default='analytical',
                         choices=['nominal', 'analytical', 'sensitivity_optimization', 'random', 'llm_agent'])
     parser.add_argument('--config')
-    parser.add_argument('--proposal', help='Existing Track A proposal: explicit reverification, never a new LLM call')
+    parser.add_argument('--proposal', help='Existing allocation proposal for explicit reverification')
     parser.add_argument('--m2-budget', type=int)
     parser.add_argument('--repair-budget', type=int)
     parser.add_argument('--llm-config', help='Existing Messages transport configuration JSON; environment names only')
-    parser.add_argument('--measurement-extension', help='Explicit Stage4 research evidence; no M2 certification upgrade')
+    parser.add_argument('--measurement-extension', help='Explicit optional measurement evidence; no certification upgrade')
     parser.add_argument('--scenario', help='Versioned research threshold overlay; frozen assets unchanged')
     parser.add_argument('--seed', type=int, help='Declared random draw seed')
     parser.add_argument('--feedback-from', help='Prior bound attempt directory with real certified hard FAIL')
-    parser.add_argument('--multispec', help='Versioned Stage6B research joint allocation problem')
+    parser.add_argument('--multispec', help='Versioned joint allocation baseline problem')
     parser.add_argument('--method', choices=['A','B','C'])
     parser.add_argument('--evaluation-cache', help='Shared source/settings-bound complete M2 evidence cache')
     parser.add_argument('--explore-problem', help='ResearchProblemV2 continuous M1 exploration; no LLM/M2')
     parser.add_argument('--exploration-budget', type=int, help='Override total formal M1 calls, including sensitivity')
-    parser.add_argument('--region-context', help='Saved Stage7 PhysicsContext for Stage8A; no global resampling')
-    parser.add_argument('--search-decisions', help='JSON list of explicit Stage8A SearchDecisions')
+    parser.add_argument('--region-context', help='Saved PhysicsContext for bounded regional execution')
+    parser.add_argument('--search-decisions', help='JSON list of validated regional SearchDecisions')
     parser.add_argument('--region-m1-budget', type=int, help='Hard session M1 budget including differences and rechecks')
-    parser.add_argument('--llm-region-context', help='Stage8B saved Stage7 context for real LLM region planning')
-    parser.add_argument('--planner-config', help='Stage8B versioned loop budgets and stopping configuration')
+    parser.add_argument('--llm-region-context', help='Saved PhysicsContext for real LLM region planning')
+    parser.add_argument('--planner-config', help='Versioned planning budgets and stopping configuration')
     parser.add_argument('--planner-problem', help='Optional current ResearchProblemV2; compatible saved numbers are rejudged')
-    parser.add_argument('--subregion-problem', help='Explicit Stage7.5 pilot ResearchProblemV2; original Stage7 remains default')
+    parser.add_argument('--subregion-problem', help='Optional regional planning ResearchProblemV2')
     parser.add_argument('--subregion-config', help='Versioned deterministic/LLM exploration resource configuration')
-    parser.add_argument('--subregion-initial-context', help='Shared fresh small Sobol-only calibration, never a completed Stage7')
+    parser.add_argument('--subregion-initial-context', help='Shared small Sobol-only calibration')
     parser.add_argument('--subregion-calibration-only', action='store_true', help='Prepare small shared calibration without LLM')
-    parser.add_argument('--initial-allocation-problem', help='Explicit unified physical-tool initial search ResearchProblemV2')
-    parser.add_argument('--initial-allocation-config', help='Physics strategy/controller configuration; original modes remain unchanged')
-    parser.add_argument('--initial-allocation-context', help='Optional shared small Sobol calibration for integrated initial search')
-    parser.add_argument('--initial-allocation-feedback', help='Optional provenance-bound external feedback input; no M2 invocation')
-    parser.add_argument('--stage9-handoff', help='Validated Stage8 nominal input for real M2 and Agent feedback')
-    parser.add_argument('--stage9-problem', help='Original ResearchProblemV2 for Stage9 provenance validation')
-    parser.add_argument('--stage9-config', help='Explicit Stage9 M1/M2/LLM budgets and existing search configuration')
+    _option(parser, '--problem', '--initial-allocation-problem', dest='initial_allocation_problem', help='ResearchProblemV2 for physics-tool joint allocation')
+    _option(parser, '--allocator-config', '--initial-allocation-config', dest='initial_allocation_config', help='Deterministic or real LLM allocation policy and budgets')
+    _option(parser, '--initial-context', '--initial-allocation-context', dest='initial_allocation_context', help='Optional saved small Sobol calibration')
+    _option(parser, '--feedback-input', '--initial-allocation-feedback', dest='initial_allocation_feedback', help='Optional provenance-bound feedback; does not itself run M2')
+    _option(parser, '--handoff', '--stage9-handoff', dest='stage9_handoff', help='M1-rechecked candidate handoff for real M2')
+    _option(parser, '--verification-problem', '--stage9-problem', dest='stage9_problem', help='Original ResearchProblemV2 for verification provenance')
+    _option(parser, '--verification-config', '--stage9-config', dest='stage9_config', help='M1/M2/LLM budgets and optional feedback search configuration')
     args = parser.parse_args(argv)
     try:
         if args.spec_allocation_ablation:
             allowed={'out','spec_allocation_ablation','strategy'}
             if args.strategy!='analytical' or any(v is not None and v is not False for k,v in vars(args).items() if k not in allowed):
                 raise ValueError('allocation ablation cannot mix other pipeline modes')
-            from .agent.spec_allocation_ablation import dispatch
+            from .studies.ablation import dispatch
             result=dispatch(args.spec_allocation_ablation,args.out)
         elif args.multi_region_study:
             allowed={'out','multi_region_study','strategy'}
             if args.strategy!='analytical' or any(v is not None and v is not False for k,v in vars(args).items() if k not in allowed):
                 raise ValueError('multi-region study cannot mix other pipeline modes')
-            from .agent.multi_region_study import dispatch
+            from .studies.multi_region import dispatch
             result=dispatch(args.multi_region_study,args.out)
         elif args.experiment_a_plus:
             allowed={'out','experiment_a_plus','strategy'}
             if args.strategy!='analytical' or any(v is not None and v is not False for k,v in vars(args).items() if k not in allowed):
                 raise ValueError('A+ mode cannot mix other pipeline modes')
-            from .agent.experiment_a_plus import dispatch
+            from .studies.initial_allocation import dispatch
             result=dispatch(args.experiment_a_plus,args.out)
         elif any((args.stage9_handoff,args.stage9_problem,args.stage9_config)):
             if not all((args.stage9_handoff,args.stage9_problem,args.stage9_config)):
-                raise ValueError('Stage9 requires handoff, original problem and explicit config')
+                raise ValueError('verification requires handoff, original problem and explicit config')
             allowed={'out','llm_config','stage9_handoff','stage9_problem','stage9_config','strategy'}
             if any(v is not None and v is not False for k,v in vars(args).items() if k not in allowed) or args.strategy!='analytical':
-                raise ValueError('Stage9 explicit mode cannot mix other pipelines')
-            from .agent.stage9 import run_stage9_feedback
-            result=run_stage9_feedback(args.stage9_handoff,args.out,problem_config=args.stage9_problem,
-                stage9_config=read(args.stage9_config),provider_config=read(args.llm_config) if args.llm_config else None)
+                raise ValueError('verification mode cannot mix other pipeline modes')
+            from .agent.feedback import run_feedback
+            result=run_feedback(args.stage9_handoff,args.out,problem_config=args.stage9_problem,
+                feedback_config=read(args.stage9_config),provider_config=read(args.llm_config) if args.llm_config else None)
         elif any((args.initial_allocation_problem,args.initial_allocation_config,args.initial_allocation_context,args.initial_allocation_feedback)):
             if not args.initial_allocation_problem or not args.initial_allocation_config:
                 raise ValueError('integrated initial search requires problem and config')

@@ -1,69 +1,93 @@
-# PLL 行为级联合规格分配与 Agent 策略研究
+# PLLAgent：行为级联合规格分配
 
-统一开发和运行目录：`F:/LJP/概伦AI/PLL_allocation`。唯一正式入口为 `python -m pll_allocation pipeline`。
+给定系统规格、固定 PLL 拓扑和六个模块参数的范围，由确定性策略或真实 LLM Agent 调用物理反解与搜索工具生成联合候选，再用独立 M1 / M2 验证。验证失败时，Agent 可以在预算内读取反馈、重新分配并复验。
 
-2026-11-16 核心源码同步：已纳入物理区域构造与反解、确定性/真实 LLM 工具决策、连续域执行器、M1 复核、Stage9 Handoff、原生 M2 和预算内反馈重分配。完整模块对应关系、环境变量配置及可直接执行的命令见 [核心流程说明](docs/CORE_PIPELINE.md)。本次不发布 GUI 或新实验数据；历史阶段报告保留其当时的结论。
-
-当前研究重点是：**在固定模型、Block Space 和可测规格下，比较 Agent 的首次完整联合分配，以及有限预算内验证反馈对修复的价值。** 现有 M1/M2 作为冻结研究基础使用；进一步完善模型或规格不是策略研究前置条件。研究边界和下一步接口任务见 [分配策略研究方案](docs/research/ALLOCATION_STRATEGY_SCOPE.md)。
-
-## 当前可运行过程
+这是适合代码审查和策略研究的行为级原型。目前尚未证明 LLM 比确定性方法更快、更可靠；不提供晶体管可实现性保证。
 
 ```text
-冻结 SystemSpec / 拓扑 / Block Space
-  → 完整 BlockSpec 首次分配并落盘
-  → M1 物理预测与域检查
-  → 理想行为 M2
-  → 部分指标判决与结构化反馈
-  → 可选确定性修复 / 显式 Stage9 真实 LLM 工具反馈
-  → 全量复验 / trace / 成本
+SystemSpec + 六轴范围
+ → Policy 决策 → 物理反解 / 搜索 → 正式 M1
+ → 独立复核 → Verification Handoff → 真实 M2
+ → 测量判决 → 可选反馈重分配 → 参数、证据与成本
 ```
 
-模型为10 MHz参考、N=8、80 MHz输出的固定Integer-N CPPLL；六个自由变量为Icp/Rz/C1/C2/f0/Kvco。M1预测BW、连续PM、调谐点；M2独立测量BW并给指定初态下捕获/频率/控制诊断。原完整SystemSpec的周期PM及微Hz频率精度仍UNKNOWN，不签发完整Verified JointBlockSpec。
+## 当前支持什么
 
-Stage6B在同一pipeline提供统一研究硬约束、A/B/C和确定性反馈搜索。Stage6C提供显式可选的固定噪声/非理想环境、独立多seed统计及复验。研究联合可行只针对已声明的支持指标，不升级完整认证。
+- 固定 Integer-N CPPLL：10 MHz 参考、N=8、80 MHz 输出、0–1.2 V 控制轨。
+- 六变量：`Icp / Rz / C1 / C2 / f0 / Kvco`，输入合同使用 SI 单位。
+- M1：连续模型 BW、名义 PM、调谐点。M2：独立 BW、指定初态下条件捕获时间。
+- LLM 选择策略、工具、区域和预算；工具算参数，Runner 控制执行，验证器决定状态。
+- 不支持、未测和不收敛保持 UNKNOWN；M1 PM 不等于 M2 周期 PM，不签发完整 SystemSpec 认证。
 
-Stage7新增显式的[可配置连续域M1探索](docs/stage7_exploration/INTERFACE_AND_REPRODUCE.md)：用户设置SystemSpec和六轴范围，复用原M1做物理初筛、Sobol/物理种子探索、区域建议和六轴敏感度，导出PhysicsContext供下一阶段使用。连续研究域独立于Stage6B冻结域；本阶段不调用LLM/M2、不认证整个区域。实际验收见[Stage7报告](docs/stage7_exploration/PHYSICS_EXPLORATION_REPORT.md)。
+## 快速开始
 
-## 运行
-
-Windows x64、Python 3.12、NumPy/SciPy，原生后端需MSVC2022 C++17。已有构建加载前检查源与DLL身份；从源码新导出需按[复现说明](docs/stage6c/REPRODUCE.md)独立重建，禁止覆盖已有构建目录或手改identity。
+从仓库根目录运行。已验证环境为 Windows x64、Python 3.12、MSVC 2022 Community C++17，不依赖原作者的磁盘路径。
 
 ```powershell
-# 默认1次完整M2、0次反馈修复；输出目录必须全新
-python -m pll_allocation pipeline --strategy analytical --out experiments/my_analytical_01
-
-# 完整随机首发 → 可靠BW违例 → 确定性修复 → 完整复验
-python -m pll_allocation pipeline --strategy random --seed 23 --m2-budget 2 --repair-budget 1 --out experiments/my_repair_01
-
-# 原Stage6B研究问题和方法：A解析，B敏感度/SLSQP，C加确定性反馈
-python -m pll_allocation pipeline --multispec configs/stage6b/B1.json --method C --out experiments/my_joint_01
-
-# Stage7：用户配置的六轴连续M1探索，输出目录必须全新
-python -m pll_allocation pipeline --explore-problem configs/stage7/continuous_global_v2.json --out experiments/my_stage7_01
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+python -m pip install -e ".[integration,test]"
+python -m pll_allocation pipeline --help
 ```
 
-可选Stage6C通过`--multispec configs/stage6c/joint_frozen_01/J0_ideal.json --method A`等启用。F盘新建的默认可选后端为`pll_allocation/verification/build_stage6c`；使用另一个新构建时显式设置`PLL_STAGE6C_BUILD_DIR`，不使用C盘旧DLL。Stage6C观察时长/频带/seed固定，不可用短捕获RMS代替噪声jitter。
+**确定性分配和 M1：**
 
-真实LLM工具辅助首次候选仍可通过`--strategy llm_agent`使用。新的`--initial-allocation-problem`模式在同一pipeline内复用物理反解和连续域工具；`--stage9-handoff`模式将真实M2反馈送回已有LLM物理策略，并在预算内复核、重新验证候选。需要显式可用的外部服务配置；API失败不得冒充成功决策。多指标A/B/C中的旧Policy边界保持，旧模式的确定性修复不会自动变成LLM修复。源代码支持闭环不代表每次运行都完成了真实LLM反馈修复，必须核对对应运行记录。
+```powershell
+python -m pll_allocation pipeline --problem configs/problems/nominal.json --allocator-config configs/agent/deterministic.json --out experiments/my_allocation_01
+```
 
-## 目录与维护边界
+**真实 LLM 分配：**先在本机设置 `ANTHROPIC_BASE_URL`、`ANTHROPIC_AUTH_TOKEN`、`ANTHROPIC_MODEL`。名称沿用现有环境合同，实际服务须支持 Messages-compatible HTTPS 请求。
 
-| 目录/文件 | 用途 |
+```powershell
+python -m pll_allocation pipeline --problem configs/problems/nominal.json --allocator-config configs/agent/llm_physics.json --llm-config configs/providers/messages.json --out experiments/my_agent_01
+```
+
+**真实 M2：**默认脚本使用 VS 2022 Community 标准安装位置，拒绝覆盖已有构建目录。
+
+```powershell
+cmd /c pll_allocation\verification\build_kernel.cmd
+python -m pll_allocation pipeline --handoff experiments/my_allocation_01/verification_handoff.json --verification-problem configs/problems/nominal.json --verification-config configs/verification/verify_only.json --out experiments/my_verification_01
+```
+
+需要真实 Agent 反馈时，将验证配置换为 `configs/verification/feedback.json`，并传入 `--llm-config configs/providers/messages.json`。必须先有 `gate_status=READY` 的 Handoff。输出目录及分配的同名 `_calibration` 目录都必须全新。
+
+默认例题保留原合同中的待验证和未支持指标，用于显式展示能力边界。修改问题 JSON 可设置规格、启用项及六轴范围；当前反解路径需要启用正 BW 目标。
+
+## 按职责阅读
+
+|位置|职责|
 |---|---|
-| `pll_allocation/physics_mapping/` | 唯一正式M1，噪声为独立可选模块 |
-| `pll_allocation/allocation/` | 解析/敏感度/SLSQP、Agent工具、确定性修复与联合约束 |
-| `pll_allocation/exploration/` | Stage7版本化连续研究域、原M1探索、区域/敏感度/PhysicsContext |
-| `pll_allocation/agent/` | 物理策略、真实LLM决策、候选账本、Handoff及Stage9反馈控制 |
-| `pll_allocation/region_explorer/` | 有界区域工具、原Sobol/SLSQP执行、M1预算与独立复核 |
-| `pll_allocation/verification/` | 唯一正式M2、测量/判决/构建身份及可选扩展 |
-| `pll_allocation/pipeline.py` | Runner独立控制检查、预算、真实TB、复验及trace |
-| `configs/` | 原冻结输入与版本化研究问题，Stage6B发布副本在`configs/stage6b/` |
-| `tests/` | 维护的单元、数值、接口与回归测试 |
-| `docs/research/` | 当前Agent策略研究方案 |
-| `docs/stage5/`、`stage6a/`、`stage6b/`、`stage6c/` | 各阶段原任务、实现、证据范围和限制 |
-| `experiments/<new>/` | 不覆盖的新运行及本地原始结果；与源码提交分开 |
-| `docs/mainline_integration_20261110_01/` | 此次F盘归并计划、最终验收和证据索引 |
+|`configs/problems/`|SystemSpec、固定拓扑、六轴范围|
+|`configs/agent/`、`configs/providers/`|策略预算及 API 配置，无凭据值|
+|`pll_allocation/pipeline.py`|唯一正式 CLI 和调度入口|
+|`pll_allocation/agent/`|观察、Policy、决策校验、候选账本、Handoff、反馈|
+|`pll_allocation/allocation/`|原物理反解、确定性分配与基线|
+|`pll_allocation/exploration/`|问题合同、必要条件、物理区域、敏感度|
+|`pll_allocation/region_explorer/`|Sobol/SLSQP 工具、边界、缓存、M1 预算|
+|`pll_allocation/physics_mapping/`|正式 M1 评价和物理映射|
+|`pll_allocation/verification/`|原生行为 TB、测量、M2 判决、连续候选适配|
+|`pll_allocation/studies/`|可选冻结对照编排，不参与默认分配链|
+|`tests/`|数值、合同、预算、反馈、兼容回归|
 
-历史结果位置及本次清理后的可用性见[证据索引](docs/mainline_integration_20261110_01/EVIDENCE_INDEX.md)；用户已授权清理C盘旧数据。后续只在上述F盘目录开发，实验、构建和临时导出均写F盘，不创建C盘工作区。清理实录见[存储清理报告](docs/storage_cleanup_20261110_01/REPORT.md)。不递归搬走旧目录；`handoff_exports/`、`outputs/`、旧`track_b/`和`run/suite`只作历史/兼容，不作为当前策略研究入口。旧README及架构说明原字节保存在[prior_guides](docs/mainline_integration_20261110_01/prior_guides/README.md)。
+建议阅读顺序：`agent/initial_allocation.py` → `physics_tool_policy.py` → `search_loop.py` → `exploration/physics_region_builder.py` → `allocation/physics.py` → `agent/feedback.py`。
 
-原始任务保留在[PROJECT_CHARTER.md](PROJECT_CHARTER.md)，授权与范围更新见[docs/DECISIONS.md](docs/DECISIONS.md)，当前状态见[docs/PROJECT_STATUS.md](docs/PROJECT_STATUS.md)。本次验收以[FINAL_REPORT.md](docs/mainline_integration_20261110_01/FINAL_REPORT.md)为准；旧报告中的“待合并/停止”是当时阶段状态。
+## 结果和测试
+
+- 初始分配：`m1_allocation.json`、`candidate_archive.jsonl`、`verification_handoff.json`。
+- 决策/工具：`SEARCH_DECISION_TRACE.jsonl`、`REGION_CONSTRUCTION_RESULTS.json`、真实 Observation。
+- 联合验证：`verification_result.json`、`m2_verifications.jsonl`、`feedback_summaries.jsonl`、`reallocation_candidates.jsonl`、`cost_summary.json`。
+- 真实 LLM：查看调用 metadata 的 `real_network_call`、响应状态及 `cost.LLM_calls`；事件名字本身不是调用证据。
+
+执行 `python -m pytest -q`。原生扩展构建、档案依赖和错误定位见[运行说明](docs/RUNNING.md)。TEST/mocked Policy 仅用于回归，不能计作研究成果。
+
+2026-11-16 共享版验收：精简源码快照中重建四个原生后端，754 项测试通过、10 项历史档案测试跳过。真实确定性分配得到 M1 可行候选；M2 BW≈229.00kHz，但条件捕获54µs超过40µs，因此如实报告 FAIL。本轮没有新增真实 LLM 研究调用，详见[整理说明](docs/RELEASE_NOTES.md)。
+
+共享源码不含 GUI、实验输出、波形、DLL、原始 API 日志或凭据。保留少量必要测试夹具和来源哈希合同。Git 历史未重写；可用 `git clone --depth 1` 或下载最新版源码避免获取完整历史。
+
+- [架构与调用链](docs/ARCHITECTURE.md)
+- [运行、配置、测试](docs/RUNNING.md)
+- [审查重点和研究边界](docs/REVIEW_GUIDE.md)
+- [名称迁移和兼容合同](docs/COMPATIBILITY.md)
+- [本次整理说明](docs/RELEASE_NOTES.md)
+
+原始研究任务见 [PROJECT_CHARTER.md](PROJECT_CHARTER.md)。当前能力以 README 和上述说明为准，原始目标不等于已经完成的认证。

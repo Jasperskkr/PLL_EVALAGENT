@@ -22,7 +22,7 @@ import time
 from pll_allocation.exploration.contracts import load_problem, resolve_problem, require
 from pll_allocation.exploration.engine import model_identity
 from pll_allocation.physics_mapping.model import fingerprint, PARAMETERS
-from pll_allocation.verification.research import model_identity as m2_identity
+from pll_allocation.verification.continuous import model_identity as m2_identity
 from tools.stress_open_domain import scale_context, choose_window, WindowDecisionError
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -88,7 +88,7 @@ def generate(out,seed=2026111209):
         'impedance_gauge_Ohm':1000.,'anchor_guard_decades':3,'is_physical_global_bound':False,
         'no_hidden_default_window':True,'no_open_domain_infeasibility_proof':True}
     domains['USER_UNBOUNDED']=open_config
-    base=read(ROOT/'configs/stage7/continuous_global_v2.json')
+    base=read(ROOT/'configs/problems/nominal.json')
     base['exploration'].update(seed=seed%(2**32),sobol_samples=128,physics_seed_count=0,max_m1_evaluations=128,
         max_analytic_calls=64,region_count=3,sensitivity_representatives=0)
     # Placeholder axes only permit use of existing contract utilities before
@@ -96,7 +96,7 @@ def generate(out,seed=2026111209):
     scaffold_template=deepcopy(base)
     scaffold_template['parameters']={k:{'min':1.,'max':2.,'default':1.5,'unit':PARAMETERS[k][0],
         'scale':'linear' if k=='f0' else 'log'} for k in AXES}
-    cfg=read(ROOT/'configs/initial_allocation/physics_tool.json')
+    cfg=read(ROOT/'configs/agent/llm_physics.json')
     cfg['seed']=seed%(2**32)
     feedback=deepcopy(cfg)
     feedback.update(total_m1_budget=128,max_decisions=4,max_llm_calls=6)

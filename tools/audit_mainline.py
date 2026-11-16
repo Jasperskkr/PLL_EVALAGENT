@@ -34,7 +34,7 @@ def audit(root=ROOT):
                 value = node.value.replace('\\', '/')
                 if any(value.startswith(p) for p in ('outputs/', 'track_b/', '../track_b/', '../outputs/')):
                     violations.append({'file': path.relative_to(root).as_posix(), 'historical_path': value})
-    manifest = json.loads((root/'docs/stage3a1/migration_manifest.json').read_text(encoding='utf-8'))
+    manifest = json.loads((root/'configs/provenance/allocation_sources.json').read_text(encoding='utf-8'))
     preserved = []
     for row in manifest:
         if row['destination'].startswith('pll_allocation/allocation/'):

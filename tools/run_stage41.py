@@ -18,8 +18,8 @@ from pll_allocation.verification.return_ratio import sweep, protocol as rr_proto
 from pll_allocation.verification.closed_loop_native import simulate_step
 from pll_allocation.verification.closed_loop import protocol, analyze, raw_validity, compare_refinements
 
-CANDIDATES = ROOT/'docs/stage4_2/M2_VALIDATION_CANDIDATES.json'
-REGISTRY = ROOT/'docs/stage4_2/PHYSICS_MAPPING_REGISTRY.json'
+CANDIDATES = ROOT/'tests/fixtures/m2_validation_candidates.json'
+REGISTRY = ROOT/'configs/provenance/physics_registry.json'
 
 
 def checkout_identity():
@@ -38,9 +38,7 @@ def bindings():
     paths += list((ROOT/'pll_allocation/verification').glob('*.py'))
     paths += list((ROOT/'pll_allocation/verification').glob('*.cpp'))
     paths += [ROOT/'pll_allocation/physics_mapping/model.py', ROOT/'tools/run_stage41.py',
-              ROOT/'tools/summarize_stage41.py', ROOT/'tools/refine_stage41_frequency.py',
-              ROOT/'docs/stage4_1/ENGINEERING_VALIDATION_PLAN.md',
-              ROOT/'docs/stage4_1/CLOSED_LOOP_PERTURBATION_PROTOCOL.md']
+              ROOT/'docs/ARCHITECTURE.md', ROOT/'docs/REVIEW_GUIDE.md']
     return {p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
             for p in sorted(paths)}
 

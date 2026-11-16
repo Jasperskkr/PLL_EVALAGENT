@@ -1,4 +1,4 @@
-"""Bounded real-LLM outer loop; Stage8A retains all numerical execution."""
+"""Bounded policy loop; the regional executor owns all numerical execution."""
 from copy import deepcopy
 import hashlib
 import json
@@ -308,6 +308,7 @@ class AgentSearchLoop:
         from .handoff import build_handoff
         handoff = build_handoff(self.explorer, self.archive, recommended, recheck, states, cost)
         write_new(self.root/'stage9_handoff.json',handoff)
+        write_new(self.root/'verification_handoff.json',handoff)
         self.emit('RUN_COMPLETED', result=result)
         write_new(self.root/'result.json', result)
         write_new(self.root/'output_manifest.json', {p.relative_to(self.root).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
