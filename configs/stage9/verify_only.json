@@ -1,0 +1,23 @@
+{
+  "schema_version": "pll-stage9-feedback-1.0",
+  "m1_budget": 1,
+  "m2_budget": 1,
+  "llm_budget": 0,
+  "max_reallocations": 0,
+  "m2_timeout_s": 180,
+  "search": {
+    "schema_version": "pll-initial-allocation-1.0",
+    "policy": "LLM_PHYSICS_TOOL",
+    "total_m1_budget": 128,
+    "initial_m1_budget": 24,
+    "initial_sobol_samples": 128,
+    "max_decisions": 4,
+    "max_llm_calls": 6,
+    "validation_retries": 1,
+    "max_round_m1": 64,
+    "construction_attempt_budget": 64,
+    "max_build_attempts": 16,
+    "seed": 23,
+    "slsqp": {"maxiter": 40, "finite_difference_step": 0.00001}
+  }
+}

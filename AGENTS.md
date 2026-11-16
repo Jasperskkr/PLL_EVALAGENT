@@ -7,7 +7,7 @@
 - 唯一正式运行入口：`python -m pll_allocation pipeline`；默认理想链保持，Stage6B/6C经显式选项启用。
 - 固定现有SystemSpec、Block Space、M1/M2及测量协议进行策略研究；模型完善不是后续策略实验前置条件。
 - 核心研究使用M2 BW/指定条件捕获、M1名义PM/调谐，按来源分别判决；完整认证UNKNOWN不妨碍如实研究受支持指标。
-- 新Agent接入沿用现有Policy/Runner边界，不创建第二套正式Pipeline。真实LLM反馈修复尚未实现，不得把确定性修复或mock当成真实LLM成果。
+- 新Agent接入沿用现有Policy/Runner边界，不创建第二套正式Pipeline。显式Stage9已接入真实M2反馈与现有LLM工具策略，接口和限制见`docs/CORE_PIPELINE.md`；具体运行是否完成真实LLM反馈修复必须核对调用、候选和复验记录，不得把确定性修复或mock当成真实LLM成果。
 - 源码、轻量测试证据纳入Git；新运行写`experiments/<new>`，大型历史结果位置见`docs/mainline_integration_20261110_01/EVIDENCE_INDEX.md`，不迁移或覆盖旧记录。
 
 - 研究问题：给定冻结 SystemSpec、固定拓扑及 Block Space，比较物理先验 LLM 的首次联合分配与有限反馈修复能力。

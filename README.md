@@ -2,6 +2,8 @@
 
 统一开发和运行目录：`F:/LJP/概伦AI/PLL_allocation`。唯一正式入口为 `python -m pll_allocation pipeline`。
 
+2026-11-16 核心源码同步：已纳入物理区域构造与反解、确定性/真实 LLM 工具决策、连续域执行器、M1 复核、Stage9 Handoff、原生 M2 和预算内反馈重分配。完整模块对应关系、环境变量配置及可直接执行的命令见 [核心流程说明](docs/CORE_PIPELINE.md)。本次不发布 GUI 或新实验数据；历史阶段报告保留其当时的结论。
+
 当前研究重点是：**在固定模型、Block Space 和可测规格下，比较 Agent 的首次完整联合分配，以及有限预算内验证反馈对修复的价值。** 现有 M1/M2 作为冻结研究基础使用；进一步完善模型或规格不是策略研究前置条件。研究边界和下一步接口任务见 [分配策略研究方案](docs/research/ALLOCATION_STRATEGY_SCOPE.md)。
 
 ## 当前可运行过程
@@ -12,7 +14,7 @@
   → M1 物理预测与域检查
   → 理想行为 M2
   → 部分指标判决与结构化反馈
-  → 可选确定性修复
+  → 可选确定性修复 / 显式 Stage9 真实 LLM 工具反馈
   → 全量复验 / trace / 成本
 ```
 
@@ -42,7 +44,7 @@ python -m pll_allocation pipeline --explore-problem configs/stage7/continuous_gl
 
 可选Stage6C通过`--multispec configs/stage6c/joint_frozen_01/J0_ideal.json --method A`等启用。F盘新建的默认可选后端为`pll_allocation/verification/build_stage6c`；使用另一个新构建时显式设置`PLL_STAGE6C_BUILD_DIR`，不使用C盘旧DLL。Stage6C观察时长/频带/seed固定，不可用短捕获RMS代替噪声jitter。
 
-真实LLM工具辅助首次候选已接入`--strategy llm_agent`，需要显式可用的外部服务配置。**真实LLM反馈修复以及多指标A/B/C中的LLM Policy接入尚未完成**；当前正式反馈修复由确定性算法执行。本次归并不调用真实LLM。
+真实LLM工具辅助首次候选仍可通过`--strategy llm_agent`使用。新的`--initial-allocation-problem`模式在同一pipeline内复用物理反解和连续域工具；`--stage9-handoff`模式将真实M2反馈送回已有LLM物理策略，并在预算内复核、重新验证候选。需要显式可用的外部服务配置；API失败不得冒充成功决策。多指标A/B/C中的旧Policy边界保持，旧模式的确定性修复不会自动变成LLM修复。源代码支持闭环不代表每次运行都完成了真实LLM反馈修复，必须核对对应运行记录。
 
 ## 目录与维护边界
 
@@ -51,6 +53,8 @@ python -m pll_allocation pipeline --explore-problem configs/stage7/continuous_gl
 | `pll_allocation/physics_mapping/` | 唯一正式M1，噪声为独立可选模块 |
 | `pll_allocation/allocation/` | 解析/敏感度/SLSQP、Agent工具、确定性修复与联合约束 |
 | `pll_allocation/exploration/` | Stage7版本化连续研究域、原M1探索、区域/敏感度/PhysicsContext |
+| `pll_allocation/agent/` | 物理策略、真实LLM决策、候选账本、Handoff及Stage9反馈控制 |
+| `pll_allocation/region_explorer/` | 有界区域工具、原Sobol/SLSQP执行、M1预算与独立复核 |
 | `pll_allocation/verification/` | 唯一正式M2、测量/判决/构建身份及可选扩展 |
 | `pll_allocation/pipeline.py` | Runner独立控制检查、预算、真实TB、复验及trace |
 | `configs/` | 原冻结输入与版本化研究问题，Stage6B发布副本在`configs/stage6b/` |

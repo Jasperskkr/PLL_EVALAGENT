@@ -521,6 +521,9 @@ def run_multispec(out, problem_path, method, *, config_path=None, cache_path=Non
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--out', required=True)
+    parser.add_argument('--experiment-a-plus', choices=['freeze','reference','run'], help='Explicit A+ experiment over the existing RegionExplorer; M1 only')
+    parser.add_argument('--multi-region-study', choices=['freeze','run'], help='Explicit multi-physics subregion scheduling study; existing M1/Builder/Explorer')
+    parser.add_argument('--spec-allocation-ablation', choices=['freeze','smoke','task1','task2','task3','report'], help='Sequential M1-only allocation ablations; frozen original evaluator and solver')
     parser.add_argument('--strategy', default='analytical',
                         choices=['nominal', 'analytical', 'sensitivity_optimization', 'random', 'llm_agent'])
     parser.add_argument('--config')
@@ -537,9 +540,110 @@ def main(argv=None):
     parser.add_argument('--evaluation-cache', help='Shared source/settings-bound complete M2 evidence cache')
     parser.add_argument('--explore-problem', help='ResearchProblemV2 continuous M1 exploration; no LLM/M2')
     parser.add_argument('--exploration-budget', type=int, help='Override total formal M1 calls, including sensitivity')
+    parser.add_argument('--region-context', help='Saved Stage7 PhysicsContext for Stage8A; no global resampling')
+    parser.add_argument('--search-decisions', help='JSON list of explicit Stage8A SearchDecisions')
+    parser.add_argument('--region-m1-budget', type=int, help='Hard session M1 budget including differences and rechecks')
+    parser.add_argument('--llm-region-context', help='Stage8B saved Stage7 context for real LLM region planning')
+    parser.add_argument('--planner-config', help='Stage8B versioned loop budgets and stopping configuration')
+    parser.add_argument('--planner-problem', help='Optional current ResearchProblemV2; compatible saved numbers are rejudged')
+    parser.add_argument('--subregion-problem', help='Explicit Stage7.5 pilot ResearchProblemV2; original Stage7 remains default')
+    parser.add_argument('--subregion-config', help='Versioned deterministic/LLM exploration resource configuration')
+    parser.add_argument('--subregion-initial-context', help='Shared fresh small Sobol-only calibration, never a completed Stage7')
+    parser.add_argument('--subregion-calibration-only', action='store_true', help='Prepare small shared calibration without LLM')
+    parser.add_argument('--initial-allocation-problem', help='Explicit unified physical-tool initial search ResearchProblemV2')
+    parser.add_argument('--initial-allocation-config', help='Physics strategy/controller configuration; original modes remain unchanged')
+    parser.add_argument('--initial-allocation-context', help='Optional shared small Sobol calibration for integrated initial search')
+    parser.add_argument('--initial-allocation-feedback', help='Optional provenance-bound external feedback input; no M2 invocation')
+    parser.add_argument('--stage9-handoff', help='Validated Stage8 nominal input for real M2 and Agent feedback')
+    parser.add_argument('--stage9-problem', help='Original ResearchProblemV2 for Stage9 provenance validation')
+    parser.add_argument('--stage9-config', help='Explicit Stage9 M1/M2/LLM budgets and existing search configuration')
     args = parser.parse_args(argv)
     try:
-        if args.explore_problem:
+        if args.spec_allocation_ablation:
+            allowed={'out','spec_allocation_ablation','strategy'}
+            if args.strategy!='analytical' or any(v is not None and v is not False for k,v in vars(args).items() if k not in allowed):
+                raise ValueError('allocation ablation cannot mix other pipeline modes')
+            from .agent.spec_allocation_ablation import dispatch
+            result=dispatch(args.spec_allocation_ablation,args.out)
+        elif args.multi_region_study:
+            allowed={'out','multi_region_study','strategy'}
+            if args.strategy!='analytical' or any(v is not None and v is not False for k,v in vars(args).items() if k not in allowed):
+                raise ValueError('multi-region study cannot mix other pipeline modes')
+            from .agent.multi_region_study import dispatch
+            result=dispatch(args.multi_region_study,args.out)
+        elif args.experiment_a_plus:
+            allowed={'out','experiment_a_plus','strategy'}
+            if args.strategy!='analytical' or any(v is not None and v is not False for k,v in vars(args).items() if k not in allowed):
+                raise ValueError('A+ mode cannot mix other pipeline modes')
+            from .agent.experiment_a_plus import dispatch
+            result=dispatch(args.experiment_a_plus,args.out)
+        elif any((args.stage9_handoff,args.stage9_problem,args.stage9_config)):
+            if not all((args.stage9_handoff,args.stage9_problem,args.stage9_config)):
+                raise ValueError('Stage9 requires handoff, original problem and explicit config')
+            allowed={'out','llm_config','stage9_handoff','stage9_problem','stage9_config','strategy'}
+            if any(v is not None and v is not False for k,v in vars(args).items() if k not in allowed) or args.strategy!='analytical':
+                raise ValueError('Stage9 explicit mode cannot mix other pipelines')
+            from .agent.stage9 import run_stage9_feedback
+            result=run_stage9_feedback(args.stage9_handoff,args.out,problem_config=args.stage9_problem,
+                stage9_config=read(args.stage9_config),provider_config=read(args.llm_config) if args.llm_config else None)
+        elif any((args.initial_allocation_problem,args.initial_allocation_config,args.initial_allocation_context,args.initial_allocation_feedback)):
+            if not args.initial_allocation_problem or not args.initial_allocation_config:
+                raise ValueError('integrated initial search requires problem and config')
+            if any(x is not None for x in (args.config,args.proposal,args.m2_budget,args.repair_budget,
+                args.measurement_extension,args.scenario,args.feedback_from,args.multispec,args.method,args.evaluation_cache,
+                args.explore_problem,args.exploration_budget,args.seed,args.region_context,args.search_decisions,args.region_m1_budget,
+                args.llm_region_context,args.planner_config,args.planner_problem,args.subregion_problem,args.subregion_config,
+                args.subregion_initial_context)) or args.subregion_calibration_only or args.strategy != 'analytical':
+                raise ValueError('explicit initial allocation mode cannot mix other pipelines')
+            from .agent.initial_allocation import run_initial_allocation
+            result=run_initial_allocation(args.initial_allocation_problem,args.out,config=read(args.initial_allocation_config),
+                provider_config=read(args.llm_config) if args.llm_config else None,
+                initial_context=args.initial_allocation_context,
+                feedback=read(args.initial_allocation_feedback) if args.initial_allocation_feedback else None)
+        elif args.subregion_problem or args.subregion_config or args.subregion_initial_context or args.subregion_calibration_only:
+            if not args.subregion_problem or not args.subregion_config:
+                raise ValueError('Stage7.5 requires --subregion-problem and --subregion-config')
+            if any(x is not None for x in (args.config,args.proposal,args.m2_budget,args.repair_budget,
+                    args.measurement_extension,args.scenario,args.feedback_from,args.multispec,args.method,
+                    args.evaluation_cache,args.explore_problem,args.exploration_budget,args.seed,args.region_context,
+                    args.search_decisions,args.region_m1_budget,args.llm_region_context,args.planner_config,
+                    args.planner_problem)) or args.strategy != 'analytical':
+                raise ValueError('Stage7.5 explicit configuration cannot mix other modes')
+            from .agent.subregion_loop import run_subregion,prepare_initial
+            if args.subregion_calibration_only:
+                if args.subregion_initial_context or args.llm_config:
+                    raise ValueError('calibration creates fresh Sobol evidence and cannot load provider/history')
+                path=prepare_initial(args.subregion_problem,args.out,read(args.subregion_config))
+                context=json.loads(path.read_text(encoding='utf-8'))
+                result={'status':'SMALL_CALIBRATION_COMPLETED','strategy':'SMALL_INITIAL_SOBOL_ONLY',
+                        'cost':context['cost'],'failure':None}
+            else:
+                result=run_subregion(args.subregion_problem,args.out,config=read(args.subregion_config),
+                    provider_config=read(args.llm_config) if args.llm_config else None,
+                    initial_context_path=args.subregion_initial_context)
+        elif args.llm_region_context or args.planner_config or args.planner_problem:
+            if not args.llm_region_context or not args.planner_config:
+                raise ValueError('Stage8B requires --llm-region-context and --planner-config')
+            if any(x is not None for x in (args.config, args.proposal, args.m2_budget, args.repair_budget,
+                    args.measurement_extension, args.scenario, args.feedback_from, args.multispec,
+                    args.method, args.evaluation_cache, args.explore_problem, args.exploration_budget,
+                    args.seed, args.region_context, args.search_decisions, args.region_m1_budget)) or args.strategy != 'analytical':
+                raise ValueError('Stage8B planner owns configuration and calls Stage8A; cannot mix other modes')
+            from .agent.search_loop import run_agent_search
+            result = run_agent_search(args.llm_region_context, args.out, config=read(args.planner_config),
+                provider_config=read(args.llm_config or 'configs/llm_env.json'), problem_path=args.planner_problem)
+        elif args.region_context or args.search_decisions or args.region_m1_budget is not None:
+            if not args.region_context or not args.search_decisions or args.region_m1_budget is None:
+                raise ValueError('Stage8A requires --region-context, --search-decisions and --region-m1-budget')
+            if any(x is not None for x in (args.config, args.proposal, args.m2_budget, args.repair_budget,
+                    args.llm_config, args.measurement_extension, args.scenario, args.feedback_from,
+                    args.multispec, args.method, args.evaluation_cache, args.explore_problem,
+                    args.exploration_budget, args.seed)) or args.strategy != 'analytical':
+                raise ValueError('Stage8A decisions own bounds/seeds/budgets; cannot mix other modes')
+            from .region_explorer import run_region_exploration
+            result = run_region_exploration(args.region_context, args.search_decisions, args.out,
+                                           m1_budget=args.region_m1_budget)
+        elif args.explore_problem:
             if any(x is not None for x in (args.config, args.proposal, args.m2_budget, args.repair_budget,
                     args.llm_config, args.measurement_extension, args.scenario, args.feedback_from,
                     args.multispec, args.method, args.evaluation_cache)) or args.strategy != 'analytical':
@@ -561,7 +665,9 @@ def main(argv=None):
                               measurement_extension=args.measurement_extension, scenario_path=args.scenario,
                               seed=args.seed, feedback_from=args.feedback_from)
         print(json.dumps({k: result[k] for k in ('status', 'strategy', 'cost', 'failure')}, ensure_ascii=False))
-        return 2 if result['status'] in ('PIPELINE_ERROR', 'NO_CANDIDATE', 'POLICY_OR_TOOL_FAILED') else 0
+        return 2 if result['status'] in ('PIPELINE_ERROR', 'NO_CANDIDATE', 'POLICY_OR_TOOL_FAILED',
+                                        'INVALID_LLM_DECISION', 'LLM_PROVIDER_FAILED', 'CONTROLLER_ERROR',
+                                        'COST_LEDGER_MISMATCH') else 0
     except (ValueError, KeyError, FileExistsError) as error:
         print(json.dumps({'status': 'INPUT_OR_OUTPUT_ERROR', 'reason': str(error)}, ensure_ascii=False))
         return 2
