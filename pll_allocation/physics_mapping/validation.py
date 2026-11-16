@@ -1,4 +1,4 @@
-"""Reproducible Stage 1 numerical comparisons, never a transient TB or MATLAB run."""
+"""Reproducible M1 model numerical comparisons, never a transient TB or MATLAB run."""
 from __future__ import annotations
 from copy import deepcopy
 from dataclasses import asdict
@@ -81,7 +81,7 @@ def write_new(path, value):
         stream.write('\n')
 
 
-def run_stage1(config, out):
+def run_validation(config, out):
     exp = load_experiment(config)
     initial = parameters_from_experiment(exp)
     # All default and perturbation candidates are written before any model evaluation.
@@ -161,7 +161,7 @@ def run_stage1(config, out):
                  'MATLAB_runtime_calls': 0, 'M2_behavioral_TB_calls': 0, 'LLM_calls': 0},
         'numerical_acceptance': 'PASS' if all(all_checks) else 'FAIL', 'verified_joint_block_spec': False}
     write_new(out/'run_manifest.json', manifest)
-    lines = ['# Physics Mapping Stage 1 数值验收', '',
+    lines = ['# Physics Mapping M1 model 数值验收', '',
              f"数值验收：{manifest['numerical_acceptance']}。仅 Python M1；MATLAB Runtime=0、M2 TB=0、LLM=0。", '',
              '|点|Vreq / V|UGF / Hz|BW / Hz|PM / deg|草案 M1 规格|', '|---|---:|---:|---:|---:|---|']
     for name, row in comparisons.items():
@@ -175,5 +175,9 @@ def run_stage1(config, out):
     with (out/'report.md').open('x', encoding='utf-8') as stream:
         stream.write('\n'.join(lines)+'\n')
     if not all(all_checks):
-        raise ArithmeticError('Stage 1 numerical acceptance failed; inspect output')
+        raise ArithmeticError('M1 model numerical acceptance failed; inspect output')
     return manifest
+
+
+# Compatibility name for existing numerical-validation clients.
+run_stage1 = run_validation

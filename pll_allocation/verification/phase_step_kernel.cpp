@@ -1,4 +1,4 @@
-// Generated isolated Stage4.1 stimulus/observation extension; see generator.
+// Generated isolated phase-step stimulus/observation extension; see generator.
 #include "kernel.cpp"
 // Isolated translation of baseline/python_crosscheck.py::simulate.
 // Adds input phase modulation and observations; keeps edge/Euler update order.

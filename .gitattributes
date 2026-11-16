@@ -1,54 +1,16 @@
-# Preserve exact bytes for frozen provenance snapshots and migrated implementations.
-# Ordinary Python sources export with stable LF; frozen byte rules below take precedence.
+# Stable ordinary source text, exact bytes for numerical/provenance contracts.
 /pll_allocation/** text eol=lf
 /tools/*.py text eol=lf
 /tests/** text eol=lf
 /data/** -text
 /tests/fixtures/** -text
+/configs/** -text
 /pll_allocation/allocation/** -text
 /pll_allocation/verification/** -text
-/configs/verification/** -text
-
-# Preserve source/profile bytes used by Stage5/6 build and source identity locks.
+/pll_allocation/block_space/profiles.py -text
 /pll_allocation/pipeline.py -text
 /pll_allocation/pipeline_contracts.py -text
 /pll_allocation/scenarios.py -text
 /pll_allocation/physics_mapping/noise.py -text
-/pll_allocation/block_space/extensions.py -text
-/configs/stage6b/** -text
-/configs/stage6c/** -text
 /tools/generate_nonideal_noise_kernel.py -text
 /tools/generate_phase_step_kernel.py -text
-/tests/test_stage6c* -text
-/tests/test_multispec_stage6b.py -text
-/experiments/stage6a/study.py -text
-/experiments/stage5/** -text
-/experiments/stage6a/** -text
-/experiments/stage6b/** -text
-/docs/stage5/** -text
-/docs/stage6a/** -text
-/docs/stage6b/** -text
-/docs/stage6c/** -text
-/docs/stage7/** -text
-/docs/mainline_integration_20261110_01/prior_guides/** -text
-
-# Stage7 configuration and receipts include exact-byte SHA256 evidence bindings.
-/configs/stage7/** -text
-/docs/stage7_exploration/** -text
-/docs/stage7_10/** -text
-
-# Stage8A review evidence carries exact-byte artifact hashes.
-/docs/stage8a/** -text
-
-# Stage8B configuration/evidence has exact-byte request and artifact identities.
-/configs/stage8b/** -text
-/docs/stage8b/** -text
-
-# Stage8B stabilization trace and audit hashes require exact checkout bytes.
-/docs/stage8b_stabilization/** -text
-
-# Final hardening evidence and handoff exact-byte bindings.
-/docs/stage8b_final_hardening/** -text
-
-# Portable checkouts preserve all configuration/provenance bytes as published.
-/configs/** -text

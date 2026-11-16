@@ -98,7 +98,7 @@ def test_provider_failure_never_loses_best_and_rechecks(context,tmp_path,fail_at
 
 def test_historical_low_bw_chooses_better_calibration(histories,tmp_path):
     h=histories['low_bw_baseline']; c=h['context']; old=h['allocation']['calibration_baseline']; worse=h['allocation']['new_allocation']
-    x=SimpleNamespace(problem=c['problem'],context=c,stage7_samples=h['calibration_samples'],rows=[])
+    x=SimpleNamespace(problem=c['problem'],context=c,calibration_samples=h['calibration_samples'],rows=[])
     archive=CandidateArchive(x,tmp_path/'archive.jsonl')
     assert archive.best()['judgment']['minimum_normalized_margin'] > worse['judgment']['minimum_normalized_margin']
     assert archive.best()['parameter_sha256']==old['parameter_sha256']
@@ -125,7 +125,7 @@ def test_historical_tight_conflicts_bound_to_working_points(histories):
 
 def test_historical_tight_exhaustion_keeps_solver_and_feasibility_independent(histories,tmp_path):
     h=histories['tight_call_exhaustion'];c=h['context']
-    x=SimpleNamespace(problem=c['problem'],context=c,stage7_samples=h['calibration_samples'],rows=[])
+    x=SimpleNamespace(problem=c['problem'],context=c,calibration_samples=h['calibration_samples'],rows=[])
     archive=CandidateArchive(x,tmp_path/'archive.jsonl')
     history=[r['observation'] for r in h['rounds'] if r['observation']]
     assert h['result']['status']=='INVALID_LLM_DECISION'
@@ -253,7 +253,7 @@ def test_generated_specs_domains_ranking_and_persistence(context,tmp_path,seed):
     # Only domain/spec changed, fixed numerical input and original formal result stay identical.
     assert transformed['parameter_sha256']==row['parameter_sha256']
     transformed['problem_sha256']=p['problem_sha256']
-    x=SimpleNamespace(problem=p,context=c,stage7_samples=[transformed],rows=[])
+    x=SimpleNamespace(problem=p,context=c,calibration_samples=[transformed],rows=[])
     archive=CandidateArchive(x,tmp_path/'archive.jsonl')
     assert archive.best()['judgment']['m1_feasibility']=='FEASIBLE'
     expected=archive.best()['parameter_sha256']

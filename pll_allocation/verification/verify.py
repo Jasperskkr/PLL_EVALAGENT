@@ -1,6 +1,6 @@
-"""Track A AllocationProposal -> executed, independent behavioral verification.
+"""allocation AllocationProposal -> executed, independent behavioral verification.
 
-Uses the existing SI candidate envelope and frozen model; no Track A policy import.
+Uses the existing SI candidate envelope and frozen model; no allocation policy import.
 M1 is called only after all measurements. A proposal's predictions are never trusted.
 """
 import argparse
@@ -25,7 +25,7 @@ def frozen_model():
 
 
 def validate_proposal(item):
-    """Validate Track A's public envelope, without importing its optimizer or M1."""
+    """Validate allocation's public envelope, without importing its optimizer or M1."""
     model=frozen_model()
     if not isinstance(item,dict) or item.get('schema_version')!='allocation-proposal-1.0':
         raise ValueError('allocation-proposal-1.0 required')
@@ -36,7 +36,7 @@ def validate_proposal(item):
     if item['block_space_sha256']!=fingerprint(model) or item['topology']!=model['topology']:
         raise ValueError('frozen Block Space/topology binding mismatch')
     if item['system_spec']!=model['experiment']['system_spec'] or item['system_spec_sha256']!=fingerprint(item['system_spec']):
-        raise ValueError('Track B v1 supports only unchanged Stage 1.5 SystemSpec')
+        raise ValueError('behavioral verification v1 supports only unchanged declared behavioral domain SystemSpec')
     versions=item['versions']
     if any(versions.get(k)!=v for k,v in model['versions'].items()):raise ValueError('model version mismatch')
     if versions.get('block_space_schema')!=model['schema_version'] or versions.get('system_spec')!=item['system_spec']['version']:
@@ -51,7 +51,7 @@ def validate_proposal(item):
 
 
 def example_proposal(parameters,candidate_id='track_b_reference_nominal'):
-    """Same external envelope as Track A; no fabricated allocator/M1 invocation."""
+    """Same external envelope as allocation; no fabricated allocator/M1 invocation."""
     model=frozen_model();spec=model['experiment']['system_spec']
     return {'schema_version':'allocation-proposal-1.0','candidate_id':candidate_id,
         'parameter_sha256':fingerprint(parameters),'joint_block_spec':parameters,

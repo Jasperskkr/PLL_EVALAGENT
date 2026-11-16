@@ -1,4 +1,4 @@
-"""Stage3A binding and feedback adapters. No physical equations or measurements."""
+"""allocation/verification binding and feedback adapters. No physical equations or measurements."""
 from copy import deepcopy
 import hashlib
 from pathlib import Path
@@ -51,30 +51,30 @@ def check_result(item, proposal, protocol):
         return
     expected_model=MODEL_VERSION
     if proposal.get('behavioral_extension'):
-        from .verification.stage6c_native import MODEL_ID
-        from .verification.stage6c import validate_extension
+        from .verification.nonideal_noise_native import MODEL_ID
+        from .verification.nonideal import validate_extension
         ext=validate_extension(proposal['behavioral_extension']);expected_model=MODEL_ID
         actual=item.get('extension',{})
         if actual.get('extension_id')!=ext['extension_id'] or actual.get('profile_hashes')!=ext['source_profile_hashes']:
-            raise ValueError('Stage6C profile result binding mismatch')
-        from .verification.stage6c_identity import check_build
-        if actual.get('native_build_identity')!=check_build():raise ValueError('Stage6C native result identity mismatch')
+            raise ValueError('nonideal/noise profile result binding mismatch')
+        from .verification.nonideal_noise_identity import check_build
+        if actual.get('native_build_identity')!=check_build():raise ValueError('nonideal/noise native result identity mismatch')
         nr=actual.get('noise_result')
         if nr is not None:
             if (nr.get('candidate_sha256')!=proposal['parameter_sha256']
                 or nr.get('noise_profile_sha256')!=ext['source_profile_hashes']['noise_profile']
                 or nr.get('protocol_sha256')!=ext['source_profile_hashes']['noise_protocol']):
-                raise ValueError('Stage6C actual noise measurement binding mismatch')
+                raise ValueError('nonideal/noise actual noise measurement binding mismatch')
             from .verification.noise import aggregate
             measured=item.get('metrics',{}).get('integrated_jitter_s',{})
             if nr.get('status')=='STATISTICALLY_RESOLVED_CONDITIONAL':
                 rebuilt=aggregate(nr['measurements'],ext['noise_protocol'],ext['jitter_limit_s'])
                 for name in ('status','integrated_jitter_s','jitter_interval_s','jitter_constraint_status'):
-                    if rebuilt[name]!=nr[name]:raise ValueError('Stage6C statistical evidence mismatch:'+name)
+                    if rebuilt[name]!=nr[name]:raise ValueError('nonideal/noise statistical evidence mismatch:'+name)
                 if not nr.get('all_observations_locked') or not all(r.get('locked_during_observation')is True for r in nr['measurements']):
-                    raise ValueError('Stage6C unresolved stochastic tracking')
+                    raise ValueError('nonideal/noise unresolved stochastic tracking')
                 if (measured.get('status')!=nr['status'] or measured.get('value')!=nr['integrated_jitter_s']
-                    or measured.get('statistical_interval_s')!=nr['jitter_interval_s']):raise ValueError('Stage6C scalar jitter differs from raw-seed evidence')
+                    or measured.get('statistical_interval_s')!=nr['jitter_interval_s']):raise ValueError('nonideal/noise scalar jitter differs from raw-seed evidence')
     for actual, expected in [('candidate_id', proposal['candidate_id']),
                              ('parameter_sha256', proposal['parameter_sha256']),
                              ('joint_block_spec', proposal['joint_block_spec']),

@@ -7,7 +7,7 @@ ROOT=Path(__file__).resolve().parents[1]
 
 
 def documents():
-    from pll_allocation.block_space.extensions import LOCATIONS,UNITS
+    from pll_allocation.block_space.profiles import LOCATIONS,UNITS
     sources=[]
     for sid,typ,psd in [('reference','white',{'level':1e-13}),('vco','power_law',{'coefficient':100.,'exponent':-2}),
                         ('cp','white',{'level':1e-24}),('resistor','thermal',{'temperature_K':300.})]:

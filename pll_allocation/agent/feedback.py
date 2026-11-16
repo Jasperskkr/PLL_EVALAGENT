@@ -27,12 +27,12 @@ def read(path):
 def validate_config(raw):
     fields={'schema_version','m1_budget','m2_budget','llm_budget','max_reallocations','m2_timeout_s','search'}
     require(isinstance(raw,dict) and set(raw)==fields and raw['schema_version']=='pll-stage9-feedback-1.0',
-            'complete Stage9 configuration required')
+            'complete verification feedback configuration required')
     c=deepcopy(raw); c['search']=search_config(c['search'])
-    require(c['search']['policy']=='LLM_PHYSICS_TOOL','Stage9 production requires real LLM physics policy')
+    require(c['search']['policy']=='LLM_PHYSICS_TOOL','verification feedback production requires real LLM physics policy')
     for k in ('m1_budget','m2_budget','llm_budget','max_reallocations'):
         require(type(c[k]) is int and c[k]>=0,k+': nonnegative hard limit required')
-    require(c['max_reallocations']<=10 and c['m2_budget']<=32 and c['llm_budget']<=40,'bounded Stage9 run required')
+    require(c['max_reallocations']<=10 and c['m2_budget']<=32 and c['llm_budget']<=40,'bounded verification feedback run required')
     require(type(c['m2_timeout_s']) in (int,float) and 0<c['m2_timeout_s']<=3600,'bounded M2 timeout required')
     return c
 
@@ -114,8 +114,10 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
     initial,context_path=load_handoff(handoff_path,problem_config)
     root=Path(out).resolve(); root.mkdir(parents=True,exist_ok=False)
     start=time.perf_counter(); run_id=root.name
+    write_new(root/'verification_problem_resolved.json',initial['problem'])
     write_new(root/'stage9_problem_resolved.json',initial['problem'])
-    write_new(root/'initial_handoff.json',initial); write_new(root/'stage9_config.json',cfg)
+    write_new(root/'initial_handoff.json',initial); write_new(root/'verification_config.json',cfg)
+    write_new(root/'stage9_config.json',cfg)
     paths={name:root/(name+'.jsonl') for name in ('m2_verifications','feedback_summaries','agent_decisions',
         'reallocation_candidates','stage9_run_events','candidate_archive')}
     for p in paths.values():p.touch(exist_ok=False)
@@ -188,7 +190,7 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
             # Reserve a new candidate audit call plus the next M2 posthoc M1.
             if remaining()['M1_calls']<6:termination='M1_BUDGET_EXHAUSTED_BEFORE_REALLOCATION'; break
             child=deepcopy(cfg['search'])
-            # Shared calibration costs were paid in Stage7, not called again.
+            # Shared calibration costs were paid in M1 exploration, not called again.
             from .subregion_context import was_formal_call
             shared=sum(was_formal_call(readrow) for readrow in
                 [json.loads(s) for s in (context_path.parent/'m1_samples.jsonl').read_text(encoding='utf-8').splitlines()])
@@ -308,6 +310,7 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
     (root/'stage9_report.md').write_text('\n\n'.join(report)+'\n',encoding='utf-8')
     (root/'feedback_report.md').write_text('\n\n'.join(report)+'\n',encoding='utf-8')
     event('RUN_COMPLETED',termination_reason=termination,cost=counts)
+    (root/'verification_run_events.jsonl').write_bytes(paths['stage9_run_events'].read_bytes())
     return result
 
 

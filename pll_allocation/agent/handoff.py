@@ -77,7 +77,7 @@ def build_handoff(explorer, archive, recommended, recheck, states, cost):
         'authoritative_nominal_field':'recommended_nominal',
         'legacy_fields_not_for_stage9':['new_allocation','best_observed_current_spec','status'],
         'M2_status':'NOT_EVALUATED', 'FULL_SYSTEMSPEC_CERTIFIED':False,
-        'scope':'M1-rechecked nominal input for existing M2; no Stage9 execution or whole-domain certification'}
+        'scope':'M1-rechecked nominal input for existing M2; no verification feedback execution or whole-domain certification'}
     if not recommended:
         item['gate_reasons']=['NO_KNOWN_M1_FEASIBLE_CANDIDATE']
     elif not recheck.get('passed'):

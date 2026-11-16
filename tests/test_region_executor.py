@@ -352,7 +352,7 @@ def test_exact_region_endpoints_are_not_rejected_by_log_roundtrip(contexts, tmp_
 def test_tiny_positive_log_coordinate_cannot_round_below_user_minimum(contexts, tmp_path):
     x = explorer(contexts, tmp_path, 'tight')
     axis = x.problem['parameters']['C1']
-    assert coordinate(axis, 1e-18, inverse=True) < axis['min']  # real Stage7 inverse roundoff
+    assert coordinate(axis, 1e-18, inverse=True) < axis['min']  # real M1 exploration inverse roundoff
     assert physical_coordinate(axis, 1e-18) == axis['min']
     d = decision(x, method='SLSQP', budget=8)
     d['region']['region_id'] = 'NUMERIC_ENDPOINT_TEST'

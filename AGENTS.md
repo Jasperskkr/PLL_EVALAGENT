@@ -1,6 +1,6 @@
 # PLLAgent research source
 
-Read README.md, PROJECT_CHARTER.md, docs/ARCHITECTURE.md, docs/CODE_MAP.md and docs/REVIEW_GUIDE.md.
+Read README.md, PROJECT_CHARTER.md, docs/ARCHITECTURE.md, docs/CODE_MAP.md, docs/REVIEW_GUIDE.md and docs/NAMING.md.
 
 - Official execution entry: python -m pll_allocation pipeline. Keep one Policy/Runner boundary.
 - Scope: fixed-topology behavioral joint allocation, not transistor sizing or circuit capability certification.
@@ -10,6 +10,7 @@ Read README.md, PROJECT_CHARTER.md, docs/ARCHITECTURE.md, docs/CODE_MAP.md and d
 - Unsupported, unmeasured and numerically unresolved metrics remain UNKNOWN. M1 PASS cannot replace M2 PASS.
 - New runs use fresh experiments/<run_id>; never overwrite history or publish outputs, GUI, binaries or secrets.
 - Use functional module/config names in new code. Preserve compatibility schemas and hash-bound numerical sources.
+- Active files and imports must use responsibility names; phase names are allowed only in declared compatibility aliases, versioned data contracts and historical provenance. Run tools/audit_architecture.py when moving modules.
 - Inspect docs/COMPATIBILITY.md before changing old imports, contracts or frozen source bytes.
 - Run relevant tests; report skipped archive-dependent tests and actual runtime/platform limits.
 - Research claims require real evidence. LLM availability or a successful mock test is not proof of allocation benefit.

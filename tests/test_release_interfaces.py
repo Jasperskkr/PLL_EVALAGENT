@@ -15,6 +15,17 @@ ROOT = Path(__file__).resolve().parents[1]
     ('agent.multi_region_study', 'studies.multi_region'),
     ('agent.spec_allocation_ablation', 'studies.ablation'),
     ('agent.spec_allocation_ablation_report', 'studies.ablation_report'),
+    ('verification.stage6c', 'verification.nonideal'),
+    ('verification.stage6c_native', 'verification.nonideal_noise_native'),
+    ('verification.stage6c_identity', 'verification.nonideal_noise_identity'),
+    ('verification.closed_loop', 'verification.phase_step'),
+    ('verification.closed_loop_native', 'verification.phase_step_native'),
+    ('block_space.extensions', 'block_space.profiles'),
+    ('track_a.runner', 'allocation.first_allocation'),
+    ('track_a.benchmark', 'studies.allocation_baselines'),
+    ('track_a.experiments', 'studies.simulated_repairs'),
+    ('track_a.audit', '_legacy.archive_audit'),
+    ('track_a.report', '_legacy.archive_report'),
 ])
 def test_module_compatibility(old, new):
     assert importlib.import_module('pll_allocation.'+old) is importlib.import_module('pll_allocation.'+new)
@@ -61,3 +72,21 @@ def test_help_uses_responsibility_names(capsys):
     help_text = capsys.readouterr().out
     assert '--handoff HANDOFF' in help_text and '--problem PROBLEM' in help_text
     assert 'STAGE9' not in help_text and '--stage9' not in help_text
+
+
+def test_feedback_legacy_keyword_forwards_unchanged(monkeypatch):
+    from pll_allocation.agent import feedback
+    captured = []
+    monkeypatch.setattr(feedback, 'run_feedback', lambda *a, **kw: captured.append((a, kw)))
+    feedback.run_stage9_feedback('input', 'output', problem_config='problem', stage9_config={'test': True})
+    assert captured == [(('input', 'output'), dict(problem_config='problem', feedback_config={'test': True},
+                        provider_config=None, policy=None, m2_executor=None))]
+
+
+def test_nonideal_build_environment_precedence(monkeypatch, tmp_path):
+    from pll_allocation.verification.nonideal_noise_identity import default_build
+    monkeypatch.setenv('PLL_STAGE6C_BUILD_DIR', str(tmp_path/'legacy'))
+    monkeypatch.delenv('PLL_NONIDEAL_NOISE_BUILD_DIR', raising=False)
+    assert default_build() == (tmp_path/'legacy').resolve()
+    monkeypatch.setenv('PLL_NONIDEAL_NOISE_BUILD_DIR', str(tmp_path/'current'))
+    assert default_build() == (tmp_path/'current').resolve()

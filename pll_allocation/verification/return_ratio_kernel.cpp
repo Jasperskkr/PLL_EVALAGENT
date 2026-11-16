@@ -1,4 +1,4 @@
-// Stage4 isolated extension: original export retained by inclusion.
+// Return-ratio isolated extension: original export retained by inclusion.
 #include "kernel.cpp"
 
 // Isolated translation of baseline/python_crosscheck.py::simulate.

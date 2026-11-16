@@ -1,4 +1,4 @@
-"""Read-only summaries of Stage7 point evidence; never region certification."""
+"""Read-only summaries of M1 exploration point evidence; never region certification."""
 from copy import deepcopy
 import math
 
@@ -15,7 +15,7 @@ def contains(bounds, point):
 
 
 def physical_coordinate(axis, u):
-    """Use Stage7's transform, repairing only floating endpoint roundoff.
+    """Use M1 exploration's transform, repairing only floating endpoint roundoff.
 
     For valid u, an exact inverse lies inside the global domain. exp(log(min))
     can round one ULP below min even for tiny positive u. This is numerical

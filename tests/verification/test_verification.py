@@ -56,7 +56,7 @@ def test_bad_proposal_cannot_invoke_backend_or_pass(tmp_path,mutation):
 
 def test_constraints_use_measurement_envelopes_and_keep_PM_frequency_unknown():
     prop=example_proposal(candidate())
-    fixture=read(FIXTURES/'stage3a_nominal_measured.json')
+    fixture=read(FIXTURES/'nominal_measured.json')
     capture=fixture['capture'];compared=fixture['comparison']
     doc=read(CONFIGS/'verification/m2_protocol.json')
     result=assemble_result(prop,doc,{},capture,{},compared)

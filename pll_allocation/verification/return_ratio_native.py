@@ -1,4 +1,4 @@
-"""Independent Stage4 phase-port event backend. No M1 response or allocator imports."""
+"""Independent return-ratio phase-port event backend. No M1 response or allocator imports."""
 import ctypes
 import hashlib
 import json
@@ -8,7 +8,7 @@ import time
 import numpy as np
 
 HERE = Path(__file__).resolve().parent
-BUILD = HERE/'build_stage4'
+BUILD = HERE/'build_return_ratio'
 MODEL = 'edge_euler_phase_port_stage4_0.1'
 
 
@@ -25,7 +25,7 @@ def simulate_port(parameters, *, frequency_Hz, amplitude_rad=.01, mode='series',
     from pll_allocation.block_space.contracts import check_parameters, load_model
     domain = check_parameters(load_model(CONFIGS/'model/block_space.json'), parameters)
     if domain['declared_domain'] != 'IN_DECLARED_DOMAIN' or domain['model_validity'] != 'VALID':
-        raise ValueError('OUT_OF_DOMAIN: candidate outside frozen Stage1.5 model')
+        raise ValueError('OUT_OF_DOMAIN: candidate outside frozen declared behavioral domain model')
     p = validate_parameters(parameters)
     if mode not in ('series', 'clamp'):
         raise ValueError('unsupported phase-port mode')
@@ -47,7 +47,7 @@ def simulate_port(parameters, *, frequency_Hz, amplitude_rad=.01, mode='series',
         raise ValueError('OUT_OF_DOMAIN: LF resolution')
     saved = json.loads((BUILD/'identity.json').read_text(encoding='utf-8'))
     if identity() != saved['sha256']:
-        raise RuntimeError('STAGE4_NATIVE_SOURCE_OR_BINARY_MISMATCH')
+        raise RuntimeError('RETURN_RATIO_NATIVE_SOURCE_OR_BINARY_MISMATCH')
     n = math.ceil(duration_s/dt_s)+1
     stride = max(1, int(record_interval_s/(duration_s/(n-1))))
     count = (n-1)//stride+2
@@ -67,7 +67,7 @@ def simulate_port(parameters, *, frequency_Hz, amplitude_rad=.01, mode='series',
     code = fn(values.ctypes.data_as(ptr), trace.ctypes.data_as(ptr), count,
         ref.ctypes.data_as(ptr), div.ctypes.data_as(ptr), edgecap, stats.ctypes.data_as(ptr))
     if code:
-        raise RuntimeError('STAGE4_NATIVE_FAILURE:'+str(code))
+        raise RuntimeError('RETURN_RATIO_NATIVE_FAILURE:'+str(code))
     return {'trace': trace[:int(stats[2])].copy(), 'ref_edges': ref[:int(stats[10])].copy(),
         'div_edges': div[:int(stats[11])].copy(), 'summary': {'integration_points': int(stats[0]),
         'actual_dt_s': float(stats[1]), 'clamps': int(stats[3]), 'vfinal_V': float(stats[8]),

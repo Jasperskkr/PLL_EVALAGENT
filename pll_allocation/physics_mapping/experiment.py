@@ -101,7 +101,7 @@ def validate_experiment(raw):
             finite(s[bound], name + '.' + bound)
         _require(not {'min', 'max'} <= bounds or s['min'] <= s['max'], 'metric limits inverted')
         _require(finite(s.get('tolerance', 0), name + '.tolerance') >= 0, 'nonnegative tolerance required')
-    _require({'output_frequency_Hz', 'BW_Hz', 'PM_deg'} <= seen, 'Stage 1 frequency/BW/PM targets required')
+    _require({'output_frequency_Hz', 'BW_Hz', 'PM_deg'} <= seen, 'M1 model frequency/BW/PM targets required')
     _require(exp.get('diagnostic_metrics') == ['UGF_Hz'], 'UGF remains diagnostic')
     return exp
 

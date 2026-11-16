@@ -127,8 +127,8 @@ def source():
     summary[16]=uptime;summary[17]=downtime;summary[18]=upnoise;summary[19]=downnoise;
     summary[20]=cpnoise;summary[21]=rnoise;summary[22]=vconphase;summary[23]=double(resets);
     summary[24]=c1*(v-p[10])+c2*(u-p[10]);''')
-    return '// GENERATED optional Stage6C extension; never hand edit.\n#include "kernel.cpp"\n'+RNG+src
+    return '// GENERATED optional nonideal/noise extension; never hand edit.\n#include "kernel.cpp"\n'+RNG+src
 
 
 if __name__=='__main__':
-    with (HERE/'stage6c_kernel.cpp').open('x',encoding='utf-8',newline='\n') as f:f.write(source())
+    with (HERE/'nonideal_noise_kernel.cpp').open('x',encoding='utf-8',newline='\n') as f:f.write(source())

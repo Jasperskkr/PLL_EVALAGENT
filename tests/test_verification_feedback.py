@@ -10,7 +10,7 @@ import pytest
 from pll_allocation.agent.initial_allocation import run_initial_allocation
 from pll_allocation.agent.physics_tool_policy import DeterministicToolPolicy
 from pll_allocation.agent.region_policy import ProviderError
-from pll_allocation.agent.feedback import (run_stage9_feedback, load_handoff, applicable,
+from pll_allocation.agent.feedback import (run_feedback, load_handoff, applicable,
     feedback_summary, search_feedback)
 from pll_allocation.agent.handoff import validate_handoff
 from pll_allocation.agent.subregion_loop import prepare_initial
@@ -101,14 +101,14 @@ def test_unknown_is_not_physical_fail(saved,captured,converged):
 def test_zero_budgets_no_uncontrolled_execution(saved,tmp_path,budget):
     called=[]
     def backend(*a):called.append(a);return fake_m2()(*a)
-    result=run_stage9_feedback(saved[0],tmp_path/'run',problem_config=saved[1],
-        stage9_config=config(saved,m2_budget=budget,m1_budget=0),m2_executor=backend)
+    result=run_feedback(saved[0],tmp_path/'run',problem_config=saved[1],
+        feedback_config=config(saved,m2_budget=budget,m1_budget=0),m2_executor=backend)
     assert not called and result['cost']['M1_calls']==0 and result['cost']['M2_verifications']==0
     assert result['best_known_M1']['parameter_sha256']==saved[2]['recommended_nominal']['parameter_sha256']
 
 def test_test_backend_label_and_m2_partial_pass(saved,tmp_path):
-    r=run_stage9_feedback(saved[0],tmp_path/'run',problem_config=saved[1],
-        stage9_config=config(saved),m2_executor=fake_m2())
+    r=run_feedback(saved[0],tmp_path/'run',problem_config=saved[1],
+        feedback_config=config(saved),m2_executor=fake_m2())
     assert r['mode']=='TEST_INJECTED_NOT_RESEARCH'
     assert r['supported_M2_status']=='PASS' and r['M2_status']=='UNKNOWN'
     assert r['recommended_M2_supported'] and not r['real_fail_reverification_completed']
@@ -121,14 +121,14 @@ class Broken(DeterministicToolPolicy):
     def decide(self,state,directory):raise ProviderError('TEST unavailable')
 
 def test_provider_failure_keeps_m1_and_m2_fail(saved,tmp_path):
-    r=run_stage9_feedback(saved[0],tmp_path/'run',problem_config=saved[1],stage9_config=config(saved),
+    r=run_feedback(saved[0],tmp_path/'run',problem_config=saved[1],feedback_config=config(saved),
         m2_executor=fake_m2(bw=400000),policy=Broken())
     assert r['termination_reason']=='LLM_PROVIDER_FAILED', r['failure']
     assert r['M2_status']=='FAIL' and r['m1_allocation_status']=='KNOWN_FEASIBLE_PRESERVED'
     assert r['best_known_M1'] and r['cost']['M1_calls']<=90
 
 def test_feedback_distinct_candidate_reverification_test_only(saved,tmp_path):
-    r=run_stage9_feedback(saved[0],tmp_path/'run',problem_config=saved[1],stage9_config=config(saved),
+    r=run_feedback(saved[0],tmp_path/'run',problem_config=saved[1],feedback_config=config(saved),
         m2_executor=fake_m2(bw=400000),policy=DeterministicToolPolicy())
     assert len(r['verified_history'])==2,r['failure']
     assert len({h['candidate_sha256'] for h in r['verified_history']})==2
@@ -166,7 +166,7 @@ class ReverifyPolicy(DeterministicToolPolicy):
 
 def test_unknown_reverify_requires_real_cited_feedback_and_budget(saved,tmp_path):
     cfg=config(saved)
-    r=run_stage9_feedback(saved[0],tmp_path/'run',problem_config=saved[1],stage9_config=cfg,
+    r=run_feedback(saved[0],tmp_path/'run',problem_config=saved[1],feedback_config=cfg,
         m2_executor=fake_m2(converged=False),policy=ReverifyPolicy())
     assert len(r['verified_history'])==2,r['failure']
     assert len({h['candidate_sha256'] for h in r['verified_history']})==1
@@ -174,7 +174,7 @@ def test_unknown_reverify_requires_real_cited_feedback_and_budget(saved,tmp_path
     assert r['M2_status']=='UNKNOWN' and r['feedback_loop_status']=='SAME_CANDIDATE_REVERIFIED'
 
 def test_known_physical_fail_cannot_reverify_without_changed_measurement(saved,tmp_path):
-    r=run_stage9_feedback(saved[0],tmp_path/'run',problem_config=saved[1],stage9_config=config(saved),
+    r=run_feedback(saved[0],tmp_path/'run',problem_config=saved[1],feedback_config=config(saved),
         m2_executor=fake_m2(bw=400000),policy=ReverifyPolicy())
     assert len(r['verified_history'])==1 and r['termination_reason']=='INVALID_LLM_DECISION'
     assert r['best_known_M1'] and r['M2_status']=='FAIL'
@@ -194,15 +194,15 @@ def test_partial_capture_survives_timeout(saved,tmp_path):
 
 @pytest.mark.parametrize('limit', (6,12,25))
 def test_varied_m1_budget_preserves_candidate_and_hard_limit(saved,tmp_path,limit):
-    r=run_stage9_feedback(saved[0],tmp_path/'run',problem_config=saved[1],stage9_config=config(saved,m1_budget=limit),
+    r=run_feedback(saved[0],tmp_path/'run',problem_config=saved[1],feedback_config=config(saved,m1_budget=limit),
         m2_executor=fake_m2(bw=400000),policy=DeterministicToolPolicy())
     assert r['cost']['M1_calls']<=limit and r['best_known_M1']
     assert r['M2_status']=='FAIL' and not r['FULL_SYSTEMSPEC_CERTIFIED']
 
 def test_wrong_current_problem_rejected_before_output(saved,tmp_path):
     with pytest.raises(ValueError):
-        run_stage9_feedback(saved[0],tmp_path/'must_not_exist',problem_config=ROOT/'configs/problems/tight.json',
-            stage9_config=config(saved),m2_executor=fake_m2())
+        run_feedback(saved[0],tmp_path/'must_not_exist',problem_config=ROOT/'configs/problems/tight.json',
+            feedback_config=config(saved),m2_executor=fake_m2())
     assert not (tmp_path/'must_not_exist').exists()
 
 def test_finalization_failure_retains_paid_call_costs_and_initial_archive(saved,tmp_path):
@@ -211,7 +211,7 @@ def test_finalization_failure_retains_paid_call_costs_and_initial_archive(saved,
         (folder/'m1_samples.jsonl').write_text(json.dumps({'formal_M1_called':True})+'\n',encoding='utf-8')
         raise RuntimeError('TEST after real-call artifact was persisted')
     with patch('pll_allocation.agent.feedback.run_initial_allocation',side_effect=broken):
-        r=run_stage9_feedback(saved[0],tmp_path/'run',problem_config=saved[1],stage9_config=config(saved),
+        r=run_feedback(saved[0],tmp_path/'run',problem_config=saved[1],feedback_config=config(saved),
             m2_executor=fake_m2(bw=400000))
     assert r['status']=='CONTROLLER_ERROR' and r['cost']['M1_calls']==1
     assert r['cost']['recorded_formal_M1_calls']==1 and r['best_known_M1']
@@ -227,7 +227,7 @@ def test_rejected_proposals_are_not_marked_accepted(saved,tmp_path):
                 'evidence_ids':[state['best_known']['evidence_id']]}
             if self.n==1:common['evidence_ids']=['TEST_NONEXISTENT']
             return common
-    r=run_stage9_feedback(saved[0],tmp_path/'run',problem_config=saved[1],stage9_config=config(saved),
+    r=run_feedback(saved[0],tmp_path/'run',problem_config=saved[1],feedback_config=config(saved),
         m2_executor=fake_m2(bw=400000),policy=InvalidThenStop())
     rows=[json.loads(s) for s in (tmp_path/'run/agent_decisions.jsonl').read_text(encoding='utf-8').splitlines()]
     assert rows[0]['validation_status']=='REJECTED' and rows[0]['accepted_decision'] is None

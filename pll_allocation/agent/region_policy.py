@@ -1,4 +1,4 @@
-"""Real region policy using the same native Messages HTTP worker as Track A."""
+"""Real region policy using the same native Messages HTTP worker as allocation."""
 import json
 import os
 from pathlib import Path

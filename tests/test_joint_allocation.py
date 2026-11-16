@@ -1,4 +1,4 @@
-"""Stage6B boundary tests. Synthetic M2 fixtures are never study evidence."""
+"""joint allocation boundary tests. Synthetic M2 fixtures are never study evidence."""
 from copy import deepcopy
 from pathlib import Path
 import json

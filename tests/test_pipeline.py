@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 import pytest
 from pll_allocation import pipeline
-from pll_allocation.allocation import TrackAPolicy
+from pll_allocation.allocation import AllocationStrategyPolicy
 from pll_allocation.pipeline_contracts import check_result, load_inputs, make_feedback, m2_label
 from pll_allocation.allocation.core import Meter, assess_m1, proposal, read, write_new
 from pll_allocation.block_space.contracts import make_candidate
@@ -20,7 +20,7 @@ def fixture_result():
     config, model, spec, doc = load_inputs()
     c = make_candidate(model)
     item = proposal(model, spec, c, 'nominal', assess_m1(model, spec, c, Meter()), {}, 'fixture')
-    evidence = read(ROOT/'tests/fixtures/stage3a_nominal_measured.json')
+    evidence = read(ROOT/'tests/fixtures/nominal_measured.json')
     result = assemble_result(item, doc, {}, evidence['capture'], {}, evidence['comparison'])
     return item, doc, result
 
@@ -79,7 +79,7 @@ def test_partial_fail_unknown_and_feedback_reach_existing_agent():
     check_result(result, item, doc)
     assert result['overall_status'] == 'UNKNOWN' and m2_label(result) == 'M2_PARTIAL_PASS'
     fb = make_feedback(item, result, doc, {'M2_verifications': 0})
-    receipt = TrackAPolicy('analytical', {}).receive_feedback(item['joint_block_spec'], fb)
+    receipt = AllocationStrategyPolicy('analytical', {}).receive_feedback(item['joint_block_spec'], fb)
     assert receipt['status'] == 'RECEIVED_BY_ALLOCATION_AGENT'
     assert fb['source'] == 'M2' and fb['kind'] == 'UNRELIABLE_MEASUREMENT'
     assert fb['unknown_metrics'] == ['output_frequency_Hz', 'PM_deg']
@@ -101,7 +101,7 @@ def test_real_runner_saves_first_candidate_before_any_tb_and_receives_feedback(t
         assert read(root/'initial_joint_block_spec.json') == item['joint_block_spec']
         assert read(root/'attempt_001/AllocationProposal.json') == item
         assert not (root/'attempt_001/structured_feedback.json').exists()
-        return original(item, out)  # real full Track B; no fabricated metrics
+        return original(item, out)  # real full behavioral verification; no fabricated metrics
     monkeypatch.setattr(pipeline, 'verify', observed)
     result = pipeline.run_pipeline(root, 'analytical')
     assert result['status'] == 'M2_PARTIAL_PASS'
@@ -169,6 +169,6 @@ def test_real_verifier_missing_backend_records_unknown_failure_cost_and_feedback
 
 def test_existing_proposal_m1_is_bit_identical():
     _, model, spec, _ = load_inputs()
-    original = read(ROOT/'tests/fixtures/verification/analytical_proposal_stage3a.json')
+    original = read(ROOT/'tests/fixtures/verification/analytical_proposal.json')
     actual = assess_m1(model, spec, original['joint_block_spec'], Meter())
     assert actual == original['M1']

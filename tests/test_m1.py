@@ -11,7 +11,7 @@ from pll_allocation.physics_mapping import (
 from pll_allocation.physics_mapping.experiment import (
     judge_experiment, load_experiment, parameters_from_experiment, validate_experiment,
 )
-from pll_allocation.physics_mapping.validation import HISTORICAL_ANCHOR, polynomial_reference, run_stage1
+from pll_allocation.physics_mapping.validation import HISTORICAL_ANCHOR, polynomial_reference, run_validation
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT/'configs/model/m1_experiment.json'
@@ -230,7 +230,7 @@ def test_model_ok_can_fail_draft_spec_and_result_binding(exp, parameters):
 
 def test_reproducible_run_saves_candidates_refuses_overwrite_and_records_failures(tmp_path):
     out = tmp_path/'run'
-    manifest = run_stage1(CONFIG, out)
+    manifest = run_validation(CONFIG, out)
     assert manifest['numerical_acceptance'] == 'PASS'
     assert manifest['cost']['MATLAB_runtime_calls'] == 0
     assert manifest['cost']['M2_behavioral_TB_calls'] == 0
@@ -239,4 +239,4 @@ def test_reproducible_run_saves_candidates_refuses_overwrite_and_records_failure
     failures = json.loads((out/'failure_cases.json').read_text(encoding='utf-8'))
     assert all(row['satisfied'] for row in failures.values())
     with pytest.raises(FileExistsError):
-        run_stage1(CONFIG, out)
+        run_validation(CONFIG, out)

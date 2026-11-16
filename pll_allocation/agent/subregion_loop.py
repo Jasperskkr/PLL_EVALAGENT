@@ -1,4 +1,4 @@
-"""Explicit Stage7.5 policy/controller using the existing one M1 executor."""
+"""Explicit regional planning policy/controller using the existing one M1 executor."""
 from copy import deepcopy
 import csv
 import hashlib
@@ -20,7 +20,7 @@ from .subregion_context import export_context,was_formal_call
 from .subregion_prior import build_prior
 
 PROMPT='''You plan EXPLORATION subregions for the current ideal CPPLL from small initial calibration only.
-You are not selecting among a completed Stage7 region menu and must not calculate/fabricate M1 results.
+You are not selecting among a completed M1 exploration region menu and must not calculate/fabricate M1 results.
 Use current SystemSpec, original six-axis domain, actual samples, structured physical evidence and observations.
 Return exactly one JSON object with fields:
 schema_version="pll-exploration-decision-1.0", decision_id (unique string),
@@ -68,7 +68,7 @@ def execute_multi_region_plan(controller,plan):
 
 
 def prepare_initial(problem_path,out,config):
-    """New fixed Sobol calibration; no inverse, hidden sensitivity or full Stage7."""
+    """New fixed Sobol calibration; no inverse, hidden sensitivity or full M1 exploration."""
     cfg=validate_config(config);problem=load_problem(problem_path)
     require(cfg['region_radius']==problem['exploration']['region_radius'],'pilot radius must match ResearchProblemV2 region summary setting')
     root=Path(out);root.mkdir(parents=True,exist_ok=False)
@@ -112,7 +112,7 @@ def run_subregion(problem_path,out,*,config,provider_config=None,initial_context
     root.mkdir(parents=True,exist_ok=False);start=time.perf_counter();sources=source_manifest()
     if initial_context_path is None:initial_context_path=prepare_initial(problem_path,root/'calibration',cfg)
     context=load_physics_context(initial_context_path)
-    require(context.get('exploration_source')=='SMALL_INITIAL_SOBOL_ONLY','only declared small initial context is allowed; full Stage7 input rejected')
+    require(context.get('exploration_source')=='SMALL_INITIAL_SOBOL_ONLY','only declared small initial context is allowed; full M1 exploration input rejected')
     require(context['problem']==problem,'shared calibration problem mismatch')
     initial=[json.loads(s) for s in (Path(initial_context_path).parent/'m1_samples.jsonl').read_text(encoding='utf-8').splitlines()]
     initial_calls=sum(was_formal_call(r) for r in initial)
@@ -204,7 +204,7 @@ def run_subregion(problem_path,out,*,config,provider_config=None,initial_context
         'LLM_elapsed_s':sum(c.get('elapsed_s',0) for c in getattr(planner,'calls',[])),
         'wall_time_s':time.perf_counter()-start,'M2_calls':0,'monetary_cost':None}
     derivatives=[o['sensitivity'] for o in all_obs if o.get('sensitivity')]
-    exported=export_context(problem,initial+ex.rows,root/'stage7_context',cost=costs,sensitivities=derivatives,
+    exported=export_context(problem,initial+ex.rows,root/'exploration_context',cost=costs,sensitivities=derivatives,
                             scope=cfg['strategy'],llm_executed=real and costs['LLM_calls']>0)
     with (root/'M1_CANDIDATES.csv').open('xb') as f:f.write((exported.parent/'m1_samples.csv').read_bytes())
     with (root/'SUBREGION_EXECUTION.csv').open('x',encoding='utf-8-sig',newline='') as f:

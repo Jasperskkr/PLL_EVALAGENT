@@ -66,7 +66,7 @@ def prepare_context(context_path, new_problem_path, out, *, calibration_budget):
                           reused_points=len(rows), old_problem_sha256=old['problem']['problem_sha256'])
         return out/'physics_context.json', accounting
     # Domain/fixed/topology changes cannot reuse old coordinates or samples as seeds.
-    # Reuse the existing Stage7 engine with a separately bounded part of total budget.
+    # Reuse the existing M1 exploration engine with a separately bounded part of total budget.
     if not active_m1_specs(new) or screen_problem(new)['certificates']:
         # A fresh context is still generated for an explicit current-problem stop.
         needed = 1

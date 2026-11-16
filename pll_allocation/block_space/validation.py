@@ -1,4 +1,4 @@
-"""Stage 1.5 forward-only domain characterization with independently labelled evidence."""
+"""declared behavioral domain forward-only domain characterization with independently labelled evidence."""
 from __future__ import annotations
 from collections import Counter
 from copy import deepcopy
@@ -117,7 +117,7 @@ def run_validation(model_path, out, *, event_tb=True):
             oracle = polynomial_reference(case['parameters'])
             checks = compare(f['prediction']['metrics'],oracle)
             row.update(numerical_reference=oracle,numerical_comparisons=checks,
-                       numerical_reference_source='Stage1 polynomial_reference: independent omega^2 magnitude root; SAME_EQUATIONS_NOT_BEHAVIORAL_TRUTH',
+                       numerical_reference_source='M1 model polynomial_reference: independent omega^2 magnitude root; SAME_EQUATIONS_NOT_BEHAVIORAL_TRUTH',
                        numerical_status='CONSISTENT' if all(x['satisfied'] for x in checks.values()) else 'INCONSISTENT')
         if case['event_selected']:
             if simulator is None:
@@ -159,7 +159,7 @@ def run_validation(model_path, out, *, event_tb=True):
         'parameters':reference['case']['parameters'],'validation_status':'M1_VALIDATED',
         'M1_result':reference['forward'],'event_crosscheck':reference.get('event',{}),
         'evidence':'cases/C000/result.json','recommended':True,
-        'selection_reason':'preselected Stage 1 nominal; not tuned to this scan',
+        'selection_reason':'preselected M1 model nominal; not tuned to this scan',
         'constraint_margins':reference['forward']['judgment']['checks'],
         'M2_system_verdict':'NOT_EVALUATED','verified_joint_block_spec':False})
     write_new(out/'sensitivity.json',sensitivity)

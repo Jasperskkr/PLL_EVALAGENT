@@ -236,7 +236,7 @@ def relation_rows():
         row('R_VERIFICATION','行为验收','BW PM UGF Vctrl0 phase_err',
             'D_verified ⊆ {逐个完整候选按冻结协议全部必需指标 PASS}',
             '捕获/lock time 是初值与160µs窗口条件测量。正式PM、1µHz频率认证仍 UNKNOWN；完整已认证域未建立。',
-            'Stage4.1 十个局部点 / Stage5 当前结论'),
+            'phase-step 十个局部点 / Stage5 当前结论'),
         row('R_GAPS','尚缺映射','',
             'Jitter / Phase Noise / Power / RUR：当前无可信数值可行域',
             '补噪声源与频带、功耗定义与模块模型、RUR定义及协议后才能版本化扩展。Icp 不能当总电源电流。',
@@ -323,8 +323,8 @@ DERIVATION = r"""
 
 ## 证据边界和待补映射
 
-- Stage4.1 十个完整参数点支持局部调谐/频响/阶跃映射，最大观测 BW 误差约0.624%；该值是有限样本观测，不作为全域误差界或新增 guard。C01/C08 同产品拆分提供局部等价例子。相关报告保留正式 PM/严格频率 UNKNOWN。
-- Stage5 研究场景明确覆盖 BW/PM 阈值变体，不能把某个场景的结果或范围写回原 SystemSpec；本表默认列原 Stage1.5 快照。
+- phase-step 十个完整参数点支持局部调谐/频响/阶跃映射，最大观测 BW 误差约0.624%；该值是有限样本观测，不作为全域误差界或新增 guard。C01/C08 同产品拆分提供局部等价例子。相关报告保留正式 PM/严格频率 UNKNOWN。
+- Stage5 研究场景明确覆盖 BW/PM 阈值变体，不能把某个场景的结果或范围写回原 SystemSpec；本表默认列原 declared behavioral domain 快照。
 - PFD/Divider 目前没有独立可分配性能轴。CP mismatch/leakage、VCO 曲率、LF 动态负载当前固定零；加宽这些范围需要新模型及验证。
 - 静态相位偏置只可使用旧符号电荷平衡作条件初筛，当前不支持非零参数分配。锁定时间/捕获必须依照初值、窗口和事件协议测量；不使用 1/BW 或二阶 PM 经验式代替。
 - Jitter/phase noise 缺少 PSD、积分频带、源传递与协议；Power 缺供电及各块损耗模型；RUR 未正式定义。这些项目列为缺口，不填写任意经验范围。

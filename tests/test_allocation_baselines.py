@@ -3,18 +3,18 @@ from pathlib import Path
 import math
 import random
 import pytest
-from pll_allocation.track_a.core import (
+from pll_allocation.allocation.core import (
     Meter, assess_m1, fingerprint, load_model, make_candidate, proposal, read,
     validate_proposal, values,
 )
-from pll_allocation.track_a.physics import (
+from pll_allocation.allocation.physics import (
     cheap_predict, inverse_at_shape, phase_interval, pm_ceiling, propagate,
 )
-from pll_allocation.track_a.allocate import analytical, optimize, perturbation_check, sensitivity
-from pll_allocation.track_a.agent import MockPolicy, run_agent
-from pll_allocation.track_a.benchmark import build_targets
-from pll_allocation.track_a.runner import run_first
-from pll_allocation.track_a.repair import repair
+from pll_allocation.allocation.allocate import analytical, optimize, perturbation_check, sensitivity
+from pll_allocation.allocation.agent import MockPolicy, run_agent
+from pll_allocation.studies.allocation_baselines import build_targets
+from pll_allocation.allocation.first_allocation import run_first
+from pll_allocation.allocation.repair import repair
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -148,7 +148,7 @@ def test_proposal_roundtrip_and_hash_tampering(model, spec):
 
 
 def test_initial_candidate_saved_before_final_assessment(model, spec, tmp_path, monkeypatch):
-    import pll_allocation.track_a.runner as runner
+    import pll_allocation.allocation.first_allocation as runner
     original = runner.assess_m1
     out = tmp_path/'run'
     def checked(*args):
@@ -248,7 +248,7 @@ def test_repair_does_not_resubmit_unchanged_peak_center_candidate(model, spec, k
 
 @pytest.mark.parametrize('kind', ['BW', 'PM', 'MODEL_OUT_OF_DOMAIN', 'UNRELIABLE_MEASUREMENT'])
 def test_feedback_agent_tool_route_is_explicitly_mock(model, spec, tmp_path, kind):
-    from pll_allocation.track_a.feedback_agent import MockRepairPolicy, run_repair_agent
+    from pll_allocation.allocation.feedback_agent import MockRepairPolicy, run_repair_agent
     candidate = make_candidate(model)
     feedback = {'schema_version': 'allocation-feedback-1.0', 'parameter_sha256': fingerprint(candidate),
         'source': 'SIMULATED', 'kind': kind, 'verdict': 'FAIL',

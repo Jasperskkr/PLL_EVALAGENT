@@ -7,7 +7,7 @@ from copy import deepcopy
 import math
 import numpy as np
 from .model import parse_parameters, _response, evaluate, fingerprint
-from ..block_space.extensions import validate_noise, source_psd
+from ..block_space.profiles import validate_noise, source_psd
 
 MODEL_ID='cppll-independent-noise-m1-1.0'
 

@@ -1,6 +1,6 @@
 """python -m pll_allocation.physics_mapping --config <json> --out <new-dir>"""
 import argparse
-from .validation import run_stage1
+from .validation import run_validation
 
 
 def main():
@@ -8,7 +8,7 @@ def main():
     parser.add_argument('--config', required=True)
     parser.add_argument('--out', required=True)
     args = parser.parse_args()
-    result = run_stage1(args.config, args.out)
+    result = run_validation(args.config, args.out)
     print(result['numerical_acceptance'], args.out)
 
 

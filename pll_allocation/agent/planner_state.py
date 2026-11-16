@@ -112,10 +112,10 @@ def build_state(explorer, policy_config, history, *, round_number, calls_remaini
     context, problem = explorer.context, explorer.problem
     derivatives = sensitivity(context, explorer.evidence)
     rules = knowledge(context)
-    stage7 = [r for r in explorer.stage7_samples if not r.get('duplicate_of')]
+    unique_calibration_samples = [r for r in explorer.calibration_samples if not r.get('duplicate_of')]
     selected = {}
     for outcome in ('FEASIBLE', 'INFEASIBLE'):
-        for r in representative_rows(stage7, 4, feasibility=outcome):
+        for r in representative_rows(unique_calibration_samples, 4, feasibility=outcome):
             selected[r['evidence_id']] = r
     for rep in derivatives:
         center = rep['center_evidence_id']
@@ -162,7 +162,7 @@ def build_state(explorer, policy_config, history, *, round_number, calls_remaini
              'M1_calls': sum(o['cost']['M1_calls'] for o in record['observations'])} for record in history]}
     origin_counts = Counter(('SENSITIVITY_PROBE' if r['origin'].startswith('SENSITIVITY:') else
                              'SOBOL_GLOBAL' if r['origin'].startswith('SOBOL:') else
-                             'PHYSICS_SEED' if r['origin'].startswith('PHYSICS_SEED:') else 'OTHER') for r in stage7)
+                             'PHYSICS_SEED' if r['origin'].startswith('PHYSICS_SEED:') else 'OTHER') for r in unique_calibration_samples)
     return {'schema_version': 'pll-llm-region-planner-state-1.0', 'round': round_number,
         'problem': {k: problem[k] for k in ('problem_id', 'schema_version', 'problem_sha256', 'topology',
                                            'parameters', 'fixed_parameters', 'specs')},
@@ -172,9 +172,9 @@ def build_state(explorer, policy_config, history, *, round_number, calls_remaini
         'necessary_condition_screen': screen_problem(problem),
         **progress,
         'sensitivity_conflicts': sensitivity_conflicts(derivatives),
-        'calibration': {**calibration, 'stage7_unique_points': len(stage7), 'origins_separately_counted': dict(origin_counts),
+        'calibration': {**calibration, 'stage7_unique_points': len(unique_calibration_samples), 'origins_separately_counted': dict(origin_counts),
             'coverage_boundary': 'Sensitivity perturbations are local evidence, not independent global coverage.', 'M1_outcomes': dict(Counter(
-            r['judgment']['m1_feasibility'] for r in stage7)), 'displayed_samples': samples,
+            r['judgment']['m1_feasibility'] for r in unique_calibration_samples)), 'displayed_samples': samples,
             'coverage': 'Only sampled points carry evidence. Unsampled design space remains unknown.'},
         'sensitivity': derivatives,
         'budget': {'total_new_M1_limit': policy_config['total_m1_budget'], 'calibration_M1_calls': calibration['new_M1_calls'],

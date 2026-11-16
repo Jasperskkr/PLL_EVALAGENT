@@ -24,11 +24,15 @@ def test_all_active_json_configs_are_installed_in_their_own_directory():
 
 def test_relocated_configs_and_profiles_match_recorded_identity():
     receipt=json.loads((ROOT/'configs/provenance/config_paths.json').read_text(encoding='utf-8'))
+    naming=json.loads((ROOT/'configs/provenance/naming_migration.json').read_text(encoding='utf-8'))
+    updates={row['path']: row for row in naming['source_updates']}
     for row in receipt['config_moves']:
         assert not (ROOT/row['old']).exists()
         digest=hashlib.sha256((ROOT/row['new']).read_bytes()).hexdigest()
-        assert digest==row['after_sha256']
-        if row['new']!='configs/pipeline.json':assert digest==row['before_sha256']
+        if digest!=row['after_sha256']:
+            update=updates[row['new']]
+            assert update['before_sha256']==row['after_sha256'] and update['after_sha256']==digest
+        if row['new']!='configs/pipeline.json':assert row['after_sha256']==row['before_sha256']
     for row in receipt['duplicate_config_removals']:
         assert not (ROOT/row['path']).exists()
         assert (ROOT/row['replacement']).is_file()

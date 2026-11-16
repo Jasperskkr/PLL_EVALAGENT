@@ -1,4 +1,4 @@
-"""Stage4 supplemental raw-signal checks and conservative research evidence adapter."""
+"""return-ratio supplemental raw-signal checks and conservative research evidence adapter."""
 from pathlib import Path
 import hashlib
 import numpy as np
@@ -118,20 +118,20 @@ def load_extension(path, proposal):
     item = read(path)
     validate_proposal(proposal)
     if item.get('schema_version') != 'pll-stage4-measurement-extension-1.0':
-        raise ValueError('unsupported Stage4 extension schema')
+        raise ValueError('unsupported return-ratio extension schema')
     for key in ('parameter_sha256', 'block_space_sha256', 'system_spec_sha256', 'proposal_versions'):
         expected = proposal['versions'] if key == 'proposal_versions' else proposal[key]
         if item.get(key) != expected:
-            raise ValueError('Stage4 evidence binding mismatch: '+key)
+            raise ValueError('return-ratio evidence binding mismatch: '+key)
     doc = read(CONFIGS/'verification/return_ratio_protocol.json')
     if item.get('protocol_id') != doc['protocol_id'] or item.get('protocol_sha256') != fingerprint(doc):
-        raise ValueError('Stage4 protocol mismatch')
+        raise ValueError('return-ratio protocol mismatch')
     if set(item['source_hashes']) != {'kernel.cpp', 'return_ratio_kernel.cpp', 'return_ratio_native.py', 'return_ratio.py', 'return_ratio_validity.py'}:
-        raise ValueError('incomplete Stage4 source bindings')
+        raise ValueError('incomplete return-ratio source bindings')
     for name, sha in item['source_hashes'].items():
         if hashlib.sha256((Path(__file__).parent/name).read_bytes()).hexdigest() != sha:
-            raise ValueError('Stage4 source mismatch: '+name)
+            raise ValueError('return-ratio source mismatch: '+name)
     if (any(item['metrics'][k]['value'] is not None or item['metrics'][k]['status'] != 'UNKNOWN' for k in ('PM_deg', 'UGF_Hz'))
             or item.get('verified_joint_block_spec') is not False):
-        raise ValueError('Stage4 research extension cannot silently certify periodic PM/UGF')
+        raise ValueError('return-ratio research extension cannot silently certify periodic PM/UGF')
     return item

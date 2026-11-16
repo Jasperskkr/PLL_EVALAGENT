@@ -1,4 +1,4 @@
-"""Proposal adapters to original Stage7 algebra/Sensitivity and RegionExplorer.
+"""Proposal adapters to original M1 exploration algebra/Sensitivity and RegionExplorer.
 
 No evaluator or alternate feasibility logic is implemented here. Every actual
 M1 candidate passes through RegionExplorer's one cache and hard budget.
@@ -42,7 +42,7 @@ def inverse_proposals(explorer,d,meter,origin):
             return
         c1=physical_coordinate(local['parameters']['C1'],float(u[0]))
         c2=physical_coordinate(local['parameters']['C2'],float(u[1]))
-        # The existing Stage7 extreme/phase-shape pattern is retained, using
+        # The existing M1 exploration extreme/phase-shape pattern is retained, using
         # local continuous bounds; never the frozen discrete capacitor table.
         if i==0:c1,c2=local['parameters']['C1']['min'],local['parameters']['C2']['max']
         shape=math.sqrt(1+c2/c1)*(1.,.8,1.25)[i%3]
@@ -90,7 +90,7 @@ def execute_tool(explorer, *, decision_id,region,tool,seed,config,meter):
         planned,rep=sensitivity_plan(explorer,tool['seed_id'],region['normalized_bounds'])
         d['settings']['sample_count']=len(planned)
         observation=explorer.execute(d,candidate_stream=iter(planned),tool_name='LOCAL_SENSITIVITY')
-        seen={r['parameter_sha256']:r for r in explorer.stage7_samples+explorer.rows}
+        seen={r['parameter_sha256']:r for r in explorer.calibration_samples+explorer.rows}
         def actual(candidate,origin):
             return seen.get(fingerprint(candidate),{'evidence_id':None,'M1_status':'NOT_EVALUATED','metrics':{}})
         local=deepcopy(explorer.problem)

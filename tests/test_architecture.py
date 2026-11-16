@@ -21,6 +21,22 @@ def test_dependency_direction_and_frozen_numerical_implementations():
     assert result['passed'], result
 
 
+def test_naming_guard_rejects_phase_paths_and_imports_but_preserves_schema_data(tmp_path):
+    from tools.audit_architecture import audit_names
+    receipt=tmp_path/'configs/provenance/naming_migration.json'
+    receipt.parent.mkdir(parents=True)
+    receipt.write_text(json.dumps({'compatibility_modules': []}))
+    package=tmp_path/'pll_allocation'
+    package.mkdir()
+    (package/'stage_10.py').write_text('value = 1\n')
+    (package/'consumer.py').write_text('from .stage6c import simulate\n')
+    (package/'profiles.py').write_text('SCHEMA = "pll-stage6c-historical-1.0"\n')
+    result=audit_names(tmp_path)
+    assert not result['passed']
+    assert {row['file'] for row in result['violations']} == {
+        'pll_allocation/stage_10.py', 'pll_allocation/consumer.py'}
+
+
 def test_formal_runtime_with_legacy_imports_blocked():
     script = '''
 import importlib.abc, sys

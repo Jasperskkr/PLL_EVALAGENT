@@ -1,4 +1,4 @@
-"""Fixed Stage8A tools; strategies submit decisions, never M1 judgments."""
+"""Fixed regional executor tools; strategies submit decisions, never M1 judgments."""
 from .contracts import validate_decision
 from .assessment import assess_regions
 

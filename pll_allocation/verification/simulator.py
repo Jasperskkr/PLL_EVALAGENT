@@ -22,7 +22,7 @@ def simulate(parameters, *, duration_s=160e-6, dt_s=.4e-9, initial_control_V=.15
              phase_amplitude_rad=0., modulation_Hz=0., onset_s=50e-6, record_interval_s=20e-9):
     p=validate_parameters(parameters)
     if p['f_ref']!=10e6 or p['N']!=8 or p['Vctrl_min']!=0 or p['Vctrl_max']!=1.2:
-        raise ValueError('UNSUPPORTED: Track B protocol fixes 10MHz x 8 and 0..1.2V rails')
+        raise ValueError('UNSUPPORTED: behavioral verification protocol fixes 10MHz x 8 and 0..1.2V rails')
     if any(type(x) not in (int,float) or not math.isfinite(x) for x in
             (duration_s,dt_s,initial_control_V,phase_amplitude_rad,modulation_Hz,onset_s,record_interval_s)):
         raise ValueError('finite simulation settings required')

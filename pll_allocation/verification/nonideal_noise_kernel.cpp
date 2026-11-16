@@ -1,4 +1,4 @@
-// GENERATED optional Stage6C extension; never hand edit.
+// GENERATED optional nonideal/noise extension; never hand edit.
 #include "kernel.cpp"
 
 // SplitMix64 specified by unsigned 64-bit operations, Box-Muller with open U(0,1).

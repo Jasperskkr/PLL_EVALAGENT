@@ -68,7 +68,7 @@ def verification_request(handoff, *, run_id, observation_id, timeout_s):
         'protocol_sha256': fingerprint(doc), 'timeout_s': timeout_s,
         'budget': {'M2_verifications': 1, 'posthoc_M1_reserve': 1},
         'spec_protocol_mapping': {'BW_Hz': 'unchanged warm-start divided-phase -3dB convergence envelope',
-            'lock_time_s': 'explicit Stage9 mapping from PENDING_M2 to protocol.capture: initial=.15V,160us window; conditional',
+            'lock_time_s': 'explicit verification feedback mapping from PENDING_M2 to protocol.capture: initial=.15V,160us window; conditional',
             'PM_deg': 'NO_M2_CERTIFICATION; original M1 evidence separate', 'jitter_s': 'UNSUPPORTED'}}
     item['request_sha256'] = fingerprint(item)
     return item

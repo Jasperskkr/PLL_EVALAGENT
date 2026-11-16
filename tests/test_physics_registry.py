@@ -97,4 +97,4 @@ def test_existing_cp_sign_and_charge_units_are_explicit():
     assert math.degrees(phi)==pytest.approx(-.036)
     limits=charge_window(.036,fref,icp,icp)
     assert limits['min_C']==pytest.approx(-q) and limits['max_C']==pytest.approx(q)
-    # Nonzero charge is algebraic sign evidence, not a legal Stage1.5 M1/M2 operating condition.
+    # Nonzero charge is algebraic sign evidence, not a legal declared behavioral domain M1/M2 operating condition.

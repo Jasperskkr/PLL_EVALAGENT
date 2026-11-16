@@ -77,7 +77,7 @@ def test_extension_rejects_wrong_binding_or_false_certification(tmp_path, field)
     from pll_allocation.verification import return_ratio_validity as module
     from pll_allocation.physics_mapping.model import fingerprint
     root = Path(__file__).resolve().parents[2]
-    item = json.loads((root/'tests/fixtures/verification/analytical_proposal_stage3a.json').read_text(encoding='utf-8'))
+    item = json.loads((root/'tests/fixtures/verification/analytical_proposal.json').read_text(encoding='utf-8'))
     evidence = {'schema_version': 'pll-stage4-measurement-extension-1.0',
         **{k: item[k] for k in ('parameter_sha256', 'block_space_sha256', 'system_spec_sha256')},
         'proposal_versions': item['versions'], 'protocol_id': protocol()['protocol_id'],

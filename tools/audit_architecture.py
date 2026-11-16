@@ -4,8 +4,41 @@ import ast
 import hashlib
 import json
 from pathlib import Path
+import re
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def audit_names(root=ROOT):
+    """Reject phase-based active filenames/imports; versioned evidence is data."""
+    root=Path(root)
+    receipt=json.loads((root/'configs/provenance/naming_migration.json').read_text(encoding='utf-8'))
+    aliases={row['path'] for row in receipt['compatibility_modules']}
+    pattern=re.compile(r'(?:stage[_-]?\d|track[_-]?[ab](?:[_.-]|$))', re.I)
+    violations=[]
+    sources=[p for folder in ('pll_allocation','tools','tests') for p in (root/folder).rglob('*')
+             if p.suffix in ('.py','.cpp','.cmd') and '__pycache__' not in p.parts
+             and 'fixtures' not in p.parts and not any(part.startswith('build') for part in p.parts[:-1])]
+    for path in sources:
+        rel=path.relative_to(root).as_posix()
+        if rel in aliases or '/_legacy/' in rel:
+            continue
+        if any(pattern.search(part) for part in path.relative_to(root).parts):
+            violations.append({'file':rel,'reason':'phase-based active source path'})
+        if path.suffix!='.py':
+            continue
+        for node in ast.walk(ast.parse(path.read_text(encoding='utf-8'))):
+            if isinstance(node, ast.Import):
+                names=[item.name for item in node.names]
+            elif isinstance(node, ast.ImportFrom):
+                names=[node.module] if node.module else [item.name for item in node.names]
+            else:
+                continue
+            for name in names:
+                if pattern.search(name):
+                    violations.append({'file':rel,'line':node.lineno,'import':name})
+    return {'source_files':len(sources),'compatibility_paths':sorted(aliases),
+            'violations':violations,'passed':not violations}
 
 
 def audit(root=ROOT):
@@ -17,6 +50,10 @@ def audit(root=ROOT):
     violations = []
     imports = []
     for path in paths:
+        # Compatibility aliases are excluded from the active dependency graph.
+        # Their exact identity is checked separately by release interface tests.
+        if path.read_text(encoding='utf-8').startswith('"""Compatibility alias;'):
+            continue
         tree = ast.parse(path.read_text(encoding='utf-8'))
         for node in ast.walk(tree):
             if isinstance(node, (ast.Import, ast.ImportFrom)):
@@ -41,9 +78,11 @@ def audit(root=ROOT):
             actual = hashlib.sha256((root/row['destination']).read_bytes()).hexdigest()
             preserved.append({'file': row['destination'], 'sha256': actual,
                               'byte_identical': actual == row['source_sha256'] == row['destination_sha256']})
+    naming=audit_names(root)
     return {'formal_files': len(paths), 'imports': imports, 'violations': violations,
+            'naming':naming,
             'allocation_preservation': preserved,
-            'passed': not violations and len(preserved) == 6 and all(r['byte_identical'] for r in preserved)}
+            'passed': not violations and naming['passed'] and len(preserved) == 6 and all(r['byte_identical'] for r in preserved)}
 
 
 if __name__ == '__main__':

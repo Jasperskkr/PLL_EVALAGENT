@@ -5,9 +5,9 @@ import math
 from pathlib import Path
 import numpy as np
 import pytest
-from pll_allocation.verification.stage6c_native import simulate
+from pll_allocation.verification.nonideal_noise_native import simulate
 from pll_allocation.verification.simulator import simulate as original
-from pll_allocation.verification.stage6c_identity import check_build
+from pll_allocation.verification.nonideal_noise_identity import check_build
 from pll_allocation.block_space.contracts import make_candidate
 from pll_allocation.pipeline_contracts import load_inputs
 from tools.create_verification_profiles import documents
@@ -20,7 +20,7 @@ def data():
 
 
 def test_generated_reproducible_and_build_bound():
-    assert (HERE/'stage6c_kernel.cpp').read_text(encoding='utf-8')==source()
+    assert (HERE/'nonideal_noise_kernel.cpp').read_text(encoding='utf-8')==source()
     assert check_build()['rng']=='SplitMix64_BoxMuller_1.0'
 
 

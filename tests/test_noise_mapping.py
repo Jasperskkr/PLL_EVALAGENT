@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 from pll_allocation.pipeline_contracts import load_inputs
 from pll_allocation.block_space.contracts import make_candidate
-from pll_allocation.block_space.extensions import validate_noise,source_psd,validate_nonideal,K_B
+from pll_allocation.block_space.profiles import validate_noise,source_psd,validate_nonideal,K_B
 from pll_allocation.physics_mapping.model import evaluate,parse_parameters
 from pll_allocation.physics_mapping.noise import transfers,noise_mapping,noise_sensitivity
 from tools.create_verification_profiles import documents

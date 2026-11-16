@@ -11,7 +11,7 @@ import time
 import numpy as np
 from scipy.signal import welch
 from scipy.stats import t as student_t
-from .stage6c_native import simulate
+from .nonideal_noise_native import simulate
 from .measure import capture_metrics
 from .experiments import write as write_new
 from ..physics_mapping.model import fingerprint

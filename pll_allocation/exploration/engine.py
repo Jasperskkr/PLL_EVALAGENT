@@ -237,11 +237,11 @@ def run_exploration(problem_path, out, *, seed=None, budget=None):
     context['context_sha256'] = fingerprint(context)
     write_new(root/'physics_context.json', context)
     emit('RUN_COMPLETED', action='ExportPhysicsContext', observation=summary,
-         decision='Stop at Stage7; no LLM or M2 execution', scientific_sha256=science_sha, evaluation_cost=costs)
+         decision='Stop at M1 exploration; no LLM or M2 execution', scientific_sha256=science_sha, evaluation_cost=costs)
     result = {**common, **summary, 'strategy': 'stage7_physics_guided_m1_exploration', 'summary': summary,
               'physics_context': 'physics_context.json'}
     write_new(root/'result.json', result)
-    lines = ['# Stage 7 PhysicsExplorationReport', '', f'Problem: `{problem["problem_id"]}` / `{problem["schema_version"]}`',
+    lines = ['# M1 exploration PhysicsExplorationReport', '', f'Problem: `{problem["problem_id"]}` / `{problem["schema_version"]}`',
              f'Status: **{status}**. Seed: {metadata["seed"]}.', '',
              f'Model fingerprint: `{identity["model_sha256"]}`', f'Source fingerprint: `{metadata["source_fingerprint"]}`',
              f'Scientific digest: `{science_sha}`', '',
@@ -256,18 +256,19 @@ def run_exploration(problem_path, out, *, seed=None, budget=None):
              '## Representative regions', '']
     for r in regions['regions']:
         lines.append(f'- {r["region_id"]}: {r["representative_evidence_id"]}; BW={r["representative_metrics"]["BW_Hz"]:.9g}Hz; PM={r["representative_metrics"]["PM_deg"]:.9g}deg; tightest={r["tightest_constraint"]["metric"]}.')
-    lines.extend(['', '## Evidence and Stage8 interface', '',
+    lines.extend(['', '## Evidence and regional execution interface', '',
         '`m1_samples.jsonl` holds full inputs, formal MappingResult, cheap predictions, reasons and per-Spec margins.',
         '`physics_context.json` includes source fingerprints, formulas, regions, sensitivities, evidence hashes and capability limits.',
-        'Read it with `pll_allocation.exploration.load_physics_context(path)`; do not pass this continuous domain to the frozen Stage6B checker.',
+        'Read it with `pll_allocation.exploration.load_physics_context(path)`; do not pass this continuous domain to the frozen joint allocation checker.',
         '', f'Failure: {failure}', ''])
-    with (root/'stage7_report.md').open('x', encoding='utf-8') as stream:
+    with (root/'exploration_report.md').open('x', encoding='utf-8') as stream:
         stream.write('\n'.join(lines))
+    (root/'stage7_report.md').write_bytes((root/'exploration_report.md').read_bytes())
     return result
 
 
 def load_physics_context(path):
-    """Validate exported Stage7 evidence for Stage8 without invoking any solver."""
+    """Validate exported M1 exploration evidence for regional execution without invoking any solver."""
     path = Path(path).resolve()
     context = json.loads(path.read_text(encoding='utf-8'))
     digest = context.pop('context_sha256')

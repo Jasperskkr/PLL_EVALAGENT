@@ -36,5 +36,5 @@ class AllocationStrategyPolicy:
                 'strategy': self.strategy, 'automatic_learning': False}
 
 
-# Public Stage3A API compatibility; implementation and dependencies live here.
+# Compatibility policy name; new callers use AllocationStrategyPolicy.
 TrackAPolicy = AllocationStrategyPolicy

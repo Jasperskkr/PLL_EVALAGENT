@@ -50,9 +50,9 @@ def source():
     assert update in new
     for line in ('u+=dt*branch/c2; v=std::clamp(next,lo,hi);', 'phi+=twopi*f*dt;'):
         assert line in new
-    return '// Generated isolated Stage4.1 stimulus/observation extension; see generator.\n#include "kernel.cpp"\n'+new
+    return '// Generated isolated phase-step stimulus/observation extension; see generator.\n#include "kernel.cpp"\n'+new
 
 
 if __name__ == '__main__':
-    with (HERE/'closed_loop_kernel.cpp').open('x', encoding='utf-8', newline='\n') as stream:
+    with (HERE/'phase_step_kernel.cpp').open('x', encoding='utf-8', newline='\n') as stream:
         stream.write(source())

@@ -12,7 +12,7 @@ SCHEMA='pll-multispec-problem-1.0'
 def validate_problem(problem, config, model, frozen_spec, protocol):
     if problem.get('schema_version')=='pll-multispec-problem-1.1':
         ext=problem.get('behavioral_extension')
-        from ..verification.stage6c import validate_extension
+        from ..verification.nonideal import validate_extension
         validate_extension(ext)
         base=deepcopy(problem);base.pop('behavioral_extension');base['schema_version']=SCHEMA
         rows=base['constraints'];base['constraints']=rows[:4]

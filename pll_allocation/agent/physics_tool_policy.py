@@ -37,7 +37,7 @@ active_variables (nonempty subset of Icp,Rz,C1,C2,f0,Kvco), m1_budget <=budget.m
 Use the tool's ACTUAL box; you cannot silently replace it. SLSQP cost depends on active dimension; use supplied cost models.
 PROBE_REGION: region_id (available constructed region), m1_budget>=1, sample_count (1..128).
 MEASURE_LOCAL_SENSITIVITY: region_id, seed_id (formal seed in that region), m1_budget (allow up to12 calls).
-Uses the existing Stage7 finite-difference stencil with actual M1 charges. Partial stencils remain UNKNOWN.
+Uses the existing M1 exploration finite-difference stencil with actual M1 charges. Partial stencils remain UNKNOWN.
 STOP: stop_basis=SPEC_SATISFIED/BUDGET/STALLED. Cite actual best_known for SPEC_SATISFIED, actual low remaining budget
 for BUDGET, or measured stalled_rounds for STALLED. STOP does not certify pending metrics or mean optimizer convergence.
 REVERIFY: no additional fields beyond the common decision fields. Only available when external_feedback has a
@@ -47,7 +47,7 @@ Initial action must BUILD_PHYSICS_REGION, except an input feedback seed freshly 
 After construction inspect actual formal seed outcomes. When promising,
 OPTIMIZE_LOCAL with enough calls for meaningful updates; further calls receive actual observations. You can change
 physical strategy if no seed was built, choose an already evaluated alternative seed/region or stop honestly.
-This search tool does not itself execute M2. When invoked by Stage9, external_feedback contains the outer
+This search tool does not itself execute M2. When invoked by verification feedback, external_feedback contains the outer
 controller's real native M2 observations and evidence links. Read measurements, failed_constraints,
 remaining_budgets and verification_history before choosing a physical strategy. M1 feasibility alone cannot
 repair M2 FAIL. For BW mismatch use the measured diagnostic offset to choose a different target_bw_fraction;
@@ -102,7 +102,7 @@ def validate_config(raw):
 
 
 def validate_feedback(raw, problem, model_fingerprint):
-    """Future Stage9 input only: never updates M1 archive or certifies M2."""
+    """Future verification feedback input only: never updates M1 archive or certifies M2."""
     if raw is None:
         return None
     require(isinstance(raw, dict) and set(raw) == {'schema_version', 'problem_sha256', 'model_fingerprint',

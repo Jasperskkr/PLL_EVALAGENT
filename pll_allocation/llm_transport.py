@@ -13,7 +13,7 @@ def save(path,value): Path(path).write_text(json.dumps(value,ensure_ascii=False,
 def main():
     parser=argparse.ArgumentParser()
     for flag in ('request','config','response','status'): parser.add_argument('--'+flag,required=True)
-    parser.add_argument('--redacted-body', help='Stage8B: preserve HTTP body with credential removed, without redirects')
+    parser.add_argument('--redacted-body', help='Agent: preserve HTTP body with credential removed, without redirects')
     args=parser.parse_args()
     config=json.loads(Path(args.config).read_text(encoding='utf-8'))
     body=Path(args.request).read_bytes()

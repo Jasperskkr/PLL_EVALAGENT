@@ -83,18 +83,18 @@ class RegionExplorer:
         self.original_problem_hash = fingerprint(self.problem)
         self.original_context_hash = fingerprint(self.context)
         self.source_manifest = sources()
-        self.stage7_samples = [json.loads(s) for s in (self.context_path.parent/'m1_samples.jsonl').read_text(encoding='utf-8').splitlines()]
-        require([s['evidence_id'] for s in self.stage7_samples] == self.context['evidence_ids'] and
-                len(set(self.context['evidence_ids'])) == len(self.stage7_samples), 'Stage7 evidence index mismatch')
-        self.evidence = {s['evidence_id']: deepcopy(s) for s in self.stage7_samples}
-        self.assessment = assess_regions(self.context, self.stage7_samples)
+        self.calibration_samples = [json.loads(s) for s in (self.context_path.parent/'m1_samples.jsonl').read_text(encoding='utf-8').splitlines()]
+        require([s['evidence_id'] for s in self.calibration_samples] == self.context['evidence_ids'] and
+                len(set(self.context['evidence_ids'])) == len(self.calibration_samples), 'M1 exploration evidence index mismatch')
+        self.evidence = {s['evidence_id']: deepcopy(s) for s in self.calibration_samples}
+        self.assessment = assess_regions(self.context, self.calibration_samples)
         self.evidence.update({r['assessment_id']: r for r in self.assessment['regions']})
         self.regions = {r['region_id']: deepcopy(r['normalized_bounds']) for r in self.context['candidate_regions']}
         self.cache = {}
-        for row in self.stage7_samples:
+        for row in self.calibration_samples:
             require(row['problem_sha256'] == self.problem['problem_sha256'] and
                     row['model_fingerprint'] == self.context['model']['model_sha256'] and
-                    row['parameter_sha256'] == fingerprint(row['parameters']), 'Stage7 sample binding mismatch')
+                    row['parameter_sha256'] == fingerprint(row['parameters']), 'M1 exploration sample binding mismatch')
             if row['M1_status'] == 'OK' and not row.get('duplicate_of'):
                 self.cache[fingerprint(row['parameters'])] = deepcopy(row)
         self.root = Path(out).resolve()
@@ -142,6 +142,11 @@ class RegionExplorer:
         with (self.root/name).open('a', encoding='utf-8') as stream:
             stream.write(json.dumps(obj, ensure_ascii=False, allow_nan=False) + '\n')
 
+    @property
+    def stage7_samples(self):
+        """Compatibility view; use calibration_samples."""
+        return self.calibration_samples
+
     def _event(self, event, **data):
         self._append('run_events.jsonl', {**self.metadata, 'event': event, **data, 'cost': self.cost()})
 
@@ -149,7 +154,7 @@ class RegionExplorer:
         require(fingerprint(self.problem) == self.original_problem_hash and
                 fingerprint(self.context) == self.original_context_hash, 'session problem/context mutated')
         require(sources() == self.source_manifest, 'source mutated during session')
-        require(load_physics_context(self.context_path) == self.context, 'Stage7 evidence mutated during session')
+        require(load_physics_context(self.context_path) == self.context, 'M1 exploration evidence mutated during session')
 
     def validate(self, decision):
         require(not self.closed, 'session closed')
@@ -270,7 +275,7 @@ class RegionExplorer:
         constraint_count = sum(sum(b in s for b in ('min', 'max')) for s in self.problem['specs']
                                if s['enabled'] and s['support_status'] == 'M1_SUPPORTED')
         runs = []
-        # The default Stage8A path keeps its existing start order/behavior.
+        # The default regional executor path keeps its existing start order/behavior.
         # Agent opt-in schedules one useful start at a time; early convergence
         # can free the residual budget for another diverse, high-quality seed.
         pending = list(decision['seed_ids'])
@@ -396,7 +401,7 @@ class RegionExplorer:
         """Optional bounded tool proposals share the original screening/cache/M1.
 
         The explicit stream adapter is for exploration tools only; normal
-        Stage8A/B calls retain their existing sampling and SLSQP semantics.
+        regional executor/Agent calls retain their existing sampling and SLSQP semantics.
         """
         if candidate_stream is not None:
             require(tool_name in ('ANALYTICAL_INVERSE', 'PHYSICS_GUIDED_SEEDS', 'LOCAL_SENSITIVITY', 'FEEDBACK_SEED_FRESH_M1', 'LOCAL_CONNECTIVITY'),
@@ -534,7 +539,7 @@ class RegionExplorer:
                     'constraints_json': json.dumps(r['judgment']['constraints'])})
         self._event('SESSION_COMPLETED', result=result)
         write_new(self.root/'result.json', result)
-        lines = ['# Stage 8A Region Exploration Report', '',
+        lines = ['# regional executor Region Exploration Report', '',
                  f'Status: {result["status"]}; actions: {len(self.observations)}.',
                  f'Context: `{self.context["context_sha256"]}`.',
                  f'Model: `{self.metadata["model_fingerprint"]}`.',
@@ -549,11 +554,12 @@ class RegionExplorer:
                          f'{o["latest_minimum_normalized_margin"]}|{o["final_recheck_status"]}|'
                          f'{", ".join(r["status"] for r in o["solver_runs"])}|')
         lines.extend(['', 'Full inputs/results/reasons are in m1_samples.jsonl. Cache rows reference the original evidence ID.',
-                      'planner_state.json includes Stage7 PhysicsContext, assessment, observations and remaining budget.',
+                      'planner_state.json includes M1 exploration PhysicsContext, assessment, observations and remaining budget.',
                       'These are explicit fixed-algorithm decisions, not LLM decisions or M2 verification.',
                       '', f'Failure: {failure}', ''])
-        with (self.root/'stage8a_report.md').open('x', encoding='utf-8') as stream:
+        with (self.root/'region_exploration_report.md').open('x', encoding='utf-8') as stream:
             stream.write('\n'.join(lines))
+        (self.root/'stage8a_report.md').write_bytes((self.root/'region_exploration_report.md').read_bytes())
         write_new(self.root/'output_manifest.json', {**self.metadata, 'artifacts': {
             p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(self.root.iterdir()) if p.is_file()}})
         self.closed = True
@@ -561,7 +567,7 @@ class RegionExplorer:
 
 
 def run_region_exploration(context_path, decisions_path, out, *, m1_budget):
-    """CLI/GUI/tool shared batch interface; reads saved Stage7, never resamples it."""
+    """CLI/GUI/tool shared batch interface; reads saved M1 exploration, never resamples it."""
     raw = json.loads(Path(decisions_path).read_text(encoding='utf-8-sig'))
     require(isinstance(raw, list), 'decisions file must be a JSON list')
     explorer = RegionExplorer(context_path, out, m1_budget=m1_budget)

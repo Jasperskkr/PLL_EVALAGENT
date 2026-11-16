@@ -183,7 +183,7 @@ class PhysicsToolSearchLoop(AgentSearchLoop):
 
 def run_initial_allocation(problem_config, out, *, config, provider_config=None, initial_context=None,
                            feedback=None, policy=None):
-    """Stage9-ready initial-search function; never invokes an M2 evaluator."""
+    """verification feedback-ready initial-search function; never invokes an M2 evaluator."""
     cfg = validate_config(config); problem = load_problem(problem_config)
     path = initial_context
     if path is None:

@@ -29,7 +29,7 @@ class CandidateArchive:
     def sync(self):
         """All original evidence remains on disk even when revalidation excludes it."""
         import json
-        for source, rows in [('STAGE7_CALIBRATION', self.explorer.stage7_samples),
+        for source, rows in [('STAGE7_CALIBRATION', self.explorer.calibration_samples),
                              ('STAGE8B_SEARCH', self.explorer.rows)]:
             for row in rows:
                 sid = row['evidence_id']

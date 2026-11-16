@@ -17,7 +17,7 @@ from ..physics_mapping.model import fingerprint
 def was_formal_call(row):
     """An evaluator exception is a charged call even without a MappingResult.
 
-    Legacy Stage7 evidence predates the explicit call flag. New executor rows
+    Legacy M1 exploration evidence predates the explicit call flag. New executor rows
     always carry it, and that authoritative flag includes failed calls.
     """
     return bool(row.get('formal_M1_called', row.get('formal_M1_result')))
@@ -26,7 +26,7 @@ def was_formal_call(row):
 def export_context(problem,samples,out,*,cost,sensitivities=(),scope='STAGE7_5_EXPLORATION',llm_executed=False):
     root=Path(out);root.mkdir(parents=True,exist_ok=False)
     samples=deepcopy(samples);sensitivities=deepcopy(sensitivities)
-    # Imported evidence must not collide with a new Stage8 A8S namespace.
+    # Imported evidence must not collide with a new regional execution A8S namespace.
     if scope in ('DETERMINISTIC_PHYSICS_STAGE7','LLM_GUIDED_STAGE7_5'):
         ids={r['evidence_id']:'P75:'+r['evidence_id'] for r in samples}
         for r in samples:
@@ -36,16 +36,16 @@ def export_context(problem,samples,out,*,cost,sensitivities=(),scope='STAGE7_5_E
             for rep in derivative.get('representatives',[]):
                 rep['center_evidence_id']=ids[rep['center_evidence_id']]
                 for col in rep['columns'].values():col['evidence_ids']=[ids.get(i,i) for i in col['evidence_ids']]
-        write_new(root/'evidence_aliases.json',{'pilot_to_exported':ids,'reason':'Avoid collisions with downstream Stage8 request IDs; original evidence preserved'})
+        write_new(root/'evidence_aliases.json',{'pilot_to_exported':ids,'reason':'Avoid collisions with downstream regional execution request IDs; original evidence preserved'})
     model=model_identity()
     meta={'problem_schema_version':problem['schema_version'],'problem_sha256':problem['problem_sha256'],
         'model_fingerprint':model['model_sha256'],'scope':scope}
     common={'metadata':meta,'model':model,'cost':deepcopy(cost),'status':'EVIDENCE_EXPORTED'}
-    # Stage7 selects regions from actual sampled points with its original rule.
+    # M1 exploration selects regions from actual sampled points with its original rule.
     usable=[r for r in samples if not r['origin'].startswith(('LOCAL_SENSITIVITY','SENSITIVITY:'))]
     regions=candidate_regions(problem,usable)
     derivatives={'representatives':[r for s in sensitivities for r in s.get('representatives',[])],
-        'scope':'Actual original Stage7 local stencils only; no global derivative theorem',
+        'scope':'Actual original M1 exploration local stencils only; no global derivative theorem',
         'definition':'d(metric / metric_scale) / d(u)'}
     summary={'M1_feasible_sample_count':sum(r['judgment']['m1_feasibility']=='FEASIBLE' and bool(r.get('formal_M1_result')) for r in samples),
         'formal_M1_calls':sum(was_formal_call(r) for r in samples),'whole_regions_certified':False,
@@ -77,7 +77,8 @@ def export_context(problem,samples,out,*,cost,sensitivities=(),scope='STAGE7_5_E
         'exploration_source':scope}
     context['context_sha256']=fingerprint(context)
     write_new(root/'physics_context.json',context)
-    with (root/'stage7_report.md').open('x',encoding='utf-8') as f:
+    with (root/'exploration_report.md').open('x',encoding='utf-8') as f:
         f.write('# M1 exploration evidence\n\n'+json.dumps(summary,ensure_ascii=False,indent=2)+
             '\n\nSource: '+scope+'. Regions are sample-supported suggestions; M2 NOT_EVALUATED.\n')
+    (root/'stage7_report.md').write_bytes((root/'exploration_report.md').read_bytes())
     return root/'physics_context.json'

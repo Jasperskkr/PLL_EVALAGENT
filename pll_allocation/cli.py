@@ -24,7 +24,7 @@ def make_policy(name,out,*,seed=0,llm_config=None,replay=None):
     raise ValueError('invalid policy or missing replay path')
 
 def main():
-    # Stage1.5 unified path has distinct versioned contracts; retain the original v1 CLI.
+    # declared behavioral domain unified path has distinct versioned contracts; retain the original v1 CLI.
     import sys
     if len(sys.argv) > 1 and sys.argv[1] == 'pipeline':
         from .pipeline import main as pipeline_main

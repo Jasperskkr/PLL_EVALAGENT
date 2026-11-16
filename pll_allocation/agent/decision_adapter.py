@@ -1,4 +1,4 @@
-"""LLM proposal envelope -> unchanged Stage8A SearchDecision validator."""
+"""LLM proposal envelope -> unchanged regional executor SearchDecision validator."""
 from copy import deepcopy
 import json
 

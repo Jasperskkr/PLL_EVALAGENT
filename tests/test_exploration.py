@@ -1,4 +1,4 @@
-"""Stage7 continuous-domain acceptance; numerical tests use the real formal M1."""
+"""M1 exploration continuous-domain acceptance; numerical tests use the real formal M1."""
 from copy import deepcopy
 import json
 import math

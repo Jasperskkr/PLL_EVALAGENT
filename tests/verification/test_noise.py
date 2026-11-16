@@ -5,8 +5,8 @@ import math
 import numpy as np
 import pytest
 from scipy.signal import welch
-from pll_allocation.verification.stage6c_identity import check_build,default_build
-from pll_allocation.verification.stage6c_native import simulate,noise_levels
+from pll_allocation.verification.nonideal_noise_identity import check_build,default_build
+from pll_allocation.verification.nonideal_noise_native import simulate,noise_levels
 from pll_allocation.verification.noise import seed_interval,aggregate,estimate_phase,validate_protocol
 from pll_allocation.pipeline_contracts import load_inputs
 from pll_allocation.block_space.contracts import make_candidate

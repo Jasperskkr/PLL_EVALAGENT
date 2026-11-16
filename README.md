@@ -84,6 +84,8 @@ python -m pll_allocation pipeline --handoff experiments/my_allocation_01/verific
 
 2026-11-16 配置/工具整理后的共享版验收：精简源码快照中重建四个原生后端，750 项测试通过、10 项历史档案测试跳过。真实确定性分配得到 M1 可行候选；M2 BW≈229.00kHz，但条件捕获54µs超过40µs，因此如实报告 FAIL。重构前后候选与指标相同。本轮没有新增真实 LLM 研究调用，详见[整理说明](docs/RELEASE_NOTES.md)。
 
+本次后续职责命名迁移完成21项文件迁移，完整回归763通过、10项历史档案跳过；三个扩展后端12组旧/新DLL输出逐字节一致，正式M1/M2指标与判决保持。新增命名规则检查及兼容测试，详见[命名说明](docs/NAMING.md)与[实际验收](docs/RUNNING.md)。
+
 共享源码不含 GUI、实验输出、波形、DLL、原始 API 日志或凭据。保留少量必要测试夹具和来源哈希合同。Git 历史未重写；可用 `git clone --depth 1` 或下载最新版源码避免获取完整历史。
 
 - [架构与调用链](docs/ARCHITECTURE.md)
@@ -91,6 +93,7 @@ python -m pll_allocation pipeline --handoff experiments/my_allocation_01/verific
 - [运行、配置、测试](docs/RUNNING.md)
 - [审查重点和研究边界](docs/REVIEW_GUIDE.md)
 - [名称迁移和兼容合同](docs/COMPATIBILITY.md)
+- [职责命名规则与完整迁移表](docs/NAMING.md)
 - [本次整理说明](docs/RELEASE_NOTES.md)
 
 当前研究目标、实现状态、验收和下一步见 [PROJECT_CHARTER.md](PROJECT_CHARTER.md)。原始任务全文已在本地历史目录留档；研究目标不等于已经完成的认证。

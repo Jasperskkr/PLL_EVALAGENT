@@ -62,7 +62,7 @@ def freeze(out):
         'guard_origin':'topology numerical scales, arbitrary 1000Ohm gauge, +/-3 decades; same for all Specs',
         'model_hard_conditions':['positive finite SI','N=8,fref=10MHz','ideal fixed topology','interior tuning within0..1.2V'],
         'phase1_M1_limit':128,'phase2_M1_limit':128,'max_regions':3,'region_caps':[43,43,42],
-        'initial_Stage7_M1':0,'bootstrap':'Explicit EMPTY_BOOTSTRAP, no prepare_initial; original default remains unchanged',
+        'initial_M1 exploration_M1':0,'bootstrap':'Explicit EMPTY_BOOTSTRAP, no prepare_initial; original default remains unchanged',
         'phase1_schedule':['shared scale_context analytical prior','numeric planner window','HIGH_PM_LF_SHAPE builder3seeds',
             'Sobol8M1','original SLSQP remaining regional budget'],
         'phase2_schedule':['SLSQP32','Sensitivity12','DIVERSITY_EXPLORATION inverse8','two SLSQP24 starts',
@@ -368,7 +368,7 @@ class Trial:
             'top8_count':len(self.selected),'top8_points':self.selected,'point_diversity_min_rms':min(distances,default=None),
             'point_diversity_max_rms':max(distances,default=None),'pairwise_distances':distances,
             'local_connectivity':self.connectivity,'actual_windows':self.plans,'timing':timing,
-            'initial_Stage7_calibration_M1_calls':0,'started_utc':self.started_utc,'completed_utc':utc(),
+            'initial_M1 exploration_calibration_M1_calls':0,'started_utc':self.started_utc,'completed_utc':utc(),
             'M2_calls':0,'FULL_SYSTEMSPEC_CERTIFIED':False}
         require(self.calls()==len(formal),'formal call ledger mismatch')
         require(p1<=128 and self.calls()-p1<=128,'phase budget exceeded')

@@ -1,11 +1,11 @@
-"""Stage4.1 true event-loop compatibility and non-fabricated metric safeguards."""
+"""phase-step true event-loop compatibility and non-fabricated metric safeguards."""
 from copy import deepcopy
 from pathlib import Path
 import runpy
 import numpy as np
 import pytest
-from pll_allocation.verification.closed_loop_native import simulate_step
-from pll_allocation.verification.closed_loop import cycle_average, decay_fit, protocol, analyze
+from pll_allocation.verification.phase_step_native import simulate_step
+from pll_allocation.verification.phase_step import cycle_average, decay_fit, protocol, analyze
 from pll_allocation.verification.experiments import candidate
 from pll_allocation.verification.simulator import simulate
 
@@ -29,7 +29,7 @@ def test_zero_step_original_three_paths_are_identical(overrides):
 def test_generated_extension_preserves_frozen_update_source():
     root = Path(__file__).resolve().parents[2]
     generator = runpy.run_path(str(root/'tools/generate_phase_step_kernel.py'))
-    assert generator['source']().replace('\r\n', '\n') == (root/'pll_allocation/verification/closed_loop_kernel.cpp').read_text(encoding='utf-8')
+    assert generator['source']().replace('\r\n', '\n') == (root/'pll_allocation/verification/phase_step_kernel.cpp').read_text(encoding='utf-8')
 
 
 def test_reference_step_changes_actual_edges_charge_and_voltage():
@@ -77,7 +77,7 @@ def test_bad_working_point_does_not_produce_response_metrics():
 
 
 def test_protocol_cannot_silently_change_certification_or_version(monkeypatch):
-    import pll_allocation.verification.closed_loop as module
+    import pll_allocation.verification.phase_step as module
     item = protocol(); item['formal_UGF_PM_certification'] = True
     monkeypatch.setattr(module, 'read', lambda _: item)
     with pytest.raises(ValueError, match='version/certification'):

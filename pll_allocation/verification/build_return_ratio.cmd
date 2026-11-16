@@ -1,6 +1,6 @@
 @echo off
 setlocal
-set "PLL_RR_BUILD=%~dp0build_stage4"
+set "PLL_RR_BUILD=%~dp0build_return_ratio"
 if not "%~1"=="" set "PLL_RR_BUILD=%~f1"
 if exist "%PLL_RR_BUILD%" exit /b 2
 call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat" >nul

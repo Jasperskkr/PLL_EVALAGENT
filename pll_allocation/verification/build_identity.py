@@ -27,4 +27,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
     with (args.build_dir/'identity.json').open('x', encoding='utf-8') as stream:
         json.dump({'sha256': identities(args.build_dir), 'compiler': 'MSVC C++17 /O2 /EHsc /LD',
-                   'origin': 'explicit build or audited byte-identical Track B DLL'}, stream, indent=2)
+                   'origin': 'explicit build or audited byte-identical behavioral verification DLL'}, stream, indent=2)

@@ -37,12 +37,12 @@ def run_pipeline(out, strategy='analytical', *, config_path=None, proposal_path=
                  m2_budget=None, repair_budget=None, llm_config=None, policy=None, measurement_extension=None,
                  scenario_path=None, seed=None, feedback_from=None,behavioral_extension=None):
     if behavioral_extension:
-        from .verification.stage6c import validate_extension
+        from .verification.nonideal import validate_extension
         validate_extension(behavioral_extension)
         if scenario_path or proposal_path or measurement_extension or feedback_from:
             raise ValueError('explicit joint extension cannot mix legacy research overlays')
     if measurement_extension and not proposal_path:
-        raise ValueError('Stage4 measured evidence requires explicit existing-proposal reverification; cannot contaminate a new first shot')
+        raise ValueError('return-ratio measured evidence requires explicit existing-proposal reverification; cannot contaminate a new first shot')
     config, model, spec, protocol = load_inputs(config_path)
     scenario, binding, scenario_file_hash = None, None, None
     if scenario_path:
@@ -230,7 +230,7 @@ def run_pipeline(out, strategy='analytical', *, config_path=None, proposal_path=
             before = time.perf_counter()
             try:
                 if behavioral_extension:
-                    from .verification.stage6c import verify_extended
+                    from .verification.nonideal import verify_extended
                     measured=verify_extended(deepcopy(item),raw/f'attempt_{index+1:03d}')
                 else:measured = (verify_research if scenario else verify)(deepcopy(item), raw/f'attempt_{index+1:03d}')
                 check_result(measured, item, protocol)
@@ -325,11 +325,11 @@ def run_multispec(out, problem_path, method, *, config_path=None, cache_path=Non
         found={r['path']:r for r in source_identity()}
         backend=Path(__file__).parent/'verification'
         extras=list(backend.glob('*.cpp'))
-        for directory in ('build','build_stage4','build_stage4_1_r2'):
+        for directory in ('build','build_return_ratio','build_phase_step'):
             extras.extend((backend/directory).glob('*.dll'))
             extras.extend((backend/directory).glob('identity.json'))
         if problem.get('behavioral_extension'):
-            from .verification.stage6c_identity import default_build
+            from .verification.nonideal_noise_identity import default_build
             extras.extend(default_build().glob('kernel.dll'));extras.extend(default_build().glob('identity.json'))
             extras.append(package_root/'tools/generate_nonideal_noise_kernel.py')
         for p in extras:
@@ -566,9 +566,9 @@ def main(argv=None):
     _option(parser, '--allocator-config', '--initial-allocation-config', dest='initial_allocation_config', help='Deterministic or real LLM allocation policy and budgets')
     _option(parser, '--initial-context', '--initial-allocation-context', dest='initial_allocation_context', help='Optional saved small Sobol calibration')
     _option(parser, '--feedback-input', '--initial-allocation-feedback', dest='initial_allocation_feedback', help='Optional provenance-bound feedback; does not itself run M2')
-    _option(parser, '--handoff', '--stage9-handoff', dest='stage9_handoff', help='M1-rechecked candidate handoff for real M2')
-    _option(parser, '--verification-problem', '--stage9-problem', dest='stage9_problem', help='Original ResearchProblemV2 for verification provenance')
-    _option(parser, '--verification-config', '--stage9-config', dest='stage9_config', help='M1/M2/LLM budgets and optional feedback search configuration')
+    _option(parser, '--handoff', '--stage9-handoff', dest='verification_handoff', help='M1-rechecked candidate handoff for real M2')
+    _option(parser, '--verification-problem', '--stage9-problem', dest='verification_problem', help='Original ResearchProblemV2 for verification provenance')
+    _option(parser, '--verification-config', '--stage9-config', dest='verification_config', help='M1/M2/LLM budgets and optional feedback search configuration')
     args = parser.parse_args(argv)
     try:
         if args.spec_allocation_ablation:
@@ -589,15 +589,15 @@ def main(argv=None):
                 raise ValueError('A+ mode cannot mix other pipeline modes')
             from .studies.initial_allocation import dispatch
             result=dispatch(args.experiment_a_plus,args.out)
-        elif any((args.stage9_handoff,args.stage9_problem,args.stage9_config)):
-            if not all((args.stage9_handoff,args.stage9_problem,args.stage9_config)):
+        elif any((args.verification_handoff,args.verification_problem,args.verification_config)):
+            if not all((args.verification_handoff,args.verification_problem,args.verification_config)):
                 raise ValueError('verification requires handoff, original problem and explicit config')
-            allowed={'out','llm_config','stage9_handoff','stage9_problem','stage9_config','strategy'}
+            allowed={'out','llm_config','verification_handoff','verification_problem','verification_config','strategy'}
             if any(v is not None and v is not False for k,v in vars(args).items() if k not in allowed) or args.strategy!='analytical':
                 raise ValueError('verification mode cannot mix other pipeline modes')
             from .agent.feedback import run_feedback
-            result=run_feedback(args.stage9_handoff,args.out,problem_config=args.stage9_problem,
-                feedback_config=read(args.stage9_config),provider_config=read(args.llm_config) if args.llm_config else None)
+            result=run_feedback(args.verification_handoff,args.out,problem_config=args.verification_problem,
+                feedback_config=read(args.verification_config),provider_config=read(args.llm_config) if args.llm_config else None)
         elif any((args.initial_allocation_problem,args.initial_allocation_config,args.initial_allocation_context,args.initial_allocation_feedback)):
             if not args.initial_allocation_problem or not args.initial_allocation_config:
                 raise ValueError('integrated initial search requires problem and config')
@@ -614,13 +614,13 @@ def main(argv=None):
                 feedback=read(args.initial_allocation_feedback) if args.initial_allocation_feedback else None)
         elif args.subregion_problem or args.subregion_config or args.subregion_initial_context or args.subregion_calibration_only:
             if not args.subregion_problem or not args.subregion_config:
-                raise ValueError('Stage7.5 requires --subregion-problem and --subregion-config')
+                raise ValueError('regional planning requires --subregion-problem and --subregion-config')
             if any(x is not None for x in (args.config,args.proposal,args.m2_budget,args.repair_budget,
                     args.measurement_extension,args.scenario,args.feedback_from,args.multispec,args.method,
                     args.evaluation_cache,args.explore_problem,args.exploration_budget,args.seed,args.region_context,
                     args.search_decisions,args.region_m1_budget,args.llm_region_context,args.planner_config,
                     args.planner_problem)) or args.strategy != 'analytical':
-                raise ValueError('Stage7.5 explicit configuration cannot mix other modes')
+                raise ValueError('regional planning explicit configuration cannot mix other modes')
             from .agent.subregion_loop import run_subregion,prepare_initial
             if args.subregion_calibration_only:
                 if args.subregion_initial_context or args.llm_config:
@@ -635,23 +635,23 @@ def main(argv=None):
                     initial_context_path=args.subregion_initial_context)
         elif args.llm_region_context or args.planner_config or args.planner_problem:
             if not args.llm_region_context or not args.planner_config:
-                raise ValueError('Stage8B requires --llm-region-context and --planner-config')
+                raise ValueError('Agent requires --llm-region-context and --planner-config')
             if any(x is not None for x in (args.config, args.proposal, args.m2_budget, args.repair_budget,
                     args.measurement_extension, args.scenario, args.feedback_from, args.multispec,
                     args.method, args.evaluation_cache, args.explore_problem, args.exploration_budget,
                     args.seed, args.region_context, args.search_decisions, args.region_m1_budget)) or args.strategy != 'analytical':
-                raise ValueError('Stage8B planner owns configuration and calls Stage8A; cannot mix other modes')
+                raise ValueError('Agent planner owns configuration and calls regional executor; cannot mix other modes')
             from .agent.search_loop import run_agent_search
             result = run_agent_search(args.llm_region_context, args.out, config=read(args.planner_config),
                 provider_config=read(args.llm_config or 'configs/providers/messages_interactive.json'), problem_path=args.planner_problem)
         elif args.region_context or args.search_decisions or args.region_m1_budget is not None:
             if not args.region_context or not args.search_decisions or args.region_m1_budget is None:
-                raise ValueError('Stage8A requires --region-context, --search-decisions and --region-m1-budget')
+                raise ValueError('regional executor requires --region-context, --search-decisions and --region-m1-budget')
             if any(x is not None for x in (args.config, args.proposal, args.m2_budget, args.repair_budget,
                     args.llm_config, args.measurement_extension, args.scenario, args.feedback_from,
                     args.multispec, args.method, args.evaluation_cache, args.explore_problem,
                     args.exploration_budget, args.seed)) or args.strategy != 'analytical':
-                raise ValueError('Stage8A decisions own bounds/seeds/budgets; cannot mix other modes')
+                raise ValueError('regional executor decisions own bounds/seeds/budgets; cannot mix other modes')
             from .region_explorer import run_region_exploration
             result = run_region_exploration(args.region_context, args.search_decisions, args.out,
                                            m1_budget=args.region_m1_budget)
@@ -659,7 +659,7 @@ def main(argv=None):
             if any(x is not None for x in (args.config, args.proposal, args.m2_budget, args.repair_budget,
                     args.llm_config, args.measurement_extension, args.scenario, args.feedback_from,
                     args.multispec, args.method, args.evaluation_cache)) or args.strategy != 'analytical':
-                raise ValueError('Stage7 exploration owns its configuration; cannot mix allocation/M2 modes')
+                raise ValueError('M1 exploration exploration owns its configuration; cannot mix allocation/M2 modes')
             from .exploration import run_exploration
             result = run_exploration(args.explore_problem, args.out, seed=args.seed, budget=args.exploration_budget)
         elif args.exploration_budget is not None:

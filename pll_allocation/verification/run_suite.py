@@ -1,4 +1,4 @@
-"""Extracted Track B convergence comparison and paired capture; no suite/history reads."""
+"""Extracted behavioral verification convergence comparison and paired capture; no suite/history reads."""
 from pathlib import Path
 from .experiments import compare_sweeps, protocol, save_run, write
 

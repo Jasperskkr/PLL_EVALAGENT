@@ -36,7 +36,7 @@ def validate_model(raw):
     if {x['id'] for x in model['joint_constraints']} != JOINT_IDS:
         raise ValueError('executable joint constraint set mismatch')
     if len(model['variable_catalog']) != 41 or len({x['id'] for x in model['variable_catalog']}) != 41:
-        raise ValueError('complete Stage 1 variable semantics required')
+        raise ValueError('complete M1 model variable semantics required')
     if not {'formula_version','parameter_domain_version','behavioral_model_version'} <= set(model['versions']):
         raise ValueError('formula/domain/behavioral version identities required')
     evidence = model.get('validation_evidence', {})

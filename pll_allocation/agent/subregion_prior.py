@@ -49,7 +49,7 @@ def physics_relations(model):
 
 
 def build_prior(explorer,config,history,round_number,correction=None):
-    samples=explorer.stage7_samples+explorer.rows
+    samples=explorer.calibration_samples+explorer.rows
     formal=[s for s in samples if s['M1_status']=='OK' and s.get('formal_M1_result')]
     best=min(formal,key=rank,default=None)
     # At most24 initial actual M1 results; later rounds expose all bounded new
@@ -86,7 +86,7 @@ def build_prior(explorer,config,history,round_number,correction=None):
               'PHYSICS_GUIDED_SEEDS':'Same original inverse generator with continuous caps; alias, not a distinct physics model',
               'LOCAL_SENSITIVITY':'Original six-axis local finite differences centered at one in-region formal evidence point'}},
        'execution_seed':config['seed']+10*round_number,
-       'budget':{'total_M1_hard_limit':config['total_m1_budget'],'initial_actual_M1':sum(was_formal_call(s) for s in explorer.stage7_samples),
+       'budget':{'total_M1_hard_limit':config['total_m1_budget'],'initial_actual_M1':sum(was_formal_call(s) for s in explorer.calibration_samples),
            'session_new_M1':explorer.counts['M1_calls'],'round_M1_limit':config['round_m1_budget'],
            'global_coverage_reserve_M1':config['global_m1_budget'],'max_proposals_per_tool':config['max_tool_proposals'],
            'remaining_decisions':config['max_decisions']-round_number+1},

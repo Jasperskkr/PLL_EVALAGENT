@@ -29,7 +29,13 @@
 
 configs 和 tools 已按职责整理，旧阶段目录及重复配置已移除，详见各目录 README。配置迁移保留数值载荷、冻结 ID 和来源字符串；`pipeline.json` 仅更新文件引用。哈希绑定文件可以迁移，但必须显式记录旧/新身份并重建依赖它的构建。本次收据为 `configs/provenance/config_paths.json`、`verification_profiles.json`，物理映射绑定也已更新。
 
-`verification/stage6c*`、`track_a` 和 `_legacy` 等源码/兼容模块仍实际保留。它们的进一步迁移超出此次 config/tools 清理范围。可选噪声/非理想内核默认构建改用 `build_nonideal.cmd` 和全新 `build_nonideal/`；旧 `PLL_STAGE6C_BUILD_DIR` 显式覆盖仍可用，但源文件身份变化后需重新构建，禁止改写旧身份文件来绕过检查。
+非理想/噪声实现已迁至 `verification/nonideal.py`、`nonideal_noise_native.py`、`nonideal_noise_identity.py`、`nonideal_noise_kernel.cpp`；profile合同使用 `block_space/profiles.py`。相位阶跃使用 `phase_step*`。旧Python路径仅作同一模块的兼容转发，旧C++路径已移除；完整映射见 [命名说明](NAMING.md)。
+
+`track_a` 仅保留兼容入口：首次分配执行迁至 `allocation/first_allocation.py`，基线与模拟修复迁至 `studies/`，历史档案工具迁至 `_legacy/`。新代码和测试使用职责路径；正式执行入口保持 `python -m pll_allocation pipeline`。
+
+原生默认目录为 `build_phase_step/`、`build_return_ratio/`、`build_nonideal_noise/`。`PLL_NONIDEAL_NOISE_BUILD_DIR` 优先于旧 `PLL_STAGE6C_BUILD_DIR`；需要新建构建及其身份文件，不能改写旧身份绕过检查。
+
+本次保留schema、protocol/model ID、strategy/source标签及旧序列化键。旧报告/结果文件仍有兼容副本，优先使用职责名称。全部21项迁移及源码身份变化另记录在 `configs/provenance/naming_migration.json`，原配置迁移收据不被冒充为此次结果。
 
 configs/provenance 保存原实现 SHA 和物理关系绑定。data/behavioral_space_v1/reference 仅保留参考数值代码与来源合同，供独立回归；这些不是新实验数据。
 

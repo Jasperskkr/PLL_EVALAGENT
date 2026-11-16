@@ -38,7 +38,7 @@ cmd /c pll_allocation\verification\build_kernel.cmd
 全套可选扩展回归还需要以下原生构建：
 
 ```powershell
-cmd /c pll_allocation\verification\build_closed_loop.cmd
+cmd /c pll_allocation\verification\build_phase_step.cmd
 cmd /c pll_allocation\verification\build_return_ratio.cmd
 cmd /c pll_allocation\verification\build_nonideal.cmd
 python -m pytest -q
@@ -97,3 +97,16 @@ M2 的 Lock 限初态0.15V、160µs窗口；PM 未认证。联合通过的结论
 旧 `--initial-allocation-problem --initial-allocation-config` 另实跑 infeasible_pm 例题，返回 PROVEN_M1_INFEASIBLE，零 M1/M2/LLM 调用。新旧参数的调度等价性也纳入共享测试。
 
 另外实际执行架构审计，六份原分配实现 SHA 均保持；物理关系图谱生成通过独立数值核对（12次正式M1，零M2/LLM）。两个内核生成器与四份 C++ 源码字节不变，计算窗口适配器迁移前后 AST 相同。配置迁移收据与活动 profile 身份均经回归核对。
+
+
+## 职责命名迁移验收（2026-11-16）
+
+后续命名迁移在本机全新职责目录构建三个扩展后端，生成器与生成源码一致、身份检查通过。完整维护套件 **763 passed / 10 archive skipped，169.53秒**。之后补充命名反例检查并扩展审计覆盖到tools/tests，相关 **38项**接口/架构/config回归通过；最终命名审计调整后架构 **11项**再验通过。这些检查存在重叠，不相加为全套测试总数。
+
+本轮完整测试首轮进程曾在修复前导入Planner变量改名冲突，出现80项失败；修复后新进程重跑全部通过。旧失败日志保留，没有将其隐藏或当作成功。
+
+旧、新DLL做12组直接ABI比较（三个后端、两种步长、两种激励或噪声设置），有效轨迹、边沿、事件与汇总均逐字节相同。两个迁移生成器与新C++源一致；六份原分配实现、理想kernel、profile合同实现、17份profile和6份移动JSON夹具保持原字节。扩展C++仅首行职责注释改变，物理更新与ABI保持。
+
+修复后再次执行正式nominal确定性M1→verify_only M2，与迁移前六参数、M1 metrics/judgment、M2 metrics/constraints/status逐项精确一致；11项绑定检查通过。M1 BW225kHz、PM81.93069884°；M2 BW229004.90846Hz通过，条件捕获54µs失败，PM/jitter UNKNOWN，未签发完整SystemSpec认证。M2耗时9.6022秒，新增1次M1、1次完整M2、106次原生执行、0次LLM。
+
+实际本地证据位于 `experiments/naming_refactor_20261116_01/`：`pytest_02.xml`、`pytest_02.log`、`verifier_pipeline_comparison_02.json`、`verifier_dll_abi_comparison_01.json`、`numerical_source_preservation.json`。实验输出继续被Git忽略；源码附有迁移收据，见 [NAMING](NAMING.md)。

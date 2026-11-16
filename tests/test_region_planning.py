@@ -123,7 +123,7 @@ def test_continuous_box_and_budget(initial,tmp_path,axis):
 
 def test_duplicate_candidates_cached_and_formal_failure_charged(initial,tmp_path,monkeypatch):
     ex=explorer(initial,tmp_path)
-    seed=next(s for s in ex.stage7_samples if s['M1_status']=='OK')
+    seed=next(s for s in ex.calibration_samples if s['M1_status']=='OK')
     from pll_allocation.agent.subregion_tools import envelope
     d=envelope(ex,decision_id='CACHE',region_id='CACHE',bounds={k:[0.,1.] for k in ex.problem['parameters']},budget=3,seed=23,proposals=2)
     o=ex.execute(d,candidate_stream=iter([seed['parameters'],seed['parameters']]),tool_name='PHYSICS_GUIDED_SEEDS')
@@ -142,7 +142,7 @@ def test_config_hard_cap():
 
 def test_true_sensitivity_stencil_is_reused(initial,tmp_path):
     ex=explorer(initial,tmp_path)
-    s=next(r for r in ex.stage7_samples if r['M1_status']=='OK')
+    s=next(r for r in ex.calibration_samples if r['M1_status']=='OK')
     region={'region_id':'SLOPE','normalized_bounds':{k:[0.,1.] for k in ex.problem['parameters']}}
     obs=execute_tool(ex,decision_id='SLOPE',region=region,
         tool={'method':'LOCAL_SENSITIVITY','m1_budget':12,'seed_id':s['evidence_id']},seed=32,config=config(),meter=Meter())
