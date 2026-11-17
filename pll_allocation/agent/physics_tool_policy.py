@@ -89,6 +89,9 @@ def validate_config(raw):
         from .candidate_pool import validate_pool_config
         c['candidate_pool'] = validate_pool_config(c['candidate_pool'])
     require(c['policy'] in ('LLM_PHYSICS_TOOL', 'DETERMINISTIC_PHYSICS_TOOL'), 'unsupported integrated policy')
+    if 'candidate_pool' in c:
+        expected = 'DETERMINISTIC_PHYSICS_TOOL' if c['candidate_pool']['mode'] == 'DETERMINISTIC' else 'LLM_PHYSICS_TOOL'
+        require(c['policy'] == expected, 'candidate pool mode conflicts with initial allocation policy')
     for k in required-{'schema_version', 'policy', 'slsqp'}:
         require(type(c[k]) is int and c[k] >= 0, k+': nonnegative integer required')
     require(1 <= c['max_decisions'] <= 10 and c['max_decisions'] <= c['max_llm_calls'] <= 20 and c['validation_retries'] <= 2,

@@ -1,5 +1,14 @@
 # 共享研究源码整理
 
+## 2026-11-17 新版入口优先与模式边界
+
+- CLI 默认进入连续域多候选分配，问题可显式指定，allocator 默认采用三模式配置；只有 `--out` 时使用并记录 nominal 示例。
+- 旧冻结链改为显式 `--legacy-frozen`；旧 Python runner 与绑定合同保留。v1 `run/suite` 须显式 `--legacy-v1`。冻结的 `llm_agent` 未实现反馈修复这一限制明确记录，不借用新版能力。
+- 在读输入/运行前统一检查路由互斥和所有参数的消费范围，消除 Planner/子区域/探索等分支静默忽略其他路径参数的情况，零值预算同样检查。新版预算使用 allocator JSON。
+- CLI 启动打印实际路由，输出 `execution_route.json`；主结果补路由及实际执行来源。Auto 零 LLM、确定性与 TEST 注入分别标识；保留旧 schema/兼容标签。嵌套候选池模式与 policy 冲突会拒绝；有 Provider/控制器失败的部分结果仍保存，但 CLI 非零退出。
+- 补充入口/误用回归；不改物理公式、M1/M2 测量和判决，不提交实验产物。
+- 独立273文件源码副本重建四个原生后端，完整回归813通过、10项历史档案跳过，`-W error` 下零警告；架构/原算法哈希审计通过。裸默认、仅问题、新反馈/Auto、显式冻结和原单点均实跑；nominal/tight/feedback/Auto 的候选参数、M1指标/判决及推荐 M2 数值与上轮逐项相同。本轮零真实 API，LLM仅离线接口回归。
+
 ## 2026-11-17 多策略多候选 Spec Allocation
 
 共享复现补充：新增 `configs/examples/spec_allocation.json` 八组输入及 `tools/run_allocation_examples.py`，仅生成配置并调用正式 Pipeline；真实 LLM 案例需显式授权与进程环境。更新 tools README、RUNNING、配置说明及多策略产物合同。原始实验、验收详表、波形、审计包与 API 日志保留本地，不随本次源码提交。

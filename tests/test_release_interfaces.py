@@ -37,6 +37,7 @@ def test_initial_cli_dispatches_unchanged_arguments(monkeypatch, tmp_path, legac
     captured = []
     def run(*args, **kwargs):
         captured.append((args, kwargs))
+        Path(args[1]).mkdir()
         return dict(status='TEST_DISPATCH_ONLY', strategy='TEST', cost={}, failure=None)
     monkeypatch.setattr(module, 'run_initial_allocation', run)
     names = ('--initial-allocation-problem', '--initial-allocation-config') if legacy else ('--problem', '--allocator-config')
@@ -54,6 +55,7 @@ def test_verification_cli_dispatches_unchanged_arguments(monkeypatch, tmp_path, 
     captured = []
     def run(*args, **kwargs):
         captured.append((args, kwargs))
+        Path(args[1]).mkdir()
         return dict(status='TEST_DISPATCH_ONLY', strategy='TEST', cost={}, failure=None)
     monkeypatch.setattr(module, 'run_feedback', run)
     names = ('--stage9-handoff', '--stage9-problem', '--stage9-config') if legacy else ('--handoff', '--verification-problem', '--verification-config')

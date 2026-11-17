@@ -90,7 +90,8 @@ class AgentSearchLoop:
         for item in knowledge(self.explorer.context)+sensitivity(self.explorer.context):
             self.explorer.evidence[item['evidence_id']] = item
         write_new(self.root/'run_manifest.json', {'schema_version': 'pll-llm-region-run-1.0',
-            'scope': 'REAL_LLM_REGION_PILOT' if self.real_policy else 'TEST_POLICY_NOT_REAL_LLM',
+            'scope': ('PRODUCTION_PHYSICS_TOOLS' if hasattr(self, 'integrated_config') and not self.injected_policy
+                      else 'REAL_LLM_REGION_PILOT' if self.real_policy else 'TEST_POLICY_NOT_REAL_LLM'),
             'source_context_path': str(Path(context_path).resolve()), 'effective_context_path': str(resolved_context),
             'problem_sha256': self.explorer.problem['problem_sha256'],
             'context_sha256': self.explorer.context['context_sha256'],
@@ -114,7 +115,8 @@ class AgentSearchLoop:
             'M1_limit': self.config['total_m1_budget'], 'calibration': self.calibration,
             'executor': self.explorer.cost(), 'LLM_attempts': self.calls,
             'LLM_calls': sum(c.get('real_network_call', False) for c in calls) if self.real_policy else 0,
-            'test_policy_calls': self.calls if not self.real_policy else 0,
+            'test_policy_calls': self.calls if getattr(self, 'injected_policy', not self.real_policy) else 0,
+            'policy_decisions': self.calls,
             'reported_usage': [c.get('usage') for c in calls],
             'LLM_elapsed_s': sum(c.get('elapsed_s', 0) for c in calls),
             'wall_time_s': time.perf_counter()-self.start, 'process_cpu_s': time.process_time()-self.cpu,

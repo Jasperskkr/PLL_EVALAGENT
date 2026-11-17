@@ -22,8 +22,9 @@ class PhysicsToolSearchLoop(AgentSearchLoop):
     original runner's provider handling, bounded repairs, run states, candidate
     ranking, recommendation recheck and handoff creation.
     """
-    def __init__(self, context_path, out, *, config, provider_config=None, policy=None, feedback=None):
+    def __init__(self, context_path, out, *, config, provider_config=None, policy=None, feedback=None, policy_injected=None):
         cfg = validate_config(config)
+        self.injected_policy = policy is not None if policy_injected is None else policy_injected
         context = load_physics_context(context_path)
         cold = cfg.get('bootstrap') == 'COLD'
         require(context.get('exploration_source') == ('EMPTY_BOOTSTRAP_NO_SEARCH' if cold else 'SMALL_INITIAL_SOBOL_ONLY'),
@@ -83,7 +84,7 @@ class PhysicsToolSearchLoop(AgentSearchLoop):
             'context_sha256': context['context_sha256'], 'problem_sha256': context['problem']['problem_sha256'],
             'model_fingerprint': context['model']['model_sha256'],
             'source_scope': 'Existing AgentSearchLoop/RegionExplorer/CandidateArchive; explicit physical strategy policy adapter',
-            'policy_scope': 'REAL_LLM' if self.real_policy else 'DETERMINISTIC_OR_TEST_POLICY_NOT_REAL_LLM',
+            'policy_scope': 'TEST_POLICY' if self.injected_policy else cfg.get('candidate_pool', {}).get('mode', cfg['policy']),
             'external_feedback_scope': 'OPTIONAL_CALLER_SUPPLIED_NOT_M2_VERIFICATION', 'M2_status': 'NOT_EVALUATED'})
 
     def _build_state(self, round_number, correction):
@@ -94,7 +95,7 @@ class PhysicsToolSearchLoop(AgentSearchLoop):
 
     def _decision_provenance(self):
         return {'region_origin': 'TOOL_COMPUTED_AFTER_JOINT_GLOBAL_INVERSE',
-                'strategy_proposer': 'REAL_LLM' if self.real_policy else 'DETERMINISTIC_OR_TEST',
+                'strategy_proposer': 'TEST_POLICY' if self.injected_policy else 'REAL_LLM' if self.real_policy else 'DETERMINISTIC',
                 'numeric_seed_and_box_proposer': 'PHYSICS_REGION_BUILDER'}
 
     def _seed_allowed(self, seed):
@@ -189,6 +190,10 @@ class PhysicsToolSearchLoop(AgentSearchLoop):
             'attempt_limit': self.integrated_config['construction_attempt_budget'], 'actual_attempts': self.construction_attempts,
             'tool_regions': self.tool_regions, 'M1_authority': 'Only executor/m1_samples.jsonl; proposals are not evaluated claims'})
         return {'strategy': self.integrated_config['policy'], 'region_origin': 'TOOL_CONSTRUCTED_AFTER_JOINT_GLOBAL_INVERSE',
+                'execution_route': 'CONTINUOUS_SINGLE_ALLOCATION',
+                'actual_policy_execution': 'TEST_POLICY' if self.injected_policy else
+                    'REAL_LLM_EXECUTED' if self.cost()['LLM_calls'] else
+                    'DETERMINISTIC_ONLY' if not self.real_policy else 'LLM_BRANCH_NO_REAL_CALL',
                 'm2_reverification_request': deepcopy(self.reverification_request),
                 'constructed_seed_count': sum(len(c['seeds']) for c in self.constructions),
                 'construction_attempts': self.construction_attempts,
@@ -199,6 +204,7 @@ def run_initial_allocation(problem_config, out, *, config, provider_config=None,
                            feedback=None, policy=None):
     """verification feedback-ready initial-search function; never invokes an M2 evaluator."""
     cfg = validate_config(config); problem = load_problem(problem_config)
+    policy_injected = policy is not None
     path = initial_context
     if path is None and cfg.get('bootstrap') == 'COLD':
         from .subregion_context import export_context
@@ -224,5 +230,6 @@ def run_initial_allocation(problem_config, out, *, config, provider_config=None,
           and feedback.get('observations') and feedback['observations'][0]['measurements'].get('schema_version') == 'pll-m2-feedback-summary-1.0'):
         from .deterministic_feedback import DeterministicFeedbackPolicy
         policy = DeterministicFeedbackPolicy()
-    loop = loop_type(path, out, config=cfg, provider_config=provider_config, policy=policy, feedback=feedback)
+    loop = loop_type(path, out, config=cfg, provider_config=provider_config, policy=policy, feedback=feedback,
+                     policy_injected=policy_injected)
     return loop.run()

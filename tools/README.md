@@ -2,6 +2,8 @@
 
 正式运行入口是 `python -m pll_allocation pipeline`。物理工具是现有 Python 函数/类，不需要 MCP 或 Tool Registry。三种策略共享下列实现；Policy 提议动作，Runner 校验、计费并执行，验证器判决。
 
+默认是新版三模式分配，`--problem` 可选当前问题，allocator 省略时使用 `agent/spec_allocation.json`；只给 `--out` 执行 nominal 示例。旧冻结链须显式 `--legacy-frozen`。复现工具继续显式传入每个案例的配置；启动及 `execution_route.json` 记录实际路由，混用参数直接拒绝。旧 v1 `run/suite` 必须加 `--legacy-v1`，不与新版 Agent 能力等同。
+
 ## 可复用分配能力
 
 |能力|源码入口|输入与输出/边界|

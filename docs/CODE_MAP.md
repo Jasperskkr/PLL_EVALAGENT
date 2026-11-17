@@ -13,10 +13,10 @@
 |[pll_allocation/__init__.py](../pll_allocation/__init__.py)|包版本与公开模块标识；声明验证结论限于行为模型。|模块初始化/转发|
 |[pll_allocation/__main__.py](../pll_allocation/__main__.py)|将 python -m pll_allocation 转发给 CLI。|模块初始化/转发|
 |[pll_allocation/behavioral.py](../pll_allocation/behavioral.py)|旧行为内核的输入映射、后端调用和指标判决适配；不是新M2测量公式。|`legacy_inputs` / `screen`|
-|[pll_allocation/cli.py](../pll_allocation/cli.py)|识别 pipeline 并进入正式入口；同时保留旧 v1 run/suite 命令。|`read` / `make_policy`|
+|[pll_allocation/cli.py](../pll_allocation/cli.py)|识别 pipeline 并进入正式入口；旧 v1 run/suite 需显式 --legacy-v1。|`read` / `make_policy`|
 |[pll_allocation/contracts.py](../pll_allocation/contracts.py)|旧 v1 问题、拓扑、候选与单位合同；不等同于新的 ResearchProblemV2。|`ContractError` / `canonical`|
 |[pll_allocation/llm_transport.py](../pll_allocation/llm_transport.py)|隔离的 Messages HTTP 子进程，保存真实响应/状态，使外层能执行总超时。|`save` / `main`|
-|[pll_allocation/pipeline.py](../pll_allocation/pipeline.py)|正式调度：连续域初始分配、Handoff/M2反馈、冻结默认链及显式联合扩展。|`source_identity` / `run_pipeline`|
+|[pll_allocation/pipeline.py](../pll_allocation/pipeline.py)|默认连续域多候选，统一路由/参数消费校验；Handoff/M2反馈、显式冻结兼容与研究扩展。|`_execution_route` / `main`|
 |[pll_allocation/pipeline_contracts.py](../pll_allocation/pipeline_contracts.py)|加载并核对冻结模型/Spec/协议绑定，校验M2返回，形成反馈；不计算物理公式。|`load_inputs` / `check_result`|
 |[pll_allocation/policies.py](../pll_allocation/policies.py)|旧 v1 Rule/Grid/Random/Feedback/Replay/LLM候选策略；保留兼容和基线。|`RulePolicy` / `GridPolicy`|
 |[pll_allocation/runner.py](../pll_allocation/runner.py)|旧 v1 的独立候选/TB验收循环，负责写盘、预算、失败与诊断。|`diagnosis` / `source_snapshot`|
@@ -52,7 +52,7 @@
 
 |文件|基本职责|阅读入口|
 |---|---|---|
-|[pll_allocation/allocation/__init__.py](../pll_allocation/allocation/__init__.py)|冻结默认链的 AllocationPolicy/策略适配；旧llm_agent反馈仍明确未实现，区别于连续域feedback。|`AllocationPolicy` / `AllocationStrategyPolicy`|
+|[pll_allocation/allocation/__init__.py](../pll_allocation/allocation/__init__.py)|冻结兼容链的 AllocationPolicy/策略适配；旧llm_agent反馈仍明确未实现，区别于连续域feedback。|`AllocationPolicy` / `AllocationStrategyPolicy`|
 |[pll_allocation/allocation/__main__.py](../pll_allocation/allocation/__main__.py)|冻结分配基线CLI；正式主线仍使用pipeline。|`main`|
 |[pll_allocation/allocation/agent.py](../pll_allocation/allocation/agent.py)|原工具驱动Agent与MessagesPolicy，分离工具数值、策略与日志；MockPolicy仅用于测试。|`MockPolicy` / `MessagesPolicy`|
 |[pll_allocation/allocation/allocate.py](../pll_allocation/allocation/allocate.py)|原确定性nominal/analytical/敏感度优化/random方案，生成完整参数并作M1评价。|`generated` / `analytical`|
@@ -226,7 +226,8 @@
 |[tests/test_noise_mapping.py](../tests/test_noise_mapping.py)|连续M1噪声的单位、独立KCL、极限、积分与不可外推边界。|`inputs` / `test_transfer_limits_and_units`|
 |[tests/test_nonideal_allocation.py](../tests/test_nonideal_allocation.py)|可选联合噪声/非理想约束、统计来源、优化和未知判决。|`inputs` / `synthetic`|
 |[tests/test_physics_registry.py](../tests/test_physics_registry.py)|关系索引、源/版本绑定、证据不可混用及有限数值扫描的结论边界。|`test_index_only_enables_exact_formal_constraints_and_never_executes` / `test_registry_rejects_source_version_semantic_or_scope_changes`|
-|[tests/test_pipeline.py](../tests/test_pipeline.py)|默认链冻结资产、版本、M2反馈和失败状态；夹具不冒充新M2。|`fixture_result` / `test_frozen_assets_and_packaged_kernel_are_identical`|
+|[tests/test_pipeline.py](../tests/test_pipeline.py)|冻结兼容链资产、版本、M2反馈和失败状态；夹具不冒充新M2。|`fixture_result` / `test_frozen_assets_and_packaged_kernel_are_identical`|
+|[tests/test_execution_routes.py](../tests/test_execution_routes.py)|新版默认/显式兼容分流、参数误用、部分结果失败退出及嵌套策略一致性。|`test_default_and_problem_only_dispatch_new_multi_candidate`|
 |[tests/test_region_executor.py](../tests/test_region_executor.py)|真实M1的区域探测/SLSQP、缓存、预算、非法提案和停止。|`contexts` / `decision`|
 |[tests/test_region_planning.py](../tests/test_region_planning.py)|多区域/工具提案校验与真实M1执行；TEST Policy不计为LLM成果。|`config` / `initial`|
 |[tests/test_release_interfaces.py](../tests/test_release_interfaces.py)|职责名称与旧模块/CLI参数转发同一实现。|`test_module_compatibility` / `test_initial_cli_dispatches_unchanged_arguments`|

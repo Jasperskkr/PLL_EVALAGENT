@@ -2,6 +2,8 @@
 
 这是现有正式 Pipeline 的配置与候选池扩展，使用相同 Physics Inverse、RegionExplorer、M1 和原生 M2。没有重写物理公式、判决或反馈控制器，原有单点配置继续可用。
 
+此路径现为 CLI 默认主线；只指定 `--problem --out` 即使用新版默认配置，只给 `--out` 则使用 nominal 示例。冻结兼容链须显式 `--legacy-frozen`。新版预算只由 allocator JSON 管理，混入旧策略/预算参数会在运行前报错。启动路由和最终 `execution_route.json` 可用于确认实际执行路径，迁移说明见 [COMPATIBILITY](COMPATIBILITY.md)。
+
 ## 模式
 
 |`mode`|行为|

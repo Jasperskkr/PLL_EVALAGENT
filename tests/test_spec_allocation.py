@@ -56,6 +56,11 @@ def test_auto_sufficient_pool_never_enters_llm_branch(tmp_path):
     result = json.loads((tmp_path/'run/initial/result.json').read_text(encoding='utf-8'))
     assert r['pool_target_reached'] and r['cost']['LLM_calls'] == 0
     assert set(result['policy_branches']) == {'DETERMINISTIC'}
+    assert result['actual_policy_execution'] == 'DETERMINISTIC_ONLY'
+    assert result['execution_route'] == 'CONTINUOUS_SPEC_ALLOCATION'
+    decisions = [json.loads(p.read_text(encoding='utf-8')) for p in
+                 (tmp_path/'run/initial').glob('round_*/search_decision.json')]
+    assert decisions and all(d['strategy_proposer'] == 'DETERMINISTIC' for d in decisions)
 
 
 class OfflinePhysicsPolicy:

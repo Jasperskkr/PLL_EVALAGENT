@@ -36,6 +36,11 @@ def source_identity():
 def run_pipeline(out, strategy='analytical', *, config_path=None, proposal_path=None,
                  m2_budget=None, repair_budget=None, llm_config=None, policy=None, measurement_extension=None,
                  scenario_path=None, seed=None, feedback_from=None,behavioral_extension=None):
+    """Explicit frozen compatibility runner; new callers use run_spec_allocation.
+
+    Kept for bound historical proposals, baselines and existing Python clients.
+    The CLI requires --legacy-frozen and never falls back to this function.
+    """
     if behavioral_extension:
         from .verification.nonideal import validate_extension
         validate_extension(behavioral_extension)
@@ -282,7 +287,9 @@ def run_pipeline(out, strategy='analytical', *, config_path=None, proposal_path=
             'M1_posthoc_calls': sum(a.get('M1_posthoc_calls', 0) for a in attempts),
             'M1_total_calls': meter.counts['M1_calls']+sum(a.get('M1_posthoc_calls', 0) for a in attempts),
             'total_elapsed_s': time.perf_counter()-start, 'monetary_cost': None}
-    result = {'schema_version': 'pll-unified-run-result-1.0', 'status': status, 'strategy': strategy,
+    result = {'schema_version': 'pll-unified-run-result-1.0', 'execution_route': 'LEGACY_FROZEN',
+              'compatibility_route': True, 'status': status, 'strategy': strategy,
+              'LLM_feedback_reallocation_supported': False if strategy == 'llm_agent' else None,
               'candidate_origin': 'FEEDBACK_CONTINUATION' if feedback_from else 'EXISTING_PROPOSAL_REVERIFICATION' if proposal_path else 'NEW_ALLOCATION',
               'scenario_binding': binding, 'feedback_parent': str(parent) if feedback_from else None,
               'attempts': attempts, 'cost': cost, 'failure': failure,
@@ -530,23 +537,83 @@ def _option(parser, name, *aliases, **kwargs):
                             help=argparse.SUPPRESS, **legacy)
 
 
+def _execution_route(args):
+    """Choose one explicit route and reject every unused CLI option before IO."""
+    groups = {
+        'ALLOCATION_STUDY': {'experiment_a_plus'},
+        'MULTI_REGION_STUDY': {'multi_region_study'},
+        'ALLOCATION_ABLATION': {'spec_allocation_ablation'},
+        'CONTINUOUS_VERIFICATION': {'verification_handoff', 'verification_problem', 'verification_config'},
+        'CONTINUOUS_ALLOCATION': {'initial_allocation_problem', 'initial_allocation_config',
+                                  'initial_allocation_context', 'initial_allocation_feedback'},
+        'SUBREGION_SEARCH': {'subregion_problem', 'subregion_config', 'subregion_initial_context',
+                             'subregion_calibration_only'},
+        'REGION_AGENT': {'llm_region_context', 'planner_config', 'planner_problem'},
+        'REGION_EXECUTOR': {'region_context', 'search_decisions', 'region_m1_budget'},
+        'M1_EXPLORATION': {'explore_problem'},
+        'FROZEN_MULTISPEC_STUDY': {'multispec'},
+        'LEGACY_FROZEN': {'legacy_frozen'},
+    }
+    supplied = {k for k, v in vars(args).items() if v is not None and v is not False} - {'out'}
+    selected = [name for name, keys in groups.items() if supplied & keys]
+    if len(selected) > 1:
+        raise ValueError('cannot mix execution routes: ' + ', '.join(selected))
+    route = selected[0] if selected else 'CONTINUOUS_ALLOCATION'
+    extra = {
+        'CONTINUOUS_ALLOCATION': {'llm_config'}, 'CONTINUOUS_VERIFICATION': {'llm_config'},
+        'SUBREGION_SEARCH': {'llm_config'}, 'REGION_AGENT': {'llm_config'},
+        'M1_EXPLORATION': {'seed', 'exploration_budget'},
+        'FROZEN_MULTISPEC_STUDY': {'config', 'method', 'evaluation_cache'},
+        'LEGACY_FROZEN': {'strategy', 'config', 'proposal', 'm2_budget', 'repair_budget', 'llm_config',
+                          'measurement_extension', 'scenario', 'seed', 'feedback_from'},
+    }
+    unused = supplied - groups[route] - extra.get(route, set())
+    if unused:
+        raise ValueError('options not consumed by ' + route + ': ' + ', '.join(sorted(unused)) +
+                         '; frozen allocation requires --legacy-frozen; new allocation uses --problem/--allocator-config')
+    if route == 'CONTINUOUS_ALLOCATION':
+        from .verification.resources import CONFIGS
+        if not args.initial_allocation_problem:
+            if supplied:
+                raise ValueError('explicit allocation options require --problem; omission alone runs the nominal example')
+            args.initial_allocation_problem = str(CONFIGS/'problems/nominal.json')
+        if not args.initial_allocation_config:
+            args.initial_allocation_config = str(CONFIGS/'agent/spec_allocation.json')
+    # Keep the old runner's internal default, after detecting explicit misuse.
+    if args.strategy is None:
+        args.strategy = 'analytical'
+    return route
+
+
 def main(argv=None):
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(description=__doc__, epilog=
+        'Default: continuous multi-candidate nominal allocation (DETERMINISTIC). '
+        'Use --problem to select your spec; --allocator-config defaults to agent/spec_allocation.json. '
+        'Frozen compatibility allocation is opt-in with --legacy-frozen.')
     parser.add_argument('--out', required=True)
+    parser.add_argument('--legacy-frozen', action='store_true', help='Explicit frozen compatibility allocation; not the three-mode Agent')
+    _option(parser, '--problem', '--initial-allocation-problem', dest='initial_allocation_problem', help='Current ResearchProblemV2; omission alone runs the nominal example')
+    _option(parser, '--allocator-config', '--initial-allocation-config', dest='initial_allocation_config', help='Three-mode configuration; defaults to agent/spec_allocation.json')
+    _option(parser, '--initial-context', '--initial-allocation-context', dest='initial_allocation_context', help='Optional saved small Sobol calibration for single-point compatibility config')
+    _option(parser, '--feedback-input', '--initial-allocation-feedback', dest='initial_allocation_feedback', help='Optional provenance-bound feedback; does not itself run M2')
+    _option(parser, '--handoff', '--stage9-handoff', dest='verification_handoff', help='M1-rechecked candidate handoff for real M2')
+    _option(parser, '--verification-problem', '--stage9-problem', dest='verification_problem', help='Original ResearchProblemV2 for verification provenance')
+    _option(parser, '--verification-config', '--stage9-config', dest='verification_config', help='M1/M2/LLM budgets and optional feedback search configuration')
+    frozen = parser.add_argument_group('Frozen compatibility options (--legacy-frozen required)')
     _option(parser, '--initial-allocation-study', '--experiment-a-plus', dest='experiment_a_plus', choices=['freeze','reference','run'], help='Optional frozen initial-allocation study; requires study inputs')
     parser.add_argument('--multi-region-study', choices=['freeze','run'], help='Explicit multi-physics subregion scheduling study; existing M1/Builder/Explorer')
     parser.add_argument('--spec-allocation-ablation', choices=['freeze','smoke','task1','task2','task3','report'], help='Sequential M1-only allocation ablations; frozen original evaluator and solver')
-    parser.add_argument('--strategy', default='analytical',
+    frozen.add_argument('--strategy', default=None, help='Frozen compatibility strategy; requires --legacy-frozen',
                         choices=['nominal', 'analytical', 'sensitivity_optimization', 'random', 'llm_agent'])
-    parser.add_argument('--config')
-    parser.add_argument('--proposal', help='Existing allocation proposal for explicit reverification')
-    parser.add_argument('--m2-budget', type=int)
-    parser.add_argument('--repair-budget', type=int)
+    frozen.add_argument('--config', help='Frozen pipeline bindings; also accepted by explicit --multispec study')
+    frozen.add_argument('--proposal', help='Existing frozen allocation proposal for explicit reverification')
+    frozen.add_argument('--m2-budget', type=int, help='Frozen budget only; new modes use allocator JSON')
+    frozen.add_argument('--repair-budget', type=int, help='Frozen repair budget only; new modes use allocator JSON')
     parser.add_argument('--llm-config', help='Existing Messages transport configuration JSON; environment names only')
-    parser.add_argument('--measurement-extension', help='Explicit optional measurement evidence; no certification upgrade')
-    parser.add_argument('--scenario', help='Versioned research threshold overlay; frozen assets unchanged')
+    frozen.add_argument('--measurement-extension', help='Explicit optional frozen measurement evidence; no certification upgrade')
+    frozen.add_argument('--scenario', help='Versioned frozen research threshold overlay')
     parser.add_argument('--seed', type=int, help='Declared random draw seed')
-    parser.add_argument('--feedback-from', help='Prior bound attempt directory with real certified hard FAIL')
+    frozen.add_argument('--feedback-from', help='Prior frozen attempt directory with real certified hard FAIL')
     parser.add_argument('--multispec', help='Versioned joint allocation baseline problem')
     parser.add_argument('--method', choices=['A','B','C'])
     parser.add_argument('--evaluation-cache', help='Shared source/settings-bound complete M2 evidence cache')
@@ -562,15 +629,12 @@ def main(argv=None):
     parser.add_argument('--subregion-config', help='Versioned deterministic/LLM exploration resource configuration')
     parser.add_argument('--subregion-initial-context', help='Shared small Sobol-only calibration')
     parser.add_argument('--subregion-calibration-only', action='store_true', help='Prepare small shared calibration without LLM')
-    _option(parser, '--problem', '--initial-allocation-problem', dest='initial_allocation_problem', help='ResearchProblemV2 for physics-tool joint allocation')
-    _option(parser, '--allocator-config', '--initial-allocation-config', dest='initial_allocation_config', help='Deterministic or real LLM allocation policy and budgets')
-    _option(parser, '--initial-context', '--initial-allocation-context', dest='initial_allocation_context', help='Optional saved small Sobol calibration')
-    _option(parser, '--feedback-input', '--initial-allocation-feedback', dest='initial_allocation_feedback', help='Optional provenance-bound feedback; does not itself run M2')
-    _option(parser, '--handoff', '--stage9-handoff', dest='verification_handoff', help='M1-rechecked candidate handoff for real M2')
-    _option(parser, '--verification-problem', '--stage9-problem', dest='verification_problem', help='Original ResearchProblemV2 for verification provenance')
-    _option(parser, '--verification-config', '--stage9-config', dest='verification_config', help='M1/M2/LLM budgets and optional feedback search configuration')
     args = parser.parse_args(argv)
     try:
+        route = _execution_route(args)
+        print(json.dumps({'event': 'EXECUTION_ROUTE_SELECTED', 'execution_route': route,
+                          'problem': args.initial_allocation_problem,
+                          'allocator_config': args.initial_allocation_config}, ensure_ascii=False), file=sys.stderr)
         if args.spec_allocation_ablation:
             allowed={'out','spec_allocation_ablation','strategy'}
             if args.strategy!='analytical' or any(v is not None and v is not False for k,v in vars(args).items() if k not in allowed):
@@ -609,6 +673,7 @@ def main(argv=None):
                 raise ValueError('explicit initial allocation mode cannot mix other pipelines')
             allocation_config=read(args.initial_allocation_config)
             if allocation_config.get('schema_version')=='pll-spec-allocation-1.0':
+                route = 'CONTINUOUS_SPEC_ALLOCATION'
                 if args.initial_allocation_context:
                     raise ValueError('multi-candidate allocation creates a fresh honest cold context')
                 from .agent.spec_allocation import run_spec_allocation
@@ -616,6 +681,7 @@ def main(argv=None):
                     provider_config=read(args.llm_config) if args.llm_config else None,
                     feedback=read(args.initial_allocation_feedback) if args.initial_allocation_feedback else None)
             else:
+                route = 'CONTINUOUS_SINGLE_ALLOCATION'
                 from .agent.initial_allocation import run_initial_allocation
                 result=run_initial_allocation(args.initial_allocation_problem,args.out,config=allocation_config,
                     provider_config=read(args.llm_config) if args.llm_config else None,
@@ -685,8 +751,14 @@ def main(argv=None):
                               llm_config=read(args.llm_config) if args.llm_config else None,
                               measurement_extension=args.measurement_extension, scenario_path=args.scenario,
                               seed=args.seed, feedback_from=args.feedback_from)
-        print(json.dumps({k: result[k] for k in ('status', 'strategy', 'cost', 'failure')}, ensure_ascii=False))
-        return 2 if result['status'] in ('PIPELINE_ERROR', 'NO_CANDIDATE', 'POLICY_OR_TOOL_FAILED',
+        receipt = {'execution_route': route, 'compatibility_route': route == 'LEGACY_FROZEN',
+                   'problem': args.initial_allocation_problem, 'allocator_config': args.initial_allocation_config,
+                   'result_schema': result.get('schema_version'),
+                   'status': result['status'], 'failure': result.get('failure')}
+        write_new(Path(args.out)/'execution_route.json', receipt)
+        print(json.dumps({k: result[k] for k in ('status', 'strategy', 'cost', 'failure')} |
+                         {'execution_route': route}, ensure_ascii=False))
+        return 2 if result.get('failure') or result['status'] in ('PIPELINE_ERROR', 'NO_CANDIDATE', 'POLICY_OR_TOOL_FAILED',
                                         'INVALID_LLM_DECISION', 'LLM_PROVIDER_FAILED', 'CONTROLLER_ERROR',
                                         'COST_LEDGER_MISMATCH') else 0
     except (ValueError, KeyError, FileExistsError) as error:

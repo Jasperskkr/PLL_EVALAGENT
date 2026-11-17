@@ -137,7 +137,8 @@ def run_spec_allocation(problem_config, out, *, config, provider_config=None, fe
                 LLM_limit=c['llm_budget'])
     require(cost['M1_calls'] <= c['m1_budget'] and cost['M2_verifications'] <= c['m2_budget'] and
             cost['LLM_calls'] <= c['llm_budget'], 'cross-stage allocation hard budget exceeded')
-    result = {'schema_version': SCHEMA, 'status': 'M2_SUPPORTED_METRICS_PASS' if recommended else
+    result = {'schema_version': SCHEMA, 'execution_route': 'CONTINUOUS_SPEC_ALLOCATION',
+        'configuration_schema': SCHEMA, 'status': 'M2_SUPPORTED_METRICS_PASS' if recommended else
         'M1_POOL_ONLY' if candidates else 'NO_FEASIBLE_POINT_FOUND_WITHIN_BUDGET',
         'strategy': c['mode'], 'allocation_mode': c['mode'], 'target_count': c['target_count'],
         'M1_distinct_feasible_count': len(distinct_candidates(ledger, problem, pool_config(c))),

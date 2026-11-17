@@ -24,8 +24,10 @@ SystemSpec + 六轴范围
 先完成下文依赖安装与原生理想内核构建，再运行多候选分配（确定性优先，含预算内原生 M2 和确定性反馈）：
 
 ```powershell
-python -m pll_allocation pipeline --problem configs/problems/nominal.json --allocator-config configs/agent/spec_allocation.json --out experiments/my_pool_01
+python -m pll_allocation pipeline --problem configs/problems/nominal.json --out experiments/my_pool_01
 ```
+
+省略 `--allocator-config` 默认使用三模式配置 `configs/agent/spec_allocation.json`。只给 `--out` 也走新版，使用明确记录的 nominal 示例；自定义问题请传 `--problem`。旧冻结链必须显式加 `--legacy-frozen`，不再隐式回落。每次启动打印实际路由，输出 `execution_route.json`；不同模式参数混用会在运行前报错。
 
 `spec_allocation.json` 的 `mode` 可选 `DETERMINISTIC`、`LLM_PHYSICS_GUIDED`、`AUTO_HYBRID`；`target_count` 为 K，`m1_budget`/`m2_budget` 是含独立复核及 posthoc 的总预算。`minimum_margin` 与 `minimum_distance` 分别控制正式 M1 最小归一化裕量和六轴归一化距离。默认 Cold Start 零校准反解，候选不足再搜索；M2 先试高质量、不同的池内候选，再按预算反馈重分配。达到 K 仅结束 M1 搜索；可继续 M2 找至少一个支持指标通过点。
 
@@ -45,16 +47,16 @@ python -m pip install -e ".[integration,test]"
 python -m pll_allocation pipeline --help
 ```
 
-**确定性分配和 M1：**
+**保留的连续域单点配置（只执行 M1）：**
 
 ```powershell
 python -m pll_allocation pipeline --problem configs/problems/nominal.json --allocator-config configs/agent/deterministic.json --out experiments/my_allocation_01
 ```
 
-**真实 LLM 分配：**先在本机设置 `ANTHROPIC_BASE_URL`、`ANTHROPIC_AUTH_TOKEN`、`ANTHROPIC_MODEL`。名称沿用现有环境合同，实际服务须支持 Messages-compatible HTTPS 请求。
+**新版真实 LLM 分配：**先在本机设置 `ANTHROPIC_BASE_URL`、`ANTHROPIC_AUTH_TOKEN`、`ANTHROPIC_MODEL`。名称沿用现有环境合同，实际服务须支持 Messages-compatible HTTPS 请求；以下命令明确授权本次预算内调用。
 
 ```powershell
-python -m pll_allocation pipeline --problem configs/problems/nominal.json --allocator-config configs/agent/llm_physics.json --llm-config configs/providers/messages.json --out experiments/my_agent_01
+python tools/run_allocation_examples.py --case llm --allow-paid-llm --out experiments/my_agent_01
 ```
 
 **真实 M2：**默认脚本使用 VS 2022 Community 标准安装位置，拒绝覆盖已有构建目录。

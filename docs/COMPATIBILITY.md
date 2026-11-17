@@ -2,6 +2,27 @@
 
 主阅读路径按职责命名。核心物理公式、原反解/数值求解、测量算法和判决语义保持原实现。
 
+## 执行入口收口（2026-11-17）
+
+新版连续域、多候选分配是默认主线。`pipeline --problem <problem> --out <fresh>` 默认加载 `configs/agent/spec_allocation.json`；只有 `--out` 时使用 nominal 示例及同一新版配置，并明确记录路径。仅提供 Provider、种子或旧策略参数不会自动选择问题，也不会隐式执行旧链。
+
+|用途|明确入口|实际路由标识|
+|---|---|---|
+|新版三模式多候选|`pipeline --problem ... --out ...`，可选 `--allocator-config`|`CONTINUOUS_SPEC_ALLOCATION`|
+|原连续域单点|显式 `--problem ... --allocator-config configs/agent/deterministic.json` 或 `llm_physics.json`|`CONTINUOUS_SINGLE_ALLOCATION`|
+|连续域 M2/反馈|`--handoff --verification-problem --verification-config`|`CONTINUOUS_VERIFICATION`|
+|冻结兼容分配|`pipeline --legacy-frozen --strategy analytical --out ...`|`LEGACY_FROZEN`|
+|更早 v1 合同|`python -m pll_allocation --legacy-v1 run ...` / `suite ...`|历史 v1；不代表新版 Agent|
+|可选研究/工具模式|`--multispec`、`--explore-problem` 等显式选择|各自独立路由；不隐式进入主分配链|
+
+旧冻结 CLI 命令须增加 `--legacy-frozen`；Python `pipeline.run_pipeline` 仍保留同一冻结实现，供历史绑定与回归显式调用。旧 `--strategy llm_agent` 的反馈重分配仍未实现，结果会明确记录该能力限制，不借用新版能力作承诺。旧六参数/Proposal 不能直接绕过新版 Handoff/问题绑定。
+
+所有模式在读输入或执行工具前检查参数是否实际被消费：例如新版不能带旧 `--m2-budget`、`--repair-budget`、`--strategy`；这些预算在新版 allocator JSON 中配置。显式传 `--strategy analytical` 也会报错，不能把它误当作新版策略覆盖。混用探索、Planner、子区域或冻结参数同样拒绝，零值预算也不例外。
+
+CLI 启动在 stderr 打印 `EXECUTION_ROUTE_SELECTED`，结果目录保存 `execution_route.json`。新结果保留原 schema 和状态，补实际路由；候选池结果及逐轮决策记录真实策略来源，反馈结果的 `actual_execution` 区分原生/TEST、M2 是否执行与真实 API 次数。兼容的历史 `mode/strategy/scope` 标签不能代替调用证据。存在 Provider/控制器失败时即使保留了部分 M1 点，CLI 也以非零退出并保留结果。
+
+例如显式连续域单点确定性配置仍可能保留 `status=STOPPED_BY_LLM` 这一历史停止标签，但 `actual_policy_execution=DETERMINISTIC_ONLY`、`cost.LLM_calls=0`、`cost.test_policy_calls=0` 明确说明实际执行；不要将旧标签用于统计真实调用。新版主线的三模式结果、实际路由、候选和真实调用成本是应优先读取的字段。
+
 |旧称|新路径/概念|
 |---|---|
 |Stage7|exploration：物理探索/PhysicsContext|

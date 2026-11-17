@@ -330,6 +330,10 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
                   M1_limit=cfg['m1_budget'],M2_limit=cfg['m2_budget'],LLM_limit=cfg['llm_budget'])
     changed=any(a['candidate_sha256']!=b['candidate_sha256'] for a,b in zip(history,history[1:]))
     result={'schema_version':'pll-stage9-result-1.0','status':termination,'strategy':'stage9_existing_physics_tool_feedback',
+        'execution_route':'CONTINUOUS_VERIFICATION',
+        'actual_execution':{'M2_executor':'TEST_INJECTED' if m2_executor is not None else 'NATIVE',
+            'M2_executed':counts['M2_verifications']>0, 'real_LLM_calls':counts['LLM_calls'],
+            'policy_injected':policy is not None, 'configured_mode':pool['mode'] if pool else cfg['search']['policy']},
         'run_id':run_id,'problem_sha256':initial['problem_sha256'],'M1_model_fingerprint':initial['model_fingerprint'],
         'initial_handoff_sha256':initial['handoff_sha256'],
         'termination_reason':termination,'mode':mode,'m1_allocation_status':'KNOWN_FEASIBLE_PRESERVED',

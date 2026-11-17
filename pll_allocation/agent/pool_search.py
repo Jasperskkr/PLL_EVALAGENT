@@ -87,9 +87,9 @@ class PoolSearchLoop(PhysicsToolSearchLoop):
     Cold bootstrap initialization is shared with PhysicsToolSearchLoop. No
     alternate M1, optimizer, physical formulas or behavioral verdicts exist here.
     """
-    def __init__(self, context_path, out, *, config, provider_config=None, policy=None, feedback=None):
+    def __init__(self, context_path, out, *, config, provider_config=None, policy=None, feedback=None, policy_injected=None):
         self.pool_config = config['candidate_pool']
-        self.injected_policy = policy is not None
+        self.injected_policy = policy is not None if policy_injected is None else policy_injected
         self.on_demand_calibration = None
         if self.pool_config['mode'] != 'DETERMINISTIC':
             if isinstance(policy, LLMRegionPolicy):
@@ -97,7 +97,8 @@ class PoolSearchLoop(PhysicsToolSearchLoop):
             policy = PoolLLMPolicy(provider_config, self.pool_config, offline_policy=policy)
         elif policy is None:
             policy = PoolDeterministicPolicy()
-        super().__init__(context_path, out, config=config, provider_config=provider_config, policy=policy, feedback=feedback)
+        super().__init__(context_path, out, config=config, provider_config=provider_config, policy=policy, feedback=feedback,
+                         policy_injected=self.injected_policy)
         self.explorer.stop_when = lambda row: self._search_target_reached()
 
     def _pool(self, quality_only=False):
@@ -135,6 +136,12 @@ class PoolSearchLoop(PhysicsToolSearchLoop):
         if raw.get('action') == 'STOP' and raw.get('stop_basis') == 'SPEC_SATISFIED' and not self._search_target_reached():
             raise ValueError('SPEC_SATISFIED cannot stop before K distinct quality-qualified M1 points')
         return super()._adapt(raw, state, round_number)
+
+    def _decision_provenance(self):
+        branches = getattr(self.policy, 'branch_history', [])
+        return super()._decision_provenance() | {
+            'strategy_proposer': 'TEST_POLICY' if self.injected_policy else branches[-1] if branches else 'DETERMINISTIC',
+            'execution_route': 'CONTINUOUS_SPEC_ALLOCATION'}
 
     def _execute(self, decision):
         executed, observations, outcome = super()._execute(decision)
@@ -186,6 +193,10 @@ class PoolSearchLoop(PhysicsToolSearchLoop):
 
     def _result_fields(self):
         return super()._result_fields() | {'allocation_mode': self.pool_config['mode'],
+            'execution_route': 'CONTINUOUS_SPEC_ALLOCATION',
+            'actual_policy_execution': 'TEST_POLICY' if self.injected_policy else
+                'REAL_LLM_EXECUTED' if self.cost()['LLM_calls'] else 'DETERMINISTIC_ONLY' if
+                not getattr(self.policy, 'branch_history', []).count('LLM_PHYSICS_GUIDED') else 'LLM_BRANCH_NO_REAL_CALL',
             'execution_scope': 'TEST_POLICY_NOT_REAL_LLM' if self.injected_policy else 'PRODUCTION_PHYSICS_TOOLS',
             'M1_distinct_feasible_count': len(self._pool()), 'M1_quality_count': len(self._pool(True)),
             'pool_target_reached': self._search_target_reached(),

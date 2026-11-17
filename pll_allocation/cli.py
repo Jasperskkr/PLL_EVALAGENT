@@ -30,6 +30,7 @@ def main():
         from .pipeline import main as pipeline_main
         return pipeline_main(sys.argv[2:])
     parser=argparse.ArgumentParser(description='Behavioral joint PLL BlockSpec allocation')
+    parser.add_argument('--legacy-v1', action='store_true', help='Opt in to historical run/suite contracts; use pipeline for current allocation')
     sub=parser.add_subparsers(dest='command',required=True)
     single=sub.add_parser('run')
     single.add_argument('--problem',required=True); single.add_argument('--out',required=True)
@@ -41,6 +42,9 @@ def main():
     suite.add_argument('--cases',nargs='+',default=['regular80','tight80','finite_domain80','joint84','unsupported_jitter80'])
     suite.add_argument('--policies',nargs='+',default=['rule','grid','random']); suite.add_argument('--seed',type=int,default=0)
     args=parser.parse_args()
+    if not args.legacy_v1:
+        parser.error('run/suite are historical v1 routes; use python -m pll_allocation pipeline, '
+                     'or explicitly opt in with --legacy-v1 before run/suite')
     try:
         if args.command=='run':
             policy=make_policy(args.policy,args.out,seed=args.seed,llm_config=args.llm_config,replay=args.replay)

@@ -2,6 +2,10 @@
 
 所有命令从仓库根目录执行。推荐 Python 3.12，安装 `python -m pip install -e ".[integration,test]"`。当前原生 TB 验证环境是 Windows x64/MSVC 2022，不声称其他平台已经验收。
 
+默认入口现为新版连续域、多候选分配：`pipeline --problem <problem.json> --out <fresh>` 可省略 allocator 配置；只给 `--out` 使用 nominal 示例并记录输入路径。旧冻结命令须增加 `--legacy-frozen`；更早的 `run/suite` 须在子命令前加 `--legacy-v1`。不同路径参数混用会在读输入前拒绝，不能在新版命令使用旧 `--strategy` / `--m2-budget` 作为覆盖。每次 CLI 输出 `execution_route.json`，迁移表见 [COMPATIBILITY](COMPATIBILITY.md)。
+
+入口收口后独立源码复核：273份源码运行前后哈希不变，四个后端重建成功，完整回归 **813 passed / 10 archive skipped / 0 warnings**（启用 UTF-8、`-W error`）。默认新版、仅 tight 问题、feedback、Auto 均找到原生 M2 支持指标通过点；显式冻结仍可运行，原单点仅 M1 且正确记录零 LLM/零 TEST 调用。四组新版的候选六参数、M1 指标/判决及推荐 M2 数值与上轮逐项一致。本轮未调用真实 API，LLM 选择接口使用离线回归；未升级 PM/jitter 的 UNKNOWN。
+
 ## 新克隆源码的多策略复现
 
 共享源码包含求解/验证实现、输入配置、原生 C++ 源码和构建脚本，不包含历史实验、DLL 或 API 凭据。无需取回旧实验目录。

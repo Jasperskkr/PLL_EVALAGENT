@@ -4,6 +4,8 @@
 
 2026-11-17 状态补充：已在原 Pipeline 上加入三模式多候选 Spec Allocation、V2 Cold Start 和正式确定性反馈工具；nominal/tight 快速 M1、选点原生 M2、确定性反馈、真实 LLM 与 Auto 切换已做小规模实跑。完整 M2 PM/jitter 仍 UNKNOWN，尚无策略优越性结论。共享源码新增八组输入模板与薄封装复现工具，不依赖本地实验产物；使用范围、配置与判决见 [多策略分配说明](docs/SPEC_ALLOCATION.md)，运行步骤见 [RUNNING](docs/RUNNING.md)。
 
+入口收口：新版多候选链成为默认，旧冻结 CLI 只允许显式 `--legacy-frozen`，历史 v1 命令须 `--legacy-v1`；旧 Python 接口与验证合同保留。新增统一参数互斥/消费校验、执行路由证据和实际策略来源，避免把旧首次分配、旧标签或部分结果当成新版闭环成功。物理和判决不变。
+
 ## 1. 研究问题与交付对象
 
 给定 SystemSpec、固定 Integer-N CPPLL 行为拓扑和六个模块变量的允许范围，研究物理先验引导的 Agent，能否用较少的正式评价与行为级仿真，完成首次联合分配，并在验证失败后利用有限反馈重新分配。

@@ -13,14 +13,16 @@
 |`verification/m2_protocol.json`|正式理想行为 TB 的测量、数值收敛与判决协议|研究对照时固定；不是用户 Spec|
 |`verification/phase_step_protocol.json`、`return_ratio_protocol.json`|可选相位阶跃、返回比实验协议|可选验证扩展，不代表完整 PM 已认证|
 |`verification/noise_protocol.json`、`profiles/`|可选噪声/非理想验证协议及预声明环境|标准理想链不自动启用；profile 不是器件可实现性保证|
-|`model/`|冻结 Block Space、方程、参考 SystemSpec 和 M1 实验合同|供模型/旧默认链和数值回归使用，不是一次成功设计的范围|
-|`pipeline.json`|原默认 Pipeline 的模型/协议路径与策略设置|保留无新参数时的兼容行为；新连续域分配用 `--problem`|
+|`model/`|冻结 Block Space、方程、参考 SystemSpec 和 M1 实验合同|供模型/冻结兼容链和数值回归使用，不是一次成功设计的范围|
+|`pipeline.json`|冻结兼容 Pipeline 的模型/协议路径与策略设置|仅在显式 `--legacy-frozen` 或相应冻结研究调用中使用；默认主线是 `agent/spec_allocation.json`|
 |`baselines/`|确定性 M1、联合理想/非理想基线问题与对照设置|供基线/回归调用，不是历史运行结果|
 |`provenance/`|原实现、物理绑定、配置迁移和可选 profile 的哈希清单|来源证据，不是实验指标，不手工伪造哈希|
 
 六轴传入后端的单位依次为 A、Ohm、F、F、Hz、Hz/V。规格和变量域必须符合已有合同；当前反解要求启用正 BW 目标。修改问题不能扩大固定拓扑与测量能力。
 
 `agent/spec_allocation.json` 是多候选端到端入口：三种 `mode`、K、总 M1/M2/LLM 预算、质量和去重阈值。`minimum_distance` 使用当前六轴各自的 log/linear 归一化坐标，`minimum_margin` 使用原 M1 judge 的最小归一化裕量。真实 API 默认禁用。原 `agent/deterministic.json`、`llm_physics.json` 及其单点输出合同保持兼容。
+
+嵌套 `candidate_pool.mode` 必须与初始分配 `policy` 一致：确定性对应 `DETERMINISTIC_PHYSICS_TOOL`，LLM/Auto 对应 `LLM_PHYSICS_TOOL`；冲突会在执行前拒绝，不能让反馈阶段的行为与配置标签相反。标准三模式入口自动生成一致配置。
 
 本次移除了十份完全重复的阶段配置、旧 study 计划/重复输入、过期 manifest、旧版返回比协议及重复依赖表，共17个文件；32份有效配置按职责迁移。迁移记录见 `provenance/config_paths.json`。冻结 JSON 内的历史 ID、来源字符串保留原义，不是仍需读取的旧文件路径。可选扩展构建需生成新身份，不能拿旧 DLL 的身份记录冒充新源码。
 
