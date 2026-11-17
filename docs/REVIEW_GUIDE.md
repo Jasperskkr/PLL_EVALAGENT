@@ -4,7 +4,7 @@
 
 建议先运行 README 的确定性 M1 与一次原生 M2，再沿 ARCHITECTURE 阅读；审查源码无需 API key，实际 LLM 运行需自己的服务配置。
 
-[项目章程](../PROJECT_CHARTER.md)记录当前实现、真实验收和研究边界；[逐文件导读](CODE_MAP.md)解释全部176个共享代码文件及其主线、可选或兼容职责；[职责命名](NAMING.md)列出迁移及保留旧合同的边界。
+[项目章程](../PROJECT_CHARTER.md)记录当前实现、真实验收和研究边界；[逐文件导读](CODE_MAP.md)解释共享代码及其主线、可选或兼容职责；[职责命名](NAMING.md)列出迁移及保留旧合同的边界。新增多策略的配置、状态和公开复现命令见 [Spec Allocation](SPEC_ALLOCATION.md) 与 [RUNNING](RUNNING.md)。
 
 ## 七个审查问题
 

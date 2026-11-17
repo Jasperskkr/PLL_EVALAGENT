@@ -25,8 +25,13 @@ class PhysicsToolSearchLoop(AgentSearchLoop):
     def __init__(self, context_path, out, *, config, provider_config=None, policy=None, feedback=None):
         cfg = validate_config(config)
         context = load_physics_context(context_path)
-        require(context.get('exploration_source') == 'SMALL_INITIAL_SOBOL_ONLY', 'integrated mode requires small initial calibration')
+        cold = cfg.get('bootstrap') == 'COLD'
+        require(context.get('exploration_source') == ('EMPTY_BOOTSTRAP_NO_SEARCH' if cold else 'SMALL_INITIAL_SOBOL_ONLY'),
+                'cold mode requires matching empty bootstrap provenance' if cold else 'integrated mode requires small initial calibration')
         samples = [json.loads(s) for s in (Path(context_path).parent/'m1_samples.jsonl').read_text(encoding='utf-8').splitlines()]
+        if cold:
+            require(not samples and context['evidence_ids'] == [] and context['summary']['formal_M1_calls'] == 0,
+                    'cold bootstrap must contain no imported evidence or calls')
         self.initial_calls = sum(was_formal_call(s) for s in samples)
         require(self.initial_calls <= cfg['initial_m1_budget'] and len(samples) <= cfg['initial_sobol_samples'] and
                 all(s['origin'].startswith('LOCAL_SOBOL:') for s in samples), 'small Sobol initial contract exceeded')
@@ -92,6 +97,9 @@ class PhysicsToolSearchLoop(AgentSearchLoop):
                 'strategy_proposer': 'REAL_LLM' if self.real_policy else 'DETERMINISTIC_OR_TEST',
                 'numeric_seed_and_box_proposer': 'PHYSICS_REGION_BUILDER'}
 
+    def _seed_allowed(self, seed):
+        return True
+
     def _execute(self, decision):
         if decision.get('decision_id') in self.sensitivity_actions:
             o = execute_tool(self.explorer, decision_id=decision['decision_id'], region=decision['region'] |
@@ -122,6 +130,12 @@ class PhysicsToolSearchLoop(AgentSearchLoop):
         self.constructions.append(proposal)
         observations, executed, links = [], [], []
         for i, seed in enumerate(proposal['seeds']):
+            if self._search_target_reached():
+                break
+            if not self._seed_allowed(seed):
+                links.append({'construction_seed_id': seed['seed_id'], 'M1_status': 'SKIPPED_NEAR_DUPLICATE',
+                              'formal_evidence_ids': [], 'reason': 'pool normalized-distance filter; no M1 called'})
+                continue
             remaining = request['budget']['m1_calls']-sum(o['cost']['M1_calls'] for o in observations)
             if remaining < 1:
                 break
@@ -186,6 +200,11 @@ def run_initial_allocation(problem_config, out, *, config, provider_config=None,
     """verification feedback-ready initial-search function; never invokes an M2 evaluator."""
     cfg = validate_config(config); problem = load_problem(problem_config)
     path = initial_context
+    if path is None and cfg.get('bootstrap') == 'COLD':
+        from .subregion_context import export_context
+        root = Path(out); require(not root.exists(), 'output directory already exists')
+        path = export_context(problem, [], root.with_name(root.name+'_empty_context'),
+                              cost={'M1_calls': 0}, scope='EMPTY_BOOTSTRAP_NO_SEARCH')
     if path is None:
         # Same existing small-calibration tool; no new global engine.
         root = Path(out); require(not root.exists(), 'output directory already exists')
@@ -197,5 +216,13 @@ def run_initial_allocation(problem_config, out, *, config, provider_config=None,
             'max_tool_proposals': 12, 'analytic_call_limit': 1, 'region_radius': problem['exploration']['region_radius']}
         path = prepare_initial(problem_config, calibration, pilot)
     require(load_physics_context(path)['problem'] == problem, 'current problem differs from initial calibration')
-    loop = PhysicsToolSearchLoop(path, out, config=cfg, provider_config=provider_config, policy=policy, feedback=feedback)
+    loop_type = PhysicsToolSearchLoop
+    if 'candidate_pool' in cfg:
+        from .pool_search import PoolSearchLoop
+        loop_type = PoolSearchLoop
+    elif (feedback and policy is None and cfg['policy'] == 'DETERMINISTIC_PHYSICS_TOOL'
+          and feedback.get('observations') and feedback['observations'][0]['measurements'].get('schema_version') == 'pll-m2-feedback-summary-1.0'):
+        from .deterministic_feedback import DeterministicFeedbackPolicy
+        policy = DeterministicFeedbackPolicy()
+    loop = loop_type(path, out, config=cfg, provider_config=provider_config, policy=policy, feedback=feedback)
     return loop.run()

@@ -1,0 +1,49 @@
+{
+  "schema_version": "pll-allocation-examples-1.0",
+  "base_config": "configs/agent/spec_allocation.json",
+  "provider_config": "configs/providers/messages.json",
+  "cases": {
+    "nominal_m1": {
+      "description": "Deterministic nominal K=5, formal M1 only",
+      "problem": "configs/problems/nominal.json",
+      "overrides": {"m2_budget": 0}
+    },
+    "tight_m1": {
+      "description": "Deterministic tight K=5, formal M1 only",
+      "problem": "configs/problems/tight.json",
+      "overrides": {"m2_budget": 0}
+    },
+    "nominal": {
+      "description": "Deterministic nominal K=5, selected native M2",
+      "problem": "configs/problems/nominal.json",
+      "overrides": {}
+    },
+    "tight": {
+      "description": "Deterministic tight K=5, selected native M2",
+      "problem": "configs/problems/tight.json",
+      "overrides": {}
+    },
+    "feedback": {
+      "description": "Deterministic nominal K=1, native M2 and one reallocation",
+      "problem": "configs/problems/nominal.json",
+      "overrides": {"target_count": 1, "m2_budget": 2, "max_reallocations": 1}
+    },
+    "auto": {
+      "description": "Auto nominal K=5, native M2, LLM authorization disabled",
+      "problem": "configs/problems/nominal.json",
+      "overrides": {"mode": "AUTO_HYBRID"}
+    },
+    "llm": {
+      "description": "Real LLM nominal K=5, at most four API calls and three native M2",
+      "problem": "configs/problems/nominal.json",
+      "requires_paid_llm": true,
+      "overrides": {"mode": "LLM_PHYSICS_GUIDED"}
+    },
+    "auto_trigger": {
+      "description": "Auto nominal K=10, one deterministic round then at most two API calls, M1 only",
+      "problem": "configs/problems/nominal.json",
+      "requires_paid_llm": true,
+      "overrides": {"mode": "AUTO_HYBRID", "target_count": 10, "deterministic_rounds": 1, "llm_budget": 2, "m2_budget": 0}
+    }
+  }
+}

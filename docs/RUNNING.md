@@ -2,6 +2,48 @@
 
 所有命令从仓库根目录执行。推荐 Python 3.12，安装 `python -m pip install -e ".[integration,test]"`。当前原生 TB 验证环境是 Windows x64/MSVC 2022，不声称其他平台已经验收。
 
+## 新克隆源码的多策略复现
+
+共享源码包含求解/验证实现、输入配置、原生 C++ 源码和构建脚本，不包含历史实验、DLL 或 API 凭据。无需取回旧实验目录。
+
+```powershell
+git clone --depth 1 https://github.com/Jasperskkr/PLL_EVALAGENT.git
+cd PLL_EVALAGENT
+$env:PYTHONUTF8 = "1"
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+python -m pip install -e ".[integration,test]"
+python tools/run_allocation_examples.py --case nominal_m1 --case tight_m1 --out experiments/my_m1_01
+cmd /c pll_allocation\verification\build_kernel.cmd
+python tools/run_allocation_examples.py --case nominal --case tight --case feedback --case auto --out experiments/my_native_01
+```
+
+M1 案例无需编译；原生 M2 需要 Windows x64 与 VS 2022 Community C++ 工具链。构建脚本目前使用标准安装路径，其他安装位置需要调整本机构建环境，不是已经验证的平台。构建目录和实验输出目录必须全新。
+
+`configs/agent/spec_allocation.json` 选择三种模式、K、总预算和质量门槛，见 [配置与结果合同](SPEC_ALLOCATION.md)。复现案例清单在 `configs/examples/spec_allocation.json`，`tools/run_allocation_examples.py` 只准备配置并调用 `python -m pll_allocation pipeline`；每个 case 保存自己的完整输出，根 `summary.json` 汇总真实调用及结果。
+
+真实 LLM 的两组输入可在自己的 Messages-compatible 服务和授权下重跑。先在本机进程环境设置 `ANTHROPIC_BASE_URL`、`ANTHROPIC_AUTH_TOKEN`、`ANTHROPIC_MODEL`，不要写入仓库：
+
+```powershell
+python tools/run_allocation_examples.py --case llm --case auto_trigger --allow-paid-llm --out experiments/my_llm_01
+```
+
+`llm` 为 nominal K5、API≤4、M2≤3；`auto_trigger` 为 nominal K10、一轮确定性后可引入 LLM、API≤2、M2=0。`auto` 默认不授权 API，用于验证足够候选时零 LLM。显式授权开关仅影响所选的真实 LLM 案例，缺少授权或环境时脚本在运行前退出。模型响应及候选可能变化；复现的是输入、工具、预算和验证过程，不保证随机服务输出相同，也不保证有限预算必达 K。M2 未执行必须报告为未执行。
+
+完成以下三个可选后端构建后，运行完整共享回归：
+
+```powershell
+cmd /c pll_allocation\verification\build_phase_step.cmd
+cmd /c pll_allocation\verification\build_return_ratio.cmd
+cmd /c pll_allocation\verification\build_nonideal.cmd
+python -m pytest -q
+python tools/audit_architecture.py --out experiments/my_architecture_01.json
+```
+
+离线策略/故障注入回归不会发起付费 API，明确标注 TEST，不能替代真实 LLM/M2 证据。真实 API、波形、失败历史和审计包只存本地；推送输入模板不等于推送实验结果。
+
+2026-11-17 源码交付复核：从 Git 暂存内容单独导出272份文件，在全新 venv 中安装依赖并从源码重建四个后端，八个公开案例均完成；完整回归 **786 passed / 10 archive skipped**，架构与六份原算法哈希审计通过，272份源码运行前后未变。环境为 Windows x64、Python 3.12.10、MSVC 2022、NumPy 2.5.5、SciPy 1.18.1、pytest 9.2.0。初轮回归有一条 GBK 子进程解码警告；使用上文 `PYTHONUTF8=1` 后，该项以 `-W error` 单独复验通过，`pip freeze` 同样成功。真实 LLM 响应与原实验存在变化，因此不承诺旧候选或耗时完全相同；原始产物继续留在本地。
+
 ## 配置
 
 |位置|用途|

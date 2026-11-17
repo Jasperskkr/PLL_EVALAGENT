@@ -607,11 +607,20 @@ def main(argv=None):
                 args.llm_region_context,args.planner_config,args.planner_problem,args.subregion_problem,args.subregion_config,
                 args.subregion_initial_context)) or args.subregion_calibration_only or args.strategy != 'analytical':
                 raise ValueError('explicit initial allocation mode cannot mix other pipelines')
-            from .agent.initial_allocation import run_initial_allocation
-            result=run_initial_allocation(args.initial_allocation_problem,args.out,config=read(args.initial_allocation_config),
-                provider_config=read(args.llm_config) if args.llm_config else None,
-                initial_context=args.initial_allocation_context,
-                feedback=read(args.initial_allocation_feedback) if args.initial_allocation_feedback else None)
+            allocation_config=read(args.initial_allocation_config)
+            if allocation_config.get('schema_version')=='pll-spec-allocation-1.0':
+                if args.initial_allocation_context:
+                    raise ValueError('multi-candidate allocation creates a fresh honest cold context')
+                from .agent.spec_allocation import run_spec_allocation
+                result=run_spec_allocation(args.initial_allocation_problem,args.out,config=allocation_config,
+                    provider_config=read(args.llm_config) if args.llm_config else None,
+                    feedback=read(args.initial_allocation_feedback) if args.initial_allocation_feedback else None)
+            else:
+                from .agent.initial_allocation import run_initial_allocation
+                result=run_initial_allocation(args.initial_allocation_problem,args.out,config=allocation_config,
+                    provider_config=read(args.llm_config) if args.llm_config else None,
+                    initial_context=args.initial_allocation_context,
+                    feedback=read(args.initial_allocation_feedback) if args.initial_allocation_feedback else None)
         elif args.subregion_problem or args.subregion_config or args.subregion_initial_context or args.subregion_calibration_only:
             if not args.subregion_problem or not args.subregion_config:
                 raise ValueError('regional planning requires --subregion-problem and --subregion-config')

@@ -1,6 +1,8 @@
 # PLLAgent 项目章程与当前实现状态
 
-更新日期：2026-11-16。本章程按用户要求重写，用于研究交接、代码审查和后续开发。原始任务全文在本地 `docs/history/PROJECT_CHARTER_before_20261116.md` 留档；原始目标与当前已完成能力在本文中分别说明。
+更新日期：2026-11-17。本章程按用户要求重写，用于研究交接、代码审查和后续开发。原始任务全文在本地 `docs/history/PROJECT_CHARTER_before_20261116.md` 留档；原始目标与当前已完成能力在本文中分别说明。
+
+2026-11-17 状态补充：已在原 Pipeline 上加入三模式多候选 Spec Allocation、V2 Cold Start 和正式确定性反馈工具；nominal/tight 快速 M1、选点原生 M2、确定性反馈、真实 LLM 与 Auto 切换已做小规模实跑。完整 M2 PM/jitter 仍 UNKNOWN，尚无策略优越性结论。共享源码新增八组输入模板与薄封装复现工具，不依赖本地实验产物；使用范围、配置与判决见 [多策略分配说明](docs/SPEC_ALLOCATION.md)，运行步骤见 [RUNNING](docs/RUNNING.md)。
 
 ## 1. 研究问题与交付对象
 

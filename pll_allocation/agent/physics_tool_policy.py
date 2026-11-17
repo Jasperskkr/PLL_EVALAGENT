@@ -81,9 +81,13 @@ def validate_config(raw):
     required = {'schema_version', 'policy', 'total_m1_budget', 'initial_m1_budget', 'initial_sobol_samples',
         'max_decisions', 'max_llm_calls', 'validation_retries', 'max_round_m1', 'construction_attempt_budget',
         'max_build_attempts', 'seed', 'slsqp'}
-    require(isinstance(raw, dict) and set(raw) == required and raw['schema_version'] == 'pll-initial-allocation-1.0',
+    require(isinstance(raw, dict) and required <= set(raw) <= required | {'bootstrap', 'candidate_pool'} and raw['schema_version'] == 'pll-initial-allocation-1.0',
             'complete initial allocation configuration required')
     c = deepcopy(raw)
+    require(c.get('bootstrap', 'SOBOL') in ('SOBOL', 'COLD'), 'unsupported bootstrap')
+    if 'candidate_pool' in c:
+        from .candidate_pool import validate_pool_config
+        c['candidate_pool'] = validate_pool_config(c['candidate_pool'])
     require(c['policy'] in ('LLM_PHYSICS_TOOL', 'DETERMINISTIC_PHYSICS_TOOL'), 'unsupported integrated policy')
     for k in required-{'schema_version', 'policy', 'slsqp'}:
         require(type(c[k]) is int and c[k] >= 0, k+': nonnegative integer required')

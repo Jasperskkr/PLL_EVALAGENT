@@ -1,6 +1,6 @@
 # 逐文件代码导读
 
-更新于2026-11-16。覆盖当前共享源码的全部 **176个 Python/C++/CMD 文件**，包括明确标注的兼容入口；不枚举构建目录、缓存和实验源码副本。模块职责命名规则及旧名称映射见 [NAMING](NAMING.md)。
+更新于2026-11-17。覆盖当前共享 Python/C++/CMD 源码，包括明确标注的兼容入口；不枚举构建目录、缓存和实验源码副本。模块职责命名规则及旧名称映射见 [NAMING](NAMING.md)。
 
 建议先读：`pipeline.py` → `agent/initial_allocation.py` → `physics_tool_policy.py` → `search_loop.py` → `exploration/physics_region_builder.py` → `allocation/physics.py` → `region_explorer/explorer.py` → `agent/handoff.py` → `agent/feedback.py` → `verification/continuous.py`。
 
@@ -23,6 +23,8 @@
 |[pll_allocation/scenarios.py](../pll_allocation/scenarios.py)|在冻结资产上绑定研究规格阈值，校验候选与场景来源。|`validate_scenario` / `load_scenario`|
 
 ## Agent与反馈
+
+2026-11-17 新增多候选适配：`agent/spec_allocation.py` 是正式 Pipeline 的多策略配置/结果适配；`candidate_pool.py` 管理质量、距离去重和 M2 候选选择；`pool_search.py` 在原搜索执行器上补多点停止、Cold Start 后按需校准、确定性/LLM/Auto Policy；`deterministic_feedback.py` 将 V2 现有反馈规则提取为正式可调用 Policy。没有新增物理求解器或验证器。新增回归为 `tests/test_spec_allocation.py`。
 
 |文件|基本职责|阅读入口|
 |---|---|---|
@@ -194,6 +196,8 @@
 |文件|基本职责|阅读入口|
 |---|---|---|
 |[tools/audit_architecture.py](../tools/audit_architecture.py)|只读核对正式依赖方向及六份原分配算法的SHA，输出审计JSON。|`audit`|
+|[tools/run_allocation_examples.py](../tools/run_allocation_examples.py)|读取公开八组输入，生成配置并子进程调用正式 Pipeline；真实 API 需显式授权，不依赖历史结果。|`run_cases` / `main`|
+|[tests/test_allocation_examples.py](../tests/test_allocation_examples.py)|复现输入有效性、唯一 CLI、授权/环境预检、防覆盖和失败保留。|`test_all_public_examples_use_valid_current_inputs`|
 |[tools/build_block_relation_atlas.py](../tools/build_block_relation_atlas.py)|由原反解/M1整理变量关系、条件域及数值核对，输出JSON/CSV/HTML；无M2/LLM。|`read` / `write`|
 |[tools/create_verification_profiles.py](../tools/create_verification_profiles.py)|向显式全新目录生成17份预声明profile/协议及manifest，不修改活动配置。|`documents`|
 |[tools/generate_nonideal_noise_kernel.py](../tools/generate_nonideal_noise_kernel.py)|由同一理想kernel生成可选噪声/非理想C++源码；拒绝覆盖已有生成文件。|`source`|
@@ -258,6 +262,6 @@
 
 ## 非代码入口
 
-`pyproject.toml` 定义依赖、CLI与安装资源；四个原生构建脚本已在上表逐项说明。47份活动JSON按 [configs说明](../configs/README.md) 分类，包括问题、策略、Provider、冻结模型/协议、基线和来源收据。运行结果均应写入全新 experiments 目录，不是活动配置。
+`pyproject.toml` 定义依赖、CLI与安装资源；四个原生构建脚本已在上表逐项说明。活动 JSON 按 [configs说明](../configs/README.md) 分类，包括问题、策略、Provider、复现输入、冻结模型/协议、基线和来源收据。运行结果均应写入全新 experiments 目录，不是活动配置。
 
 历史共享版回归750项通过、10项缺历史档案明确跳过；本次命名迁移验收见RUNNING。单测中TEST/mock、夹具和旧回放都不能算真实API或新行为仿真。验收命令、真实M1/M2与能力限制见 [RUNNING](RUNNING.md)。

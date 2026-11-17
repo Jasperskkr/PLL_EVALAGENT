@@ -1,5 +1,19 @@
 # 共享研究源码整理
 
+## 2026-11-17 多策略多候选 Spec Allocation
+
+共享复现补充：新增 `configs/examples/spec_allocation.json` 八组输入及 `tools/run_allocation_examples.py`，仅生成配置并调用正式 Pipeline；真实 LLM 案例需显式授权与进程环境。更新 tools README、RUNNING、配置说明及多策略产物合同。原始实验、验收详表、波形、审计包与 API 日志保留本地，不随本次源码提交。
+
+待提交源码的独立副本完成全新 venv 安装、四后端重建与八案例运行；完整回归786通过、10项档案跳过，架构审计通过。Windows GBK 解码警告在 UTF-8 环境下以 `-W error` 定向复验清除，运行说明已补 `PYTHONUTF8=1`；没有修改求解/测量算法。
+
+用户后续明确授权真实 LLM 后，复用现有 Messages 环境配置补跑6次实际 API，均 HTTP 200 / RESPONDED。LLM nominal K5：5个 M1 点、1个原生 M2 支持项通过点，M1/M2=23/2、LLM=4、55.056s；Auto K10 触发真实 LLM 分支：10个 M1 点、M1=24、LLM=2、16.413s，M2未执行。未改正式源码或判决；结果保存于全新 `experiments/spec_allocation_llm_20261117_01/`。完整 M2 仍 UNKNOWN，真实 LLM M2反馈重分配尚未另行执行，不据此声称优于确定性方法。
+
+- 原 Pipeline 增加 `pll-spec-allocation-1.0` 配置，选择 DETERMINISTIC / LLM_PHYSICS_GUIDED / AUTO_HYBRID，统一 K、M1/M2/LLM 总预算、质量与距离阈值。
+- 原初始分配复用 V2 诚实空上下文 Cold Start，补多候选停止和原 Sobol 按需调用；无新物理求解器。保留旧配置与单点行为。
+- V2 确定性反馈规则提取到 `agent/deterministic_feedback.py`；原反馈控制器支持确定性搜索、Cold Start 和优先验证池内其他点。真实 API 默认禁止，离线策略和 TEST M2 明确标记。
+- 新增候选/证据/推荐/成本结果适配；正式 M1、原生 M2 测量及判决、物理公式和内核未修改。真实运行找到支持项通过点，完整 M2 PM/jitter 仍 UNKNOWN。
+- 完整回归778 passed / 10 archive skipped；旧错误文案兼容修复后的相关与 V2 回归94 passed；最终反馈/Auto 分支回归46 passed。接口与复现命令见 [多策略分配说明](SPEC_ALLOCATION.md)。没有真实 LLM 效益结论，没有增加 sizing、服务化或部署范围。
+
 2026-11-16 用户授权：重写 README，按职责整理核心源码，精简远端实验资料和历史文档，实际验证后同步 GitHub。
 
 - 反馈控制/连续候选验证实现迁至 feedback.py、continuous.py；旧导入和 CLI 保留同一实现的兼容入口。

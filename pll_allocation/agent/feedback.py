@@ -29,7 +29,6 @@ def validate_config(raw):
     require(isinstance(raw,dict) and set(raw)==fields and raw['schema_version']=='pll-stage9-feedback-1.0',
             'complete verification feedback configuration required')
     c=deepcopy(raw); c['search']=search_config(c['search'])
-    require(c['search']['policy']=='LLM_PHYSICS_TOOL','verification feedback production requires real LLM physics policy')
     for k in ('m1_budget','m2_budget','llm_budget','max_reallocations'):
         require(type(c[k]) is int and c[k]>=0,k+': nonnegative hard limit required')
     require(c['max_reallocations']<=10 and c['m2_budget']<=32 and c['llm_budget']<=40,'bounded verification feedback run required')
@@ -138,11 +137,25 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
                 item=deepcopy(row)|{'stage9_source_run':str(prior_archive.parent)}
                 ledger.append(item); append('candidate_archive',item)
     history=[]; searches=[]; cache={}; verified={}; reverify_reasons=set(); reverify=None
+    pool = cfg['search'].get('candidate_pool')
     current=initial; termination='MAX_REALLOCATIONS'; failure=None
-    mode='TEST_INJECTED_NOT_RESEARCH' if policy is not None or m2_executor is not None else 'REAL_M2_REAL_LLM'
+    mode=('TEST_INJECTED_NOT_RESEARCH' if policy is not None or m2_executor is not None else
+          'REAL_M2_'+pool['mode'] if pool else 'REAL_M2_DETERMINISTIC' if
+          cfg['search']['policy']=='DETERMINISTIC_PHYSICS_TOOL' else 'REAL_M2_REAL_LLM')
     event('RUN_STARTED',mode=mode,initial_handoff_sha256=initial['handoff_sha256'])
+
+    def audited_handoff(selected, suffix):
+        """Reuse the original independent selected-point audit and gate."""
+        ex=RegionExplorer(context_path,root/('candidate_audit_'+suffix),m1_budget=2,reserved_final_calls=1)
+        archive=CandidateArchive(ex,ex.root/'candidate_archive.jsonl')
+        recheck=ex.recheck_recommendation(selected)
+        counts['M1_calls']+=ex.counts['M1_calls']; ex.close()
+        handoff=build_handoff(ex,archive,selected,recheck,{'termination_reason':'M1_POOL_CANDIDATE_SELECTION'},ex.cost())
+        write_new(root/('pool_handoff_'+suffix+'.json'),handoff)
+        return handoff
+
     try:
-        for cycle in range(cfg['max_reallocations']+1):
+        for cycle in range(cfg['m2_budget'] if pool else cfg['max_reallocations']+1):
             if remaining()['M2_verifications']<1:
                 termination='M2_BUDGET_EXHAUSTED'; break
             if remaining()['M1_calls']<1:
@@ -184,9 +197,22 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
                 M2_status=measured['overall_status'],supported_metrics_status=measured['supported_metrics_status'])
             if measured['supported_metrics_status']=='PASS':
                 termination='SUPPORTED_M2_METRICS_PASS'; break
-            if cycle==cfg['max_reallocations']:termination='MAX_REALLOCATIONS'; break
+            if not pool and cycle==cfg['max_reallocations']:termination='MAX_REALLOCATIONS'; break
             if remaining()['M2_verifications']<1:termination='M2_BUDGET_EXHAUSTED'; break
-            if remaining()['LLM_calls']<1:termination='LLM_BUDGET_EXHAUSTED'; break
+            if pool:
+                from .candidate_pool import select_m2
+                tested=[x['handoff']['recommended_nominal'] for x in verified.values()]
+                selected=select_m2(ledger,initial['problem'],pool,tested)
+                if selected is not None:
+                    if remaining()['M1_calls']<2:termination='M1_BUDGET_EXHAUSTED_BEFORE_POOL_AUDIT'; break
+                    current=audited_handoff(selected,f'pool_{cycle+1:02d}')
+                    event('EXISTING_M1_POOL_CANDIDATE_SELECTED',candidate_sha256=selected['parameter_sha256'],
+                          selection_rule='quality gate, distance from tested candidates, M1 margin')
+                    if not current['ready_for_stage9']:termination='NEW_CANDIDATE_RECHECK_FAILED'; break
+                    continue
+                if len(searches)>=cfg['max_reallocations']:termination='MAX_REALLOCATIONS'; break
+            needs_llm = cfg['search']['policy']=='LLM_PHYSICS_TOOL' and not pool
+            if needs_llm and remaining()['LLM_calls']<1:termination='LLM_BUDGET_EXHAUSTED'; break
             # Reserve a new candidate audit call plus the next M2 posthoc M1.
             if remaining()['M1_calls']<6:termination='M1_BUDGET_EXHAUSTED_BEFORE_REALLOCATION'; break
             child=deepcopy(cfg['search'])
@@ -199,8 +225,15 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
             if child['total_m1_budget']<=child['initial_m1_budget']+1:
                 termination='M1_BUDGET_EXHAUSTED_BEFORE_REALLOCATION'; break
             child['max_round_m1']=min(child['max_round_m1'],child['total_m1_budget']-shared-1)
-            child['max_llm_calls']=min(child['max_llm_calls'],remaining()['LLM_calls'])
-            child['max_decisions']=min(child['max_decisions'],child['max_llm_calls'])
+            if pool:
+                child['candidate_pool']['llm_call_limit']=min(pool['llm_call_limit'],remaining()['LLM_calls'])
+                child['candidate_pool']['excluded_hashes']=list(verified)
+                # A repair seeks a new untested point, not K copies of the
+                # candidate that already failed M2. The global pool stays intact.
+                child['candidate_pool']['target_count']=1
+            elif needs_llm:
+                child['max_llm_calls']=min(child['max_llm_calls'],remaining()['LLM_calls'])
+                child['max_decisions']=min(child['max_decisions'],child['max_llm_calls'])
             search_dir=root/f'reallocation_{cycle+1:02d}'
             feedback=search_feedback(request,summary)
             event('AGENT_REPLANNING_STARTED',feedback_evidence_id=summary['evidence_id'],search_config=child)
@@ -220,10 +253,14 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
                         if type(v) is int:counts['tokens'][k]=counts['tokens'].get(k,0)+v
                 raise
             cost=result['cost']; counts['M1_calls']+=cost['incremental_M1_calls']; counts['LLM_calls']+=cost['LLM_calls']
+            if pool:
+                for k in ('test_policy_calls','policy_decisions','offline_llm_decisions','deterministic_decisions'):
+                    counts[k]=counts.get(k,0)+cost.get(k,0)
             for usage in cost.get('reported_usage',[]):
                 for k,v in (usage or {}).items():
                     if type(v) is int:counts['tokens'][k]=counts['tokens'].get(k,0)+v
             searches.append({'path':str(search_dir),'status':result['status'],
+                'failure':result.get('failure'),
                 'solver_execution_status':result['solver_execution_status'],
                 'cost':cost,'feedback_evidence_id':summary['evidence_id'],
                 'accepted_actions':[read(p)['decision'] for p in sorted(search_dir.glob('round_*/search_decision.json'))]})
@@ -253,8 +290,14 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
             if not candidates:
                 termination=result['termination_reason'] if result.get('termination_reason') in (
                     'LLM_PROVIDER_FAILED','INVALID_LLM_DECISION','LLM_CALL_BUDGET_EXHAUSTED') else 'NO_DISTINCT_M1_FEASIBLE_REALLOCATION'
+                if pool and result.get('failure'):
+                    failure=deepcopy(result['failure'])
                 break
-            selected=min(candidates,key=rank)
+            if pool:
+                selected=select_m2(candidates,initial['problem'],pool,tested)
+                if selected is None:termination='NO_QUALITY_QUALIFIED_REALLOCATION'; break
+            else:
+                selected=min(candidates,key=rank)
             # Reuse the same budgeted M1 executor for independent selected-point audit.
             ex=RegionExplorer(context_path,root/f'candidate_audit_{cycle+1:02d}',m1_budget=2,reserved_final_calls=1)
             archive=CandidateArchive(ex,ex.root/'candidate_archive.jsonl')
@@ -264,7 +307,7 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
             append('reallocation_candidates',{'run_id':run_id,'parent_candidate_sha256':request['candidate_sha256'],
                 'feedback_evidence_id':summary['evidence_id'],'candidate':selected,'recheck':recheck,
                 'decision_trace_path':str(search_dir/'SEARCH_DECISION_TRACE.jsonl'),
-                'selection_rule':'best M1 rank among distinct unverified new formal feasible candidates',
+                'selection_rule':'quality gate and diversity from tested points' if pool else 'best M1 rank among distinct unverified new formal feasible candidates',
                 'handoff_sha256':next_handoff['handoff_sha256']})
             if not next_handoff['ready_for_stage9']:termination='NEW_CANDIDATE_RECHECK_FAILED'; break
             current=next_handoff
@@ -295,7 +338,7 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
         'feedback_loop_status':'REALLOCATION_REVERIFIED' if changed else 'SAME_CANDIDATE_REVERIFIED' if len(history)>1 else
             'FEEDBACK_SEARCH_ATTEMPTED' if searches else 'NOT_REPLANNED',
         'real_fail_reverification_completed':len(history)>1 and history[0]['M2_status']=='FAIL' and
-            history[0]['candidate_sha256']!=history[1]['candidate_sha256'] and mode=='REAL_M2_REAL_LLM',
+            history[0]['candidate_sha256']!=history[1]['candidate_sha256'] and mode!='TEST_INJECTED_NOT_RESEARCH' and bool(searches),
         'solver_execution_status':[x['solver_execution_status'] for x in searches],
         'best_known_M1':best_m1,'recommended_M2_supported':best_m2['handoff']['recommended_nominal'] if best_m2 else None,
         'verified_history':history,'searches':searches,'cost':counts,'failure':failure,'FULL_SYSTEMSPEC_CERTIFIED':False}

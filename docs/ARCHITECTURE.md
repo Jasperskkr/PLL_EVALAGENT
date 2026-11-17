@@ -2,6 +2,10 @@
 
 Policy 提议动作，Runner 审查并执行，工具计算，验证器独立判决。Policy 不得修改硬规格、扩大用户域、越过预算或自行声明 PASS。
 
+`pll-spec-allocation-1.0` 配置由同一 `pipeline.main` 分派到 `agent/spec_allocation.py`。它给原 `run_initial_allocation` 添加 Cold Start 和候选池配置，再调用原 `run_feedback`；不增加第二套求解或验证实现。`PoolSearchLoop` 继承 `PhysicsToolSearchLoop`，只补池数量/质量停止、逆解近重复筛除和按需原 Sobol；`PoolDeterministicPolicy` 和受授权门禁约束的 `PoolLLMPolicy` 共用同一决策校验、构造、RegionExplorer 与正式 M1。M2 仍由原 controller 与 `verification.continuous` 执行和判决。
+
+`candidate_pool.py` 在原问题的 log/linear 六轴归一化坐标中按距离去重，保留最佳 M1 裕量的代表点。M2 候选先满足配置质量门槛，首点按原 M1 rank，后续兼顾距已测点的距离。所有原始、失败、近重复证据仍保存在原账本，重复过滤不改变正式验证算法。`deterministic_feedback.py` 提取 V2 已有 BW 偏差修正与低调谐点探索规则，不将局部反馈解释为物理定理。
+
 ```mermaid
 flowchart TD
     A[ResearchProblemV2] --> B[pipeline.main]

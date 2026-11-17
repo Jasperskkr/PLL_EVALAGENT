@@ -21,9 +21,24 @@ SystemSpec + 六轴范围
 
 ## 快速开始
 
+先完成下文依赖安装与原生理想内核构建，再运行多候选分配（确定性优先，含预算内原生 M2 和确定性反馈）：
+
+```powershell
+python -m pll_allocation pipeline --problem configs/problems/nominal.json --allocator-config configs/agent/spec_allocation.json --out experiments/my_pool_01
+```
+
+`spec_allocation.json` 的 `mode` 可选 `DETERMINISTIC`、`LLM_PHYSICS_GUIDED`、`AUTO_HYBRID`；`target_count` 为 K，`m1_budget`/`m2_budget` 是含独立复核及 posthoc 的总预算。`minimum_margin` 与 `minimum_distance` 分别控制正式 M1 最小归一化裕量和六轴归一化距离。默认 Cold Start 零校准反解，候选不足再搜索；M2 先试高质量、不同的池内候选，再按预算反馈重分配。达到 K 仅结束 M1 搜索；可继续 M2 找至少一个支持指标通过点。
+
+`AUTO_HYBRID` 在 `deterministic_rounds` 内先做确定性搜索，数量/质量不足才进入 LLM 分支；M2 反馈也先确定性处理，未取得合格结果时可在后续重分配启用 LLM。`allow_paid_llm=false` 为默认硬门禁，进入 LLM 分支会如实报告未授权，保留已找到的候选；不会自行调用真实 API。真实运行须用户明确授权后设置该开关和 `llm_budget`，并提供 `--llm-config`。离线 Policy 测试不证明真实 LLM 的分配收益。
+
+主结果为 `allocation_result.json`、`candidates.json`、`cost_summary.json`、`allocation_report.md`。每个候选包含带单位六参数、正式 M1、裕量、来源和已运行 M2 的完整观察。`recommended_M2_supported` 仅在真实原生 M2 已支持项通过时非空；`recommended` 可回退为明确标注的 M1 点。M2 PM/jitter 仍 UNKNOWN，未签发完整 SystemSpec 认证。设置 `m2_budget=0` 可仅运行多点 M1；旧配置和单点入口继续可用。
+
+配置、判决和产物合同见 [多策略分配说明](docs/SPEC_ALLOCATION.md)。下述安装和原生构建完成后，可以使用[复现工具](tools/README.md)重新运行 nominal/tight、反馈、LLM 与 Auto 输入案例；它只生成输入并调用正式 Pipeline，不需要历史实验数据。
+
 从仓库根目录运行。已验证环境为 Windows x64、Python 3.12、MSVC 2022 Community C++17，不依赖原作者的磁盘路径。
 
 ```powershell
+$env:PYTHONUTF8 = "1"
 python -m venv .venv
 .venv\Scripts\Activate.ps1
 python -m pip install -e ".[integration,test]"
@@ -71,7 +86,7 @@ python -m pll_allocation pipeline --handoff experiments/my_allocation_01/verific
 
 建议阅读顺序：`agent/initial_allocation.py` → `physics_tool_policy.py` → `search_loop.py` → `exploration/physics_region_builder.py` → `allocation/physics.py` → `agent/feedback.py`。
 
-配置已按 problems / agent / providers / model / verification / baselines / provenance 组织；详见 [configs 说明](configs/README.md)。维护目录只保留五个工具，职责和命令见 [tools 说明](tools/README.md)。
+配置已按 problems / agent / providers / examples / model / verification / baselines / provenance 组织；详见 [configs 说明](configs/README.md)。共享物理工具、复现入口及五个维护工具的职责和命令见 [tools 说明](tools/README.md)。
 
 ## 结果和测试
 
@@ -81,6 +96,8 @@ python -m pll_allocation pipeline --handoff experiments/my_allocation_01/verific
 - 真实 LLM：查看调用 metadata 的 `real_network_call`、响应状态及 `cost.LLM_calls`；事件名字本身不是调用证据。
 
 执行 `python -m pytest -q`。原生扩展构建、档案依赖和错误定位见[运行说明](docs/RUNNING.md)。TEST/mocked Policy 仅用于回归，不能计作研究成果。
+
+2026-11-17 多策略源码交付复核：干净源码副本中新建 venv、重建四个后端，八组公开输入均重新执行；完整回归786通过、10项历史档案跳过，架构和原算法哈希审计通过。中文路径的 Windows 环境应启用上文 UTF-8 设置；详细边界和定向复验见运行说明。
 
 2026-11-16 配置/工具整理后的共享版验收：精简源码快照中重建四个原生后端，750 项测试通过、10 项历史档案测试跳过。真实确定性分配得到 M1 可行候选；M2 BW≈229.00kHz，但条件捕获54µs超过40µs，因此如实报告 FAIL。重构前后候选与指标相同。本轮没有新增真实 LLM 研究调用，详见[整理说明](docs/RELEASE_NOTES.md)。
 

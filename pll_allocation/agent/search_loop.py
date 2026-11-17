@@ -162,6 +162,9 @@ class AgentSearchLoop:
         """Explicit policy extensions may add provenance without changing M1 authority."""
         return {}
 
+    def _search_target_reached(self):
+        return False
+
     def _decision_provenance(self):
         return {'region_origin': 'LLM_PROPOSED',
                 'proposer': 'REAL_LLM' if self.real_policy else 'UNIT_TEST_POLICY'}
@@ -179,6 +182,9 @@ class AgentSearchLoop:
         self.status = 'DECISION_BUDGET_EXHAUSTED'
         try:
             for round_no in range(1, self.config['max_decisions']+1):
+                if self._search_target_reached():
+                    self.status = 'M1_POOL_TARGET_REACHED'
+                    break
                 if self.calls >= self.config['max_llm_calls']:
                     self.status = 'LLM_CALL_BUDGET_EXHAUSTED'
                     break
@@ -237,6 +243,9 @@ class AgentSearchLoop:
                 write_new(folder/'region_observation.json', record)
                 self.emit('LLM_ROUND_COMPLETED', round=round_no, outcome=outcome,
                           observations=[o['observation_id'] for o in observations], cost=self.cost())
+                if self._search_target_reached():
+                    self.status = 'M1_POOL_TARGET_REACHED'
+                    break
                 if outcome == 'LLM_STOP':
                     self.status = 'STOPPED_BY_LLM'
                     break
