@@ -1,118 +1,190 @@
-# PLLAgent：行为级联合规格分配
+# PLLAgent
 
-给定系统规格、固定 PLL 拓扑和六个模块参数的范围，由确定性策略或真实 LLM Agent 调用物理反解与搜索工具生成联合候选，再用独立 M1 / M2 验证。验证失败时，Agent 可以在预算内读取反馈、重新分配并复验。
+面向整数 N 电荷泵锁相环（Integer-N CPPLL）的行为级联合规格分配工具。
 
-这是适合代码审查和策略研究的行为级原型。目前尚未证明 LLM 比确定性方法更快、更可靠；不提供晶体管可实现性保证。
+PLLAgent 根据系统指标和模块参数范围，结合物理反解、数值搜索与行为仿真，生成并验证多组参数候选。项目提供确定性、LLM 引导和混合三种策略，用于研究固定拓扑下的参数分配与验证反馈。
+
+[快速开始](#快速开始) · [配置说明](#配置说明) · [输出结果](#输出结果) · [开发与测试](#开发与测试) · [文档](#文档)
+
+## 功能
+
+- **联合参数分配**：在给定范围内搜索 `Icp`、`Rz`、`C1`、`C2`、`f0` 和 `Kvco`，保留满足质量与差异要求的候选。
+- **多种搜索策略**：支持确定性搜索、LLM 物理工具选择，以及先确定性搜索再按需使用 LLM 的混合模式。
+- **分层验证**：通过连续模型（M1）检查带宽、名义相位裕度和调谐点，再通过独立行为仿真（M2）测量带宽与条件捕获时间。
+- **反馈重分配**：根据 M2 结果，在剩余预算内选择其他候选或重新分配参数。
+- **结果记录**：保存候选、工具决策、测量证据及 M1、M2、LLM 调用成本。
 
 ```text
-SystemSpec + 六轴范围
- → Policy 决策 → 物理反解 / 搜索 → 正式 M1
- → 独立复核 → Verification Handoff → 真实 M2
- → 测量判决 → 可选反馈重分配 → 参数、证据与成本
+系统指标 + 参数范围
+        ↓
+策略选择 → 物理反解 / 数值搜索 → M1 评价与候选池
+                                      ↓
+                              独立复核与 M2 验证
+                                      ↓
+                          验证结果 → 预算内反馈重分配
 ```
 
-## 当前支持什么
+LLM 负责选择工具、搜索区域和预算；参数由计算工具求解，执行器负责约束检查与预算控制，验证器给出判决。
 
-- 固定 Integer-N CPPLL：10 MHz 参考、N=8、80 MHz 输出、0–1.2 V 控制轨。
-- 六变量：`Icp / Rz / C1 / C2 / f0 / Kvco`，输入合同使用 SI 单位。
-- M1：连续模型 BW、名义 PM、调谐点。M2：独立 BW、指定初态下条件捕获时间。
-- LLM 选择策略、工具、区域和预算；工具算参数，Runner 控制执行，验证器决定状态。
-- 不支持、未测和不收敛保持 UNKNOWN；M1 PM 不等于 M2 周期 PM，不签发完整 SystemSpec 认证。
+## 适用范围
+
+标准流程采用固定的 Integer-N CPPLL 行为模型：参考频率 10 MHz、分频比 8、输出频率 80 MHz、控制电压范围 0–1.2 V，包含理想对称电荷泵、线性 VCO 和既定的两电容一电阻环路滤波器。
+
+| 验证层级 | 支持的指标 | 适用条件 |
+| --- | --- | --- |
+| M1：连续模型 | 带宽、名义相位裕度、静态调谐点 | 当前拓扑和输入参数范围 |
+| M2：行为仿真 | 带宽、条件捕获时间 | 指定激励与初态；捕获测试初始控制电压 0.15 V，观测窗口 160 µs |
+
+项目处于研究原型阶段，输出为行为模块参数。晶体管尺寸、器件可实现性、版图和 PVT 验证不在当前范围内。标准 M2 尚未认证周期相位裕度及完整 jitter/power 指标；未支持、未测量或数值无法判定的项目保留为 `UNKNOWN`。可选噪声、非理想和相位响应扩展见[运行说明](docs/RUNNING.md)。
+
+当前尚无充分的对照证据证明 LLM 策略优于确定性策略。
 
 ## 快速开始
 
-先完成下文依赖安装与原生理想内核构建，再运行多候选分配（确定性优先，含预算内原生 M2 和确定性反馈）：
+### 环境要求
+
+- Python 3.11 及以上，推荐 Python 3.12。
+- M1 分配依赖 NumPy 和 SciPy，无需编译原生内核或配置 API。
+- 原生 M2 已验证环境为 Windows x64、Visual Studio 2022 Community C++ 工具链（C++17）。构建脚本使用 VS 的默认安装路径。
+
+以下命令使用 PowerShell，均从仓库根目录执行。
+
+### 1. 安装
 
 ```powershell
-python -m pll_allocation pipeline --problem configs/problems/nominal.json --out experiments/my_pool_01
-```
-
-省略 `--allocator-config` 默认使用三模式配置 `configs/agent/spec_allocation.json`。只给 `--out` 也走新版，使用明确记录的 nominal 示例；自定义问题请传 `--problem`。旧冻结链必须显式加 `--legacy-frozen`，不再隐式回落。每次启动打印实际路由，输出 `execution_route.json`；不同模式参数混用会在运行前报错。
-
-`spec_allocation.json` 的 `mode` 可选 `DETERMINISTIC`、`LLM_PHYSICS_GUIDED`、`AUTO_HYBRID`；`target_count` 为 K，`m1_budget`/`m2_budget` 是含独立复核及 posthoc 的总预算。`minimum_margin` 与 `minimum_distance` 分别控制正式 M1 最小归一化裕量和六轴归一化距离。默认 Cold Start 零校准反解，候选不足再搜索；M2 先试高质量、不同的池内候选，再按预算反馈重分配。达到 K 仅结束 M1 搜索；可继续 M2 找至少一个支持指标通过点。
-
-`AUTO_HYBRID` 在 `deterministic_rounds` 内先做确定性搜索，数量/质量不足才进入 LLM 分支；M2 反馈也先确定性处理，未取得合格结果时可在后续重分配启用 LLM。`allow_paid_llm=false` 为默认硬门禁，进入 LLM 分支会如实报告未授权，保留已找到的候选；不会自行调用真实 API。真实运行须用户明确授权后设置该开关和 `llm_budget`，并提供 `--llm-config`。离线 Policy 测试不证明真实 LLM 的分配收益。
-
-主结果为 `allocation_result.json`、`candidates.json`、`cost_summary.json`、`allocation_report.md`。每个候选包含带单位六参数、正式 M1、裕量、来源和已运行 M2 的完整观察。`recommended_M2_supported` 仅在真实原生 M2 已支持项通过时非空；`recommended` 可回退为明确标注的 M1 点。M2 PM/jitter 仍 UNKNOWN，未签发完整 SystemSpec 认证。设置 `m2_budget=0` 可仅运行多点 M1；旧配置和单点入口继续可用。
-
-配置、判决和产物合同见 [多策略分配说明](docs/SPEC_ALLOCATION.md)。下述安装和原生构建完成后，可以使用[复现工具](tools/README.md)重新运行 nominal/tight、反馈、LLM 与 Auto 输入案例；它只生成输入并调用正式 Pipeline，不需要历史实验数据。
-
-从仓库根目录运行。已验证环境为 Windows x64、Python 3.12、MSVC 2022 Community C++17，不依赖原作者的磁盘路径。
-
-```powershell
+git clone https://github.com/Jasperskkr/PLL_EVALAGENT.git
+cd PLL_EVALAGENT
 $env:PYTHONUTF8 = "1"
 python -m venv .venv
 .venv\Scripts\Activate.ps1
 python -m pip install -e ".[integration,test]"
-python -m pll_allocation pipeline --help
 ```
 
-**保留的连续域单点配置（只执行 M1）：**
+### 2. 运行 M1 示例
 
 ```powershell
-python -m pll_allocation pipeline --problem configs/problems/nominal.json --allocator-config configs/agent/deterministic.json --out experiments/my_allocation_01
+python tools/run_allocation_examples.py --case nominal_m1 --case tight_m1 --out experiments/m1_example
 ```
 
-**新版真实 LLM 分配：**先在本机设置 `ANTHROPIC_BASE_URL`、`ANTHROPIC_AUTH_TOKEN`、`ANTHROPIC_MODEL`。名称沿用现有环境合同，实际服务须支持 Messages-compatible HTTPS 请求；以下命令明确授权本次预算内调用。
+该命令分别运行普通约束和紧约束问题的确定性分配，仅执行 M1。汇总结果位于 `experiments/m1_example/summary.json`，每个案例的报告位于对应的 `<case>/run/allocation_report.md`。
 
-```powershell
-python tools/run_allocation_examples.py --case llm --allow-paid-llm --out experiments/my_agent_01
-```
+### 3. 运行 M1 + M2 分配
 
-**真实 M2：**默认脚本使用 VS 2022 Community 标准安装位置，拒绝覆盖已有构建目录。
+先构建标准行为仿真内核，再运行完整分配流程：
 
 ```powershell
 cmd /c pll_allocation\verification\build_kernel.cmd
-python -m pll_allocation pipeline --handoff experiments/my_allocation_01/verification_handoff.json --verification-problem configs/problems/nominal.json --verification-config configs/verification/verify_only.json --out experiments/my_verification_01
+python -m pll_allocation pipeline --problem configs/problems/nominal.json --out experiments/joint_example
 ```
 
-需要真实 Agent 反馈时，将验证配置换为 `configs/verification/feedback.json`，并传入 `--llm-config configs/providers/messages.json`。必须先有 `gate_status=READY` 的 Handoff。输出目录及分配的同名 `_calibration` 目录都必须全新。
+默认使用 `configs/agent/spec_allocation.json`：确定性策略，目标为 5 个不同候选，总预算为 96 次 M1 和 3 次 M2，最多 2 次反馈重分配。运行结束后查看 `experiments/joint_example/allocation_report.md`。
 
-默认例题保留原合同中的待验证和未支持指标，用于显式展示能力边界。修改问题 JSON 可设置规格、启用项及六轴范围；当前反解路径需要启用正 BW 目标。
+每次运行都需要新的输出目录；构建脚本也会拒绝覆盖已有构建目录。再次运行时请更换目录名。更多示例、构建选项和故障排查见[运行说明](docs/RUNNING.md)及[工具说明](tools/README.md)。
 
-## 按职责阅读
+## 配置说明
 
-|位置|职责|
-|---|---|
-|`configs/problems/`|SystemSpec、固定拓扑、六轴范围|
-|`configs/agent/`、`configs/providers/`|策略预算及 API 配置，无凭据值|
-|`pll_allocation/pipeline.py`|唯一正式 CLI 和调度入口|
-|`pll_allocation/agent/`|观察、Policy、决策校验、候选账本、Handoff、反馈|
-|`pll_allocation/allocation/`|原物理反解、确定性分配与基线|
-|`pll_allocation/exploration/`|问题合同、必要条件、物理区域、敏感度|
-|`pll_allocation/region_explorer/`|Sobol/SLSQP 工具、边界、缓存、M1 预算|
-|`pll_allocation/physics_mapping/`|正式 M1 评价和物理映射|
-|`pll_allocation/verification/`|原生行为 TB、测量、M2 判决、连续候选适配|
-|`pll_allocation/studies/`|可选冻结对照编排，不参与默认分配链|
-|`tests/`|数值、合同、预算、反馈、兼容回归|
+问题配置定义系统指标、启用项和六个参数的范围；策略配置定义搜索方式、候选数量与调用预算。
 
-建议阅读顺序：`agent/initial_allocation.py` → `physics_tool_policy.py` → `search_loop.py` → `exploration/physics_region_builder.py` → `allocation/physics.py` → `agent/feedback.py`。
+| 配置位置 | 用途 |
+| --- | --- |
+| [`configs/problems/`](configs/problems/) | 系统指标、固定模型参数和搜索范围 |
+| [`configs/agent/spec_allocation.json`](configs/agent/spec_allocation.json) | 策略模式、候选数量、质量阈值和总预算 |
+| [`configs/providers/messages.json`](configs/providers/messages.json) | LLM 服务参数及环境变量名称 |
+| [`configs/verification/`](configs/verification/) | M2 测量协议和反馈配置 |
 
-配置已按 problems / agent / providers / examples / model / verification / baselines / provenance 组织；详见 [configs 说明](configs/README.md)。共享物理工具、复现入口及五个维护工具的职责和命令见 [tools 说明](tools/README.md)。
+复制已有配置后，通过统一入口传入自己的文件：
 
-## 结果和测试
+```powershell
+python -m pll_allocation pipeline --problem path/to/problem.json --allocator-config path/to/allocator.json --out experiments/custom_example
+```
 
-- 初始分配：`m1_allocation.json`、`candidate_archive.jsonl`、`verification_handoff.json`。
-- 决策/工具：`SEARCH_DECISION_TRACE.jsonl`、`REGION_CONSTRUCTION_RESULTS.json`、真实 Observation。
-- 联合验证：`verification_result.json`、`m2_verifications.jsonl`、`feedback_summaries.jsonl`、`reallocation_candidates.jsonl`、`cost_summary.json`。
-- 真实 LLM：查看调用 metadata 的 `real_network_call`、响应状态及 `cost.LLM_calls`；事件名字本身不是调用证据。
+六个参数的输入单位依次为 `Icp [A]`、`Rz [Ohm]`、`C1 [F]`、`C2 [F]`、`f0 [Hz]`、`Kvco [Hz/V]`。当前反解路径要求启用正的带宽目标。将策略配置中的 `m2_budget` 设为 `0` 可仅执行 M1。
 
-执行 `python -m pytest -q`。原生扩展构建、档案依赖和错误定位见[运行说明](docs/RUNNING.md)。TEST/mocked Policy 仅用于回归，不能计作研究成果。
+`mode` 支持以下取值：
 
-2026-11-17 多策略源码交付复核：干净源码副本中新建 venv、重建四个后端，八组公开输入均重新执行；完整回归786通过、10项历史档案跳过，架构和原算法哈希审计通过。中文路径的 Windows 环境应启用上文 UTF-8 设置；详细边界和定向复验见运行说明。
+| 模式 | 行为 |
+| --- | --- |
+| `DETERMINISTIC` | 使用物理反解与确定性搜索，默认模式 |
+| `LLM_PHYSICS_GUIDED` | 由 LLM 根据当前观察选择物理工具与搜索动作 |
+| `AUTO_HYBRID` | 先进行确定性搜索，候选数量或质量不足时再使用 LLM |
 
-2026-11-16 配置/工具整理后的共享版验收：精简源码快照中重建四个原生后端，750 项测试通过、10 项历史档案测试跳过。真实确定性分配得到 M1 可行候选；M2 BW≈229.00kHz，但条件捕获54µs超过40µs，因此如实报告 FAIL。重构前后候选与指标相同。本轮没有新增真实 LLM 研究调用，详见[整理说明](docs/RELEASE_NOTES.md)。
+完整字段、预算计数和候选筛选规则见[多策略分配说明](docs/SPEC_ALLOCATION.md)；其他配置见[配置目录说明](configs/README.md)。
 
-本次后续职责命名迁移完成21项文件迁移，完整回归763通过、10项历史档案跳过；三个扩展后端12组旧/新DLL输出逐字节一致，正式M1/M2指标与判决保持。新增命名规则检查及兼容测试，详见[命名说明](docs/NAMING.md)与[实际验收](docs/RUNNING.md)。
+### 使用 LLM
 
-共享源码不含 GUI、实验输出、波形、DLL、原始 API 日志或凭据。保留少量必要测试夹具和来源哈希合同。Git 历史未重写；可用 `git clone --depth 1` 或下载最新版源码避免获取完整历史。
+LLM 模式需要支持 Messages API 的 HTTPS 服务，以及以下本机环境变量：
 
-- [架构与调用链](docs/ARCHITECTURE.md)
-- [全部维护代码的逐文件说明](docs/CODE_MAP.md)
-- [运行、配置、测试](docs/RUNNING.md)
-- [审查重点和研究边界](docs/REVIEW_GUIDE.md)
-- [名称迁移和兼容合同](docs/COMPATIBILITY.md)
-- [职责命名规则与完整迁移表](docs/NAMING.md)
-- [本次整理说明](docs/RELEASE_NOTES.md)
+| 环境变量 | 内容 |
+| --- | --- |
+| `ANTHROPIC_BASE_URL` | 服务地址 |
+| `ANTHROPIC_AUTH_TOKEN` | API 凭据 |
+| `ANTHROPIC_MODEL` | 模型名称 |
 
-当前研究目标、实现状态、验收和下一步见 [PROJECT_CHARTER.md](PROJECT_CHARTER.md)。原始任务全文已在本地历史目录留档；研究目标不等于已经完成的认证。
+完成 M2 内核构建并设置环境变量后，可运行 LLM 示例：
+
+```powershell
+python tools/run_allocation_examples.py --case llm --allow-paid-llm --out experiments/llm_example
+```
+
+`--allow-paid-llm` 授权该示例在配置预算内发起真实 API 调用。默认配置的 `allow_paid_llm=false`；使用自定义策略配置时，需要同时设置该开关、`llm_budget` 并传入 `--llm-config configs/providers/messages.json`。凭据应保存在本机环境中。
+
+## 输出结果
+
+多候选分配的输出目录包含以下主要文件：
+
+| 文件或目录 | 内容 |
+| --- | --- |
+| `allocation_report.md` | 参数候选、推荐依据和验证结果的可读报告 |
+| `allocation_result.json` | 运行状态、候选统计、推荐结果和失败原因 |
+| `candidates.json` | 六参数候选、单位、M1 指标与已执行的 M2 结果 |
+| `cost_summary.json` | M1、M2、LLM 调用次数与执行成本 |
+| `execution_route.json` | 实际执行路径及配置来源 |
+| `initial/`、`verification/` | 搜索轨迹、候选记录、独立复核和反馈证据 |
+
+阅读结果时，需要区分 M1 可行与 M2 已支持指标通过。`recommended_M2_supported` 仅在真实原生 M2 的已支持项通过且候选满足质量要求时有值；`recommended` 可能回退到仅通过 M1 的候选，应结合 `recommendation_basis` 判断。两者均不代表完整 SystemSpec 已获得认证。
+
+示例问题有意保留未支持的 jitter 约束，因此即使已支持项通过，也可能仍有 `UNKNOWN` 项。详细状态定义见[配置与结果合同](docs/SPEC_ALLOCATION.md#输出与判决)。
+
+## 项目结构
+
+```text
+pll_allocation/
+├── pipeline.py         # 统一命令入口与流程调度
+├── agent/              # 策略、候选池、预算与反馈重分配
+├── allocation/         # 物理反解与分配算法
+├── exploration/        # 问题定义、物理区域与敏感度分析
+├── region_explorer/    # Sobol 采样与 SLSQP 局部优化
+├── physics_mapping/    # M1 连续模型与物理映射
+├── verification/       # C++ 行为内核、测量与 M2 判决
+└── studies/            # 可选对照研究
+configs/                # 问题、策略、模型与验证配置
+tools/                  # 示例运行与维护工具
+tests/                  # 回归测试与轻量夹具
+docs/                   # 架构、运行与开发文档
+```
+
+## 开发与测试
+
+完整测试需要先构建标准内核及三个可选后端：
+
+```powershell
+cmd /c pll_allocation\verification\build_kernel.cmd
+cmd /c pll_allocation\verification\build_phase_step.cmd
+cmd /c pll_allocation\verification\build_return_ratio.cmd
+cmd /c pll_allocation\verification\build_nonideal.cmd
+python -m pytest -q
+```
+
+已构建的后端无需重复构建。部分历史档案测试在档案缺失时会显式跳过，原因见[测试边界](docs/RUNNING.md#测试边界)。离线 LLM 测试使用模拟策略，不会发起付费 API 调用。
+
+开发前请阅读 [AGENTS.md](AGENTS.md) 和[兼容性说明](docs/COMPATIBILITY.md)。欢迎通过 [Issues](https://github.com/Jasperskkr/PLL_EVALAGENT/issues) 反馈问题；复现信息建议包含运行环境、命令、配置与错误摘要。实验输出、API 原始日志、凭据和编译产物保存在本地。
+
+## 文档
+
+- [运行指南](docs/RUNNING.md)：安装、原生构建、示例与故障排查。
+- [多策略分配](docs/SPEC_ALLOCATION.md)：模式、配置字段、预算与结果语义。
+- [架构说明](docs/ARCHITECTURE.md)：模块边界与主要调用链。
+- [代码导读](docs/CODE_MAP.md)：源文件职责与阅读入口。
+- [研究范围](PROJECT_CHARTER.md)与[审查指南](docs/REVIEW_GUIDE.md)：研究目标、证据要求和能力边界。
+- [命名规则](docs/NAMING.md)与[兼容性说明](docs/COMPATIBILITY.md)：模块命名及历史接口。
+- [变更记录](docs/RELEASE_NOTES.md)：重构、迁移与历史验收记录。
