@@ -77,7 +77,7 @@ cmd /c pll_allocation\verification\build_kernel.cmd
 python -m pll_allocation pipeline --problem configs/problems/nominal.json --out experiments/joint_example
 ```
 
-默认使用 `configs/agent/spec_allocation.json`：确定性策略，目标为 5 个不同候选，总预算为 96 次 M1 和 3 次 M2，最多 2 次反馈重分配。运行结束后查看 `experiments/joint_example/allocation_report.md`。
+默认使用 `configs/agent/spec_allocation.json`：确定性策略，先构造 5 个不同的 M1 候选，目标交付 3 个正式 M1＋原生 M2 已支持指标通过点；总预算为 96 次 M1 和 8 次 M2，最多 2 次反馈搜索（含补点）。首个通过后继续验证，预算耗尽时如实交付部分结果。运行结束后查看 `experiments/joint_example/allocation_report.md`。
 
 每次运行都需要新的输出目录；构建脚本也会拒绝覆盖已有构建目录。再次运行时请更换目录名。更多示例、构建选项和故障排查见[运行说明](docs/RUNNING.md)及[工具说明](tools/README.md)。
 
@@ -137,11 +137,12 @@ python tools/run_allocation_examples.py --case llm --allow-paid-llm --out experi
 | `allocation_report.md` | 参数候选、推荐依据和验证结果的可读报告 |
 | `allocation_result.json` | 运行状态、候选统计、推荐结果和失败原因 |
 | `candidates.json` | 六参数候选、单位、M1 指标与已执行的 M2 结果 |
+| `sizing_handoff.json` | 多个联合通过的行为目标及证据，只收录质量/差异达标且原生 M2 已支持项通过的点 |
 | `cost_summary.json` | M1、M2、LLM 调用次数与执行成本 |
 | `execution_route.json` | 实际执行路径及配置来源 |
 | `initial/`、`verification/` | 搜索轨迹、候选记录、独立复核和反馈证据 |
 
-阅读结果时，需要区分 M1 可行与 M2 已支持指标通过。`recommended_M2_supported` 仅在真实原生 M2 的已支持项通过且候选满足质量要求时有值；`recommended` 可能回退到仅通过 M1 的候选，应结合 `recommendation_basis` 判断。两者均不代表完整 SystemSpec 已获得认证。
+下游应读取 `sizing_handoff.json.candidates`，并检查 `joint_status` / `joint_target_reached`：预算内可能只交付部分点。`target_count` 控制 M1 池，`m2_target_count` 控制联合通过目标，两个目标独立；旧配置省略后者时保留首个通过停止。`recommended_M2_supported` 仅在原生 M2 已支持项通过时有值；`recommended` 仍可能回退到仅 M1 点。所有结果均不代表完整 SystemSpec、管级或 PVT 已获认证。
 
 示例问题有意保留未支持的 jitter 约束，因此即使已支持项通过，也可能仍有 `UNKNOWN` 项。详细状态定义见[配置与结果合同](docs/SPEC_ALLOCATION.md#输出与判决)。
 

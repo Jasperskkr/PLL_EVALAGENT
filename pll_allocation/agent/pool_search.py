@@ -16,17 +16,20 @@ class PoolDeterministicPolicy(DeterministicToolPolicy):
     """Inverse first; V2 feedback rules; diversify before bounded local search."""
     def decide(self, state, directory):
         cfg = state['candidate_pool']['config']
+        replenishing = any(o['measurements'].get('search_purpose') == 'REPLENISH_JOINT_POOL'
+                           for o in (state['external_feedback'] or {}).get('observations', []))
         if state['budget']['max_build_attempts'] == 0:
             return {'schema_version': SCHEMA_VERSION, 'state_sha256': state['state_sha256'],
                 'evidence_ids': ['REL:shape'], 'action': 'STOP', 'stop_basis': 'BUDGET',
                 'reason': 'The charged physical construction attempt budget is exhausted.'}
         if ((state['external_feedback'] or {}).get('observations') and not state['history'] and
-                state['external_feedback']['observations'][0]['measurements'].get('schema_version') == 'pll-m2-feedback-summary-1.0'):
+                state['external_feedback']['observations'][0]['measurements'].get('schema_version') == 'pll-m2-feedback-summary-1.0' and
+                state['external_feedback']['observations'][0]['measurements']['supported_metrics_status'] != 'PASS'):
             return DeterministicFeedbackPolicy().decide(state, directory)
         regions = [r for r in state['available_tool_regions'] if r['formal_M1_seed_ids']]
         # When feasible points miss the quality gate, use the existing maximin
         # optimizer; it cannot improve dynamic capture or certify M2.
-        if (regions and state['candidate_pool']['feasible_count'] and not state['candidate_pool']['quality_count']
+        if (not replenishing and regions and state['candidate_pool']['feasible_count'] and not state['candidate_pool']['quality_count']
                 and not any(h['action'] == 'OPTIMIZE' for h in state['history'])):
             return super().decide(state, directory)
         common = {'schema_version': SCHEMA_VERSION, 'state_sha256': state['state_sha256'],
@@ -34,6 +37,8 @@ class PoolDeterministicPolicy(DeterministicToolPolicy):
                   'reason': 'Construct distinct joint inverse seeds; formal M1 and the pool quality gate own acceptance.'}
         strategies = ('HIGH_PM_LF_SHAPE', 'GAIN_SPLIT_EXPLORATION', 'VCO_TUNING_EXPLORATION', 'DIVERSITY_EXPLORATION')
         index = len(state['history'])
+        if replenishing:
+            index += 3  # Successful points need diverse alternatives, not failure correction.
         count = min(8, max(1, cfg['target_count']-state['candidate_pool']['quality_count']),
                     state['budget']['max_this_decision_M1_calls'])
         fraction = (.5, .5) if index < 2 else ((.25, .75) if index % 2 else (.1, .9))
@@ -63,8 +68,9 @@ target is reached, or explain a real budget/stall. All M2 verdicts remain extern
 
     def decide(self, state, directory):
         cfg = self.pool_config
-        prior_searches = any(o['measurements'].get('previous_searches') for o in
-                             (state['external_feedback'] or {}).get('observations', []))
+        prior_searches = any(s.get('search_purpose') != 'REPLENISH_JOINT_POOL'
+                             for o in (state['external_feedback'] or {}).get('observations', [])
+                             for s in o['measurements'].get('previous_searches', []))
         if cfg['mode'] == 'AUTO_HYBRID' and state['round'] <= cfg['deterministic_rounds'] and not prior_searches:
             self.branch_history.append('DETERMINISTIC')
             return self.deterministic.decide(state, directory)
@@ -103,21 +109,30 @@ class PoolSearchLoop(PhysicsToolSearchLoop):
 
     def _pool(self, quality_only=False):
         self.archive.sync()
-        rows = distinct_candidates(self.archive.entries, self.explorer.problem, self.pool_config, quality_only=quality_only)
+        rows = self.archive.entries
         if quality_only:
             excluded = set(self.pool_config.get('excluded_hashes', []))
             excluded |= {o['candidate_sha256'] for o in (self.external_feedback or {}).get('observations', [])}
-            rows = [r for r in rows if r['parameter_sha256'] not in excluded]
-        return rows
+            passed = [r for o in (self.external_feedback or {}).get('observations', [])
+                      for r in o['measurements'].get('joint_pass_candidates', [])]
+            # All tool outputs (including SLSQP/Sobol) must count only useful
+            # new points; filtering just inverse seeds can stop repair early.
+            rows = [r for r in rows if r['parameter_sha256'] not in excluded and
+                    all(distance(self.explorer.problem, r, old) >= self.pool_config['minimum_distance'] for old in passed)]
+        return distinct_candidates(rows, self.explorer.problem, self.pool_config, quality_only=quality_only)
 
     def _search_target_reached(self):
         # Imported feedback seeds alone must not stop a reallocation. They have
-        # already failed M2; demand a distinct newly constructed/search point.
+        # already measured M2; demand a distinct useful new search point.
         return len(self._pool(True)) >= self.pool_config['target_count']
 
     def _seed_allowed(self, seed):
         self.archive.sync()
         if seed['parameter_sha256'] in self.pool_config.get('excluded_hashes', []):
+            return False
+        passed = [r for o in (self.external_feedback or {}).get('observations', [])
+                  for r in o['measurements'].get('joint_pass_candidates', [])]
+        if any(distance(self.explorer.problem, seed, old) < self.pool_config['minimum_distance'] for old in passed):
             return False
         # Keep failed M1 neighborhoods searchable; only feasible near-duplicates
         # can be redundant. Quality selection itself remains post-M1.

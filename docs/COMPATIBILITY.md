@@ -1,5 +1,7 @@
 # 名称迁移、兼容与来源合同
 
+2026-11-18 多点交付：新 `m2_target_count` 为可选字段，接口缺省1保留原首次通过停止；公开 `configs/agent/spec_allocation.json` 显式设3并将 M2预算设8。仅显式多点配置使用 `M2_JOINT_TARGET_REACHED` / `M2_JOINT_PARTIAL` 状态，原目标1状态保留。原反馈配置也可选此字段，多点目标须有候选池。`joint_status`、`joint_candidates`、到达时间与 `sizing_handoff.json` 是新增结果；旧 `recommended` 仍可能回退到 M1，不能作为多点交付集合。物理/协议/判决与历史证据均未重写。
+
 主阅读路径按职责命名。核心物理公式、原反解/数值求解、测量算法和判决语义保持原实现。
 
 ## 执行入口收口（2026-11-17）

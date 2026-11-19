@@ -14,27 +14,27 @@
       "overrides": {"m2_budget": 0}
     },
     "nominal": {
-      "description": "Deterministic nominal K=5, selected native M2",
+      "description": "Deterministic nominal M1 pool=5, target 3 joint native-M2 passing points",
       "problem": "configs/problems/nominal.json",
       "overrides": {}
     },
     "tight": {
-      "description": "Deterministic tight K=5, selected native M2",
+      "description": "Deterministic tight M1 pool=5, target 3 joint native-M2 passing points",
       "problem": "configs/problems/tight.json",
       "overrides": {}
     },
     "feedback": {
       "description": "Deterministic nominal K=1, native M2 and one reallocation",
       "problem": "configs/problems/nominal.json",
-      "overrides": {"target_count": 1, "m2_budget": 2, "max_reallocations": 1}
+      "overrides": {"target_count": 1, "m2_target_count": 1, "m2_budget": 2, "max_reallocations": 1}
     },
     "auto": {
-      "description": "Auto nominal K=5, native M2, LLM authorization disabled",
+      "description": "Auto nominal M1 pool=5, target 3 joint points, LLM authorization disabled",
       "problem": "configs/problems/nominal.json",
       "overrides": {"mode": "AUTO_HYBRID"}
     },
     "llm": {
-      "description": "Real LLM nominal K=5, at most four API calls and three native M2",
+      "description": "Real LLM nominal M1 pool=5, target 3 joint points, at most four API calls and eight native M2",
       "problem": "configs/problems/nominal.json",
       "requires_paid_llm": true,
       "overrides": {"mode": "LLM_PHYSICS_GUIDED"}
@@ -44,6 +44,28 @@
       "problem": "configs/problems/nominal.json",
       "requires_paid_llm": true,
       "overrides": {"mode": "AUTO_HYBRID", "target_count": 10, "deterministic_rounds": 1, "llm_budget": 2, "m2_budget": 0}
+    },
+    "tight_auto": {
+      "description": "Auto tight M1 pool=5, target 3 joint points, real LLM allowed only when authorized",
+      "problem": "configs/problems/tight.json",
+      "requires_paid_llm": true,
+      "overrides": {"mode": "AUTO_HYBRID"}
+    },
+    "tight_llm": {
+      "description": "Real LLM tight M1 pool=5, target 3 joint points, at most four API calls and eight native M2",
+      "problem": "configs/problems/tight.json",
+      "requires_paid_llm": true,
+      "overrides": {"mode": "LLM_PHYSICS_GUIDED"}
+    },
+    "joint_partial": {
+      "description": "Nominal target 3 joint points with only three native M2 calls; retain actual partial result",
+      "problem": "configs/problems/nominal.json",
+      "overrides": {"m2_budget": 3}
+    },
+    "joint_replenish": {
+      "description": "Nominal initial M1 pool=1, target 2 joint points; budgeted feedback repair and successful replenishment",
+      "problem": "configs/problems/nominal.json",
+      "overrides": {"target_count": 1, "m2_target_count": 2, "m2_budget": 6, "max_reallocations": 4}
     }
   }
 }

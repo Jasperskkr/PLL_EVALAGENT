@@ -1,10 +1,14 @@
 # 运行、配置、测试与错误定位
 
+2026-11-18 多点交付：公开默认配置先构造5个 M1 候选，目标交付3个质量及差异达标的 M1＋原生 M2 已支持指标通过点，M2总预算8；读取 `sizing_handoff.json` 和 `joint_status`，部分找到会标为 `PARTIAL`。旧配置省略 `m2_target_count` 时仍以首个通过停止，PM/jitter UNKNOWN 不变。详见 [Spec Allocation](SPEC_ALLOCATION.md)。
+
 所有命令从仓库根目录执行。推荐 Python 3.12，安装 `python -m pip install -e ".[integration,test]"`。当前原生 TB 验证环境是 Windows x64/MSVC 2022，不声称其他平台已经验收。
 
 默认入口现为新版连续域、多候选分配：`pipeline --problem <problem.json> --out <fresh>` 可省略 allocator 配置；只给 `--out` 使用 nominal 示例并记录输入路径。旧冻结命令须增加 `--legacy-frozen`；更早的 `run/suite` 须在子命令前加 `--legacy-v1`。不同路径参数混用会在读输入前拒绝，不能在新版命令使用旧 `--strategy` / `--m2-budget` 作为覆盖。每次 CLI 输出 `execution_route.json`，迁移表见 [COMPATIBILITY](COMPATIBILITY.md)。
 
 入口收口后独立源码复核：273份源码运行前后哈希不变，四个后端重建成功，完整回归 **813 passed / 10 archive skipped / 0 warnings**（启用 UTF-8、`-W error`）。默认新版、仅 tight 问题、feedback、Auto 均找到原生 M2 支持指标通过点；显式冻结仍可运行，原单点仅 M1 且正确记录零 LLM/零 TEST 调用。四组新版的候选六参数、M1 指标/判决及推荐 M2 数值与上轮逐项一致。本轮未调用真实 API，LLM 选择接口使用离线回归；未升级 PM/jitter 的 UNKNOWN。
+
+2026-11-18 多点交付验收：两组 spec × 三种模式均交付3个原生联合通过点；两组 Auto 均零 API。真实 LLM 共5次 HTTP200，尚无策略优越性结论。预算不足实际1/3、修复后小池反馈与补点实际2/2。最终完整回归 **826 passed / 10 archive skipped / 0 warnings**（203.44秒，UTF-8、`-W error`），架构及六份原物理实现哈希审计通过。原始失败、修复重跑、API 和波形仅保存在本地实验目录。
 
 ## 新克隆源码的多策略复现
 
@@ -32,7 +36,14 @@ M1 案例无需编译；原生 M2 需要 Windows x64 与 VS 2022 Community C++ �
 python tools/run_allocation_examples.py --case llm --case auto_trigger --allow-paid-llm --out experiments/my_llm_01
 ```
 
-`llm` 为 nominal K5、API≤4、M2≤3；`auto_trigger` 为 nominal K10、一轮确定性后可引入 LLM、API≤2、M2=0。`auto` 默认不授权 API，用于验证足够候选时零 LLM。显式授权开关仅影响所选的真实 LLM 案例，缺少授权或环境时脚本在运行前退出。模型响应及候选可能变化；复现的是输入、工具、预算和验证过程，不保证随机服务输出相同，也不保证有限预算必达 K。M2 未执行必须报告为未执行。
+`llm` 为 nominal M1池5、联合目标3、API≤4、M2≤8；`tight_llm` / `tight_auto` 提供相同预算的 tight 输入。`auto_trigger` 为 nominal K10、一轮确定性后可引入 LLM、API≤2、M2=0。`auto` 默认不授权 API，用于验证足够候选时零 LLM。显式授权开关仅影响所选的真实 LLM 案例，缺少授权或环境时脚本在运行前退出。模型响应及候选可能变化；复现的是输入、工具、预算和验证过程，不保证随机服务输出相同，也不保证有限预算必达目标。M2 未执行必须报告为未执行。
+
+边界验收用公开案例 `joint_partial`（联合目标3，M2预算3）和 `joint_replenish`（初始池1，联合目标2，M2预算6，反馈搜索上限4）：
+
+```powershell
+python tools/run_allocation_examples.py --case joint_partial --case joint_replenish --out experiments/my_joint_boundaries_01
+python tools/run_allocation_examples.py --case tight_llm --case tight_auto --allow-paid-llm --out experiments/my_joint_tight_01
+```
 
 完成以下三个可选后端构建后，运行完整共享回归：
 

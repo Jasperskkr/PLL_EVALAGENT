@@ -160,3 +160,116 @@ def test_auto_m2_failure_escalates_after_deterministic_repair(tmp_path):
     assert any(s['external_feedback']['observations'][0]['measurements']['previous_searches']
                for s in policy.states if s['external_feedback'])
     assert r['cost']['offline_llm_decisions'] > 0 and r['M2_supported_pass_count'] == 0
+
+
+@pytest.mark.parametrize('mode', ['DETERMINISTIC', 'LLM_PHYSICS_GUIDED', 'AUTO_HYBRID'])
+def test_multiple_joint_targets_continue_after_first_pass(tmp_path, mode):
+    from test_verification_feedback import fake_m2
+    invoked = []
+    def backend(req, out):
+        invoked.append(req['candidate_sha256'])
+        return fake_m2()(req, out)
+    policy = OfflinePhysicsPolicy() if mode != 'DETERMINISTIC' else None
+    r = run_spec_allocation(NOMINAL, tmp_path/'run', config=config(mode=mode,
+        target_count=5, m2_target_count=3, m2_budget=5), policy=policy, m2_executor=backend)
+    v = json.loads((tmp_path/'run/verification/verification_result.json').read_text(encoding='utf-8'))
+    assert len(invoked) == len(set(invoked)) == 3
+    assert v['joint_target_reached'] and v['joint_pass_count'] == 3
+    assert v['termination_reason'] == 'JOINT_M1_M2_TARGET_REACHED'
+    # Simulated verdicts test control flow, never populate native deliverables.
+    assert not r['joint_target_reached'] and r['joint_candidates'] == []
+    h = json.loads((tmp_path/'run/sizing_handoff.json').read_text(encoding='utf-8'))
+    assert h['candidate_count'] == 0 and h['joint_status'] == 'TEST_ONLY'
+    assert not h['FULL_SYSTEMSPEC_CERTIFIED']
+
+
+def test_joint_target_budget_exhaustion_preserves_partial_test_evidence(tmp_path):
+    from test_verification_feedback import fake_m2
+    r = run_spec_allocation(NOMINAL, tmp_path/'run', config=config(
+        target_count=5, m2_target_count=3, m2_budget=2), m2_executor=fake_m2())
+    v = json.loads((tmp_path/'run/verification/verification_result.json').read_text(encoding='utf-8'))
+    assert v['joint_pass_count'] == 2 and not v['joint_target_reached']
+    assert r['verification_termination'] == 'M2_BUDGET_EXHAUSTED'
+    assert r['cost']['M2_verifications'] == 2 and r['failure'] is None
+    assert sum(c['M2_supported_status'] == 'PASS' for c in r['candidates']) == 2
+    assert r['M2_supported_pass_count'] == 0 and r['recommended_M2_supported'] is None
+
+
+def test_failed_and_unknown_measurements_do_not_count_toward_joint_target(tmp_path):
+    from test_verification_feedback import fake_m2
+    invoked = []
+    def backend(req, out):
+        invoked.append(req['candidate_sha256'])
+        values = ({'lock': 54e-6} if len(invoked) == 1 else
+                  {'converged': False} if len(invoked) == 2 else {})
+        return fake_m2(**values)(req, out)
+    r = run_spec_allocation(NOMINAL, tmp_path/'run', config=config(
+        target_count=5, m2_target_count=2, m2_budget=4), m2_executor=backend)
+    v = json.loads((tmp_path/'run/verification/verification_result.json').read_text(encoding='utf-8'))
+    assert len(set(invoked)) == 4 and v['joint_pass_count'] == 2
+    assert v['joint_target_reached'] and r['cost']['M2_verifications'] == 4
+    assert [x['supported_metrics_status'] for x in v['verified_history']] == ['FAIL', 'UNKNOWN', 'PASS', 'PASS']
+
+
+def test_successful_pool_exhaustion_replenishes_without_faking_failure(tmp_path):
+    from test_verification_feedback import fake_m2
+    r = run_spec_allocation(NOMINAL, tmp_path/'run', config=config(mode='AUTO_HYBRID',
+        target_count=1, m2_target_count=3, m2_budget=3, llm_budget=5),
+        policy=OfflinePhysicsPolicy(), m2_executor=fake_m2())
+    v = json.loads((tmp_path/'run/verification/verification_result.json').read_text(encoding='utf-8'))
+    assert v['joint_pass_count'] == 3 and v['joint_target_reached'], v
+    assert len(v['searches']) == 2
+    f = json.loads((tmp_path/'run/verification/reallocation_01/external_feedback.json').read_text(encoding='utf-8'))
+    measured = f['observations'][0]['measurements']
+    assert measured['search_purpose'] == 'REPLENISH_JOINT_POOL'
+    assert measured['failed_constraints'] == [] and measured['joint_pass_count'] == 1
+    assert r['cost']['M1_calls'] <= 40 and r['cost']['offline_llm_decisions'] == 0
+    decisions = rows(tmp_path/'run/verification/reallocation_01/SEARCH_DECISION_TRACE.jsonl')
+    assert decisions[0]['decision']['request']['strategy'] == 'DIVERSITY_EXPLORATION'
+
+
+def test_all_tool_origins_obey_joint_distance_before_pool_stopping(tmp_path):
+    from types import SimpleNamespace
+    from pll_allocation.agent.pool_search import PoolSearchLoop
+    r = run_spec_allocation(NOMINAL, tmp_path/'run', config=config())
+    problem = json.loads((tmp_path/'run/problem_resolved.json').read_text(encoding='utf-8'))
+    passed, distinct = deepcopy(r['candidates'][:2])
+    near = deepcopy(passed)
+    near['parameter_sha256'] = '0'*64
+    near['origin'] = 'LOCAL_SLSQP:NEIGHBOR'
+    near['judgment']['minimum_normalized_margin'] += 1
+    loop = object.__new__(PoolSearchLoop)
+    loop.pool_config = {'target_count': 1, 'minimum_margin': 0, 'minimum_distance': .05,
+                        'excluded_hashes': [passed['parameter_sha256']]}
+    loop.explorer = SimpleNamespace(problem=problem)
+    loop.external_feedback = {'observations': [{'candidate_sha256': passed['parameter_sha256'],
+        'measurements': {'joint_pass_candidates': [passed]}}]}
+    loop.archive = SimpleNamespace(entries=[passed, near], sync=lambda: None)
+    assert loop._pool(True) == [] and not loop._search_target_reached()
+    loop.archive.entries.append(distinct)
+    assert loop._search_target_reached() and loop._pool(True) == [distinct]
+
+
+def test_joint_delivery_packs_passing_subset_and_rejects_near_duplicates(tmp_path):
+    from pll_allocation.agent.candidate_pool import joint_candidates, select_m2
+    r = run_spec_allocation(NOMINAL, tmp_path/'run', config=config())
+    problem = json.loads((tmp_path/'run/problem_resolved.json').read_text(encoding='utf-8'))
+    a, b = deepcopy(r['candidates'][:2])
+    close = deepcopy(a)
+    close['parameter_sha256'] = '0'*64
+    close['judgment']['minimum_normalized_margin'] += 1
+    # Higher-ranked unverified neighbors must not hide already passing points.
+    packed = joint_candidates([a, close, b], problem, {'minimum_distance': .05, 'minimum_margin': 0},
+                              [a['parameter_sha256'], b['parameter_sha256']])
+    assert len(packed) == 2 and a in packed
+    packed = joint_candidates([a, close], problem, {'minimum_distance': .05, 'minimum_margin': 0},
+                              [a['parameter_sha256'], close['parameter_sha256']])
+    assert len(packed) == 1
+    assert select_m2([a, close], problem, {'minimum_distance': .05, 'minimum_margin': 0}, [a], [a]) is None
+
+
+@pytest.mark.parametrize('target', [0, -1, True, 1.5, 101])
+def test_invalid_joint_target_rejected_before_output(tmp_path, target):
+    with pytest.raises(ValueError, match='m2_target_count'):
+        run_spec_allocation(NOMINAL, tmp_path/'run', config=config(m2_target_count=target))
+    assert not (tmp_path/'run').exists()

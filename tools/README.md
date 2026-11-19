@@ -12,7 +12,7 @@
 |Cold Start 与初始候选|`agent/initial_allocation.py:run_initial_allocation`|问题、策略配置 → 原候选账本、正式 M1、独立复核和 Handoff；多候选配置使用 V2 Cold Start|
 |确定性搜索/优化|`region_explorer/explorer.py:RegionExplorer.execute`|经过校验的决策 → Sobol/SLSQP 等原工具结果、缓存和正式 M1 成本|
 |正式 M1|`physics_mapping/model.py:M1Evaluator.evaluate`|带单位六参数 → 连续模型 BW、名义 PM、调谐点；问题判决由 `exploration/contracts.py:judge` 完成|
-|候选池|`agent/candidate_pool.py:distinct_candidates` / `select_m2`|真实账本、质量门槛和六轴归一化距离 → 不同 M1 点、优先 M2 点；不删除原始失败/近重复证据|
+|候选池|`agent/candidate_pool.py:distinct_candidates` / `select_m2` / `joint_candidates`|真实账本、质量门槛和六轴归一化距离 → 不同 M1 点、优先 M2 点及通过子集；不删除原始失败/近重复证据|
 |正式 M2|`verification/continuous.py:verification_request` / `execute_request` / `judge_measurements`|通过绑定检查的候选 → 原生 TB 结果与原判决；PM/jitter 未支持时仍 UNKNOWN|
 |反馈与重分配|`agent/feedback.py:run_feedback`、`agent/deterministic_feedback.py:DeterministicFeedbackPolicy`|M1/M2 证据与剩余预算 → 池内换点或 V2 确定性修正后重新分配；每个新点继续正式验证|
 |真实 LLM 工具选择|`agent/physics_tool_policy.py:make_policy`、`agent/region_policy.py:LLMRegionPolicy`、`agent/pool_search.py:PoolLLMPolicy`|物理先验、当前 Spec、历史验证/失败、剩余预算 → 工具动作；六参数由工具生成，API 有授权门禁与硬预算|
@@ -39,15 +39,29 @@ python tools/run_allocation_examples.py --case llm --case auto_trigger --allow-p
 |case|输入/预算特点|
 |---|---|
 |`nominal_m1` / `tight_m1`|确定性 K=5，M2=0|
-|`nominal` / `tight`|确定性 K=5，M2≤3|
+|`nominal` / `tight`|确定性 M1 池=5，联合通过目标=3，M2≤8|
 |`feedback`|nominal K=1，M2≤2，最多一次反馈重分配|
-|`auto`|Auto K=5，M2≤3，真实 LLM 授权关闭；足够时不进入 LLM|
-|`llm`|LLM K=5，真实 API≤4，M2≤3；需显式授权|
+|`auto`|Auto M1 池=5，联合通过目标=3，M2≤8，真实 LLM 授权关闭；足够时不进入 LLM|
+|`llm` / `tight_llm`|nominal / tight，LLM M1 池=5，联合通过目标=3，真实 API≤4，M2≤8；需显式授权|
+|`tight_auto`|tight，Auto M1 池=5，联合通过目标=3，M2≤8；需显式授权但不强制调用|
 |`auto_trigger`|Auto K=10，一轮确定性后可进入 LLM，真实 API≤2，M2=0；需显式授权|
+|`joint_partial`|nominal 联合目标=3，M2≤3，验证真实部分结果而不提前宣告达标|
+|`joint_replenish`|nominal 初始 M1 池=1，联合目标=2，M2≤6，最多4次反馈搜索，验证失败修复与成功后的补点|
 
-输入在 `configs/examples/spec_allocation.json`，继承 `configs/agent/spec_allocation.json` 的总 M1≤96 等默认值。`--allow-paid-llm` 仅作用于所选 `llm`/`auto_trigger`；默认 `auto` 仍不授权。脚本预检授权及变量是否存在，不打印变量值。输出目录必须全新，分别保存生成配置、CLI 命令、stdout/stderr、各 case 完整结果及真实 `summary.json`。非零退出码和缺失结果会如实报告；得到报告并不代表通过 M2。
+输入在 `configs/examples/spec_allocation.json`，继承 `configs/agent/spec_allocation.json` 的总 M1≤96 等默认值。`--allow-paid-llm` 仅作用于清单标记为需要授权的所选案例；默认 `auto` 仍不授权。脚本预检授权及变量是否存在，不打印变量值。输出目录必须全新，分别保存生成配置、CLI 命令、stdout/stderr、各 case 完整结果及真实 `summary.json`。非零退出码和缺失结果会如实报告；得到报告并不代表通过 M2。
 
 LLM 响应受模型与服务版本影响，模板复现输入、预算和验证流程，不保证与历史候选逐字一致。没有 API 时运行确定性和离线接口回归即可，不将其记为真实 LLM 验收。
+
+`--allow-paid-llm` 也作用于新增的 `tight_llm` / `tight_auto`，仅启用清单中 `requires_paid_llm=true` 的所选案例。三模式公平对比时可自行复制配置，将 nominal Auto 的 `allow_paid_llm` 打开并传入 provider；其真实调用是否为零仍由运行状态决定。
+
+新增多点验收可执行：
+
+```powershell
+python tools/run_allocation_examples.py --case nominal --case tight --case auto --case joint_partial --case joint_replenish --out experiments/my_joint_native_01
+python tools/run_allocation_examples.py --case llm --case tight_llm --case tight_auto --allow-paid-llm --out experiments/my_joint_llm_01
+```
+
+验收目标是多个正式 M1＋原生 M2 已支持指标通过点，读取 `sizing_handoff.json`；仅 M1 或 TEST 通过点不进入此文件。`summary.json` 区分联合目标是否达成，并记录首点/目标时间、调用次数与真实预算耗尽。完整 M2 PM/jitter 仍 UNKNOWN。
 
 ## 其他维护命令
 

@@ -1,5 +1,7 @@
 # PLLAgent 项目章程与当前实现状态
 
+2026-11-18 多点交付更新：公开默认配置改为 M1 池5、联合交付目标3、M2预算8。复用原求解器与原 M2 判决，首个支持项通过后继续选点，池耗尽后按预算修复/补点。`sizing_handoff.json` 仅导出正式 M1 质量/差异合格且原生 M2 已支持项通过的行为目标及证据；不执行管级 sizing、不认证 PVT 或未知指标。旧手写配置省略新目标字段仍保留单点行为。当前实验/回归结果见本轮 RELEASE_NOTES，实验原始输出继续保留本地。
+
 更新日期：2026-11-17。本章程按用户要求重写，用于研究交接、代码审查和后续开发。原始任务全文在本地 `docs/history/PROJECT_CHARTER_before_20261116.md` 留档；原始目标与当前已完成能力在本文中分别说明。
 
 2026-11-17 状态补充：已在原 Pipeline 上加入三模式多候选 Spec Allocation、V2 Cold Start 和正式确定性反馈工具；nominal/tight 快速 M1、选点原生 M2、确定性反馈、真实 LLM 与 Auto 切换已做小规模实跑。完整 M2 PM/jitter 仍 UNKNOWN，尚无策略优越性结论。共享源码新增八组输入模板与薄封装复现工具，不依赖本地实验产物；使用范围、配置与判决见 [多策略分配说明](docs/SPEC_ALLOCATION.md)，运行步骤见 [RUNNING](docs/RUNNING.md)。
@@ -48,7 +50,7 @@
 
 ## 4. 正式调用组织
 
-唯一正式命令入口是 `python -m pll_allocation pipeline`。新连续域工作应显式使用 `--problem` 和 `--allocator-config`；不带这些参数仍保留原冻结默认链的兼容语义。
+唯一正式命令入口是 `python -m pll_allocation pipeline`。默认进入新连续域多候选工作，省略配置使用公开多点默认值，省略问题使用 nominal；旧冻结链只由显式 `--legacy-frozen` 进入。
 
 ```text
 ResearchProblemV2 + Agent 配置

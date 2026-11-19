@@ -24,7 +24,7 @@
 
 ## Agent与反馈
 
-2026-11-17 新增多候选适配：`agent/spec_allocation.py` 是正式 Pipeline 的多策略配置/结果适配；`candidate_pool.py` 管理质量、距离去重和 M2 候选选择；`pool_search.py` 在原搜索执行器上补多点停止、Cold Start 后按需校准、确定性/LLM/Auto Policy；`deterministic_feedback.py` 将 V2 现有反馈规则提取为正式可调用 Policy。没有新增物理求解器或验证器。新增回归为 `tests/test_spec_allocation.py`。
+2026-11-18 多候选适配：`agent/spec_allocation.py` 是正式 Pipeline 的多策略配置/结果适配，并导出原生联合通过的 `sizing_handoff.json`；`candidate_pool.py` 管理质量、距离去重、通过子集和 M2 候选选择；`feedback.py` 按独立联合目标持续验证，支持成功补点及失败修复；`pool_search.py` 在原搜索执行器上补多点停止、Cold Start 后按需校准、确定性/LLM/Auto Policy；`deterministic_feedback.py` 保留 V2 反馈规则。没有新增物理求解器或验证器。回归为 `tests/test_spec_allocation.py`。
 
 |文件|基本职责|阅读入口|
 |---|---|---|
@@ -196,7 +196,7 @@
 |文件|基本职责|阅读入口|
 |---|---|---|
 |[tools/audit_architecture.py](../tools/audit_architecture.py)|只读核对正式依赖方向及六份原分配算法的SHA，输出审计JSON。|`audit`|
-|[tools/run_allocation_examples.py](../tools/run_allocation_examples.py)|读取公开八组输入，生成配置并子进程调用正式 Pipeline；真实 API 需显式授权，不依赖历史结果。|`run_cases` / `main`|
+|[tools/run_allocation_examples.py](../tools/run_allocation_examples.py)|读取公开输入，生成配置并子进程调用正式 Pipeline；汇总联合交付状态和首点/目标时间，真实 API 需显式授权，不依赖历史结果。|`run_cases` / `main`|
 |[tests/test_allocation_examples.py](../tests/test_allocation_examples.py)|复现输入有效性、唯一 CLI、授权/环境预检、防覆盖和失败保留。|`test_all_public_examples_use_valid_current_inputs`|
 |[tools/build_block_relation_atlas.py](../tools/build_block_relation_atlas.py)|由原反解/M1整理变量关系、条件域及数值核对，输出JSON/CSV/HTML；无M2/LLM。|`read` / `write`|
 |[tools/create_verification_profiles.py](../tools/create_verification_profiles.py)|向显式全新目录生成17份预声明profile/协议及manifest，不修改活动配置。|`documents`|

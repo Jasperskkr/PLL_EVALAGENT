@@ -52,12 +52,26 @@ def distinct_candidates(rows, problem, config, *, quality_only=False):
     return selected
 
 
-def select_m2(rows, problem, config, tested=()):
+def joint_candidates(rows, problem, config, passing_hashes):
+    """Pack only quality-qualified M1 points with supported-M2 PASS evidence.
+
+    The caller owns native/TEST provenance. Packing the passing subset avoids
+    an unverified or failed neighbor hiding a valid delivery candidate.
+    """
+    passing_hashes = set(passing_hashes)
+    return distinct_candidates([r for r in rows if r['parameter_sha256'] in passing_hashes],
+                               problem, config, quality_only=True)
+
+
+def select_m2(rows, problem, config, tested=(), passing=()):
     """Quality gate first, then distance from already tested points, then margin."""
     tested = list(tested)
     keys = {r['parameter_sha256'] for r in tested}
-    eligible = [r for r in distinct_candidates(rows, problem, config, quality_only=True)
-                if r['parameter_sha256'] not in keys]
+    # Filter before packing: an already tested neighbor must not hide a new
+    # alternative, while near-duplicates of delivered points add no value.
+    remaining = [r for r in rows if r['parameter_sha256'] not in keys and
+                 all(distance(problem, r, old) >= config['minimum_distance'] for old in passing)]
+    eligible = distinct_candidates(remaining, problem, config, quality_only=True)
     if not tested:
         return min(eligible, key=rank, default=None)
     return min(eligible, key=lambda r: (-min(distance(problem, r, old) for old in tested), rank(r)), default=None)

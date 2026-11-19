@@ -6,7 +6,7 @@
 |---|---|---|
 |`problems/`|nominal、tight、infeasible_pm 三个 ResearchProblemV2 示例；规格、启用项、固定拓扑和六轴范围|复制后修改，合法输入不保证有解|
 |`agent/`|确定性、LLM 物理工具策略、区域规划/搜索及预算|按所选 Policy 使用，不是六参数答案|
-|`examples/spec_allocation.json`|八个多候选复现输入，继承默认策略配置|仅问题路径及预算覆盖，无实验输出；`tools/run_allocation_examples.py` 生成输入并调用正式 Pipeline|
+|`examples/spec_allocation.json`|多候选复现输入，含 tight LLM/Auto、联合部分交付与小池补点，继承默认策略配置|仅问题路径及预算覆盖，无实验输出；`tools/run_allocation_examples.py` 生成输入并调用正式 Pipeline|
 |`providers/messages.json`|物理工具 Agent 的 Messages API 配置；4000 tokens、180s、thinking disabled|只记录环境变量名，凭据留在进程环境|
 |`providers/messages_interactive.json`|原交互入口的独立 API 默认值；8000 tokens、60s|保留原预算差异，不与上一项合并|
 |`verification/verify_only.json`、`feedback.json`|Handoff 后一次 M2，或有限反馈重分配|必须先取得 READY Handoff|
@@ -20,7 +20,29 @@
 
 六轴传入后端的单位依次为 A、Ohm、F、F、Hz、Hz/V。规格和变量域必须符合已有合同；当前反解要求启用正 BW 目标。修改问题不能扩大固定拓扑与测量能力。
 
+## 手工输入 SystemSpec 和六变量范围
+
+复制 `configs/problems/nominal.json` 为自己的问题文件；修改 `problem_id`、`specs`（指标、启用项、上下限与验证来源）和 `parameters`（六轴 `min/max/default/unit/scale`）。六轴必须完整，`0 < min < max`，默认值在范围内，尺度为 `log` 或 `linear`；当前连续域合同不支持用相等上下限固定某一轴，也不使用旧的离散 `choices`。
+
+```powershell
+python -m pll_allocation pipeline --problem path/to/my_problem.json --allocator-config configs/agent/spec_allocation.json --out experiments/my_manual_run_01
+```
+
+仅校验输入而不调用求解器、M2或LLM：
+
+```powershell
+python -c "from pll_allocation.exploration.contracts import load_problem; p=load_problem('path/to/my_problem.json'); print(p['problem_id'], p['problem_sha256'])"
+```
+
+`fixed_parameters` 定义参考频率、N、电压轨等条件；M1解析范围不等于M2支持范围，标准M2仍只支持10MHz×8、0–1.2V及原理想模型。模式/目标点数/总预算放在 allocator 配置，任务指标与六轴范围放在问题文件，M2测量协议不是用户Spec。
+
+`model/block_space.json` 的 `experiment.block_space.variables` 和顶层 `variables` 是相互校验的冻结兼容域；`model/reference_system_spec.json`、`model/m1_experiment.json` 和 `pipeline.json` 也是参考/回归或显式冻结路径的合同。它们不是新版用户输入，直接修改会破坏冻结身份，且不会替代当前问题的 `parameters/specs`。这些文件仍有调用及测试用途，不应作为无用文件删除。`model/equations.json` 仍供新版Agent组织物理先验。
+
+`agent/deterministic.json`、`agent/llm_physics.json` 是保留的连续域单点接口；常规多点交付应使用 `agent/spec_allocation.json`，不要混淆二者的schema和输出。正常调用关系为：problem → `load_problem` → 物理工具/搜索与正式M1 → 候选池 → 原生M2与反馈 → `sizing_handoff.json`；结果中的 `problem_resolved.json` 和 `execution_route.json` 可核对实际输入及路径。
+
 `agent/spec_allocation.json` 是多候选端到端入口：三种 `mode`、K、总 M1/M2/LLM 预算、质量和去重阈值。`minimum_distance` 使用当前六轴各自的 log/linear 归一化坐标，`minimum_margin` 使用原 M1 judge 的最小归一化裕量。真实 API 默认禁用。原 `agent/deterministic.json`、`llm_physics.json` 及其单点输出合同保持兼容。
+
+`target_count=5` 是初始 M1 池目标，`m2_target_count=3` 是正式 M1＋原生 M2 已支持指标通过的交付目标；公开默认 M2 预算8。旧配置省略新字段仍为目标1。目标与预算独立，预算可不足；结果区分目标达成和部分交付。`sizing_handoff.json` 只输出合格的原生联合通过子集，不收录 TEST、仅 M1 或 UNKNOWN 点；不认证管级/PVT。`feedback` 单点案例显式设置目标1，避免默认配置变化破坏其用途。
 
 嵌套 `candidate_pool.mode` 必须与初始分配 `policy` 一致：确定性对应 `DETERMINISTIC_PHYSICS_TOOL`，LLM/Auto 对应 `LLM_PHYSICS_TOOL`；冲突会在执行前拒绝，不能让反馈阶段的行为与配置标签相反。标准三模式入口自动生成一致配置。
 

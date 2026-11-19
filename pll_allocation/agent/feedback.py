@@ -26,9 +26,13 @@ def read(path):
 
 def validate_config(raw):
     fields={'schema_version','m1_budget','m2_budget','llm_budget','max_reallocations','m2_timeout_s','search'}
-    require(isinstance(raw,dict) and set(raw)==fields and raw['schema_version']=='pll-stage9-feedback-1.0',
+    require(isinstance(raw,dict) and fields <= set(raw) <= fields | {'m2_target_count'} and raw['schema_version']=='pll-stage9-feedback-1.0',
             'complete verification feedback configuration required')
-    c=deepcopy(raw); c['search']=search_config(c['search'])
+    c=deepcopy(raw); c.setdefault('m2_target_count', 1); c['search']=search_config(c['search'])
+    require(type(c['m2_target_count']) is int and 1 <= c['m2_target_count'] <= 100,
+            'm2_target_count must be 1..100')
+    require(c['m2_target_count'] == 1 or c['search'].get('candidate_pool'),
+            'multiple M2 targets require the continuous candidate pool')
     for k in ('m1_budget','m2_budget','llm_budget','max_reallocations'):
         require(type(c[k]) is int and c[k]>=0,k+': nonnegative hard limit required')
     require(c['max_reallocations']<=10 and c['m2_budget']<=32 and c['llm_budget']<=40,'bounded verification feedback run required')
@@ -144,6 +148,13 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
           cfg['search']['policy']=='DETERMINISTIC_PHYSICS_TOOL' else 'REAL_M2_REAL_LLM')
     event('RUN_STARTED',mode=mode,initial_handoff_sha256=initial['handoff_sha256'])
 
+    def passing_candidates():
+        passing = {k for k, v in verified.items() if v['observation']['supported_metrics_status'] == 'PASS'}
+        if pool:
+            from .candidate_pool import joint_candidates
+            return joint_candidates(ledger, initial['problem'], pool, passing)
+        return [v['handoff']['recommended_nominal'] for k, v in verified.items() if k in passing]
+
     def audited_handoff(selected, suffix):
         """Reuse the original independent selected-point audit and gate."""
         ex=RegionExplorer(context_path,root/('candidate_audit_'+suffix),m1_budget=2,reserved_final_calls=1)
@@ -187,6 +198,13 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
                 'execution_status':measured['execution_status'],'evidence_id':measured['evidence_id']})
             summary=feedback_summary(request,measured,remaining(),history)
             summary['previous_searches']=deepcopy(searches)
+            passed = passing_candidates()
+            history[-1].update(elapsed_s=time.perf_counter()-start, joint_pass_count=len(passed))
+            summary['joint_target_count'] = cfg['m2_target_count']
+            summary['joint_pass_count'] = len(passed)
+            summary['joint_pass_candidates'] = deepcopy(passed)
+            summary['search_purpose'] = ('REPLENISH_JOINT_POOL' if measured['supported_metrics_status'] == 'PASS'
+                                       else 'REPAIR_OR_REPLACE_FAILED_CANDIDATE')
             summary['best_known_M1']=deepcopy(min(ledger,key=rank))
             unseen={r['parameter_sha256']:r for r in ledger if r['parameter_sha256'] not in verified}
             summary['unverified_M1_candidates']=[{'candidate_sha256':r['parameter_sha256'],
@@ -195,14 +213,15 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
                 for r in sorted(unseen.values(),key=rank)[:12]]
             append('feedback_summaries',summary); event('M2_COMPLETED',observation_id=oid,
                 M2_status=measured['overall_status'],supported_metrics_status=measured['supported_metrics_status'])
-            if measured['supported_metrics_status']=='PASS':
-                termination='SUPPORTED_M2_METRICS_PASS'; break
+            if len(passed) >= cfg['m2_target_count']:
+                termination=('SUPPORTED_M2_METRICS_PASS' if cfg['m2_target_count'] == 1
+                             else 'JOINT_M1_M2_TARGET_REACHED'); break
             if not pool and cycle==cfg['max_reallocations']:termination='MAX_REALLOCATIONS'; break
             if remaining()['M2_verifications']<1:termination='M2_BUDGET_EXHAUSTED'; break
             if pool:
                 from .candidate_pool import select_m2
                 tested=[x['handoff']['recommended_nominal'] for x in verified.values()]
-                selected=select_m2(ledger,initial['problem'],pool,tested)
+                selected=select_m2(ledger,initial['problem'],pool,tested,passed)
                 if selected is not None:
                     if remaining()['M1_calls']<2:termination='M1_BUDGET_EXHAUSTED_BEFORE_POOL_AUDIT'; break
                     current=audited_handoff(selected,f'pool_{cycle+1:02d}')
@@ -260,6 +279,7 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
                 for k,v in (usage or {}).items():
                     if type(v) is int:counts['tokens'][k]=counts['tokens'].get(k,0)+v
             searches.append({'path':str(search_dir),'status':result['status'],
+                'search_purpose':summary['search_purpose'],
                 'failure':result.get('failure'),
                 'solver_execution_status':result['solver_execution_status'],
                 'cost':cost,'feedback_evidence_id':summary['evidence_id'],
@@ -294,7 +314,7 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
                     failure=deepcopy(result['failure'])
                 break
             if pool:
-                selected=select_m2(candidates,initial['problem'],pool,tested)
+                selected=select_m2(candidates,initial['problem'],pool,tested,passed)
                 if selected is None:termination='NO_QUALITY_QUALIFIED_REALLOCATION'; break
             else:
                 selected=min(candidates,key=rank)
@@ -324,7 +344,9 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
         termination='COST_LEDGER_MISMATCH'
         failure={'type':'CostReconciliationError','reason':'M1 ledger differs from persisted formal call evidence'}
     best_m1=min(ledger,key=rank)
-    eligible=[x for x in verified.values() if x['observation']['supported_metrics_status']=='PASS']
+    delivered = passing_candidates()
+    delivered_keys = {r['parameter_sha256'] for r in delivered}
+    eligible=[x for k,x in verified.items() if k in delivered_keys]
     best_m2=min(eligible,key=lambda x:rank(x['handoff']['recommended_nominal']),default=None)
     counts.update(wall_time_s=time.perf_counter()-start,shared_Stage7_M1_cost='historical, no repeated calibration',
                   M1_limit=cfg['m1_budget'],M2_limit=cfg['m2_budget'],LLM_limit=cfg['llm_budget'])
@@ -345,6 +367,11 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
             history[0]['candidate_sha256']!=history[1]['candidate_sha256'] and mode!='TEST_INJECTED_NOT_RESEARCH' and bool(searches),
         'solver_execution_status':[x['solver_execution_status'] for x in searches],
         'best_known_M1':best_m1,'recommended_M2_supported':best_m2['handoff']['recommended_nominal'] if best_m2 else None,
+        'm2_target_count':cfg['m2_target_count'], 'joint_pass_count':len(delivered),
+        'joint_target_reached':len(delivered) >= cfg['m2_target_count'],
+        'time_to_first_joint_s':next((x['elapsed_s'] for x in history if x['joint_pass_count']), None),
+        'time_to_joint_target_s':next((x['elapsed_s'] for x in history
+                                      if x['joint_pass_count'] >= cfg['m2_target_count']), None),
         'verified_history':history,'searches':searches,'cost':counts,'failure':failure,'FULL_SYSTEMSPEC_CERTIFIED':False}
     write_new(root/'stage9_cost_summary.json',counts); write_new(root/'stage9_final_result.json',result)
     write_new(root/'cost_summary.json',counts)

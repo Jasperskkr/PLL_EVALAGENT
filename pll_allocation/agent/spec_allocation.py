@@ -6,7 +6,7 @@ import time
 
 from ..allocation.core import write_new
 from ..exploration.contracts import load_problem, number, require
-from .candidate_pool import distinct_candidates, validate_pool_config
+from .candidate_pool import distinct_candidates, joint_candidates, validate_pool_config
 from .candidates import rank
 from .feedback import run_feedback
 from .initial_allocation import run_initial_allocation
@@ -14,6 +14,7 @@ from .initial_allocation import run_initial_allocation
 SCHEMA = 'pll-spec-allocation-1.0'
 DEFAULTS = {
     'mode': 'DETERMINISTIC', 'target_count': 5, 'm1_budget': 96, 'm2_budget': 3,
+    'm2_target_count': 1,  # Omitted by historical configs: retain first-pass behavior.
     'llm_budget': 4, 'minimum_margin': 0., 'minimum_distance': .05,
     'deterministic_rounds': 3, 'allow_paid_llm': False, 'max_reallocations': 2,
     'initial_search_m1_budget': 32, 'max_decisions': 8, 'max_round_m1': 24,
@@ -31,6 +32,8 @@ def validate_config(raw):
         require(type(c[k]) is int and c[k] >= 0, k+': nonnegative integer required')
     require(c['m1_budget'] >= 3 and c['initial_search_m1_budget'] >= 3, 'at least three M1 calls required')
     require(c['m2_budget'] <= 32 and c['llm_budget'] <= 20 and c['max_reallocations'] <= 10, 'bounded allocation budgets required')
+    require(type(c['m2_target_count']) is int and 1 <= c['m2_target_count'] <= 100,
+            'm2_target_count must be 1..100')
     require(1 <= c['max_decisions'] <= 10 and 4 <= c['max_round_m1'] and
             c['seed']+c['max_decisions'] < 2**32, 'invalid search rounds/seed')
     require(1 <= c['max_build_attempts'] <= 64 and
@@ -93,12 +96,15 @@ def run_spec_allocation(problem_config, out, *, config, provider_config=None, fe
     handoff_path = root/'initial/verification_handoff.json'
     h = json.loads(handoff_path.read_text(encoding='utf-8'))
     verification = None
+    verification_started_s = None
     if qualified and h['ready_for_stage9'] and c['m2_budget'] and cost['M1_calls'] < c['m1_budget']:
         child = search_config(c, max(3, c['m1_budget']-cost['M1_calls']))
         child['candidate_pool']['llm_call_limit'] = max(0, c['llm_budget']-cost['LLM_calls'])
+        verification_started_s = time.perf_counter()-started
         verification = run_feedback(handoff_path, root/'verification', problem_config=problem_config,
             feedback_config={'schema_version': 'pll-stage9-feedback-1.0',
                 'm1_budget': c['m1_budget']-cost['M1_calls'], 'm2_budget': c['m2_budget'],
+                'm2_target_count': c['m2_target_count'],
                 'llm_budget': max(0, c['llm_budget']-cost['LLM_calls']), 'max_reallocations': c['max_reallocations'],
                 'm2_timeout_s': c['m2_timeout_s'], 'search': child},
             provider_config=provider_config, policy=policy, m2_executor=m2_executor)
@@ -125,11 +131,14 @@ def run_spec_allocation(problem_config, out, *, config, provider_config=None, fe
         observations = by_hash.get(row['parameter_sha256'], [])
         row['M2_observations'] = observations
         row['M2_status'] = observations[-1]['observation']['overall_status'] if observations else 'NOT_EVALUATED'
-        row['M2_supported_status'] = ('PASS' if any(x['observation']['supported_metrics_status'] == 'PASS' for x in observations)
-                                    else observations[-1]['observation']['supported_metrics_status'] if observations else 'NOT_EVALUATED')
+        row['M2_supported_status'] = observations[-1]['observation']['supported_metrics_status'] if observations else 'NOT_EVALUATED'
         row['M2_evidence_scope'] = 'TEST_INJECTED_NOT_RESEARCH' if test_m2 and observations else 'NATIVE' if observations else 'NOT_EVALUATED'
     qualified = distinct_candidates(ledger, problem, pool_config(c), quality_only=True)
-    passed = [r for r in candidates if r['M2_supported_status'] == 'PASS' and r['quality_qualified'] and not test_m2]
+    passing_hashes = {r['parameter_sha256'] for r in candidates if r['M2_supported_status'] == 'PASS' and not test_m2}
+    passed = joint_candidates(candidates, problem, pool_config(c), passing_hashes)
+    joint_reached = len(passed) >= c['m2_target_count']
+    joint_status = ('DISABLED' if not c['m2_budget'] else 'TEST_ONLY' if test_m2 else
+                    'TARGET_REACHED' if joint_reached else 'PARTIAL' if passed else 'NOT_REACHED')
     recommended = min(passed, key=rank, default=None)
     best_m1 = min((r for r in candidates if r['quality_qualified']), key=rank, default=None)
     selected = recommended or best_m1
@@ -138,12 +147,19 @@ def run_spec_allocation(problem_config, out, *, config, provider_config=None, fe
     require(cost['M1_calls'] <= c['m1_budget'] and cost['M2_verifications'] <= c['m2_budget'] and
             cost['LLM_calls'] <= c['llm_budget'], 'cross-stage allocation hard budget exceeded')
     result = {'schema_version': SCHEMA, 'execution_route': 'CONTINUOUS_SPEC_ALLOCATION',
-        'configuration_schema': SCHEMA, 'status': 'M2_SUPPORTED_METRICS_PASS' if recommended else
+        'configuration_schema': SCHEMA, 'status': ('M2_JOINT_TARGET_REACHED' if joint_reached else 'M2_JOINT_PARTIAL')
+        if recommended and c['m2_target_count'] > 1 else 'M2_SUPPORTED_METRICS_PASS' if recommended else
         'M1_POOL_ONLY' if candidates else 'NO_FEASIBLE_POINT_FOUND_WITHIN_BUDGET',
         'strategy': c['mode'], 'allocation_mode': c['mode'], 'target_count': c['target_count'],
         'M1_distinct_feasible_count': len(distinct_candidates(ledger, problem, pool_config(c))),
         'M1_quality_count': len(qualified), 'pool_target_reached': len(qualified) >= c['target_count'],
         'M2_supported_pass_count': len(passed), 'TEST_M2_injected': test_m2,
+        'm2_target_count': c['m2_target_count'], 'joint_target_reached': joint_reached,
+        'joint_status': joint_status, 'joint_candidates': passed,
+        'time_to_first_joint_s': (verification_started_s + verification['time_to_first_joint_s']
+                                 if passed and verification and verification['time_to_first_joint_s'] is not None else None),
+        'time_to_joint_target_s': (verification_started_s + verification['time_to_joint_target_s']
+                                  if joint_reached and verification and verification['time_to_joint_target_s'] is not None else None),
         'LLM_validation': 'REAL_CALL_EXECUTED' if cost['LLM_calls'] else 'OFFLINE_INTERFACE_ONLY' if policy else 'REAL_LLM_NOT_EXECUTED',
         'candidates': candidates, 'recommended': selected, 'recommended_M2_supported': recommended,
         'recommendation_basis': 'Formal M1 quality and native M2 supported metrics PASS; full M2 remains separate' if recommended else
@@ -163,8 +179,19 @@ def run_spec_allocation(problem_config, out, *, config, provider_config=None, fe
     write_new(root/'allocation_result.json', result)
     write_new(root/'cost_summary.json', cost)
     write_new(root/'candidates.json', candidates)
+    write_new(root/'sizing_handoff.json', {
+        'schema_version': 'pll-sizing-targets-1.0', 'problem': problem,
+        'm2_target_count': c['m2_target_count'], 'joint_status': joint_status,
+        'joint_target_reached': joint_reached, 'candidate_count': len(passed),
+        'candidates': passed, 'recommended_candidate_sha256': recommended['parameter_sha256'] if recommended else None,
+        'evidence_scope': 'NATIVE_M2_SUPPORTED_METRICS_ONLY',
+        'not_certified': ['M2 PM', 'jitter', 'transistor realizability', 'PVT', 'parameter tolerance regions'],
+        'FULL_SYSTEMSPEC_CERTIFIED': False,
+        'scope': 'Behavioral targets and bound evidence for downstream sizing; no transistor sizing is executed.'})
     report = [f"Mode: {c['mode']}", f"M1 distinct/quality: {result['M1_distinct_feasible_count']}/{len(qualified)}; K={c['target_count']}",
-        f"Native supported-M2 passing points: {len(passed)}", result['recommendation_basis'],
+        f"Native quality-distinct M1 + supported-M2 passing points: {len(passed)}/{c['m2_target_count']}; {joint_status}",
+        'sizing_handoff.json contains only native jointly passing candidates, explicit units and verification evidence.',
+        result['recommendation_basis'],
         f"Initial: {result['initial_termination']}; verification: {result['verification_termination']}",
         'Six parameters use explicit SI units in candidates.json; M1 metrics/margins/source and all executed M2 observations are retained.',
         'Recommended parameters (SI): '+json.dumps({k: v for k, v in selected['parameters']['values'].items()

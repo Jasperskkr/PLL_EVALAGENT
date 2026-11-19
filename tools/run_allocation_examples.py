@@ -71,6 +71,11 @@ def run_cases(names, out, *, allow_paid_llm=False):
                'M1_distinct_feasible_count': result.get('M1_distinct_feasible_count'),
                'M1_quality_count': result.get('M1_quality_count'),
                'M2_supported_pass_count': result.get('M2_supported_pass_count'),
+               'm2_target_count': result.get('m2_target_count'),
+               'joint_status': result.get('joint_status'),
+               'joint_target_reached': result.get('joint_target_reached'),
+               'time_to_first_joint_s': result.get('time_to_first_joint_s'),
+               'time_to_joint_target_s': result.get('time_to_joint_target_s'),
                'M2_executed': bool(result.get('cost', {}).get('M2_verifications', 0)),
                'cost': result.get('cost'), 'failure': result.get('failure'),
                'result_path': str(result_path)}

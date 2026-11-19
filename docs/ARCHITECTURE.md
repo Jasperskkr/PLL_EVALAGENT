@@ -49,6 +49,8 @@ flowchart TD
 
 ## 策略与工具
 
+多点交付的 `m2_target_count` 与初始 M1 池 `target_count` 分离。原 `run_feedback` 累计质量及距离合格的联合通过点，首个通过不再必然停止；先换池内未测点，再预算内补点或修复。成功补点携带 `REPLENISH_JOINT_POOL` 和已通过点，不捏造失败。`spec_allocation` 再按原生来源筛选输出 `joint_candidates` / `sizing_handoff.json`，TEST、仅 M1、FAIL、UNKNOWN 点不得进入。旧配置默认目标1，原单点路径不变。
+
 确定性 Policy 使用预先定义的物理构造和局部优化顺序；LLM 选择策略、BW 目标分数、调谐偏好、区域、活动变量和预算。共用原反解与正式评价器。
 
 动作包括 BUILD_PHYSICS_REGION、OPTIMIZE_LOCAL、PROBE_REGION、MEASURE_LOCAL_SENSITIVITY、REVERIFY、STOP。非法提案只留档、不执行；Provider 失败不会冒充确定性成功。
