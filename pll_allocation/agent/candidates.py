@@ -59,6 +59,12 @@ class CandidateArchive:
                 scope = 'FINAL_RECOMMENDATION_RECHECK' if row['origin'] == 'RECOMMENDATION:FINAL_RECHECK' else source
                 item.update(source=scope, M1_status='OK', formal_M1_result=deepcopy(raw),
                             metrics=deepcopy(result.metrics), judgment=judgment, screening=screening)
+                if getattr(self.explorer, 'conditional_physics', None) is not None:
+                    item.update(self.explorer.conditional_physics.describe(row['parameters']))
+                    if 'conditional_noise_status' in item:
+                        item['joint_conditional_feasibility'] = ('CONDITIONAL_FEASIBLE' if
+                            judgment['m1_feasibility'] == 'FEASIBLE' and self.explorer.conditional_physics.qualified(item)
+                            else 'NOT_ESTABLISHED')
                 self.entries.append(item)
                 with self.path.open('a', encoding='utf-8') as stream:
                     stream.write(json.dumps(item, ensure_ascii=False, allow_nan=False)+'\n')

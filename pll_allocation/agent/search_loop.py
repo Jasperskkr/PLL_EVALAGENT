@@ -268,10 +268,13 @@ class AgentSearchLoop:
             self.emit('RUN_ERROR', failure=self.failure)
         return self.finish()
 
+    def _select_recommendation(self):
+        return self.archive.best(feasible_only=True)
+
     def finish(self):
         require(source_manifest() == self.sources, 'agent source mutated during run')
         summary = self.archive.summary(absolute=self.config['improvement_abs'], relative=self.config['improvement_rel'])
-        recommended = self.archive.best(feasible_only=True)
+        recommended = self._select_recommendation()
         recheck = (self.explorer.recheck_recommendation(recommended) if recommended else
                    {'status': 'NO_KNOWN_FEASIBLE_CANDIDATE', 'passed': False, 'evidence_id': None})
         self.archive.sync()
@@ -295,7 +298,8 @@ class AgentSearchLoop:
             'best_stage8b_new': summary['best_new'],
             'improvement_over_calibration': summary['improvement_over_calibration'],
             'candidate_archive_summary': summary,
-            'selection_scope': 'recommended_nominal is best current feasible point; new_allocation is legacy search-only field and may be worse.',
+            'selection_scope': (recommended['physics_selection']['reason'] if recommended and 'physics_selection' in recommended else
+                'recommended_nominal is best current feasible point; new_allocation is legacy search-only field and may be worse.'),
             'legacy_non_authoritative_fields': ['status','new_allocation','best_observed_current_spec'],
             **states,
             'source_context_sha256': self.explorer.context['context_sha256'],
@@ -317,7 +321,7 @@ class AgentSearchLoop:
         result.update(self._result_fields())
         write_new(self.root/'cost_summary.json', cost)
         from .handoff import build_handoff
-        handoff = build_handoff(self.explorer, self.archive, recommended, recheck, states, cost)
+        handoff = build_handoff(self.explorer, self.archive, recommended, recheck, states, cost, handoff_dir=self.root)
         write_new(self.root/'stage9_handoff.json',handoff)
         write_new(self.root/'verification_handoff.json',handoff)
         self.emit('RUN_COMPLETED', result=result)

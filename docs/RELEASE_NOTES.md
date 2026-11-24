@@ -1,5 +1,33 @@
 # 共享研究源码整理
 
+## 2026-11-24 集成代码提交与独立检出审核
+
+- 按用户要求发布完整维护源码，包含既有噪声/M2、条件物理分配、VCO开发合同、输入输出与交接清洗、整数N适配；实验数据及一次性N10追踪不提交。
+- README补充噪声/启动配置、VCO导出、权威产物及验收边界；章程、架构、代码导读和审查指南同步当前合同能力。提交后的独立检出、原生重建与完整链路审核见 `PUBLISH_AUDIT_20261124.md`。
+
+## 2026-11-24 多规格全链路验收与发布交接
+
+- 固定源码快照上运行12组输入，覆盖N=4/8/10/16、不同BW/PM/lock、失败重分配、预算耗尽、M1不可行、非法N、Auto确定性分支与条件物理增强；实际146次M1、35次M2、3738个原生子运行，211项独立边界/产物检查通过。部分交付、空交付及UNKNOWN保持原义，未使用付费API或TEST M2。
+- 另以真实N8流程记录父进程及M2子进程函数轨迹：正式主线调用清晰，旧业务函数未执行；旧模块提前导入仍列为后续结构债务。本轮无生产代码变更。
+- 实时查询/fetch核对远端默认main与本地未推送提交；新增 `SPEC_MATRIX_AND_REMOTE_20261124.md`，更新 `CODE_STATE_20261124.md`，建议功能分支集成提交后通过PR更新main。本轮未commit/push，实验产物继续只保留本地。
+
+## 2026-11-24 标准连续域 M2 按 Spec 分频比参数化
+
+- 标准 M2 请求和原生适配读取候选的正整数 N，统一按 N×f_ref 计算调谐启动点、捕获频率/ppm 和双步长收敛误差；观测保存显式频率计划。参考频率仍为10MHz、电压轨仍为0–1.2V，原步长/边沿分辨率门槛继续执行。
+- 连续请求使用 `integer_n_metrics_1.0` / `pll-continuous-m2-1.1`，由原协议派生并绑定当前 N、目标频率、Spec 和源码身份。捕获初态0.15V、160µs窗口及幅度/步长/窗口收敛阈值保持；locktime上下限继续由原区间判决处理，不保证任意规格有解。
+- 原 C++ 内核、旧冻结验证门禁及 `m2_protocol.json` 字节保持；旧无频率元数据的历史观测明确标为 `LEGACY_FIXED_N8_TRACE`。`configs/provenance/integer_n_m2.json` 保留五个适配/测量文件的旧新哈希；物理Registry只更新simulator当前绑定，历史N=8证据不推广到其他N。
+- 新增 `tests/verification/test_frequency_plan.py`，覆盖N变化的频率提取、ppm归一化、100MHz调谐启动、协议绑定/篡改拒绝、非法N及N=4/8/10/16原生观测。完整M2 PM/jitter和器件可实现性仍不认证。
+- 定向验收去重141通过、1可选历史档案跳过；真实N8/N10均完成标准M2，各106个原生子运行、零LLM/TEST。N10原Spec的BW为229.004908kHz，locktime72µs、区间71–73µs，满足>60µs，最终交付1点；N8原nominal首点54µs超过40µs上限，正确FAIL。新实验分别保存在 `experiments/20261124_integer_n_m2_n8_native` 和 `experiments/20261124_integer_n_m2_n10_native`，不覆盖此前门禁/M1-only记录。
+
+## 2026-11-24 结构审核与输入输出边界清洗
+
+- 梳理当前默认连续域多点调用链、可选开发能力、共享冻结来源及旧兼容入口；结论见 `STRUCTURE_AUDIT_20261124.md`。保留用户原有未提交改动，没有删除历史代码或实验。
+- 新增严格外部 JSON 输入与 `run_manifest.json` 权威产物索引；pipeline 的文件错误返回结构化输入/输出错误，非对象 allocator 在执行前拒绝。
+- 多点交付校验迁到共享 `delivery.py`，生产端与 VCO 消费端使用同一门禁，补摘要状态/数量/推荐一致性；原 `validate_source` 接口和可选 VCO 辅助入口保留。
+- 按用户要求合并当前频率规划一起验收：交付门禁分别识别旧N=8适配与新整数N适配，不依赖原DLL读取记录。独立源码快照上默认N=8交付3点、N=10交付1点，二者保留PM/jitter UNKNOWN。
+- M1 Handoff 补 READY 状态一致性和相对 context 引用，支持完整运行目录迁移，并保留旧绝对路径合同；迁移后不回退原目录绕过坏证据。
+- 新增接口边界回归；清洗前后默认原生运行的候选六参数、M1/M2数值与判决、交付集合、真实调用计数逐项一致。六份冻结分配源码仍字节相同。完整测试与本地验收证据见结构审核。
+
 ## 2026-11-24 VCO Handoff V1 正确性与追溯冻结修复
 
 - 局部截距改用实测频率锚定，区分近似测量、插值根估计与带独立精度门槛的复测确认；未确认目标点禁止准备正式回填参数。保留非零测量残差和证据，不用反馈自报大容差授权确认。
@@ -18,6 +46,31 @@
 - P1 仅显式调用：固定 CP/LF 的受限离散采样复用原 Runner、M1 和可选原生 M2，预留审计/posthoc预算，区分域拒绝、M1、已测 M2 和未验证区域，不插值认证连续区域。
 - 验证：完整回归861 passed / 10项历史证据依赖 skipped；随后新增无测量失败反馈及CP候选绑定检查，最终VCO定向回归39 passed。nominal/tight各5个候选的关闭功能科学输出与修改前稳定基线一致，各6次M1；原始Handoff导出前后字节一致，架构/原分配源码字节审计通过。原生M2多点、单点和真实超时均已执行，四个新CLI子命令已实跑。
 - 使用与限制见 [VCO Sizing Contract](VCO_SIZING_CONTRACT.md)。
+
+## 2026-11-20 LLM Physics Tool 主动目标补充
+
+- 在原 `physics_tool_policy.py` 的 State、Prompt、校验和动作适配中连接条件噪声/启动能力。`BUILD_PHYSICS_REGION` 可选使用请求1.1，只增有序 `physical_objectives` 与 `tool_options_sha256`；按已有noise/startup开关开放NOISE_AWARE、INITIAL_STATE_AWARE、FAST_LOCK，在原M1/条件噪声可行层内复用偏好选择器。未启用时原Prompt/State保持，1.0字段与校验语句原样保留。
+- 新 `agent/conditional_observation.py` 生成最多24个候选的CPRED摘要，包含条件RMS jitter、四源贡献与主导源、裕量、初始频偏、近似阻尼、轨裕量及捕获风险；绑定候选/来源证据/问题/模型/工具配置及profile积分身份。预测不升级为正式M1/M2 PASS，缺失项UNKNOWN，捕获时间null。
+- 保留原OPTIMIZE_LOCAL、PROBE_REGION和MEASURE_LOCAL_SENSITIVITY合同与求解器。定向验收发现PROBE小预算误入SLSQP预播种，已限定修复为直接调用原Sobol；没有重构Planner、Auto或反馈Runner。LLM只能选策略/合法目标/区域/预算，额外参数、PASS、阈值或profile覆盖被严格字段校验拒绝。
+- 不新增Sizing Agent/完整Sizing接口、ngspice/PDK或跨层Orchestrator；沿用已有来源绑定的advisory反馈扩展位置。Auto决策方法与原Prompt逐项一致；六份冻结实现与107项补充前配置/来源/数值核心文件字节一致，架构审计通过。
+- 离线独立Mock直接观察诊断并发起三个目标构造及原搜索工具；LLM/Auto实际M1分别38/46（上限96），每个目标构造实际2次M1；LLM与M2均0次，未调用付费服务。Auto仍先1轮确定性再6轮Mock。接口验证不证明真实LLM策略或搜索性能收益。
+- 本轮定向回归96 passed（153.15秒）；最终完整回归859 passed / 10项历史档案依赖skipped（381.61秒），UTF-8、`-W error`下无失败/警告。全部请求、Planner State、构造前提案、M1账本、失败日志、审计和中文工程报告保留在新目录 `experiments/llm_physics_tools_20261120_01/`；前轮Phase 0–4对照结果不覆盖、不重做。
+
+## 2026-11-20 条件噪声、启动构造与统一物理排序
+
+- 按审计→预测→条件分配→启动构造→统一排序实施。新增四个默认关闭开关，保留三模式原决策/切换、六轴 SI、Policy/Runner、预算和正式判决。原 nominal/tight、默认配置、provenance、原六份分配实现、M1/noise 与全部原生核心逐字节保持。
+- `physics_mapping/analytic_features.py` 增加自然频率、近似阻尼、精确三阶线性极点、初始频偏、轨裕量及启发式风险。没有可靠动态捕获估计时 Lock 预测为 null，不推断严格捕获不可行。
+- `physics_mapping/predictors.py` 复用 `optimizer_noise_estimate`、原 PSD 与积分换算，默认 noise_all、10kHz–1MHz；与 `noise_mapping` 一致，带四源贡献和 profile 身份。没有额外隐藏的正式 M1 扫描。
+- `exploration/conditional_physics.py` 新增版本化可选工具选项、预测缓存、条件门槛与归一化 jitter 裕量；`physics_region_builder.py` 保留原 inverse/请求，在构造预算内筛形状、电容、增益拆分，并生成启动偏移/中间调谐/低电流/低电容候选，保留原回退能力。
+- `region_explorer/explorer.py` 继续同一 SLSQP/M1/预算；可选加入条件 jitter maximin 裕量及独立非负正式 M1 约束，已满足 jitter 时保持该层。`agent/candidates.py` 附条件证据，正式判断不变。
+- `agent/candidate_pool.py` 先筛条件噪声再距离打包，避免合格邻点被更高 M1 裕量代表点遮蔽；`pool_search.py` 条件目标参与停止和质量观察，启用时首次推荐复用 `select_m2`。`initial_allocation.py` 只传工具配置、增加独立预测/廉价积分计数。
+- `agent/physics_ranking.py` 新增统一归一化词典序；`search_loop.py` 加推荐选择钩子；`handoff.py` 附选择证据；`feedback.py` 继续原审计/M2、记录排序理由与缺失预测回退。条件噪声状态与正式联合支持项状态严格分开，M2 PM/jitter仍 UNKNOWN。
+- `agent/spec_allocation.py` 增加配置、条件摘要、最佳正式候选、差距及停止原因；`configs/agent/noise_aware.json`、`physics_enhanced.json` 提供独立同预算输入，`pyproject.toml` 安装两配置。`tools/run_physics_comparison.py` 只编排正式 CLI，汇总 nominal/tight × Baseline/Noise-Aware/Enhanced；不新增求解器。
+- 新增四份测试：`test_analytic_predictors.py`（单位/多项式/噪声一致性/f0不变性），`test_conditional_allocation.py`（真实分配/约束/SLSQP/配置阈值），`test_startup_construction.py`（边界/多样性/关闭兼容），`test_physics_ranking.py`（首次后续一致/未知回退/门槛/合格邻点）。更新 CODE_MAP、COMPATIBILITY、ARCHITECTURE、SPEC_ALLOCATION 和 configs README。
+- 修改前完整基线826通过、10历史档案跳过；源码审计及原生构建身份校验通过。全关实跑两问题的候选、M1/M2数值/判决顺序、M1/M2/native计数与修改前精确相同。真实实验/原始失败日志保存在本地 `experiments/physics_enhancement_20261120_01/`；最终测试和快速对照见该目录中文工程报告，不上传波形或二进制。
+- 初轮完整回归暴露8项旧 SimpleNamespace 档案测试兼容失败，已修复缺省访问；开发中一次边跑边改触发源码保护，保留失败日志后在稳定源码重跑。未改写来源哈希或绕过身份校验。
+- 最终完整回归 **842 passed / 10历史档案 skipped，343.15秒**；最终架构/六冻结实现审计通过，额外47项原配置/来源/M1/noise/原生核心字节检查全部一致。最终全关两问题实跑与修改前精确一致，见 `legacy_numeric_regression_02.json`。
+- 最终同预算实测（K5、M1≤96、M2≤3；实际各3次M2）：nominal 首次Lock Baseline/Noise-Aware/Enhanced=54/53/23µs，支持项FAIL/FAIL/PASS；tight=30/19/13µs，支持项FAIL/PASS/FAIL，Enhanced首点原生BW306.058kHz超300kHz。M1实际11/35/35，两问题均未降低M1开销；噪声条件达标数均0，nominal最佳54.654/54.644/54.644ps，tight最佳49.154/49.595/49.595ps，未达10ps且tight略恶化。停止原因及缺口如实保存，标准M2 jitter/PM仍UNKNOWN；不宣称统计或整体策略优越性。最终原始对照位于 `quick_comparison_02/`，上一轮保留不覆盖。
 
 ## 2026-11-19 多点交付同步与输入审核
 

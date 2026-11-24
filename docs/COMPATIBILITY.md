@@ -1,8 +1,23 @@
 # 名称迁移、兼容与来源合同
 
+2026-11-24 标准连续域 M2 支持当前问题的正整数 N：请求 schema 保持 `pll-m2-verification-request-1.0`，适配身份升级为 `pll-continuous-m2-1.1`，派生协议身份为 `integer_n_metrics_1.0`，显式绑定 N、f_ref 和输出目标。旧 `verify.py`、`kernel.cpp`、`m2_protocol.json` 字节保留，冻结链和可选扩展保留其原范围。simulator/measure/experiments/run_suite/continuous 的旧新源码身份保存在 `configs/provenance/integer_n_m2.json`；Registry的simulator当前绑定据此更新，旧哈希和历史N=8证据保留。旧已执行请求的源码/协议身份不能冒充新版结果，复验须生成当前请求和新的实验目录。
+
+## 2026-11-24 输入、输出与交接收口
+
+- 新连续域入口与 VCO 文件输入共用严格 JSON 读取：重复字段、NaN/Infinity/浮点溢出和非对象配置会明确拒绝。文件缺失等 I/O 错误由 pipeline 返回结构化 `INPUT_OR_OUTPUT_ERROR` 和退出码2。
+- 多候选运行新增 `pll-run-manifest-1.0` 的 `run_manifest.json`。它用相对路径和文件 SHA256 索引权威结果；旧结果字段、文件副本及 schema 保留。下游候选集合只有 `sizing_handoff.json.candidates`，不能读兼容 `recommended` 字段推断交付成功。
+- `pll-sizing-targets-1.0` 的校验移到共享 `delivery.py`，生产端及 VCO 消费端复用。候选数、目标达成标志、状态、推荐身份及原有正式证据必须一致。空交付、TEST 和预算内部分交付仍合法；不能伪装 TARGET_REACHED。
+- 交付协议校验按记录中的M2适配版本选择：1.0为原N=8协议，1.1为绑定候选N、f_ref、输出目标的 `integer_n_metrics_1.0`。旧交付可离线读取，不能将旧请求身份改成新版而沿用历史证据；两个版本都继续保留来源与完整SystemSpec未认证状态。
+- M1 Handoff 必须同时 `ready_for_stage9=true`、`gate_status=READY`、无阻断原因。新生成 Handoff 附绑定在原摘要中的相对 context 路径；复制完整运行目录后优先读取复制的 context，不回退原目录绕过缺失/损坏证据。旧 Handoff 没有相对路径时仍按原绝对路径读取，历史文件不改写。单独复制一个 M1 Handoff JSON 仍不足以继续执行。
+- 原数值公式、六份冻结分配源码、原生内核、测量协议和判决保持；新增校验不认证实验真实性，不升级 PM/jitter UNKNOWN。
+
+2026-11-20 LLM Physics Tool 补充：`PhysicsRegionRequest 1.0` 的字段、校验及构造含义保留；可选 `pll-physics-region-request-1.1` 仅增加有序 `physical_objectives` 和当前 `tool_options_sha256`。按 noise/startup 开关分别开放目标，全部关闭时隐藏新增 State 与 Prompt。其余动作 schema、三模式与 Auto 切换规则保持。`CPRED` 仅为带候选/问题/模型/profile/适用条件的预测证据，不取得 M1 seed 或 M2 PASS 权限。`PROBE_REGION` 修复为直接执行原 Sobol，避免误走 SLSQP 预播种而拒绝合法的小预算；未改共享求解器。详见 [Spec Allocation](SPEC_ALLOCATION.md#llm-主动选择条件物理目标)。
+
 2026-11-18 多点交付：新 `m2_target_count` 为可选字段，接口缺省1保留原首次通过停止；公开 `configs/agent/spec_allocation.json` 显式设3并将 M2预算设8。仅显式多点配置使用 `M2_JOINT_TARGET_REACHED` / `M2_JOINT_PARTIAL` 状态，原目标1状态保留。原反馈配置也可选此字段，多点目标须有候选池。`joint_status`、`joint_candidates`、到达时间与 `sizing_handoff.json` 是新增结果；旧 `recommended` 仍可能回退到 M1，不能作为多点交付集合。物理/协议/判决与历史证据均未重写。
 
 主阅读路径按职责命名。核心物理公式、原反解/数值求解、测量算法和判决语义保持原实现。
+
+2026-11-20 条件物理扩展：`pll-spec-allocation-1.0` 允许 `analytic_features_enabled`、`noise_allocation_enabled`、`initial_state_aware_enabled`、`physics_ranking_enabled` 及 `physics_options`，省略四开关为 false。嵌套候选池使用独立 `pll-conditional-physics-1.0` 工具选项，原 PhysicsRegionRequest 1.0 的字段与语义不变。原 nominal/tight 数值、原默认 agent 配置、所有 provenance 哈希、M1/M2 核心和模型身份保持。新增条件预测及排序证据是附加字段，既不升级正式 M2 jitter/PM 支持能力，也不改变已有联合交付状态语义。配置示例另存 `agent/noise_aware.json`、`agent/physics_enhanced.json`。
 
 ## 执行入口收口（2026-11-17）
 

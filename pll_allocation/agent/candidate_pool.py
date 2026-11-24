@@ -12,8 +12,11 @@ MODES = ('DETERMINISTIC', 'LLM_PHYSICS_GUIDED', 'AUTO_HYBRID')
 def validate_pool_config(raw):
     fields = {'mode', 'target_count', 'minimum_margin', 'minimum_distance',
               'deterministic_rounds', 'llm_call_limit', 'allow_paid_llm'}
-    require(isinstance(raw, dict) and fields <= set(raw) <= fields | {'excluded_hashes'}, 'complete candidate pool configuration required')
+    require(isinstance(raw, dict) and fields <= set(raw) <= fields | {'excluded_hashes', 'physics_options'}, 'complete candidate pool configuration required')
     c = deepcopy(raw)
+    if 'physics_options' in c:
+        from ..exploration.conditional_physics import validate_options
+        c['physics_options'] = validate_options(c['physics_options'])
     require(isinstance(c.get('excluded_hashes', []), list) and len(c.get('excluded_hashes', [])) <= 32 and
             all(isinstance(k, str) and len(k) == 64 for k in c.get('excluded_hashes', [])), 'invalid prior tested candidate identities')
     require(c['mode'] in MODES, 'unsupported allocation mode')
@@ -38,7 +41,14 @@ def distinct_candidates(rows, problem, config, *, quality_only=False):
     in CandidateArchive; this function grants no new verification authority.
     """
     selected, seen = [], set()
-    for row in sorted(rows, key=rank):
+    ordering = rank
+    if config.get('physics_options', {}).get('noise_allocation_enabled'):
+        from ..exploration.conditional_physics import ConditionalPhysics
+        physics = ConditionalPhysics(problem, config['physics_options'])
+        def ordering(row):
+            return (row['judgment']['minimum_normalized_margin'] < config['minimum_margin'],
+                    not physics.qualified(row), rank(row))
+    for row in sorted(rows, key=ordering):
         if row['judgment']['m1_feasibility'] != 'FEASIBLE':
             continue
         if quality_only and row['judgment']['minimum_normalized_margin'] < config['minimum_margin']:
@@ -72,6 +82,15 @@ def select_m2(rows, problem, config, tested=(), passing=()):
     remaining = [r for r in rows if r['parameter_sha256'] not in keys and
                  all(distance(problem, r, old) >= config['minimum_distance'] for old in passing)]
     eligible = distinct_candidates(remaining, problem, config, quality_only=True)
+    if config.get('physics_options', {}).get('physics_ranking_enabled'):
+        from .physics_ranking import choose_physics_candidate
+        return choose_physics_candidate(eligible, problem, config, tested)
+    if config.get('physics_options', {}).get('noise_allocation_enabled'):
+        from ..exploration.conditional_physics import ConditionalPhysics
+        physics = ConditionalPhysics(problem, config['physics_options'])
+        conditional = [r for r in eligible if physics.qualified(r)]
+        if conditional:
+            eligible = conditional
     if not tested:
         return min(eligible, key=rank, default=None)
     return min(eligible, key=lambda r: (-min(distance(problem, r, old) for old in tested), rank(r)), default=None)

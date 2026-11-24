@@ -5,11 +5,14 @@ from pathlib import Path
 import time
 
 from ..allocation.core import write_new
+from ..delivery import validate_sizing_handoff
+from ..io_contracts import file_identity, write_run_manifest
 from ..exploration.contracts import load_problem, number, require
 from .candidate_pool import distinct_candidates, joint_candidates, validate_pool_config
 from .candidates import rank
 from .feedback import run_feedback
 from .initial_allocation import run_initial_allocation
+from ..exploration.conditional_physics import FLAGS, allocation_options
 
 SCHEMA = 'pll-spec-allocation-1.0'
 DEFAULTS = {
@@ -20,6 +23,7 @@ DEFAULTS = {
     'initial_search_m1_budget': 32, 'max_decisions': 8, 'max_round_m1': 24,
     'construction_attempt_budget': 128, 'max_build_attempts': 16,
     'm2_timeout_s': 180, 'seed': 23,
+    **{k: False for k in FLAGS}, 'physics_options': {},
 }
 
 
@@ -40,12 +44,17 @@ def validate_config(raw):
             c['max_build_attempts'] <= c['construction_attempt_budget'] <= 1024, 'invalid construction budget')
     require(0 < number(c['m2_timeout_s'], 'm2_timeout_s') <= 3600, 'invalid M2 deadline')
     validate_pool_config(pool_config(c))
+    allocation_options(c)
     return c
 
 
 def pool_config(c):
-    return {k: c[k] for k in ('mode', 'target_count', 'minimum_margin', 'minimum_distance',
+    result = {k: c[k] for k in ('mode', 'target_count', 'minimum_margin', 'minimum_distance',
                             'deterministic_rounds', 'allow_paid_llm')} | {'llm_call_limit': c['llm_budget']}
+    options = allocation_options(c)
+    if options is not None:
+        result['physics_options'] = options
+    return result
 
 
 def search_config(c, budget):
@@ -74,6 +83,7 @@ def run_spec_allocation(problem_config, out, *, config, provider_config=None, fe
     External feedback can guide a new allocation but never imports a PASS.
     """
     c = validate_config(config); problem = load_problem(problem_config)
+    problem_source = file_identity(problem_config)
     root = Path(out).resolve(); root.mkdir(parents=True, exist_ok=False)
     started = time.perf_counter()
     write_new(root/'allocation_config.json', c)
@@ -89,6 +99,9 @@ def run_spec_allocation(problem_config, out, *, config, provider_config=None, fe
             'integration_points': 0, 'native_elapsed_s': 0., 'test_policy_calls': initial['cost']['test_policy_calls']}
     for k in ('policy_decisions', 'offline_llm_decisions', 'deterministic_decisions'):
         cost[k] = initial['cost'].get(k, 0)
+    for k in ('conditional_prediction_calls', 'conditional_noise_trial_integrations'):
+        if k in initial['cost']:
+            cost[k] = initial['cost'][k]
     ledger = rows(root/'initial/candidate_archive.jsonl')
     for row in ledger:
         row['source_run'] = str(root/'initial')
@@ -141,6 +154,10 @@ def run_spec_allocation(problem_config, out, *, config, provider_config=None, fe
                     'TARGET_REACHED' if joint_reached else 'PARTIAL' if passed else 'NOT_REACHED')
     recommended = min(passed, key=rank, default=None)
     best_m1 = min((r for r in candidates if r['quality_qualified']), key=rank, default=None)
+    if c['physics_ranking_enabled'] or c['noise_allocation_enabled']:
+        from .candidate_pool import select_m2
+        recommended = select_m2(passed, problem, pool_config(c))
+        best_m1 = select_m2(candidates, problem, pool_config(c))
     selected = recommended or best_m1
     cost.update(wall_time_s=time.perf_counter()-started, M1_limit=c['m1_budget'], M2_limit=c['m2_budget'],
                 LLM_limit=c['llm_budget'])
@@ -176,10 +193,35 @@ def run_spec_allocation(problem_config, out, *, config, provider_config=None, fe
         'M2_status': selected['M2_status'] if selected else 'NOT_EVALUATED',
         'FULL_SYSTEMSPEC_CERTIFIED': False,
         'scope': 'Fixed topology behavioral allocation; M2 PM/jitter remain UNKNOWN; search failure is not proof of infeasibility'}
-    write_new(root/'allocation_result.json', result)
-    write_new(root/'cost_summary.json', cost)
-    write_new(root/'candidates.json', candidates)
-    write_new(root/'sizing_handoff.json', {
+    if c['noise_allocation_enabled']:
+        from ..exploration.conditional_physics import ConditionalPhysics
+        physics = ConditionalPhysics(problem, allocation_options(c))
+        for row in candidates:
+            row.update(physics.describe(row['parameters']))
+            row['joint_conditional_feasibility'] = ('CONDITIONAL_FEASIBLE' if
+                row['M1_feasibility'] == 'FEASIBLE' and physics.qualified(row) else 'NOT_ESTABLISHED')
+        # Best-within-budget includes every quality-qualified formal point,
+        # even when M1-only packing chose a nearby higher-margin representative.
+        noise_ledger = [deepcopy(r) for r in ledger if r['judgment']['m1_feasibility'] == 'FEASIBLE' and
+                        r['judgment']['minimum_normalized_margin'] >= c['minimum_margin']]
+        for row in noise_ledger:
+            row.update(physics.describe(row['parameters']))
+        known = [r for r in noise_ledger if r.get('predicted_jitter_s') is not None]
+        best_noise = min(known, key=lambda r: r['predicted_jitter_s'], default=None)
+        count = len(distinct_candidates([r for r in noise_ledger if physics.qualified(r)],
+                                       problem, pool_config(c), quality_only=True))
+        result['conditional_noise_summary'] = {
+            'status': 'CONDITIONAL_TARGET_REACHED' if count >= c['target_count'] else 'NOT_FOUND_WITHIN_BUDGET',
+            'conditional_qualified_count': count, 'jitter_limit_s': physics.limit,
+            'best_predicted_jitter_s': best_noise['predicted_jitter_s'] if best_noise else None,
+            'best_candidate_sha256': best_noise['parameter_sha256'] if best_noise else None,
+            'best_candidate': best_noise,
+            'constraint_gap_s': max(0., best_noise['predicted_jitter_s']-physics.limit)
+                if best_noise and physics.limit is not None else None,
+            'stop_reason': initial['termination_reason'], 'formal_M2_jitter_status': 'UNKNOWN',
+            'global_infeasibility_proven': False}
+        result['pool_target_reached'] = len(qualified) >= c['target_count'] and count >= c['target_count']
+    delivery = {
         'schema_version': 'pll-sizing-targets-1.0', 'problem': problem,
         'm2_target_count': c['m2_target_count'], 'joint_status': joint_status,
         'joint_target_reached': joint_reached, 'candidate_count': len(passed),
@@ -187,7 +229,12 @@ def run_spec_allocation(problem_config, out, *, config, provider_config=None, fe
         'evidence_scope': 'NATIVE_M2_SUPPORTED_METRICS_ONLY',
         'not_certified': ['M2 PM', 'jitter', 'transistor realizability', 'PVT', 'parameter tolerance regions'],
         'FULL_SYSTEMSPEC_CERTIFIED': False,
-        'scope': 'Behavioral targets and bound evidence for downstream sizing; no transistor sizing is executed.'})
+        'scope': 'Behavioral targets and bound evidence for downstream sizing; no transistor sizing is executed.'}
+    validate_sizing_handoff(delivery)
+    write_new(root/'allocation_result.json', result)
+    write_new(root/'cost_summary.json', cost)
+    write_new(root/'candidates.json', candidates)
+    write_new(root/'sizing_handoff.json', delivery)
     report = [f"Mode: {c['mode']}", f"M1 distinct/quality: {result['M1_distinct_feasible_count']}/{len(qualified)}; K={c['target_count']}",
         f"Native quality-distinct M1 + supported-M2 passing points: {len(passed)}/{c['m2_target_count']}; {joint_status}",
         'sizing_handoff.json contains only native jointly passing candidates, explicit units and verification evidence.',
@@ -198,4 +245,5 @@ def run_spec_allocation(problem_config, out, *, config, provider_config=None, fe
             if k in problem['parameters']}, ensure_ascii=False) if selected else 'Recommended: none',
         json.dumps(cost, ensure_ascii=False, indent=2)]
     (root/'allocation_report.md').write_text('\n\n'.join(report)+'\n', encoding='utf-8')
+    write_run_manifest(root, result, problem_source=problem_source)
     return result

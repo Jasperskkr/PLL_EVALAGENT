@@ -18,11 +18,17 @@ def validate_parameters(envelope):
     return parse_parameters(envelope)
 
 
+def validate_frequency_plan(envelope):
+    """The standard ideal TB accepts the candidate's positive integer divider."""
+    p=validate_parameters(envelope)
+    if (p['f_ref'],p['Vctrl_min'],p['Vctrl_max']) != (10e6,0,1.2):
+        raise ValueError('UNSUPPORTED: behavioral verification requires 10MHz reference and 0..1.2V rails')
+    return p
+
+
 def simulate(parameters, *, duration_s=160e-6, dt_s=.4e-9, initial_control_V=.15,
              phase_amplitude_rad=0., modulation_Hz=0., onset_s=50e-6, record_interval_s=20e-9):
-    p=validate_parameters(parameters)
-    if p['f_ref']!=10e6 or p['N']!=8 or p['Vctrl_min']!=0 or p['Vctrl_max']!=1.2:
-        raise ValueError('UNSUPPORTED: behavioral verification protocol fixes 10MHz x 8 and 0..1.2V rails')
+    p=validate_frequency_plan(parameters)
     if any(type(x) not in (int,float) or not math.isfinite(x) for x in
             (duration_s,dt_s,initial_control_V,phase_amplitude_rad,modulation_Hz,onset_s,record_interval_s)):
         raise ValueError('finite simulation settings required')
@@ -63,7 +69,8 @@ def simulate(parameters, *, duration_s=160e-6, dt_s=.4e-9, initial_control_V=.15
         raise RuntimeError('event backend domain/numerical failure code '+str(code))
     settings=dict(duration_s=duration_s,requested_dt_s=dt_s,actual_dt_s=float(stats[1]),
         initial_control_V=initial_control_V,phase_amplitude_rad=phase_amplitude_rad,modulation_Hz=modulation_Hz,
-        onset_s=onset_s,record_interval_s=record_interval_s)
+        onset_s=onset_s,record_interval_s=record_interval_s,
+        frequency_plan={'f_ref_Hz':p['f_ref'],'N':p['N'],'output_frequency_Hz':p['N']*p['f_ref']})
     return {'trace':trace[:int(stats[2])].copy(),'ref_edges':ref[:int(stats[10])].copy(),
         'div_edges':div[:int(stats[11])].copy(),'settings':settings,
         'summary':{'integration_points':int(stats[0]),'actual_clamp_events':int(stats[3]),

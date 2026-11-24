@@ -5,7 +5,16 @@ import numpy as np
 
 def capture_metrics(run, protocol):
     cfg=protocol['capture']; trace=run['trace']; t=trace[:,0]
-    period=1e-7; block=cfg['block_reference_cycles']*period
+    plan=run.get('settings',{}).get('frequency_plan')
+    plan_source='SIMULATION_SETTINGS' if plan is not None else 'LEGACY_FIXED_N8_TRACE'
+    # Historical saved/synthetic observations predate explicit frequency metadata.
+    plan=plan if plan is not None else {'f_ref_Hz':10e6,'N':8,'output_frequency_Hz':80e6}
+    fref,divider=plan['f_ref_Hz'],plan['N']
+    if (type(divider) is not int or divider<1 or type(fref) not in (int,float)
+            or not math.isfinite(fref) or fref<=0 or plan['output_frequency_Hz']!=divider*fref):
+        raise ValueError('invalid observation frequency plan')
+    target=divider*fref
+    period=1/fref; block=cfg['block_reference_cycles']*period
     count=int((t[-1]+1e-15)//block)
     records=[]
     for k in range(count):
@@ -14,7 +23,7 @@ def capture_metrics(run, protocol):
         z=trace[keep]
         if len(z)<4: continue
         ya,yb=np.interp([a,b],t,trace[:,1])
-        freq=80e6+8*(yb-ya)/(2*math.pi*block)
+        freq=target+divider*(yb-ya)/(2*math.pi*block)
         e=z[:,2]-z[:,1]
         wraps=np.floor((e+math.pi)/(2*math.pi))
         circular=cfg.get('phase_lock_reference')=='nearest_integer_cycle_with_no_terminal_slips'
@@ -22,7 +31,7 @@ def capture_metrics(run, protocol):
         phasepeak=float(np.max(np.abs(evaluated_error))*180/math.pi)
         clamps=float(np.interp(b,t,trace[:,5])-np.interp(a,t,trace[:,5]))
         vrange=float(np.ptp(z[:,3])); meanv=float(np.mean(z[:,3]))
-        okay=(abs((freq-80e6)/80e6*1e6)<=cfg['block_frequency_error_limit_ppm']
+        okay=(abs((freq-target)/target*1e6)<=cfg['block_frequency_error_limit_ppm']
             and phasepeak<=cfg['peak_phase_error_limit_deg'] and vrange<=cfg['block_control_range_limit_V']
             and clamps==0 and np.max(wraps)==np.min(wraps) and (circular or wraps[0]==0))
         records.append({'start_s':a,'end_s':b,'frequency_Hz':freq,'control_mean_V':meanv,
@@ -38,7 +47,7 @@ def capture_metrics(run, protocol):
     if tail:
         a,b=tail[0]['start_s'],tail[-1]['end_s']
         y0,y1=np.interp([a,b],t,trace[:,1])
-        freq=80e6+8*(y1-y0)/(2*math.pi*(b-a))
+        freq=target+divider*(y1-y0)/(2*math.pi*(b-a))
     early=any(all(x['valid_tracking_block'] for x in records[i:i+cfg['hold_blocks']])
               for i in range(max(0,len(records)-cfg['hold_blocks']+1)))
     return {'status':'CAPTURED_WITHIN_WINDOW' if locked else 'LOST_LOCK_WITHIN_WINDOW' if early else 'NOT_CAPTURED_WITHIN_WINDOW',
@@ -50,7 +59,8 @@ def capture_metrics(run, protocol):
         'startup_cycle_slips_do_not_preclude_terminal_lock':circular,
         'terminal_phase_error_peak_deg':max((x['phase_error_peak_deg'] for x in tail),default=None),
         'hold_window_s':cfg['hold_blocks']*block,'blocks':records,
-        'finite_window_not_absolute_nonlockability':True}
+        'finite_window_not_absolute_nonlockability':True,
+        'frequency_plan':dict(plan),'frequency_plan_source':plan_source}
 
 
 def _fit(t,y,frequency):

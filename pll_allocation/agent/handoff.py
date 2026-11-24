@@ -1,5 +1,7 @@
 """Versioned M1 nominal handoff only; no M2 invocation or candidate ranking."""
 from copy import deepcopy
+import os
+from pathlib import Path
 
 from ..block_space.contracts import FREE_IDS
 from ..exploration.contracts import check_candidate, judge, require
@@ -15,10 +17,12 @@ def validate_handoff(handoff):
     Uses the existing parameter screening and formal-result judge. Hash binding
     detects accidental edits, not maliciously forged or unauthenticated data.
     """
-    require(handoff.get('schema_version') == SCHEMA, 'unsupported handoff schema')
+    require(isinstance(handoff, dict) and handoff.get('schema_version') == SCHEMA, 'unsupported handoff schema')
     require(handoff.get('handoff_sha256') == fingerprint({k:v for k,v in handoff.items() if k!='handoff_sha256'}),
             'handoff fingerprint mismatch')
     require(handoff.get('ready_for_stage9') is True, 'handoff gate blocked: no rechecked feasible nominal')
+    require(handoff.get('gate_status') == 'READY' and handoff.get('gate_reasons') == [],
+            'handoff gate status/reasons disagree with ready flag')
     require(handoff['M2_status'] == 'NOT_EVALUATED' and handoff['FULL_SYSTEMSPEC_CERTIFIED'] is False,
             'handoff cannot certify M2 or complete SystemSpec')
     problem,context = handoff['problem'],handoff['source_context_binding']
@@ -58,7 +62,7 @@ def validate_handoff(handoff):
     return deepcopy(row['parameters'])
 
 
-def build_handoff(explorer, archive, recommended, recheck, states, cost):
+def build_handoff(explorer, archive, recommended, recheck, states, cost, *, handoff_dir=None):
     item = {'schema_version':SCHEMA, 'ready_for_stage9':False, 'gate_status':'BLOCKED',
         'gate_reasons':[], 'problem_sha256':explorer.problem['problem_sha256'],
         'context_sha256':explorer.context['context_sha256'],
@@ -84,6 +88,17 @@ def build_handoff(explorer, archive, recommended, recheck, states, cost):
         item['gate_reasons']=['FINAL_FORMAL_M1_RECHECK_NOT_PASSED']
     else:
         item.update(ready_for_stage9=True,gate_status='READY')
+    if handoff_dir is not None:
+        try:
+            relative = os.path.relpath(explorer.context_path, Path(handoff_dir).resolve())
+        except ValueError:
+            # Windows cannot express relative paths between different drives.
+            # Existing externally supplied contexts retain their absolute binding.
+            pass
+        else:
+            item['source_context_binding']['relative_path'] = Path(relative).as_posix()
+    if recommended and 'physics_selection' in recommended:
+        item['selection_evidence'] = deepcopy(recommended['physics_selection'])
     item['handoff_sha256']=fingerprint(item)
     if item['ready_for_stage9']:
         try:validate_handoff(item)

@@ -52,6 +52,10 @@ class PhysicsToolSearchLoop(AgentSearchLoop):
             'seed_probe_budget': 1, 'seed_probe_samples': 1, 'slsqp': cfg['slsqp']}
         super().__init__(context_path, out, config=old_config, provider_config=provider_config or {},
                          policy=policy if policy is not None else make_policy(cfg, provider_config))
+        options = cfg.get('candidate_pool', {}).get('physics_options')
+        if options:
+            from ..exploration.conditional_physics import ConditionalPhysics
+            self.explorer.conditional_physics = ConditionalPhysics(self.explorer.problem, options)
         write_new(self.root/'initial_allocation_config.json', cfg)
         write_new(self.root/'external_feedback.json', self.external_feedback)
         # Caller-supplied measurements never become PASS by import. Persist the
@@ -111,6 +115,12 @@ class PhysicsToolSearchLoop(AgentSearchLoop):
             actual = json.loads((self.explorer.root/'search_decisions.jsonl').read_text(encoding='utf-8').splitlines()[-1])['decision']
             self._remember(decision, [o], None)
             return [actual], [o], 'EXECUTED'
+        if decision['action'] == 'PROBE':
+            # Sobol already supplies complete points; SLSQP's seed probe would
+            # spend a second budget and reject a legal one/two-call probe.
+            o = self.explorer.execute(decision)
+            self._remember(decision, [o], None)
+            return [decision], [o], 'EXECUTED'
         if decision['action'] != 'BUILD_PHYSICS_REGION':
             executed, observations, outcome = super()._execute(decision)
             self._remember(decision, observations, None)
@@ -123,7 +133,9 @@ class PhysicsToolSearchLoop(AgentSearchLoop):
             model_fingerprint=self.explorer.context['model']['model_sha256'],
             random_seed=self.config['seed']+len(self.constructions),
             history=[r['parameters'] for r in self.archive.entries],
-            excluded={r['parameter_sha256'] for r in self.archive.entries})
+            excluded={r['parameter_sha256'] for r in self.archive.entries},
+            physics_options=self.integrated_config.get('candidate_pool', {}).get('physics_options'),
+            minimum_distance=self.integrated_config.get('candidate_pool', {}).get('minimum_distance', 0.))
         # Construction artifact is persisted BEFORE any formal evaluation.
         write_new(folder/'proposal_before_M1.json', proposal)
         self.construction_attempts += proposal['cost']['construction_attempts']
@@ -170,6 +182,8 @@ class PhysicsToolSearchLoop(AgentSearchLoop):
                 'M1_calls': o['cost']['M1_calls'], 'positive_ids': o['new_positive_evidence_ids'],
                 'negative_ids': o['new_negative_evidence_ids'], 'best': o['best_candidate'],
                 'solver_runs': o['solver_runs'], 'failure': o['failure']} for o in observations]}
+        if proposal and 'objective_selection' in proposal:
+            entry['objective_selection'] = deepcopy(proposal['objective_selection'])
         self.compact_history.append(entry)
         with (self.root/'SEARCH_DECISION_TRACE.jsonl').open('a', encoding='utf-8') as f:
             f.write(json.dumps({'decision': decision, 'actual': entry}, ensure_ascii=False, allow_nan=False)+'\n')
@@ -183,6 +197,10 @@ class PhysicsToolSearchLoop(AgentSearchLoop):
             inverse_calls=sum(c['cost']['inverse_calls'] for c in self.constructions),
             construction_wall_s=sum(c['cost']['wall_time_s'] for c in self.constructions))
         cost['feedback_seed_recheck_M1_calls'] = sum(o['M1_calls'] for o in self.feedback_seed_rechecks)
+        if self.explorer.conditional_physics is not None:
+            cost['conditional_prediction_calls'] = self.explorer.conditional_physics.prediction_calls
+            cost['conditional_noise_trial_integrations'] = sum(
+                c.get('conditional_search', {}).get('noise_integrations', 0) for c in self.constructions)
         return cost
 
     def _result_fields(self):

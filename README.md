@@ -12,6 +12,8 @@ PLLAgent 根据系统指标和模块参数范围，结合物理反解、数值�
 - **多种搜索策略**：支持确定性搜索、LLM 物理工具选择，以及先确定性搜索再按需使用 LLM 的混合模式。
 - **分层验证**：通过连续模型（M1）检查带宽、名义相位裕度和调谐点，再通过独立行为仿真（M2）测量带宽与条件捕获时间。
 - **反馈重分配**：根据 M2 结果，在剩余预算内选择其他候选或重新分配参数。
+- **条件物理与噪声**：可选连续噪声预测、启动候选构造和统一排序；另有独立原生噪声/非理想验证后端，预测与正式验证分开记录。
+- **VCO 开发交接**：从正式结果导出 VCO guidance，检查实测反馈和用户硬约束，准备回填 `f0/Kvco` 后的重新验证输入。
 - **结果记录**：保存候选、工具决策、测量证据及 M1、M2、LLM 调用成本。
 
 ```text
@@ -28,7 +30,7 @@ LLM 负责选择工具、搜索区域和预算；参数由计算工具求解，�
 
 ## 适用范围
 
-标准流程采用固定的 Integer-N CPPLL 行为模型：参考频率 10 MHz、分频比 8、输出频率 80 MHz、控制电压范围 0–1.2 V，包含理想对称电荷泵、线性 VCO 和既定的两电容一电阻环路滤波器。
+标准流程采用固定拓扑的 Integer-N CPPLL 行为模型：参考频率 10 MHz、控制电压范围 0–1.2 V，反馈分频比读取当前问题的正整数 `fixed_parameters.N.value`，目标输出为 `N × f_ref`；nominal 示例仍为 N=8、80 MHz。包含理想对称电荷泵、线性 VCO 和既定的两电容一电阻环路滤波器。不同 N 的候选仍须满足调谐与数值分辨率条件，详见[运行说明](docs/RUNNING.md)。
 
 | 验证层级 | 支持的指标 | 适用条件 |
 | --- | --- | --- |
@@ -110,6 +112,10 @@ python -m pll_allocation pipeline --problem path/to/problem.json --allocator-con
 
 完整字段、预算计数和候选筛选规则见[多策略分配说明](docs/SPEC_ALLOCATION.md)；其他配置见[配置目录说明](configs/README.md)。
 
+### 噪声与启动增强
+
+默认配置保留原分配行为。`configs/agent/noise_aware.json` 与 `physics_enhanced.json` 分别提供条件噪声和完整物理增强配置，可通过同一个 `--allocator-config` 入口使用。连续噪声预测复用已有 PSD/积分模型；独立时域噪声验证需另建非理想/噪声后端，见[运行指南](docs/RUNNING.md)。条件预测不赋予标准 M2 jitter/PM 通过资格，可选扩展仍遵守各自的 N=8 适用域。
+
 ### 使用 LLM
 
 LLM 模式需要支持 Messages API 的 HTTPS 服务，以及以下本机环境变量：
@@ -134,6 +140,7 @@ python tools/run_allocation_examples.py --case llm --allow-paid-llm --out experi
 
 | 文件或目录 | 内容 |
 | --- | --- |
+| `run_manifest.json` | 多候选运行的统一索引；指向权威输入快照、结果、成本与下游交接文件，并记录文件 SHA256 |
 | `allocation_report.md` | 参数候选、推荐依据和验证结果的可读报告 |
 | `allocation_result.json` | 运行状态、候选统计、推荐结果和失败原因 |
 | `candidates.json` | 六参数候选、单位、M1 指标与已执行的 M2 结果 |
@@ -146,17 +153,32 @@ python tools/run_allocation_examples.py --case llm --allow-paid-llm --out experi
 
 示例问题有意保留未支持的 jitter 约束，因此即使已支持项通过，也可能仍有 `UNKNOWN` 项。详细状态定义见[配置与结果合同](docs/SPEC_ALLOCATION.md#输出与判决)。
 
+### VCO contract
+
+完整分配后，可显式导出后续 VCO 开发合同：
+
+```powershell
+python -m pll_allocation.vco_sizing export --handoff experiments/joint_example/sizing_handoff.json
+```
+
+导出复用共享交付门禁，保留原交接文件；目标频率确认、局部 `Kvco/f0`、CP 合规区间和实测条件分别校验。`assess` 检查物理反馈，`prepare` 生成重新验证输入；实际分配与 M2 仍由正式 pipeline 执行。详见 [VCO Sizing Contract](docs/VCO_SIZING_CONTRACT.md)。
+
 ## 项目结构
+
+程序对接从 `run_manifest.json` 定位文件。下游交付只消费 `sizing_handoff.json`，可用 `pll_allocation.delivery.validate_sizing_handoff` 校验摘要、候选及正式证据；`recommended` 可能只是 M1 诊断推荐，不能作为正式交付。`initial/verification_handoff.json` 则供 M2 接续执行；新运行支持连同整个运行目录迁移，旧阶段名副本仅用于兼容。具体清洗边界见 [结构审核](docs/STRUCTURE_AUDIT_20261124.md)。
 
 ```text
 pll_allocation/
 ├── pipeline.py         # 统一命令入口与流程调度
+├── io_contracts.py     # 严格外部 JSON 与权威产物索引
+├── delivery.py         # 生产端和下游共用的正式交付校验
 ├── agent/              # 策略、候选池、预算与反馈重分配
 ├── allocation/         # 物理反解与分配算法
 ├── exploration/        # 问题定义、物理区域与敏感度分析
 ├── region_explorer/    # Sobol 采样与 SLSQP 局部优化
 ├── physics_mapping/    # M1 连续模型与物理映射
 ├── verification/       # C++ 行为内核、测量与 M2 判决
+├── vco_sizing/         # 可选 VCO 开发合同、反馈与回填输入
 └── studies/            # 可选对照研究
 configs/                # 问题、策略、模型与验证配置
 tools/                  # 示例运行与维护工具
@@ -180,8 +202,13 @@ python -m pytest -q
 
 开发前请阅读 [AGENTS.md](AGENTS.md) 和[兼容性说明](docs/COMPATIBILITY.md)。欢迎通过 [Issues](https://github.com/Jasperskkr/PLL_EVALAGENT/issues) 反馈问题；复现信息建议包含运行环境、命令、配置与错误摘要。实验输出、API 原始日志、凭据和编译产物保存在本地。
 
+2026-11-24 集成验收已覆盖 N=4/8/10/16、不同 BW/PM/lock、失败重分配和边界输入：12组流程的211项产物检查通过。N4/N10案例仅部分交付，完整结果与适用条件见[多规格验收](docs/SPEC_MATRIX_AND_REMOTE_20261124.md)。完整回归958通过、10项历史档案依赖跳过；具体提交版本的发布复核见[提交版本审核](docs/PUBLISH_AUDIT_20261124.md)。
+
 ## 文档
 
+- [当前代码状态与推送交接](docs/CODE_STATE_20261124.md)：集成改动、验收证据、分支与远端状态。
+- [提交版本审核](docs/PUBLISH_AUDIT_20261124.md)：发布范围、独立检出构建与全链路验收。
+- [VCO 开发合同](docs/VCO_SIZING_CONTRACT.md)：guidance、实测反馈、约束与回填再验证。
 - [运行指南](docs/RUNNING.md)：安装、原生构建、示例与故障排查。
 - [多策略分配](docs/SPEC_ALLOCATION.md)：模式、配置字段、预算与结果语义。
 - [架构说明](docs/ARCHITECTURE.md)：模块边界与主要调用链。

@@ -18,6 +18,7 @@ from ..region_explorer.assessment import contains_parameters, normalized_point, 
 from .contracts import active_m1_specs, axes, check_candidate, make_parameters, number, require, screen_problem
 
 REQUEST_SCHEMA = 'pll-physics-region-request-1.0'
+OBJECTIVE_REQUEST_SCHEMA = 'pll-physics-region-request-1.1'
 PROPOSAL_SCHEMA = 'pll-physics-region-proposal-1.0'
 STRATEGIES = {'HIGH_PM_LF_SHAPE', 'BW_TARGETED_INVERSE', 'GAIN_SPLIT_EXPLORATION',
               'VCO_TUNING_EXPLORATION', 'DIVERSITY_EXPLORATION'}
@@ -33,7 +34,41 @@ class PhysicsRequestError(ValueError):
         super().__init__('Physics request field mismatch: '+str(self.details))
 
 
-def validate_request(raw, problem, model_fingerprint, allowed_evidence, *, attempts_left, m1_left):
+def available_physical_objectives(physics_options):
+    options = physics_options or {}
+    return (['NOISE_AWARE'] if options.get('noise_allocation_enabled') else []) + (
+        ['INITIAL_STATE_AWARE', 'FAST_LOCK'] if options.get('initial_state_aware_enabled') else [])
+
+
+def validate_objectives(request, physics_options):
+    """Only the versioned opt-in request may select conditional preferences.
+
+    These are priorities within configured feasibility tiers, not permission to
+    replace limits, profile, startup settings, six parameters or verdicts.
+    """
+    goals = request['physical_objectives']
+    allowed = available_physical_objectives(physics_options)
+    require(bool(allowed), 'physical objectives are not enabled by configuration')
+    require(isinstance(goals, list) and 1 <= len(goals) <= len(allowed) and
+            all(isinstance(g, str) and g in allowed for g in goals) and len(set(goals)) == len(goals),
+            'unique enabled physical objectives in priority order required')
+    require(request['tool_options_sha256'] == fingerprint(physics_options), 'current physical tool options binding required')
+
+
+def validate_request(raw, problem, model_fingerprint, allowed_evidence, *, attempts_left, m1_left,
+                     physics_options=None):
+    if isinstance(raw, dict) and raw.get('schema_version') == OBJECTIVE_REQUEST_SCHEMA:
+        fields = {'schema_version', 'request_id', 'problem_sha256', 'model_fingerprint', 'strategy',
+                  'target_bw_fraction', 'physics_focus', 'tuning_preference', 'seed_count',
+                  'region_width_policy', 'budget', 'evidence_ids', 'physical_objectives', 'tool_options_sha256'}
+        if set(raw) != fields:
+            raise PhysicsRequestError('request', fields, raw)
+        validate_objectives(raw, physics_options)
+        legacy = {k: deepcopy(v) for k, v in raw.items() if k not in ('physical_objectives', 'tool_options_sha256')}
+        legacy['schema_version'] = REQUEST_SCHEMA
+        validate_request(legacy, problem, model_fingerprint, allowed_evidence,
+                         attempts_left=attempts_left, m1_left=m1_left)
+        return deepcopy(raw)
     fields = {'schema_version', 'request_id', 'problem_sha256', 'model_fingerprint', 'strategy',
               'target_bw_fraction', 'physics_focus', 'tuning_preference', 'seed_count',
               'region_width_policy', 'budget', 'evidence_ids'}
@@ -124,7 +159,8 @@ def target_interval(problem):
     return [lo, hi] if 0 < lo <= hi else None
 
 
-def build_physics_region(problem, request, *, model_fingerprint, random_seed, history=(), excluded=()):
+def build_physics_region(problem, request, *, model_fingerprint, random_seed, history=(), excluded=(), physics_options=None,
+                         minimum_distance=0.):
     """Return prechecked seeds/proposals only. Caller owns validation and M1.
 
     At most one original inverse per charged construction attempt. The exact
@@ -135,6 +171,18 @@ def build_physics_region(problem, request, *, model_fingerprint, random_seed, hi
     start, cpu = time.perf_counter(), time.process_time()
     cap = request['budget']['construction_attempts']; meter = Meter(cheap_limit=cap, m1_limit=0)
     trace, seeds, seen = [], [], set(excluded)
+    conditional = None
+    noise_search = bool(physics_options and physics_options['noise_allocation_enabled'])
+    startup_search = bool(physics_options and physics_options['initial_state_aware_enabled'])
+    extended_search = noise_search or startup_search
+    if physics_options:
+        from .conditional_physics import ConditionalPhysics
+        conditional = ConditionalPhysics(problem, physics_options)
+    goals = []
+    if request.get('schema_version') == OBJECTIVE_REQUEST_SCHEMA:
+        validate_objectives(request, physics_options)
+        goals = request['physical_objectives']
+    trial_cache = {}
     result = {'schema_version': PROPOSAL_SCHEMA, 'strategy_id': request['request_id'],
         'request': deepcopy(request), 'problem_sha256': problem['problem_sha256'], 'model_fingerprint': model_fingerprint,
         'status': 'NO_SEED_FOUND_WITHIN_ATTEMPT_BUDGET', 'seeds': seeds, 'regions': [],
@@ -154,7 +202,7 @@ def build_physics_region(problem, request, *, model_fingerprint, random_seed, hi
         strategy = request['strategy']
         previous = [normalized_point(problem, p) for p in history]
         for i, draw in enumerate(draws[:cap]):
-            if len(seeds) >= request['seed_count']:
+            if len(seeds) >= request['seed_count'] and not extended_search:
                 break
             c1 = physical_coordinate(a['C1'], float(draw[0])); c2 = physical_coordinate(a['C2'], float(draw[1]))
             if i == 0:
@@ -192,7 +240,8 @@ def build_physics_region(problem, request, *, model_fingerprint, random_seed, hi
                     entry['status'] = joint['status']
                     continue
                 klo, khi = joint['tuning_compatible_Kvco_interval']
-                split = [.2, .5, .8] if strategy in ('GAIN_SPLIT_EXPLORATION', 'VCO_TUNING_EXPLORATION') else [.5]
+                split = [0., .5, 1.] if extended_search else ([.2, .5, .8] if strategy in (
+                    'GAIN_SPLIT_EXPLORATION', 'VCO_TUNING_EXPLORATION') else [.5])
                 for fraction in split:
                     kv = math.exp(math.log(klo)+fraction*(math.log(khi)-math.log(klo))) if klo != khi else klo
                     current = deepcopy(raw); current.update(Icp=product/kv, Kvco=kv)
@@ -202,8 +251,19 @@ def build_physics_region(problem, request, *, model_fingerprint, random_seed, hi
                     preference = request['tuning_preference']
                     tuning_fractions = [.2, .5, .8] if preference == 'DIVERSE' else [
                         .2 if preference == 'LOW_VOLTAGE' else .8 if preference == 'HIGH_VOLTAGE' else .5]
-                    for vf in tuning_fractions:
-                        voltage = vlo+vf*(vhi-vlo); current['f0'] = target-kv*voltage
+                    voltages = [(vlo+vf*(vhi-vlo), 'LEGACY_TUNING') for vf in tuning_fractions]
+                    if startup_search:
+                        safe = physics_options['safe_rail_margin_V']
+                        safe_lo = max(vlo, problem['fixed_parameters']['Vctrl_min']['value']+safe)
+                        safe_hi = min(vhi, problem['fixed_parameters']['Vctrl_max']['value']-safe)
+                        if safe_lo <= safe_hi:
+                            voltages = [(min(safe_hi, max(safe_lo, .15+delta)), 'STARTUP_OFFSET:'+str(delta))
+                                        for delta in physics_options['delta_offsets_V']]
+                            voltages += [((safe_lo+safe_hi)/2, 'MID_TUNING')]
+                        else:
+                            entry['startup_fallback'] = 'EMPTY_SAFE_INTERVAL_KEEP_LEGAL_LEGACY_TUNING'
+                    for voltage, purpose in voltages:
+                        current['f0'] = target-kv*voltage
                         candidate = make_parameters(problem, current)
                         screened = check_candidate(problem, candidate)
                         if screened['status'] != 'NECESSARY_CONDITIONS_SATISFIED':
@@ -227,16 +287,94 @@ def build_physics_region(problem, request, *, model_fingerprint, random_seed, hi
                             'screening': screened, 'gain_tuning_precheck': joint,
                             'nearest_existing_normalized_distance': distance,
                             'm1_evaluated': False, 'm1_status': 'M1_NOT_EVALUATED'}
+                        if startup_search:
+                            from ..physics_mapping.analytic_features import analytic_features
+                            seed['construction_purpose'] = purpose
+                            seed['analytic_features'] = analytic_features(candidate)
+                        if extended_search:
+                            from ..allocation.physics import raw_prediction
+                            from ..physics_mapping.model import parse_parameters
+                            p = parse_parameters(candidate)
+                            trial_key = tuple(p[k] for k in ('Icp', 'Kvco', 'Rz', 'C1', 'C2'))
+                            if noise_search and trial_key not in trial_cache:
+                                trial_cache[trial_key] = conditional.cheap_estimate(candidate)
+                            value = trial_cache.get(trial_key)
+                            metrics = raw_prediction(p)
+                            margins = [(metrics[s['metric']]-s['min']+s['tolerance'])/s['normalization_scale']
+                                       for s in active_m1_specs(problem) if 'min' in s]
+                            margins += [(s['max']-metrics[s['metric']]+s['tolerance'])/s['normalization_scale']
+                                        for s in active_m1_specs(problem) if 'max' in s]
+                            seed['conditional_construction'] = {'predicted_jitter_trial_s': value,
+                                'M1_proxy_margin': min(margins), 'formal_M1_evaluated': False,
+                                'noise_limit_s': conditional.limit}
                         seeds.append(seed)
                         entry['status'] = 'SEED_CONSTRUCTED'
-                        if len(seeds) >= request['seed_count']:
+                        if len(seeds) >= request['seed_count'] and not extended_search:
                             break
-                    if len(seeds) >= request['seed_count']:
+                    if len(seeds) >= request['seed_count'] and not extended_search:
                         break
                 if entry['status'] == 'STARTED':
                     entry['status'] = 'NO_NEW_LEGAL_SEED'
             except (ValueError, ArithmeticError, RuntimeError) as error:
                 entry.update(status='INVERSE_MODE_FAILED', reason=type(error).__name__+': '+str(error))
+        if extended_search and seeds:
+            # Lexicographic conditional frontier: never trade a supported M1
+            # bound for noise. Failed noise trials remain proposals/evidence.
+            def priority(seed):
+                info = seed['conditional_construction']; value = info['predicted_jitter_trial_s']
+                return (info['M1_proxy_margin'] < 0,
+                    noise_search and conditional.limit is not None and value > conditional.limit,
+                    value if value is not None else 0., -info['M1_proxy_margin'], seed['parameter_sha256'])
+            ordered = sorted(seeds, key=priority)
+            result['conditional_search'] = {'trial_count': len(seeds), 'noise_integrations': len(trial_cache),
+                'noise_limit_s': conditional.limit, 'best_predicted_trial_s': min(trial_cache.values(), default=None),
+                'stop_reason': 'CONSTRUCTION_ATTEMPT_LIMIT',
+                'selection_rule': 'M1 proxy feasibility, conditional jitter limit, minimum jitter, M1 margin; formal recheck required'}
+            chosen = []
+            from ..region_explorer.assessment import normalized_point as point_of
+            if startup_search:
+                # Within the best M1/conditional feasibility tier, retain distinct
+                # implementation preferences and shapes, not only minimum delta.
+                tier = priority(ordered[0])[:2]
+                viable = [s for s in ordered if priority(s)[:2] == tier]
+                def quantities(s):
+                    p = s['parameters']['values']; f = s['analytic_features']
+                    return p, f
+                selectors = [
+                    ('NOISE_FAVORABLE', lambda s: s['conditional_construction']['predicted_jitter_trial_s'] or 0.),
+                    ('FAST_LOCK_PROXY', lambda s: abs(quantities(s)[1]['initial_frequency_error_Hz'])),
+                    ('MID_TUNING', lambda s: -quantities(s)[1]['tuning_rail_margin_V']),
+                    ('LOW_TOTAL_CAPACITANCE', lambda s: quantities(s)[0]['C1']['value']+quantities(s)[0]['C2']['value']),
+                    ('LOW_ICP', lambda s: quantities(s)[0]['Icp']['value']),
+                    ('LF_SHAPE_DIVERSITY', lambda s: -quantities(s)[0]['C2']['value']/quantities(s)[0]['C1']['value'])]
+                if goals:
+                    targeted = {
+                        'NOISE_AWARE': selectors[0],
+                        'FAST_LOCK': selectors[1],
+                        'INITIAL_STATE_AWARE': ('INITIAL_STATE_AWARE', lambda s: abs(
+                            s['screening']['derived']['Vctrl_required_V']-.15))}
+                    preferences = [targeted[g] for g in goals]
+                    selectors = preferences+[s for s in selectors if s[0] not in {p[0] for p in preferences}]
+                diverse = []
+                for label, selector in selectors:
+                    for s in sorted(viable, key=lambda s: (selector(s), priority(s))):
+                        point = point_of(problem, s['parameters'])
+                        if all(math.sqrt(sum((point[k]-old[k])**2 for k in FREE_IDS)) >= minimum_distance and
+                               point != old for old in previous+[point_of(problem, x['parameters']) for x in diverse]):
+                            s['selection_preference'] = label; diverse.append(s); break
+                ordered = diverse+[s for s in ordered if s not in diverse]
+            for seed in ordered:
+                point = point_of(problem, seed['parameters'])
+                # Preserve the original downstream distance filter; avoid wasting
+                # the small formal seed quota on identical or very close trials.
+                if all(math.sqrt(sum((point[k]-old[k])**2 for k in FREE_IDS)) >= minimum_distance and point != old
+                       for old in previous+[point_of(problem, s['parameters']) for s in chosen]):
+                    chosen.append(seed)
+                if len(chosen) >= request['seed_count']:
+                    break
+            result['conditional_trial_frontier'] = [{'parameter_sha256': s['parameter_sha256'],
+                'parameters': s['parameters'], **s['conditional_construction']} for s in ordered]
+            seeds[:] = chosen
         if seeds:
             result['status'] = 'SEEDS_CONSTRUCTED' if len(seeds) == request['seed_count'] else 'PARTIAL_SEEDS_CONSTRUCTED'
         result['regions'] = [{'region_id': s['region_id'], 'seed_id': s['seed_id'],
@@ -246,5 +384,10 @@ def build_physics_region(problem, request, *, model_fingerprint, random_seed, hi
     result['cost'] = {'construction_attempts': len(trace), 'construction_failures': sum(e['status'] != 'SEED_CONSTRUCTED' for e in trace),
         'inverse_calls': meter.counts['analytic_calls'], 'attempt_limit': cap, 'remaining_attempt_budget': cap-len(trace),
         'M1_calls': 0, 'wall_time_s': time.perf_counter()-start, 'process_cpu_s': time.process_time()-cpu}
+    if goals:
+        result['objective_selection'] = {'physical_objectives': deepcopy(goals),
+            'tool_options_sha256': request['tool_options_sha256'],
+            'semantics': 'Ordered construction preferences inside configured M1/conditional noise tiers; no formal PASS',
+            'effective_seed_preferences': [s.get('selection_preference', 'NOISE_FAVORABLE') for s in seeds]}
     result['proposal_sha256'] = fingerprint(result)
     return result

@@ -7,7 +7,7 @@ from ..physics_mapping.model import fingerprint
 from .candidate_pool import distance, distinct_candidates
 from .deterministic_feedback import DeterministicFeedbackPolicy
 from .initial_allocation import PhysicsToolSearchLoop
-from .physics_tool_policy import PROMPT, SCHEMA_VERSION, DeterministicToolPolicy
+from .physics_tool_policy import SCHEMA_VERSION, DeterministicToolPolicy, prompt_for_options
 from .region_policy import LLMRegionPolicy, ProviderError
 from .subregion_tools import envelope
 
@@ -56,7 +56,7 @@ class PoolDeterministicPolicy(DeterministicToolPolicy):
 class PoolLLMPolicy(LLMRegionPolicy):
     """Original physics prompt/transport with explicit paid-call authorization."""
     def __init__(self, provider_config, config, offline_policy=None):
-        super().__init__(provider_config or {}, prompt=PROMPT + '''
+        super().__init__(provider_config or {}, prompt=prompt_for_options(config.get('physics_options')) + '''
 The candidate_pool field specifies K, quality and diversity requirements. A single
 feasible point is insufficient. Continue tool construction/search until the pool
 target is reached, or explain a real budget/stall. All M2 verdicts remain external.''')
@@ -107,7 +107,7 @@ class PoolSearchLoop(PhysicsToolSearchLoop):
                          policy_injected=self.injected_policy)
         self.explorer.stop_when = lambda row: self._search_target_reached()
 
-    def _pool(self, quality_only=False):
+    def _pool(self, quality_only=False, *, conditional_only=False):
         self.archive.sync()
         rows = self.archive.entries
         if quality_only:
@@ -119,12 +119,15 @@ class PoolSearchLoop(PhysicsToolSearchLoop):
             # new points; filtering just inverse seeds can stop repair early.
             rows = [r for r in rows if r['parameter_sha256'] not in excluded and
                     all(distance(self.explorer.problem, r, old) >= self.pool_config['minimum_distance'] for old in passed)]
+        if conditional_only and getattr(self.explorer, 'conditional_physics', None) is not None:
+            rows = [r for r in rows if self.explorer.conditional_physics.qualified(r)]
         return distinct_candidates(rows, self.explorer.problem, self.pool_config, quality_only=quality_only)
 
     def _search_target_reached(self):
         # Imported feedback seeds alone must not stop a reallocation. They have
         # already measured M2; demand a distinct useful new search point.
-        return len(self._pool(True)) >= self.pool_config['target_count']
+        rows = self._pool(True, conditional_only=True)
+        return len(rows) >= self.pool_config['target_count']
 
     def _seed_allowed(self, seed):
         self.archive.sync()
@@ -137,13 +140,17 @@ class PoolSearchLoop(PhysicsToolSearchLoop):
         # Keep failed M1 neighborhoods searchable; only feasible near-duplicates
         # can be redundant. Quality selection itself remains post-M1.
         return all(distance(self.explorer.problem, seed, old) >= self.pool_config['minimum_distance']
-                   for old in self._pool(True))
+                   for old in self._pool(True, conditional_only=True))
 
     def _build_state(self, round_number, correction):
         state = super()._build_state(round_number, correction)
         state.pop('state_sha256')
         state['candidate_pool'] = {'config': deepcopy(self.pool_config), 'feasible_count': len(self._pool()),
             'quality_count': len(self._pool(True)), 'target_reached': self._search_target_reached()}
+        if self.explorer.conditional_physics is not None and self.pool_config['physics_options']['noise_allocation_enabled']:
+            state['candidate_pool']['M1_quality_count'] = state['candidate_pool']['quality_count']
+            state['candidate_pool']['quality_count'] = len(self._pool(True, conditional_only=True))
+            state['candidate_pool']['quality_scope'] = 'FORMAL_M1_AND_CONDITIONAL_NOISE'
         state['state_sha256'] = fingerprint(state)
         return state
 
@@ -195,6 +202,13 @@ class PoolSearchLoop(PhysicsToolSearchLoop):
         # Independent final audit must run even after the pool stop predicate.
         self.explorer.stop_when = None
         return super().finish()
+
+    def _select_recommendation(self):
+        options = self.pool_config.get('physics_options', {})
+        if options.get('physics_ranking_enabled') or options.get('noise_allocation_enabled'):
+            from .candidate_pool import select_m2
+            return select_m2(self.archive.entries, self.explorer.problem, self.pool_config)
+        return super()._select_recommendation()
 
     def cost(self):
         cost = super().cost()

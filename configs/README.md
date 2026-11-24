@@ -2,6 +2,8 @@
 
 这里保存运行输入和来源合同，不存放实验结果。正常使用先修改 `problems/` 的 SystemSpec、六轴范围，再选择 `agent/` 策略和 `verification/` 验证预算。正式入口仍是 `python -m pll_allocation pipeline`。
 
+可选共享物理增强另用 `agent/noise_aware.json`（条件噪声）或 `agent/physics_enhanced.json`（再加启动构造与统一排序）。两份均 K=5、M1上限96、M2上限3，无真实 API 授权；原 `spec_allocation.json` 及 nominal/tight 不改。四开关、profile、频带、条件可行与正式 UNKNOWN 的边界见 [SPEC_ALLOCATION](../docs/SPEC_ALLOCATION.md#可选条件噪声与启动排序2026-11-20)。
+
 |路径|用途|使用建议|
 |---|---|---|
 |`problems/`|nominal、tight、infeasible_pm 三个 ResearchProblemV2 示例；规格、启用项、固定拓扑和六轴范围|复制后修改，合法输入不保证有解|
@@ -10,7 +12,7 @@
 |`providers/messages.json`|物理工具 Agent 的 Messages API 配置；4000 tokens、180s、thinking disabled|只记录环境变量名，凭据留在进程环境|
 |`providers/messages_interactive.json`|原交互入口的独立 API 默认值；8000 tokens、60s|保留原预算差异，不与上一项合并|
 |`verification/verify_only.json`、`feedback.json`|Handoff 后一次 M2，或有限反馈重分配|必须先取得 READY Handoff|
-|`verification/m2_protocol.json`|正式理想行为 TB 的测量、数值收敛与判决协议|研究对照时固定；不是用户 Spec|
+|`verification/m2_protocol.json`|冻结理想行为 TB 的测量和数值收敛基础协议|连续域请求据此派生绑定当前N的 `integer_n_metrics_1.0`，用户指标从问题Spec读取|
 |`verification/phase_step_protocol.json`、`return_ratio_protocol.json`|可选相位阶跃、返回比实验协议|可选验证扩展，不代表完整 PM 已认证|
 |`verification/noise_protocol.json`、`profiles/`|可选噪声/非理想验证协议及预声明环境|标准理想链不自动启用；profile 不是器件可实现性保证|
 |`model/`|冻结 Block Space、方程、参考 SystemSpec 和 M1 实验合同|供模型/冻结兼容链和数值回归使用，不是一次成功设计的范围|
@@ -19,6 +21,8 @@
 |`provenance/`|原实现、物理绑定、配置迁移和可选 profile 的哈希清单|来源证据，不是实验指标，不手工伪造哈希|
 
 六轴传入后端的单位依次为 A、Ohm、F、F、Hz、Hz/V。规格和变量域必须符合已有合同；当前反解要求启用正 BW 目标。修改问题不能扩大固定拓扑与测量能力。
+
+标准连续域 M2 的分频比从 `fixed_parameters.N.value` 读取正整数，目标为 `N*f_ref`；参考频率仍为10MHz、电压轨仍为0–1.2V。不同N须通过同一调谐、步长/边沿分辨率及测量收敛检查。`provenance/integer_n_m2.json` 保留这次适配的旧新来源哈希，历史N=8证据不自动升级到其他N。
 
 ## 手工输入 SystemSpec 和六变量范围
 

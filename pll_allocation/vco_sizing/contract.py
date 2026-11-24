@@ -8,9 +8,10 @@ from pathlib import Path
 
 from ..agent.handoff import SCHEMA as NOMINAL_SCHEMA, validate_handoff
 from ..allocation.core import write_new
-from ..exploration.contracts import check_candidate, judge, number, require
-from ..exploration.engine import model_identity
-from ..physics_mapping.model import MappingResult, Status, fingerprint, parse_parameters
+from ..delivery import validate_sizing_handoff
+from ..io_contracts import read_json
+from ..exploration.contracts import number, require
+from ..physics_mapping.model import fingerprint, parse_parameters
 
 GUIDANCE_SCHEMA = 'pll-vco-sizing-guidance-1.0'
 FEEDBACK_SCHEMA = 'pll-vco-physical-feedback-1.0'
@@ -19,10 +20,6 @@ UNITS = {'target_frequency_hz': 'Hz', 'preferred_vlock_v': 'V',
          'vlock_v': 'V', 'kvco_local_hz_per_v': 'Hz/V', 'f0_local_hz': 'Hz',
          'frequency_tolerance_hz': 'Hz'}
 HARD_UNITS = {'vlock_v': 'V', 'kvco_local_hz_per_v': 'Hz/V', 'f0_local_hz': 'Hz'}
-
-
-def read_json(path):
-    return json.loads(Path(path).read_text(encoding='utf-8-sig'))
 
 
 def interval(item, unit, label, *, allow_point=False):
@@ -45,57 +42,12 @@ def _problem(problem):
 
 
 def validate_source(handoff):
-    """Accept native multi-point delivery or the original signed M1-only handoff.
-
-    Check recorded evidence without rerunning physics or loading a native DLL.
-    Hashes bind supplied records; they are not cryptographic authentication.
-    """
+    """Accept a checked M1 nominal or the shared native multi-point delivery."""
+    require(isinstance(handoff, dict), 'source handoff must be a JSON object')
     if handoff.get('schema_version') == NOMINAL_SCHEMA:
         validate_handoff(handoff)
         return handoff['problem'], [handoff['recommended_nominal']]
-    require(handoff.get('schema_version') == 'pll-sizing-targets-1.0', 'unsupported source handoff')
-    problem = handoff['problem']; _problem(problem)
-    require(handoff['evidence_scope'] == 'NATIVE_M2_SUPPORTED_METRICS_ONLY' and
-            handoff['FULL_SYSTEMSPEC_CERTIFIED'] is False and
-            handoff['candidate_count'] == len(handoff['candidates']), 'invalid multi-candidate delivery')
-    seen = set()
-    from ..verification.continuous import judge_measurements
-    from ..verification.experiments import protocol
-    for row in handoff['candidates']:
-        key = fingerprint(row['parameters'])
-        require(row['parameter_sha256'] == key and key not in seen, 'candidate hash/duplicate mismatch')
-        seen.add(key)
-        require(row['model_fingerprint'] == model_identity()['model_sha256'] and
-                row['problem_sha256'] == problem['problem_sha256'], 'candidate model/problem mismatch')
-        require(check_candidate(problem, row['parameters'])['status'] == 'NECESSARY_CONDITIONS_SATISFIED',
-                'source candidate outside original domain or necessary conditions')
-        raw = row['formal_M1_result']; result = MappingResult(**(raw | {'status': Status(raw['status'])}))
-        require(result.status == Status.OK and row['metrics'] == result.metrics and
-                row['judgment'] == judge(problem, row['parameters'], result) and
-                row['judgment']['m1_feasibility'] == 'FEASIBLE', 'source formal M1 evidence mismatch')
-        require(row['M2_evidence_scope'] == 'NATIVE' and row['M2_supported_status'] == 'PASS' and
-                bool(row['M2_observations']), 'native M2 evidence required for multi-point delivery')
-        record = row['M2_observations'][-1]; request, measured = record['request'], record['observation']
-        parameters = validate_handoff(request['handoff'])
-        require(parameters == row['parameters'] == request['parameters'] and
-                request['handoff']['problem'] == problem and request['candidate_sha256'] == key and
-                request['problem_sha256'] == problem['problem_sha256'] and
-                request['specs'] == problem['specs'] and
-                request['candidate_id'] == row['evidence_id'] and request['protocol'] == protocol() and
-                request['request_sha256'] == fingerprint({k: v for k, v in request.items()
-                                                         if k != 'request_sha256'}) and
-                request['protocol_sha256'] == fingerprint(request['protocol']), 'M2 request binding mismatch')
-        require(all(measured[k] == request[k] for k in
-                    ('candidate_sha256', 'request_sha256', 'problem_sha256', 'protocol_sha256')) and
-                measured['M2_model_fingerprint'] == fingerprint(request['M2_model']) and
-                row['M2_status'] == measured['overall_status'] and
-                measured['cost']['completed_native_runs'] > 0 and
-                measured['evidence_id'].startswith('M2:'), 'native observation binding mismatch')
-        judgment = judge_measurements(request, measured['capture'], measured['frequency_response_comparison'])
-        require(judgment['supported_metrics_status'] == 'PASS' and all(measured[k] == judgment[k] for k in
-                ('supported_metrics_status', 'overall_status', 'constraints', 'metrics', 'FULL_SYSTEMSPEC_CERTIFIED')),
-                'recorded native verdict mismatch')
-    return problem, handoff['candidates']
+    return validate_sizing_handoff(handoff)
 
 
 def _options(options):

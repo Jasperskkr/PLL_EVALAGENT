@@ -44,6 +44,12 @@ def save_run(folder,parameters,settings,kind,*,protocol_document=None,simulate_f
     start=time.perf_counter()
     try:
         run=(simulate_fn or simulate)(parameters,**settings)
+        v=parameters['values']
+        plan={'f_ref_Hz':v['f_ref']['value'],'N':v['N']['value'],
+              'output_frequency_Hz':v['N']['value']*v['f_ref']['value']}
+        if run['settings'].get('frequency_plan',plan)!=plan:
+            raise ValueError('simulation observation frequency plan differs from candidate')
+        run['settings']['frequency_plan']=plan
         np.savez_compressed(folder/'trajectory.npz',trace=run['trace'],ref_edges=run['ref_edges'],div_edges=run['div_edges'])
         write(folder/'summary.json',{'summary':run['summary'],'actual_settings':run['settings']})
         if kind=='capture':

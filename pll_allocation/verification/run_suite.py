@@ -42,7 +42,8 @@ def capture_pair(folder,p,initial,duration,*,protocol_document=None):
                   'record_interval_s':20e-9,'onset_s':duration}
         runs.append(save_run(folder/name,p,settings,'capture',protocol_document=protocol_document))
     a,b=runs
-    comparisons={'frequency_difference_ppm':abs(b['output_frequency_Hz']-a['output_frequency_Hz'])/80e6*1e6,
+    target=p['values']['N']['value']*p['values']['f_ref']['value']
+    comparisons={'frequency_difference_ppm':abs(b['output_frequency_Hz']-a['output_frequency_Hz'])/target*1e6,
                  'control_difference_V':abs(b['steady_control_V']-a['steady_control_V']),
                  'same_status':a['status']==b['status'],
                  'lock_time_difference_s':abs(a['lock_time_s']-b['lock_time_s']) if a['lock_time_s'] is not None and b['lock_time_s'] is not None else None}

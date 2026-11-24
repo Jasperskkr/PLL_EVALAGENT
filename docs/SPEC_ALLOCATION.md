@@ -88,3 +88,70 @@ Sizing handoff 交付的是行为目标，不认证晶体管/PVT 可实现性，
 - 下游仅消费 `sizing_handoff.json.candidates` 中的完整参数组合及证据；零点或部分交付是正常结果。当前未认证模块器件可实现性、管级/PVT，也未提供经验证的参数容差区域或自动Sizing反馈闭环。
 
 手工Spec与六轴范围设置见 [配置输入说明](../configs/README.md#手工输入-systemspec-和六变量范围)。不应修改冻结 `model/block_space.json` 来配置当前问题。
+
+## 可选条件噪声与启动排序（2026-11-20）
+
+原 `pll-spec-allocation-1.0` allocator 合同新增四个可选布尔字段，省略全部为 false；原问题、默认配置、三种模式及 Auto 切换规则保持。`PhysicsRegionRequest 1.0` 不增加任何字段。共享工具配置经 Runner 校验后作为 builder 的独立参数传入。
+
+|开关|作用|
+|---|---|
+|`analytic_features_enabled`|记录自然频率、近似阻尼、精确三阶线性极点、初始频偏、调谐裕量及启发式滑脱风险|
+|`noise_allocation_enabled`|复用原噪声估算器筛选形状/电容/增益分解；候选池停止要求满足配置中的条件 jitter；原 RegionExplorer SLSQP 增加归一化 jitter 裕量|
+|`initial_state_aware_enabled`|在与 f0 范围相交的安全电压区间内构造 `clip(0.15+delta)`，同时保留中点、低电容、低电流、Noise-Favorable 等偏好候选|
+|`physics_ranking_enabled`|首次交接与后续 M2 均调用 `candidate_pool.select_m2`；只提议优先级，独立复核及正式验证不变|
+
+独立示例：`configs/agent/noise_aware.json` 和 `configs/agent/physics_enhanced.json`，均 K=5、M1上限96、M2上限3、联合支持项目标3，无真实 API 授权。
+
+```powershell
+python -m pll_allocation pipeline --problem configs/problems/nominal.json --allocator-config configs/agent/noise_aware.json --out experiments/my_noise_01
+python -m pll_allocation pipeline --problem configs/problems/tight.json --allocator-config configs/agent/physics_enhanced.json --out experiments/my_enhanced_01
+python tools/run_physics_comparison.py --out experiments/my_physics_comparison_01
+```
+
+可选 `physics_options` 对象包含：`delta_offsets_V=[0.03,0.10]`、`safe_rail_margin_V=0.02`、`noise_band_Hz=[10000,1000000]`、`noise_points=2049`、`noise_trial_points=257`、`noise_profile`（可选 profile JSON 路径或完整对象）。默认 profile 为 `configs/verification/profiles/noise_all.json`。正式结果绑定解析后的 profile SHA、频带及积分网格；不修改来源配置。jitter 上限只读取当前问题已启用的 `jitter_s.max`，没有启用上限则标 `NO_ENABLED_LIMIT`。
+
+预测沿用 Hz/V 的 Kvco、单边 rad²/Hz、独立源方差求和、原时间抖动换算与 log 梯形积分。薄封装按源调用 `optimizer_noise_estimate`，避免为了附加显示字段暗中调用正式 M1 扫描；与 `noise_mapping` 数值一致。构造用257点廉价估计，正式候选附2049点条件估计并重新判断阈值。额外工作分别记录 `conditional_prediction_calls`、`conditional_noise_trial_integrations`，不冒充正式 M1 或 M2 调用。候选的正式 M1 仍全部由 RegionExplorer 先写盘再计费执行。
+
+线性闭环特征多项式为 `Rz*C1*C2*s³+(C1+C2)*s²+(Icp*Kvco/N)*Rz*C2*s+Icp*Kvco/N`。Kpd 的 `1/(2π)` 与 Kvco 到 rad/s/V 的 `2π` 抵消。阻尼为近似二阶描述，极点是当前理想线性模型的三阶根。滑脱风险仅按 `|df_initial|/(N*omega_n/(2π))` 分档：≤0.1 LOW、≤1 MEDIUM、其余 HIGH；超出适用域为 UNKNOWN，不据此淘汰或签发捕获不可行证书。没有已验证的捕获估计、初始相位和锁定容限，`predicted_lock_time_s` 保持 null。
+
+新排序先沿用正式 M1、`minimum_margin`、参数哈希去重、`minimum_distance` 及通过点距离门槛，再作词典序比较，避免权重抵消硬条件：
+
+1. 条件噪声：达标0 / 未知0.5 / 超标1；再比较正缺口 `gap/(limit+gap)`。
+2. LOW/MEDIUM/HIGH风险0/0.5/1；初始输出频偏除以目标频率并截到[0,1]。
+3. 调谐裕量除以半轨宽（越大优先）；有可靠预测时锁定时间除以配置上限。
+4. 正式 M1 最差裕量映射为 `m/(1+|m|)`（越大优先）。
+5. 原六轴归一化的 Icp、C1/C2坐标均值、到已测点的最小距离/√6（越远优先）；最后参数 SHA 稳定打破平局。
+
+缺失动力学项取中性0.5；全无适用预测时按原已测距离/M1排序回退。归一化向量、理由、profile、jitter、风险、轨裕量和 fallback 标志写入 `physics_selection`、handoff 的 `selection_evidence` 及验证事件。候选不会因缺失动力学预测被直接移除。
+
+构造在相同预算内枚举 LF shape、电容与增益拆分，再在最佳 M1/条件噪声可行层中选择实现偏好；没有满足条件噪声的点时保留最佳预测值和缺口，继续预算内搜索，不放宽规格。`conditional_noise_summary` 报告全部正式质量合格点中的最佳点、差距和停止原因；条件池计数先筛条件再按原距离去重。解析不足仍保留原 Sobol/SLSQP/RegionExplorer 路径。
+
+`conditional_noise_status` 和 `joint_conditional_feasibility` 仅为研究 profile 下的条件预测。原 `joint_candidates` / `joint_status` 继续表示正式 M1 + 原生 M2 **已支持项**；它们不能证明10ps达标。标准 M2 PM/jitter 仍 UNKNOWN，`FULL_SYSTEMSPEC_CERTIFIED=false`。一次两问题对照不构成统计优越性证明。
+
+## LLM 主动选择条件物理目标
+
+启用上述开关后，原 Planner State 可选增加 `conditional_physics`；全部关闭时不增加该字段，原 Prompt 完全保持。LLM、Auto 和确定性仍使用同一 Runner；Auto 的切换规则没有改变。本轮只用离线 Mock 验证接口及真实 M1 执行，没有发起付费 LLM 调用。
+
+`BUILD_PHYSICS_REGION` 可选使用 `pll-physics-region-request-1.1`。保留 1.0 的全部字段，只增加以下两个字段；其余动作及 1.0 请求继续接受：
+
+```json
+{
+  "schema_version": "pll-physics-region-request-1.1",
+  "physical_objectives": ["FAST_LOCK", "NOISE_AWARE"],
+  "tool_options_sha256": "COPY_conditional_physics.tool_options_sha256"
+}
+```
+
+上例仅展示需要替换/增加的字段，实际请求还必须包含原有 problem/model、strategy、target_bw_fraction、physics_focus、tuning_preference、seed_count、region_width_policy、budget、request_id 与 evidence_ids。配置仍使用 `pll-spec-allocation-1.0`，无需额外配置字段。
+
+|合法目标|可见条件|执行含义|
+|---|---|---|
+|`NOISE_AWARE`|`noise_allocation_enabled=true`|优先原条件噪声前沿|
+|`INITIAL_STATE_AWARE`|`initial_state_aware_enabled=true`|优先调谐点接近既定初始控制电压0.15V|
+|`FAST_LOCK`|`initial_state_aware_enabled=true`|优先较小绝对初始输出频偏；仅为启发式|
+
+目标列表非空、无重复并有序，在既有 M1/条件噪声可行层内依次分配种子偏好，之后仍保留原多样性偏好；多目标不表示数值加权或保证最优。阈值、noise profile、频带、启动偏移、安全轨裕量及硬预算由配置与 Runner 管理。旧版本加新字段、配置未启用目标、身份过期、参数值或 PASS 等未知字段一律拒绝。工具执行记录包含 `objective_selection` 和实际正式 M1 费用。
+
+紧凑 Observation 最多提供24个互异候选，包含条件 RMS jitter、四源贡献/主导源、jitter 裕量，以及启用时的自然频率、近似阻尼、初始频偏、轨裕量与风险。每条 `CPRED:<sha>` 绑定来源 M1 证据、完整候选 SHA、问题/模型与解析后的工具配置 SHA；noise profile 身份包含积分频带和网格。预测携带适用性、无效原因及独立摘要 SHA，可供动作引用，不能冒充 formal seed、测量或正式 PASS。未知预测保留 UNKNOWN，捕获时间为 null，`capture_certified=false`。
+
+`OPTIMIZE_LOCAL` 继续原 SLSQP，`PROBE_REGION` 直接使用原 Sobol，`MEASURE_LOCAL_SENSITIVITY` 继续原正式 M1 差分。LLM 选择策略、目标、已有区域及预算，不能提交六维求解结果。下游反馈仍走已有带来源证据的 advisory 边界，未来必须经 Runner 重新检查；本轮未定义 Sizing 接口或新增跨层控制器。

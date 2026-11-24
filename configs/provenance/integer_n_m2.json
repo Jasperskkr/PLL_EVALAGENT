@@ -1,0 +1,100 @@
+{
+  "schema_version": "pll-m2-source-update-1.0",
+  "date": "2026-11-24",
+  "change": "Standard continuous M2 binds positive integer N from the candidate and measures against N*f_ref. Native equations and legacy frozen protocol/gate retained.",
+  "adapter_version": "pll-continuous-m2-1.1",
+  "protocol_id": "integer_n_metrics_1.0",
+  "source_updates": [
+    {
+      "before": {
+        "path": "pll_allocation/verification/simulator.py",
+        "sha256": "c092ec5bb28dadfb9b0d3b3b11005826d39bd959331b945123cd61764ec9360b",
+        "normalized_lf_sha256": "c092ec5bb28dadfb9b0d3b3b11005826d39bd959331b945123cd61764ec9360b",
+        "bytes": 4267
+      },
+      "after": {
+        "path": "pll_allocation/verification/simulator.py",
+        "sha256": "21eb94347d810e278d06a1f75079487f791f2100fb80f58eb29f46344dc8e93d",
+        "normalized_lf_sha256": "21eb94347d810e278d06a1f75079487f791f2100fb80f58eb29f46344dc8e93d",
+        "bytes": 4527
+      }
+    },
+    {
+      "before": {
+        "path": "pll_allocation/verification/measure.py",
+        "sha256": "c59b734e0d58dd877fdbb1cc4335bc8dd2c8024a6a368fc2e58eab6bed962edb",
+        "normalized_lf_sha256": "c59b734e0d58dd877fdbb1cc4335bc8dd2c8024a6a368fc2e58eab6bed962edb",
+        "bytes": 9486
+      },
+      "after": {
+        "path": "pll_allocation/verification/measure.py",
+        "sha256": "6aa4b2764da73a7f7e02a85c1a23f050cb74f4f1dc6150641eb7dcde609abece",
+        "normalized_lf_sha256": "6aa4b2764da73a7f7e02a85c1a23f050cb74f4f1dc6150641eb7dcde609abece",
+        "bytes": 10202
+      }
+    },
+    {
+      "before": {
+        "path": "pll_allocation/verification/run_suite.py",
+        "sha256": "34fa3acab8a077f916f6f6f1989066aec677100b8840ffc398d1e50b511faf98",
+        "normalized_lf_sha256": "34fa3acab8a077f916f6f6f1989066aec677100b8840ffc398d1e50b511faf98",
+        "bytes": 4152
+      },
+      "after": {
+        "path": "pll_allocation/verification/run_suite.py",
+        "sha256": "102ac1f4f82819eebc3e07a1996977fc8778ceff677862648162e5db73914b8b",
+        "normalized_lf_sha256": "102ac1f4f82819eebc3e07a1996977fc8778ceff677862648162e5db73914b8b",
+        "bytes": 4221
+      }
+    },
+    {
+      "before": {
+        "path": "pll_allocation/verification/experiments.py",
+        "sha256": "59fbd21e7c883421bc6d4d0e78013512684706e0dd54a5093e146c55e9321490",
+        "normalized_lf_sha256": "59fbd21e7c883421bc6d4d0e78013512684706e0dd54a5093e146c55e9321490",
+        "bytes": 6345
+      },
+      "after": {
+        "path": "pll_allocation/verification/experiments.py",
+        "sha256": "171146701f04207c381c6ca83c03f9d16e73b59904dcb58f1f1de0a82230813b",
+        "normalized_lf_sha256": "171146701f04207c381c6ca83c03f9d16e73b59904dcb58f1f1de0a82230813b",
+        "bytes": 6716
+      }
+    },
+    {
+      "before": {
+        "path": "pll_allocation/verification/continuous.py",
+        "sha256": "cbd32da322f21dd014a2a2cf3607b3bc8c574df8163ef40dd9e5f91b13d05ba3",
+        "normalized_lf_sha256": "f895c230756547101165697114643e65861c90ff18cce1629fbf09a230737da2",
+        "bytes": 11977
+      },
+      "after": {
+        "path": "pll_allocation/verification/continuous.py",
+        "sha256": "b047cae3042ca7882e8a6357b560023529918c193f8cc7c32674c72f7f67f6a7",
+        "normalized_lf_sha256": "ff27241bcf432b513d345f35909e0f80ef4406936e462ae8b8a145219536aa31",
+        "bytes": 12483
+      }
+    }
+  ],
+  "unchanged_sources": [
+    {
+      "path": "pll_allocation/verification/kernel.cpp",
+      "sha256": "befdd779cd69c73f1a2fb8667e895f77efff979cb3186d80a83113c0321c9f54",
+      "normalized_lf_sha256": "befdd779cd69c73f1a2fb8667e895f77efff979cb3186d80a83113c0321c9f54",
+      "bytes": 3577
+    },
+    {
+      "path": "pll_allocation/verification/verify.py",
+      "sha256": "05b204bfa0d9eb56da6abb9a7b859f344e52f6ced02d0a3134e1cc71b6545b49",
+      "normalized_lf_sha256": "05b204bfa0d9eb56da6abb9a7b859f344e52f6ced02d0a3134e1cc71b6545b49",
+      "bytes": 13169
+    },
+    {
+      "path": "configs/verification/m2_protocol.json",
+      "sha256": "7de5162bd57ad886170415e2d02e1d060878654d2c9e1f46b095ec7163b8399b",
+      "normalized_lf_sha256": "9263bf0b11ff4e5c155be42b67e1a2589f916749ba31b552e7428a2de783fa34",
+      "bytes": 3612
+    }
+  ],
+  "registry_scope": "Historical physics mapping remains scoped to its frozen N=8 model; the simulator binding is re-audited for unchanged N=8 equations. This receipt preserves previous adapter hashes and does not promote historical evidence to other N."
+}

@@ -9,6 +9,7 @@ from pathlib import Path
 import time
 
 from ..allocation.core import write_new
+from ..io_contracts import read_json
 from ..exploration import load_physics_context
 from ..exploration.contracts import load_problem, require, judge, check_candidate
 from ..physics_mapping.model import MappingResult, Status, fingerprint
@@ -21,7 +22,7 @@ from .physics_tool_policy import validate_config as search_config
 
 
 def read(path):
-    return json.loads(Path(path).read_text(encoding='utf-8-sig'))
+    return read_json(path)
 
 
 def validate_config(raw):
@@ -44,7 +45,13 @@ def load_handoff(path, problem_config):
     item=read(path); validate_handoff(item)
     problem=load_problem(problem_config)
     require(item['problem']==problem,'handoff differs from current problem configuration')
-    context=Path(item['source_context_binding']['path'])
+    binding=item['source_context_binding']
+    if 'relative_path' in binding:
+        require(isinstance(binding['relative_path'],str) and binding['relative_path'] and
+                not Path(binding['relative_path']).is_absolute(), 'relative context path required')
+        context=(Path(path).resolve().parent/binding['relative_path']).resolve()
+    else:
+        context=Path(binding['path'])
     loaded=load_physics_context(context)
     require(loaded['context_sha256']==item['context_sha256'] and loaded['problem']==problem,
             'saved source context differs or is unavailable')
@@ -161,7 +168,7 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
         archive=CandidateArchive(ex,ex.root/'candidate_archive.jsonl')
         recheck=ex.recheck_recommendation(selected)
         counts['M1_calls']+=ex.counts['M1_calls']; ex.close()
-        handoff=build_handoff(ex,archive,selected,recheck,{'termination_reason':'M1_POOL_CANDIDATE_SELECTION'},ex.cost())
+        handoff=build_handoff(ex,archive,selected,recheck,{'termination_reason':'M1_POOL_CANDIDATE_SELECTION'},ex.cost(), handoff_dir=root)
         write_new(root/('pool_handoff_'+suffix+'.json'),handoff)
         return handoff
 
@@ -196,6 +203,9 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
             history.append({'observation_id':oid,'candidate_sha256':request['candidate_sha256'],
                 'M2_status':measured['overall_status'],'supported_metrics_status':measured['supported_metrics_status'],
                 'execution_status':measured['execution_status'],'evidence_id':measured['evidence_id']})
+            if 'selection_evidence' in current:
+                event('PHYSICS_M2_SELECTION', candidate_sha256=request['candidate_sha256'],
+                      selection=current['selection_evidence'])
             summary=feedback_summary(request,measured,remaining(),history)
             summary['previous_searches']=deepcopy(searches)
             passed = passing_candidates()
@@ -226,7 +236,9 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
                     if remaining()['M1_calls']<2:termination='M1_BUDGET_EXHAUSTED_BEFORE_POOL_AUDIT'; break
                     current=audited_handoff(selected,f'pool_{cycle+1:02d}')
                     event('EXISTING_M1_POOL_CANDIDATE_SELECTED',candidate_sha256=selected['parameter_sha256'],
-                          selection_rule='quality gate, distance from tested candidates, M1 margin')
+                          selection_rule=selected.get('physics_selection', {}).get('reason',
+                              'quality gate, distance from tested candidates, M1 margin'),
+                          **({'physics_selection': selected['physics_selection']} if 'physics_selection' in selected else {}))
                     if not current['ready_for_stage9']:termination='NEW_CANDIDATE_RECHECK_FAILED'; break
                     continue
                 if len(searches)>=cfg['max_reallocations']:termination='MAX_REALLOCATIONS'; break
@@ -275,6 +287,9 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
             if pool:
                 for k in ('test_policy_calls','policy_decisions','offline_llm_decisions','deterministic_decisions'):
                     counts[k]=counts.get(k,0)+cost.get(k,0)
+                for k in ('conditional_prediction_calls', 'conditional_noise_trial_integrations'):
+                    if k in cost:
+                        counts[k] = counts.get(k, 0)+cost[k]
             for usage in cost.get('reported_usage',[]):
                 for k,v in (usage or {}).items():
                     if type(v) is int:counts['tokens'][k]=counts['tokens'].get(k,0)+v
@@ -322,7 +337,7 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
             ex=RegionExplorer(context_path,root/f'candidate_audit_{cycle+1:02d}',m1_budget=2,reserved_final_calls=1)
             archive=CandidateArchive(ex,ex.root/'candidate_archive.jsonl')
             recheck=ex.recheck_recommendation(selected); counts['M1_calls']+=ex.counts['M1_calls']; ex.close()
-            next_handoff=build_handoff(ex,archive,selected,recheck,{'termination_reason':'STAGE9_DISTINCT_CANDIDATE_SELECTION'},ex.cost())
+            next_handoff=build_handoff(ex,archive,selected,recheck,{'termination_reason':'STAGE9_DISTINCT_CANDIDATE_SELECTION'},ex.cost(), handoff_dir=root)
             write_new(root/f'new_handoff_{cycle+1:02d}.json',next_handoff)
             append('reallocation_candidates',{'run_id':run_id,'parent_candidate_sha256':request['candidate_sha256'],
                 'feedback_evidence_id':summary['evidence_id'],'candidate':selected,'recheck':recheck,

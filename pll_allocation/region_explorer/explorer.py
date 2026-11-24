@@ -75,6 +75,7 @@ class RegionExplorer:
         self.reserved_final_calls = reserved_final_calls
         self.budget_scheduling = budget_scheduling
         self.stop_when = stop_when
+        self.conditional_physics = None
         self.context_path = Path(context_path).resolve()
         self.context = load_physics_context(self.context_path)
         self.problem = deepcopy(self.context['problem'])
@@ -124,7 +125,9 @@ class RegionExplorer:
         self._event('SESSION_STARTED', remaining_m1_budget=self.limit)
 
     def cost(self):
-        return {**self.counts, 'M1_limit': self.limit, 'remaining_M1_calls': self.limit-self.counts['M1_calls'],
+        extra = ({'conditional_prediction_calls': self.conditional_physics.prediction_calls}
+                 if self.conditional_physics is not None else {})
+        return {**self.counts, **extra, 'M1_limit': self.limit, 'remaining_M1_calls': self.limit-self.counts['M1_calls'],
                 'reserved_recommendation_M1_calls': self.reserved_final_calls,
                 'search_available_M1_calls': max(0, self.limit-self.counts['M1_calls']-self.reserved_final_calls),
                 'LLM_calls': 0, 'M2_calls': 0, 'analytic_calls': 0, 'monetary_cost': None}
@@ -164,6 +167,12 @@ class RegionExplorer:
             seen_signatures=self.seen_signatures, last_region=self.last_region, stopped=self.stopped)
 
     def _record(self, row):
+        if self.conditional_physics is not None:
+            row.update(self.conditional_physics.describe(row['parameters']))
+            if 'conditional_noise_status' in row:
+                row['joint_conditional_feasibility'] = ('CONDITIONAL_FEASIBLE' if
+                    row['judgment']['m1_feasibility'] == 'FEASIBLE' and self.conditional_physics.qualified(row)
+                    else 'NOT_ESTABLISHED')
         self.rows.append(row)
         self.evidence[row['evidence_id']] = row
         self._append('m1_samples.jsonl', row)
@@ -274,6 +283,17 @@ class RegionExplorer:
         bounds = [tuple(decision['normalized_bounds'][k]) for k in active]
         constraint_count = sum(sum(b in s for b in ('min', 'max')) for s in self.problem['specs']
                                if s['enabled'] and s['support_status'] == 'M1_SUPPORTED')
+        supported_constraint_count = constraint_count
+        noise_active = (self.conditional_physics is not None and
+                        self.conditional_physics.options['noise_allocation_enabled'] and
+                        self.conditional_physics.limit is not None)
+        def optimization_margins(row):
+            margins = margin_vector(self.problem, row)
+            if margins is not None and self.conditional_physics is not None:
+                margins += self.conditional_physics.extra_margin(row)
+            return margins
+        if self.conditional_physics is not None:
+            constraint_count += len(self.conditional_physics.extra_margin(self.evidence[decision['seed_ids'][0]]))
         runs = []
         # The default regional executor path keeps its existing start order/behavior.
         # Agent opt-in schedules one useful start at a time; early convergence
@@ -324,6 +344,10 @@ class RegionExplorer:
                       'estimated_initial_difference_calls': len(active)+1,
                       'coordinates': active, 'bounds': dict(zip(active, bounds)), 'fixed_values': {
                           k: base['values'][k]['value'] for k in FREE_IDS if k not in active}}
+            if self.conditional_physics is not None:
+                record['conditional_noise_constraint'] = {'enabled': self.conditional_physics.options['noise_allocation_enabled'],
+                    'jitter_limit_s': self.conditional_physics.limit,
+                    'strategy': 'Existing maximin SLSQP plus normalized hard jitter margin; formal M1 bounds retained'}
             requests_before = self.counts['requests']
 
             def trial(u):
@@ -331,15 +355,22 @@ class RegionExplorer:
                     raise RuntimeError('SOLVER_REQUEST_LIMIT: bounded screening/cache-only iterations')
                 candidate = self._decode(decision, base, active, u[:len(active)])
                 row = self._sample(candidate, decision, f'SLSQP:{sid}:TRIAL', reserve=1)
-                margins = margin_vector(self.problem, row)
+                margins = optimization_margins(row)
                 return np.array(margins if margins else [-1e6]*constraint_count)
 
+            def constraints(u):
+                margins = trial(u)
+                # Conditional maximin can improve an infeasible jitter gap, but
+                # may never buy that improvement by crossing supported M1 bounds.
+                # Once noise is feasible, u[-1]>=0 also preserves that tier.
+                return np.r_[margins-u[-1], margins[:supported_constraint_count]] if noise_active else margins-u[-1]
+
             start = [initial[k] for k in active]
-            m0 = min(margin_vector(self.problem, self.evidence[sid]))
+            m0 = min(optimization_margins(self.evidence[sid]))
             try:
                 solution = minimize(lambda u: -u[-1], np.array(start + [m0-.001]), method='SLSQP',
-                    bounds=bounds + [(-1e6, 1e6)],
-                    constraints=[{'type': 'ineq', 'fun': lambda u: trial(u)-u[-1]}],
+                    bounds=bounds + [(0. if noise_active and m0 >= 0 else -1e6, 1e6)],
+                    constraints=[{'type': 'ineq', 'fun': constraints}],
                     callback=callback,
                     options={'maxiter': decision['settings']['maxiter'], 'ftol': 1e-8,
                              'eps': decision['settings']['finite_difference_step']})

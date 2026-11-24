@@ -1,5 +1,7 @@
 # 运行、配置、测试与错误定位
 
+2026-11-24 分频比参数化：标准连续域 M2 读取问题的正整数 `fixed_parameters.N.value`，目标输出自动设为 `N*f_ref`，例如10MHz参考下N=10对应100MHz。复制问题后修改N及需要的参数域/规格，沿用 `pipeline --problem ... --out <fresh>`；启用M2时在allocator配置中设置非零 `m2_budget`。请求自动派生并保存 `integer_n_metrics_1.0` 频率计划，捕获和频响启动、ppm与数值收敛按该计划计算。参考频率仍限10MHz、电压轨限0–1.2V，捕获初态0.15V、窗口160µs；参数域不可调到目标、数值分辨率不足或测量不收敛仍不能判PASS。旧冻结和可选非理想/噪声/相位阶跃/返回比验证继续遵守各自范围；N的输入合法不等于任意BW/locktime有解。
+
 2026-11-18 多点交付：公开默认配置先构造5个 M1 候选，目标交付3个质量及差异达标的 M1＋原生 M2 已支持指标通过点，M2总预算8；读取 `sizing_handoff.json` 和 `joint_status`，部分找到会标为 `PARTIAL`。旧配置省略 `m2_target_count` 时仍以首个通过停止，PM/jitter UNKNOWN 不变。详见 [Spec Allocation](SPEC_ALLOCATION.md)。
 
 所有命令从仓库根目录执行。推荐 Python 3.12，安装 `python -m pip install -e ".[integration,test]"`。当前原生 TB 验证环境是 Windows x64/MSVC 2022，不声称其他平台已经验收。

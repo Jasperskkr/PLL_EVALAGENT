@@ -15,7 +15,8 @@ from .allocation import AllocationStrategyPolicy
 from .block_space.contracts import check_parameters
 from .pipeline_contracts import check_result, load_inputs, make_feedback, m2_label
 from .physics_mapping.model import fingerprint
-from .allocation.core import Meter, assess_m1, proposal, read, validate_proposal, write_new
+from .allocation.core import Meter, assess_m1, proposal, validate_proposal, write_new
+from .io_contracts import read_json as read
 from .verification import verify
 from .verification.verify import validate_proposal as validate_m2_proposal
 
@@ -672,6 +673,8 @@ def main(argv=None):
                 args.subregion_initial_context)) or args.subregion_calibration_only or args.strategy != 'analytical':
                 raise ValueError('explicit initial allocation mode cannot mix other pipelines')
             allocation_config=read(args.initial_allocation_config)
+            if not isinstance(allocation_config, dict):
+                raise ValueError('allocator configuration must be a JSON object')
             if allocation_config.get('schema_version')=='pll-spec-allocation-1.0':
                 route = 'CONTINUOUS_SPEC_ALLOCATION'
                 if args.initial_allocation_context:
@@ -761,7 +764,7 @@ def main(argv=None):
         return 2 if result.get('failure') or result['status'] in ('PIPELINE_ERROR', 'NO_CANDIDATE', 'POLICY_OR_TOOL_FAILED',
                                         'INVALID_LLM_DECISION', 'LLM_PROVIDER_FAILED', 'CONTROLLER_ERROR',
                                         'COST_LEDGER_MISMATCH') else 0
-    except (ValueError, KeyError, FileExistsError) as error:
+    except (ValueError, KeyError, OSError) as error:
         print(json.dumps({'status': 'INPUT_OR_OUTPUT_ERROR', 'reason': str(error)}, ensure_ascii=False))
         return 2
 

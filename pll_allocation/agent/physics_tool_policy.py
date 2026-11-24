@@ -76,6 +76,29 @@ Read actual metrics against the numeric Spec limits. A normalized BW margin of 1
 For OPTIMIZE_LOCAL assign at least budget.SLSQP_cost_models_by_active_dimension[d].minimum_action_budget
 when available; a smaller allocation may be safely skipped or only allow an incomplete stencil.'''
 
+CONDITIONAL_PROMPT = '''
+When conditional_physics is present, inspect its enabled capabilities and candidate diagnostics.
+You may actively choose BUILD_PHYSICS_REGION with request schema_version="pll-physics-region-request-1.1".
+Keep every 1.0 request field and add exactly physical_objectives (a nonempty unique list in priority order,
+chosen only from conditional_physics.allowed_physical_objectives) and tool_options_sha256 (copy current binding).
+NOISE_AWARE prioritizes the existing conditional noise frontier; INITIAL_STATE_AWARE prioritizes proximity
+to the configured startup control voltage; FAST_LOCK prioritizes smaller initial frequency error as a heuristic.
+Objectives reorder construction preferences INSIDE existing M1 and configured noise feasibility tiers;
+they never disable constraints or relax SystemSpec. The 1.0 request remains valid and retains its behavior.
+Read conditional_physics.candidates for conditional RMS jitter, dominant noise source, jitter margin,
+initial frequency error, approximate damping, rail margin and slip risk. Cite actual CPRED evidence IDs
+along with relevant formal evidence. Check prediction validity, profile identity and source candidate binding.
+Unknown predictions are not failures. predicted_lock_time_s=null means no reliable capture-time estimate.
+Use OPTIMIZE_LOCAL for original bounded SLSQP, PROBE_REGION for original Sobol, and
+MEASURE_LOCAL_SENSITIVITY for charged formal M1 derivatives; these tools retain their existing contracts.
+Never return six parameter values, guessed measurements, PASS fields, new noise profiles, limits or startup
+settings in a request. Runner computes and checks parameters. Predictions cannot certify formal M1/M2 PASS.
+Only use 1.1 when advertised; enabled goals cannot override configured profile, band, offsets or budgets.'''
+
+
+def prompt_for_options(physics_options=None):
+    return PROMPT + CONDITIONAL_PROMPT if physics_options else PROMPT
+
 
 def validate_config(raw):
     required = {'schema_version', 'policy', 'total_m1_budget', 'initial_m1_budget', 'initial_sobol_samples',
@@ -209,6 +232,13 @@ def build_state(loop, round_number, correction):
     if loop.external_feedback:
         ids |= {o['evidence_id'] for o in loop.external_feedback['observations']}
     if best:ids.add(best['evidence_id'])
+    from .conditional_observation import conditional_observation
+    diagnostic_rows = ([best] if best else [])+sample_rows+recent+[
+        ex.evidence[i] for region in loop.tool_regions.values() for i in region['formal_seed_ids']]
+    conditional = conditional_observation(ex, diagnostic_rows)
+    if conditional is not None:
+        p['conditional_physics'] = conditional
+        ids |= {r['evidence_id'] for r in conditional['candidates']}
     p['allowed_evidence_ids'] = sorted(ids)
     p['state_sha256'] = fingerprint(p)
     return p
@@ -252,7 +282,8 @@ def adapt(raw, loop, state, round_number):
         require(set(raw) == common | {'request'}, 'BUILD needs request only, no guessed box')
         request = validate_request(raw['request'], loop.explorer.problem, loop.explorer.context['model']['model_sha256'],
             set(state['allowed_evidence_ids']), attempts_left=state['budget']['max_build_attempts'],
-            m1_left=state['budget']['max_this_decision_M1_calls'])
+            m1_left=state['budget']['max_this_decision_M1_calls'],
+            physics_options=loop.integrated_config.get('candidate_pool', {}).get('physics_options'))
         require(request['request_id'] not in loop.build_request_ids, 'request_id already used')
         d = deepcopy(raw) | {'request': request}
     else:
@@ -326,5 +357,6 @@ class DeterministicToolPolicy:
 
 
 def make_policy(config, provider_config):
-    return (LLMRegionPolicy(provider_config or {}, prompt=PROMPT) if config['policy'] == 'LLM_PHYSICS_TOOL'
+    return (LLMRegionPolicy(provider_config or {}, prompt=prompt_for_options(
+                config.get('candidate_pool', {}).get('physics_options'))) if config['policy'] == 'LLM_PHYSICS_TOOL'
             else DeterministicToolPolicy())

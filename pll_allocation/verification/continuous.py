@@ -19,7 +19,7 @@ from ..physics_mapping.model import fingerprint, parse_parameters
 from .build_identity import check_build, identities
 from .experiments import protocol, read, write, response_sweep
 from .run_suite import capture_pair, comparison_after_measurement
-from .simulator import MODEL_VERSION
+from .simulator import MODEL_VERSION, validate_frequency_plan
 from .verify import interval_judgment
 
 
@@ -30,7 +30,9 @@ def measurement_suite(p,out,doc,*,before_posthoc_m1):
     historical Registry bindings. No simulator or measurement is reimplemented.
     """
     capture=capture_pair(out/'capture',p,.15,160e-6,protocol_document=doc)
-    values=parse_parameters(p);vreq=(80e6-values['f0'])/values['Kvco'];responses={};comparison=None
+    values=validate_frequency_plan(p)
+    target=values['N']*values['f_ref']
+    vreq=(target-values['f0'])/values['Kvco'];responses={};comparison=None
     if values['Vctrl_min']<vreq<values['Vctrl_max']:
         for key,amp,dt,cycles in [('base',.01,.4e-9,12),('amplitude_half',.005,.4e-9,12),
             ('step_half',.01,.2e-9,12),('window_double',.01,.4e-9,24)]:
@@ -43,19 +45,23 @@ def measurement_suite(p,out,doc,*,before_posthoc_m1):
 def model_identity():
     check_build()
     root = Path(__file__).parent
-    return {'model_version': MODEL_VERSION, 'native': identities(), 'adapter_version': 'pll-continuous-m2-1.0',
+    return {'model_version': MODEL_VERSION, 'native': identities(), 'adapter_version': 'pll-continuous-m2-1.1',
         'source_sha256': {n: hashlib.sha256((root/n).read_bytes()).hexdigest() for n in
             ('continuous.py', 'verify.py', 'simulator.py', 'measure.py', 'experiments.py', 'run_suite.py')}}
 
 
 def verification_request(handoff, *, run_id, observation_id, timeout_s):
     parameters = validate_handoff(handoff)
-    p = parse_parameters(parameters)
-    require((p['f_ref'], p['N'], p['Vctrl_min'], p['Vctrl_max']) == (10e6, 8, 0, 1.2),
-            'M2 protocol only supports 10MHz x8 and 0..1.2V rails')
+    p = validate_frequency_plan(parameters)
     require(type(timeout_s) in (int, float) and math.isfinite(timeout_s) and 0 < timeout_s <= 3600,
             'bounded M2 deadline required')
     doc = protocol()
+    doc.update(schema_version='behavioral-metric-protocol-1.2', protocol_id='integer_n_metrics_1.0',
+        base_protocol_id=doc['protocol_id'],
+        frequency_plan={'f_ref_Hz':p['f_ref'],'N':p['N'],'output_frequency_Hz':p['N']*p['f_ref']})
+    doc['judgment']['BW']='compare converged M2 bandwidth interval to current request Spec bounds'
+    doc['judgment']['frequency']='candidate N*f_ref target; retain capture ppm and numerical convergence thresholds'
+    doc['supersedes']='track_b_metrics_1.1 adapter: bind candidate N and N*f_ref; measurement thresholds unchanged'
     item = {'schema_version': 'pll-m2-verification-request-1.0', 'run_id': run_id,
         'observation_id': observation_id, 'candidate_id': handoff['recommended_nominal']['evidence_id'],
         'candidate_sha256': fingerprint(parameters), 'problem_id': handoff['problem']['problem_id'],

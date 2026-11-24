@@ -108,7 +108,8 @@ def resolve_problem(raw, *, seed=None, budget=None):
 
 
 def load_problem(path, **overrides):
-    return resolve_problem(json.loads(Path(path).read_text(encoding='utf-8-sig')), **overrides)
+    from ..io_contracts import read_json
+    return resolve_problem(read_json(path), **overrides)
 
 
 def axes(problem):

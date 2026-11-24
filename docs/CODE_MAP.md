@@ -1,6 +1,14 @@
 # 逐文件代码导读
 
+2026-11-24 分频比适配：`verification/simulator.py:validate_frequency_plan` 允许当前问题的正整数N，并记录观测频率计划；`continuous.py` 派生并绑定协议及目标调谐点；`measure.py`、`run_suite.py` 和 `experiments.py` 统一实际频率/ppm、数值收敛和观测元数据。`tests/verification/test_frequency_plan.py` 覆盖多N观测、协议绑定和原生回归。原C++与冻结验证/协议字节保留，适配旧新身份见 `configs/provenance/integer_n_m2.json`。
+
+2026-11-24 输入/交接补充：`pll_allocation/io_contracts.py` 负责严格读取外部 JSON 和生成权威产物索引；`pll_allocation/delivery.py:validate_sizing_handoff` 负责共享的多点交付校验，原 `vco_sizing/contract.py:validate_source` 保留入口并转发。`tests/test_io_boundaries.py` 覆盖歧义输入、摘要/门禁矛盾、整目录迁移、旧绝对路径和清单身份。主线/可选/兼容分类见 [结构审核](STRUCTURE_AUDIT_20261124.md)。
+
+2026-11-20 LLM 工具补充：`agent/conditional_observation.py` 生成最多24条带来源身份与适用性的条件预测证据；`physics_tool_policy.py` 按配置追加 Prompt/State 并严格适配可选1.1目标请求；`physics_region_builder.py` 在原构造可行层中执行目标优先级；`pool_search.py` 复用同一可选 Prompt；`initial_allocation.py` 保留目标执行摘要并把 Sobol probe 直接送原执行器。`tests/test_llm_conditional_tools.py` 验证独立离线策略读取诊断、选择目标、真实M1执行、禁用兼容与非法请求门禁；没有新增求解器。
+
 更新于2026-11-17。覆盖当前共享 Python/C++/CMD 源码，包括明确标注的兼容入口；不枚举构建目录、缓存和实验源码副本。模块职责命名规则及旧名称映射见 [NAMING](NAMING.md)。
+
+2026-11-20 增量：`physics_mapping/analytic_features.py` 提供带适用域的理想线性极点/启动描述；`physics_mapping/predictors.py` 薄封装原噪声估算器；`exploration/conditional_physics.py` 负责可选配置、缓存、条件裕量；`agent/physics_ranking.py` 统一首次及后续 M2 排序。`tools/run_physics_comparison.py` 只以相同预算调用正式 CLI 并汇总两问题三配置，不增加求解器。对应回归为 `test_analytic_predictors.py`、`test_conditional_allocation.py`、`test_startup_construction.py`、`test_physics_ranking.py`。配置及数值约定见 SPEC_ALLOCATION，逐文件变更和真实结果见 RELEASE_NOTES 与本地工程报告。
 
 建议先读：`pipeline.py` → `agent/initial_allocation.py` → `physics_tool_policy.py` → `search_loop.py` → `exploration/physics_region_builder.py` → `allocation/physics.py` → `region_explorer/explorer.py` → `agent/handoff.py` → `agent/feedback.py` → `verification/continuous.py`。
 
@@ -131,6 +139,15 @@
 |[pll_allocation/verification/scenario.py](../pll_allocation/verification/scenario.py)|冻结研究阈值到原验证器的适配，测量投影与研究Spec重判分别绑定。|`measurement_proposal` / `validate_research_proposal`|
 |[pll_allocation/verification/simulator.py](../pll_allocation/verification/simulator.py)|Python/ctypes输入、激励/观测适配及原生执行；不导入M1传递公式。|`validate_parameters` / `simulate`|
 |[pll_allocation/verification/verify.py](../pll_allocation/verification/verify.py)|冻结AllocationProposal的独立原M2验收：提案门禁、测量、包络判决和结果。|`frozen_model` / `validate_proposal`|
+
+## 可选VCO开发交接
+
+|文件|基本职责|阅读入口|
+|---|---|---|
+|[pll_allocation/vco_sizing/contract.py](../pll_allocation/vco_sizing/contract.py)|共享正式交付门禁、guidance导出/重建、原用户约束及实测反馈校验。|`export_guidance` / `validate_guidance` / `assess_feedback`|
+|[pll_allocation/vco_sizing/revalidation.py](../pll_allocation/vco_sizing/revalidation.py)|确认实测目标点后准备f0/Kvco回填问题，要求重新执行正式验证。|`prepare_revalidation`|
+|[pll_allocation/vco_sizing/region.py](../pll_allocation/vco_sizing/region.py)|显式VCO接受域研究，复用原M1/M2和实际预算，不改变默认分配。|`analyze_vco_acceptance_region`|
+|[pll_allocation/vco_sizing/__main__.py](../pll_allocation/vco_sizing/__main__.py)|独立可选CLI，支持export/assess/prepare，检查源文件字节绑定。|`main`|
 
 ## 可选研究编排
 
