@@ -106,7 +106,7 @@ def test_real_m1_enters_feedback_and_second_decision(contexts, tmp_path, case):
     assert result['cost']['LLM_calls'] == 0 and result['cost']['test_policy_calls'] == 2
     assert p.states[1]['history'][0]['observations'][0]['solver_runs']
     assert p.states[1]['history'][0]['observations'][0]['cost']['M1_calls'] > 0
-    assert any(r['evidence_id'].startswith('A8S') for r in p.states[1]['calibration']['displayed_samples'])
+    assert any(r['evidence_id'].startswith('M1_SAMPLE:') for r in p.states[1]['calibration']['displayed_samples'])
     allocation = json.loads((tmp_path/'run/m1_allocation.json').read_text())
     row = allocation['new_allocation']
     assert row is not None
@@ -233,7 +233,7 @@ def test_incompatible_coordinate_domain_explicit_stage7_budget(contexts,tmp_path
     raw['exploration'].update(sobol_samples=2,physics_seed_count=1,sensitivity_representatives=0)
     file=tmp_path/'domain.json'; file.write_text(json.dumps(raw))
     path,cost=prepare_context(contexts['global'],file,tmp_path/'fresh',calibration_budget=2)
-    assert cost['mode']=='EXPLICIT_NEW_STAGE7_CALIBRATION_INCOMPATIBLE_COORDINATES'
+    assert cost['mode']=='EXPLICIT_NEW_M1_CALIBRATION_INCOMPATIBLE_COORDINATES'
     assert cost['new_M1_calls']<=2
     assert load_physics_context(path)['problem']['parameters']['C1']['min']==raw['parameters']['C1']['min']
 

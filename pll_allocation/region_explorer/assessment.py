@@ -59,7 +59,7 @@ def assess_regions(context, samples):
                      row['screening']['status'] == 'NECESSARY_CONDITION_FAIL' else 'unknown')
             groups[group].append(row['evidence_id'])
         summaries.append({
-            'assessment_id': 'RA8:' + region['region_id'], 'region_id': region['region_id'],
+            'assessment_id': 'REGION_ASSESSMENT:' + region['region_id'], 'region_id': region['region_id'],
             'bounds': deepcopy(region['bounds']), 'normalized_bounds': deepcopy(region['normalized_bounds']),
             'representative': {k: deepcopy(region[k]) for k in ('representative_evidence_id',
                 'representative_parameters', 'representative_metrics', 'representative_constraints', 'tightest_constraint')},

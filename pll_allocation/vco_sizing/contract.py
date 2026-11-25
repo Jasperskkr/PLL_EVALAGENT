@@ -6,7 +6,7 @@ import json
 import math
 from pathlib import Path
 
-from ..agent.handoff import SCHEMA as NOMINAL_SCHEMA, validate_handoff
+from ..agent.handoff import SUPPORTED_SCHEMAS as NOMINAL_SCHEMAS, validate_handoff
 from ..allocation.core import write_new
 from ..delivery import validate_sizing_handoff
 from ..io_contracts import read_json
@@ -44,10 +44,10 @@ def _problem(problem):
 def validate_source(handoff):
     """Accept a checked M1 nominal or the shared native multi-point delivery."""
     require(isinstance(handoff, dict), 'source handoff must be a JSON object')
-    if handoff.get('schema_version') == NOMINAL_SCHEMA:
-        validate_handoff(handoff)
+    if handoff.get('schema_version') in NOMINAL_SCHEMAS:
+        validate_handoff(handoff, require_current_model=False)
         return handoff['problem'], [handoff['recommended_nominal']]
-    return validate_sizing_handoff(handoff)
+    return validate_sizing_handoff(handoff, require_current_model=False)
 
 
 def _options(options):

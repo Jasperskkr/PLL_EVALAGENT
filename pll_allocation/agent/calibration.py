@@ -25,7 +25,7 @@ def prepare_context(context_path, new_problem_path, out, *, calibration_budget):
     context_path, out = Path(context_path).resolve(), Path(out)
     old = load_physics_context(context_path)
     new = load_problem(new_problem_path) if new_problem_path else old['problem']
-    accounting = {'mode': 'READ_ONLY_SAVED_STAGE7', 'new_M1_calls': 0, 'analytic_calls': 0,
+    accounting = {'mode': 'READ_ONLY_SAVED_CALIBRATION', 'new_M1_calls': 0, 'analytic_calls': 0,
                   'source_context_sha256': old['context_sha256'], 'rejudged_for_new_spec': False}
     if new == old['problem']:
         return context_path, accounting
@@ -46,7 +46,7 @@ def prepare_context(context_path, new_problem_path, out, *, calibration_budget):
         rebound.update(problem=new, candidate_regions=regions['regions'])
         rebound['metadata'].update(problem_sha256=new['problem_sha256'], problem_id=new['problem_id'])
         rebound['summary'] = {'status': 'PROVEN_M1_INFEASIBLE' if screen_problem(new)['certificates']
-                             else 'REJUDGED_COMPATIBLE_STAGE7_EVIDENCE'}
+                             else 'REJUDGED_COMPATIBLE_CALIBRATION_EVIDENCE'}
         # Derivatives are numeric metric slopes, independent of changed Spec. Preserve
         # original stencils/scales, drop stale region labels and explicitly explain use.
         for rep in rebound['sensitivity']['representatives']:
@@ -75,7 +75,7 @@ def prepare_context(context_path, new_problem_path, out, *, calibration_budget):
     if needed < 1:
         raise ValueError('INCOMPATIBLE_CALIBRATION_REQUIRES_EXPLICIT_POSITIVE_BUDGET')
     result = run_exploration(new_problem_path, out, budget=needed)
-    accounting.update(mode='EXPLICIT_NEW_STAGE7_CALIBRATION_INCOMPATIBLE_COORDINATES',
+    accounting.update(mode='EXPLICIT_NEW_M1_CALIBRATION_INCOMPATIBLE_COORDINATES',
                       new_M1_calls=result['cost']['M1_calls'], analytic_calls=result['cost']['analytic_calls'],
-                      original_stage7_scope='Previous calibration not reused; current Spec/domain applied')
+                      original_calibration_scope='Previous calibration not reused; current Spec/domain applied')
     return out/'physics_context.json', accounting

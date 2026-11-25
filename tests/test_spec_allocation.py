@@ -32,7 +32,7 @@ def test_cold_inverse_builds_distinct_formal_pool_with_few_calls(tmp_path, probl
         assert a['formal_M1_result']['status'] == 'OK' and a['M1_feasibility'] == 'FEASIBLE'
         assert all(distance(p, a, b) >= .05 for b in r['candidates'][:i])
     h = json.loads((tmp_path/'run/initial/verification_handoff.json').read_text(encoding='utf-8'))
-    assert h['ready_for_stage9'] and h['recommendation_recheck']['passed']
+    assert h['ready_for_verification'] and h['recommendation_recheck']['passed']
     assert 'EMPTY_BOOTSTRAP' in Path(h['source_context_binding']['path']).read_text(encoding='utf-8')
 
 

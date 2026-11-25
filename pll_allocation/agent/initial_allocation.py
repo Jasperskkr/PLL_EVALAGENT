@@ -233,7 +233,7 @@ def run_initial_allocation(problem_config, out, *, config, provider_config=None,
         # Same existing small-calibration tool; no new global engine.
         root = Path(out); require(not root.exists(), 'output directory already exists')
         calibration = root.with_name(root.name+'_calibration')
-        pilot = {'schema_version': 'pll-subregion-pilot-1.0', 'strategy': 'DETERMINISTIC_PHYSICS_STAGE7',
+        pilot = {'schema_version': 'pll-subregion-pilot-1.0', 'strategy': 'DETERMINISTIC_PHYSICS_EXPLORATION',
             'seed': cfg['seed'], 'total_m1_budget': cfg['total_m1_budget'], 'initial_m1_budget': cfg['initial_m1_budget'],
             'initial_sobol_samples': cfg['initial_sobol_samples'], 'global_m1_budget': 1, 'global_sobol_samples': 1,
             'max_decisions': 1, 'round_m1_budget': 1, 'validation_retries': 0, 'max_llm_calls': 1,

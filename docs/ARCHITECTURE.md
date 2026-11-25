@@ -1,8 +1,8 @@
 # 架构与调用链
 
-2026-11-24 标准连续域 M2 由候选的固定N构建 `integer_n_metrics_1.0` 频率计划：`simulator.validate_frequency_plan` 共享标准范围校验，`continuous.verification_request` 绑定计划/规格/来源，`measure.capture_metrics` 和 `run_suite.capture_pair` 使用N×f_ref与实际N提取捕获频率及ppm，频响启动点使用同一目标。仍复用原C++内核、四组频响收敛与区间判决；M2不会根据所需PASS修改硬规格。旧冻结和可选扩展保留独立范围，源码身份更新见 `configs/provenance/integer_n_m2.json`。
+2026-11-24 标准连续域 M2 由候选的固定N构建 `integer_n_metrics_2.0` 频率计划：`simulator.validate_frequency_plan` 共享标准范围校验，`continuous.verification_request` 绑定计划/规格/来源，`measure.capture_metrics` 和 `run_suite.capture_pair` 使用N×f_ref与实际N提取捕获频率及ppm，频响启动点使用同一目标。仍复用原C++内核、四组频响收敛与区间判决；M2不会根据所需PASS修改硬规格。旧冻结和可选扩展保留独立范围，源码身份更新见 `configs/provenance/integer_n_m2.json`。
 
-2026-11-24 接口整理：外部 JSON 经 `io_contracts.read_json` 拒绝重复键与非有限数；多候选输出用 `run_manifest.json` 标识权威文件。`delivery.validate_sizing_handoff` 由分配生产端及 VCO 消费端共用，检查交付摘要与原有 M1/M2 证据；不执行新仿真。M1 交接一致校验 READY/旧 ready 标志，新输出附相对 context 路径，完整运行目录可迁移。代码分类、已修复问题和保留边界见 [结构审核](STRUCTURE_AUDIT_20261124.md)。
+2026-11-24 接口整理：外部 JSON 经 `io_contracts.read_json` 拒绝重复键与非有限数；多候选输出用 `run_manifest.json` 标识权威文件。`delivery.validate_sizing_handoff` 由分配生产端及 VCO 消费端共用，检查交付摘要与原有 M1/M2 证据；不执行新仿真。M1 新交接一致校验 READY/ready_for_verification，旧合同按版本校验，新输出附相对 context 路径，完整运行目录可迁移。代码分类、已修复问题和保留边界见 [结构审核](STRUCTURE_AUDIT_20261124.md)。
 
 Policy 提议动作，Runner 审查并执行，工具计算，验证器独立判决。Policy 不得修改硬规格、扩大用户域、越过预算或自行声明 PASS。
 
@@ -53,6 +53,8 @@ flowchart TD
 |`agent/feedback.py`|run_feedback / feedback_summary|真实 M2、跨层预算、反馈与新候选复验|
 |`verification/continuous.py`|verification_request / execute_request / judge_measurements|连续候选到原 TB 的适配、超时隔离、按来源判决|
 |`verification/simulator.py`、`kernel.cpp`|simulate|PFD/CP/LF/VCO/Divider 真实行为闭环|
+
+接口入口与下游合同详见 [输入输出合同](IO_CONTRACTS.md)。`contract_names.py` 集中声明当前合同和旧版本读取边界，`verification/metric_protocols.py` 共享新旧标准 M2 协议构造。新证据 ID 采用职责名，缓存所属关系由 context 的证据集合判断。
 
 ## 策略与工具
 

@@ -4,6 +4,7 @@ Policy, inverse construction, SLSQP, formal M1 and archive remain their existing
 implementations. This module owns measurement provenance and cross-stage budgets.
 """
 from copy import deepcopy
+from ..contract_names import FEEDBACK_SCHEMA, LEGACY_FEEDBACK_SCHEMA, RESULT_SCHEMA, handoff_ready, problem_matches_handoff
 import json
 from pathlib import Path
 import time
@@ -27,9 +28,9 @@ def read(path):
 
 def validate_config(raw):
     fields={'schema_version','m1_budget','m2_budget','llm_budget','max_reallocations','m2_timeout_s','search'}
-    require(isinstance(raw,dict) and fields <= set(raw) <= fields | {'m2_target_count'} and raw['schema_version']=='pll-stage9-feedback-1.0',
+    require(isinstance(raw,dict) and fields <= set(raw) <= fields | {'m2_target_count'} and raw['schema_version'] in (FEEDBACK_SCHEMA, LEGACY_FEEDBACK_SCHEMA),
             'complete verification feedback configuration required')
-    c=deepcopy(raw); c.setdefault('m2_target_count', 1); c['search']=search_config(c['search'])
+    c=deepcopy(raw); c['schema_version']=FEEDBACK_SCHEMA; c.setdefault('m2_target_count', 1); c['search']=search_config(c['search'])
     require(type(c['m2_target_count']) is int and 1 <= c['m2_target_count'] <= 100,
             'm2_target_count must be 1..100')
     require(c['m2_target_count'] == 1 or c['search'].get('candidate_pool'),
@@ -44,7 +45,7 @@ def validate_config(raw):
 def load_handoff(path, problem_config):
     item=read(path); validate_handoff(item)
     problem=load_problem(problem_config)
-    require(item['problem']==problem,'handoff differs from current problem configuration')
+    require(problem_matches_handoff(problem,item),'handoff differs from current problem configuration')
     binding=item['source_context_binding']
     if 'relative_path' in binding:
         require(isinstance(binding['relative_path'],str) and binding['relative_path'] and
@@ -53,7 +54,7 @@ def load_handoff(path, problem_config):
     else:
         context=Path(binding['path'])
     loaded=load_physics_context(context)
-    require(loaded['context_sha256']==item['context_sha256'] and loaded['problem']==problem,
+    require(loaded['context_sha256']==item['context_sha256'] and loaded['problem']==item['problem'],
             'saved source context differs or is unavailable')
     return item,context
 
@@ -125,27 +126,25 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
     root=Path(out).resolve(); root.mkdir(parents=True,exist_ok=False)
     start=time.perf_counter(); run_id=root.name
     write_new(root/'verification_problem_resolved.json',initial['problem'])
-    write_new(root/'stage9_problem_resolved.json',initial['problem'])
     write_new(root/'initial_handoff.json',initial); write_new(root/'verification_config.json',cfg)
-    write_new(root/'stage9_config.json',cfg)
     paths={name:root/(name+'.jsonl') for name in ('m2_verifications','feedback_summaries','agent_decisions',
-        'reallocation_candidates','stage9_run_events','candidate_archive')}
+        'reallocation_candidates','verification_run_events','candidate_archive')}
     for p in paths.values():p.touch(exist_ok=False)
     def append(name,item):
         with paths[name].open('a',encoding='utf-8') as f:f.write(json.dumps(item,ensure_ascii=False,allow_nan=False)+'\n')
-    def event(kind,**data):append('stage9_run_events',{'event':kind,'run_id':run_id,**data})
+    def event(kind,**data):append('verification_run_events',{'event':kind,'run_id':run_id,**data})
     counts={'M1_calls':0,'M2_verifications':0,'LLM_calls':0,'M2_cache_hits':0,'completed_native_runs':0,
         'integration_points':0,'native_elapsed_s':0.,'tokens':{},'monetary_cost':None}
     def remaining():return {k:cfg[c]-counts[k] for k,c in
         (('M1_calls','m1_budget'),('M2_verifications','m2_budget'),('LLM_calls','llm_budget'))}
-    ledger=[deepcopy(initial['recommended_nominal'])|{'stage9_source_run':str(Path(handoff_path).resolve().parent)}]
+    ledger=[deepcopy(initial['recommended_nominal'])|{'candidate_source_run':str(Path(handoff_path).resolve().parent)}]
     append('candidate_archive',ledger[0])
     prior_archive=Path(handoff_path).resolve().parent/'candidate_archive.jsonl'
     if prior_archive.exists():
         for line in prior_archive.read_text(encoding='utf-8').splitlines():
             row=json.loads(line)
             if applicable(row,initial):
-                item=deepcopy(row)|{'stage9_source_run':str(prior_archive.parent)}
+                item=deepcopy(row)|{'candidate_source_run':str(prior_archive.parent)}
                 ledger.append(item); append('candidate_archive',item)
     history=[]; searches=[]; cache={}; verified={}; reverify_reasons=set(); reverify=None
     pool = cfg['search'].get('candidate_pool')
@@ -219,7 +218,7 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
             unseen={r['parameter_sha256']:r for r in ledger if r['parameter_sha256'] not in verified}
             summary['unverified_M1_candidates']=[{'candidate_sha256':r['parameter_sha256'],
                 'evidence_id':r['evidence_id'],'parameters':r['parameters'],'metrics':r['metrics'],
-                'judgment':r['judgment'],'source_run':r.get('stage9_source_run')}
+                'judgment':r['judgment'],'source_run':r.get('candidate_source_run')}
                 for r in sorted(unseen.values(),key=rank)[:12]]
             append('feedback_summaries',summary); event('M2_COMPLETED',observation_id=oid,
                 M2_status=measured['overall_status'],supported_metrics_status=measured['supported_metrics_status'])
@@ -239,7 +238,7 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
                           selection_rule=selected.get('physics_selection', {}).get('reason',
                               'quality gate, distance from tested candidates, M1 margin'),
                           **({'physics_selection': selected['physics_selection']} if 'physics_selection' in selected else {}))
-                    if not current['ready_for_stage9']:termination='NEW_CANDIDATE_RECHECK_FAILED'; break
+                    if not handoff_ready(current):termination='NEW_CANDIDATE_RECHECK_FAILED'; break
                     continue
                 if len(searches)>=cfg['max_reallocations']:termination='MAX_REALLOCATIONS'; break
             needs_llm = cfg['search']['policy']=='LLM_PHYSICS_TOOL' and not pool
@@ -313,9 +312,9 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
             for line in (search_dir/'candidate_archive.jsonl').read_text(encoding='utf-8').splitlines():
                 row=json.loads(line)
                 if applicable(row,initial):
-                    row=deepcopy(row)|{'stage9_source_run':str(search_dir),'parent_M2_feedback':summary['evidence_id']}
+                    row=deepcopy(row)|{'candidate_source_run':str(search_dir),'parent_M2_feedback':summary['evidence_id']}
                     ledger.append(row); append('candidate_archive',row)
-                    if row['parameter_sha256'] not in verified and row['source']=='STAGE8B_SEARCH':candidates.append(row)
+                    if row['parameter_sha256'] not in verified and row['source']=='M1_SEARCH':candidates.append(row)
             requested=result.get('m2_reverification_request')
             if requested:
                 sig=fingerprint({'candidate':request['candidate_sha256'],'reason':requested['reason']})
@@ -337,14 +336,14 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
             ex=RegionExplorer(context_path,root/f'candidate_audit_{cycle+1:02d}',m1_budget=2,reserved_final_calls=1)
             archive=CandidateArchive(ex,ex.root/'candidate_archive.jsonl')
             recheck=ex.recheck_recommendation(selected); counts['M1_calls']+=ex.counts['M1_calls']; ex.close()
-            next_handoff=build_handoff(ex,archive,selected,recheck,{'termination_reason':'STAGE9_DISTINCT_CANDIDATE_SELECTION'},ex.cost(), handoff_dir=root)
+            next_handoff=build_handoff(ex,archive,selected,recheck,{'termination_reason':'DISTINCT_CANDIDATE_SELECTION'},ex.cost(), handoff_dir=root)
             write_new(root/f'new_handoff_{cycle+1:02d}.json',next_handoff)
             append('reallocation_candidates',{'run_id':run_id,'parent_candidate_sha256':request['candidate_sha256'],
                 'feedback_evidence_id':summary['evidence_id'],'candidate':selected,'recheck':recheck,
                 'decision_trace_path':str(search_dir/'SEARCH_DECISION_TRACE.jsonl'),
                 'selection_rule':'quality gate and diversity from tested points' if pool else 'best M1 rank among distinct unverified new formal feasible candidates',
                 'handoff_sha256':next_handoff['handoff_sha256']})
-            if not next_handoff['ready_for_stage9']:termination='NEW_CANDIDATE_RECHECK_FAILED'; break
+            if not handoff_ready(next_handoff):termination='NEW_CANDIDATE_RECHECK_FAILED'; break
             current=next_handoff
     except Exception as error:
         termination='CONTROLLER_ERROR'; failure={'type':type(error).__name__,'reason':str(error)}
@@ -363,10 +362,10 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
     delivered_keys = {r['parameter_sha256'] for r in delivered}
     eligible=[x for k,x in verified.items() if k in delivered_keys]
     best_m2=min(eligible,key=lambda x:rank(x['handoff']['recommended_nominal']),default=None)
-    counts.update(wall_time_s=time.perf_counter()-start,shared_Stage7_M1_cost='historical, no repeated calibration',
+    counts.update(wall_time_s=time.perf_counter()-start,reused_calibration_cost='historical, no repeated calibration',
                   M1_limit=cfg['m1_budget'],M2_limit=cfg['m2_budget'],LLM_limit=cfg['llm_budget'])
     changed=any(a['candidate_sha256']!=b['candidate_sha256'] for a,b in zip(history,history[1:]))
-    result={'schema_version':'pll-stage9-result-1.0','status':termination,'strategy':'stage9_existing_physics_tool_feedback',
+    result={'schema_version':RESULT_SCHEMA,'status':termination,'strategy':'physics_tool_verification_feedback',
         'execution_route':'CONTINUOUS_VERIFICATION',
         'actual_execution':{'M2_executor':'TEST_INJECTED' if m2_executor is not None else 'NATIVE',
             'M2_executed':counts['M2_verifications']>0, 'real_LLM_calls':counts['LLM_calls'],
@@ -388,7 +387,6 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
         'time_to_joint_target_s':next((x['elapsed_s'] for x in history
                                       if x['joint_pass_count'] >= cfg['m2_target_count']), None),
         'verified_history':history,'searches':searches,'cost':counts,'failure':failure,'FULL_SYSTEMSPEC_CERTIFIED':False}
-    write_new(root/'stage9_cost_summary.json',counts); write_new(root/'stage9_final_result.json',result)
     write_new(root/'cost_summary.json',counts)
     write_new(root/'verification_result.json',result)
     report=['# Behavioral verification and feedback',f'Mode: {mode}',f'Termination: {termination}',
@@ -396,10 +394,8 @@ def run_feedback(handoff_path, out, *, problem_config, feedback_config, provider
         f'Real FAIL -> reallocation -> reverification: {result["real_fail_reverification_completed"]}',
         'M2 PM/Jitter remain UNKNOWN. M1 feasibility does not overwrite M2 FAIL.',
         '```json',json.dumps(history,ensure_ascii=False,indent=2),'```','## Costs','```json',json.dumps(counts,indent=2),'```']
-    (root/'stage9_report.md').write_text('\n\n'.join(report)+'\n',encoding='utf-8')
     (root/'feedback_report.md').write_text('\n\n'.join(report)+'\n',encoding='utf-8')
     event('RUN_COMPLETED',termination_reason=termination,cost=counts)
-    (root/'verification_run_events.jsonl').write_bytes(paths['stage9_run_events'].read_bytes())
     return result
 
 

@@ -80,8 +80,8 @@ def test_iteration_aware_starts_and_hard_budget(context,tmp_path,dimension,seed_
             assert r['iterations']>=0 and r['callback_iterations']==len(r['iteration_trace'])
     assert obs['normalized_bounds']==d['normalized_bounds']
     x.status='TEST_END';x.finish()
-    assert load(x,'stage9_handoff.json')['ready_for_stage9']
-    assert load(x,'verification_handoff.json') == load(x,'stage9_handoff.json')
+    assert load(x,'verification_handoff.json')['ready_for_verification']
+    assert not (x.root/'stage9_handoff.json').exists()
     assert x.explorer.cost()['M1_calls']<=64
 
 
@@ -136,8 +136,8 @@ def test_spec_only_stop_and_legacy_stop_are_not_quality(context,tmp_path,basis):
     x=loop(context,tmp_path,Policy(basis=basis));r=x.run()
     assert r['termination_reason']=='STOPPED_BY_LLM' and r['llm_stop_basis']=='SPEC_SATISFIED'
     assert r['quality_target_status']['status']=='NOT_REACHED'
-    handoff=load(x,'stage9_handoff.json')
-    assert handoff['ready_for_stage9'] and validate_handoff(handoff)==load(x,'m1_allocation.json')['recommended_nominal']['parameters']
+    handoff=load(x,'verification_handoff.json')
+    assert handoff['ready_for_verification'] and validate_handoff(handoff)==load(x,'m1_allocation.json')['recommended_nominal']['parameters']
     assert handoff['M2_status']=='NOT_EVALUATED' and not handoff['FULL_SYSTEMSPEC_CERTIFIED']
 
 
@@ -147,7 +147,7 @@ def test_false_quality_stop_rejected_without_losing_recommendation(context,tmp_p
     assert r['m1_allocation_status']=='KNOWN_M1_FEASIBLE_RECHECKED'
     assert r['quality_target_status']['status']=='NOT_REACHED'
     assert 'quality STOP' in load(x,'round_02/validation_error_00.json')['message']
-    assert load(x,'stage9_handoff.json')['ready_for_stage9']
+    assert load(x,'verification_handoff.json')['ready_for_verification']
 
 
 def test_quality_reached_separate_from_feasibility(context,tmp_path):
@@ -155,15 +155,15 @@ def test_quality_reached_separate_from_feasibility(context,tmp_path):
     r=x.run();assert r['termination_reason']=='M1_QUALITY_TARGET_REACHED'
     assert r['quality_target_status']['status']=='REACHED'
     assert r['m1_allocation_status']=='KNOWN_M1_FEASIBLE_RECHECKED'
-    assert load(x,'stage9_handoff.json')['ready_for_stage9']
+    assert load(x,'verification_handoff.json')['ready_for_verification']
 
 
 def test_provider_failure_preserves_rechecked_stage7_and_handoff(context,tmp_path):
     x=loop(context,tmp_path,Policy(fail=True));r=x.run();a=load(x,'m1_allocation.json')
     assert r['termination_reason']=='LLM_PROVIDER_FAILED'
-    assert a['recommended_nominal']['parameter_sha256']==a['best_stage7_calibration']['parameter_sha256']
+    assert a['recommended_nominal']['parameter_sha256']==a['best_calibration_candidate']['parameter_sha256']
     assert r['quality_target_status']['status']=='NOT_REACHED'
-    assert load(x,'stage9_handoff.json')['ready_for_stage9']
+    assert load(x,'verification_handoff.json')['ready_for_verification']
 
 
 def test_budget_exhaustion_and_legacy_output_never_override_recommendation(context,tmp_path):
@@ -171,9 +171,9 @@ def test_budget_exhaustion_and_legacy_output_never_override_recommendation(conte
     r=x.run();a=load(x,'m1_allocation.json')
     assert r['termination_reason']=='DECISION_BUDGET_EXHAUSTED'
     assert r['quality_target_status']['status']=='NOT_REACHED'
-    assert a['recommended_nominal']['judgment']['minimum_normalized_margin']>=a['best_stage7_calibration']['judgment']['minimum_normalized_margin']
+    assert a['recommended_nominal']['judgment']['minimum_normalized_margin']>=a['best_calibration_candidate']['judgment']['minimum_normalized_margin']
     assert 'new_allocation' in a['legacy_non_authoritative_fields']
-    assert validate_handoff(load(x,'stage9_handoff.json'))==a['recommended_nominal']['parameters']
+    assert validate_handoff(load(x,'verification_handoff.json'))==a['recommended_nominal']['parameters']
 
 
 @pytest.mark.parametrize('failure',['EXCEPTION','NUMERICAL_FAILURE'])
@@ -183,11 +183,11 @@ def test_numerical_failures_charged_and_best_retained(context,tmp_path,monkeypat
         if failure=='EXCEPTION':raise ArithmeticError('TEST numeric failure')
         return MappingResult(status=Status.NUMERICAL_FAILURE,reason='TEST numeric failure')
     monkeypatch.setattr('pll_allocation.region_explorer.explorer.evaluate',broken)
-    r=x.run();a=load(x,'m1_allocation.json');h=load(x,'stage9_handoff.json')
+    r=x.run();a=load(x,'m1_allocation.json');h=load(x,'verification_handoff.json')
     assert a['recommended_nominal'] and r['cost']['M1_calls']<=64
     assert r['m1_allocation_status']=='KNOWN_M1_FEASIBLE_RECHECK_FAILED_OR_UNAVAILABLE'
     assert r['quality_target_status']['status']=='UNVERIFIED_RECHECK_FAILED'
-    assert not h['ready_for_stage9']
+    assert not h['ready_for_verification']
     with pytest.raises(ValueError,match='blocked'):validate_handoff(h)
     assert r['cost']['executor']['M1_failures']>0
 
@@ -196,15 +196,15 @@ def test_no_feasible_candidate_blocks_handoff(context,tmp_path):
     p=raw_problem(load_physics_context(context)['problem']);p['specs'][1]['min']=95
     file=tmp_path/'impossible.json';file.write_text(json.dumps(p),encoding='utf-8')
     x=AgentSearchLoop(context,tmp_path/'run',config=config(),provider_config={},problem_path=file,policy=Policy())
-    r=x.run();h=load(x,'stage9_handoff.json')
+    r=x.run();h=load(x,'verification_handoff.json')
     assert r['termination_reason']=='PROVEN_M1_INFEASIBLE'
-    assert not h['ready_for_stage9'] and h['recommended_nominal'] is None
+    assert not h['ready_for_verification'] and h['recommended_nominal'] is None
     with pytest.raises(ValueError):validate_handoff(h)
 
 
-@pytest.mark.parametrize('field',['block_spec_SI','system_spec','model_fingerprint','recommendation_recheck','ready_for_stage9'])
+@pytest.mark.parametrize('field',['block_spec_SI','system_spec','model_fingerprint','recommendation_recheck','ready_for_verification'])
 def test_tampered_handoff_rejected_even_after_fingerprint_reseal(context,tmp_path,field):
-    x=loop(context,tmp_path,Policy(fail=True));x.run();h=load(x,'stage9_handoff.json')
+    x=loop(context,tmp_path,Policy(fail=True));x.run();h=load(x,'verification_handoff.json')
     if field=='block_spec_SI':h[field]['C1']['value']*=2
     elif field=='system_spec':h[field][0]['max']*=2
     elif field=='model_fingerprint':h[field]='wrong'
@@ -236,4 +236,4 @@ def test_solver_exception_keeps_best_and_formal_recheck(context,tmp_path,monkeyp
     x=loop(context,tmp_path);r=x.run()
     assert r['solver_execution_status']['exceptions']>0
     assert r['m1_allocation_status']=='KNOWN_M1_FEASIBLE_RECHECKED'
-    assert load(x,'stage9_handoff.json')['ready_for_stage9']
+    assert load(x,'verification_handoff.json')['ready_for_verification']

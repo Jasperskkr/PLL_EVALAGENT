@@ -3,6 +3,7 @@ from __future__ import annotations
 import itertools
 import math
 from .core import bounds, values
+from ..numerics import NumericalError, polynomial_log_sign, positive_root as _bisect_positive, snap_closed_bound
 
 RELATIONS = {
     'frequency': 'F=N*f_ref; Vreq=(F-f0)/Kvco; f0 is the zero-volt intercept',
@@ -54,33 +55,37 @@ def propagate(model, system_spec):
             'not_proven': 'BW/gain/R/tuning intersection needs solving; no certificate is not proof of feasibility'}
 
 
-def _bisect_positive(function):
-    lo, hi = -14., 14.
-    if not function(math.exp(lo)) < 0 < function(math.exp(hi)):
-        raise ArithmeticError('positive root not bracketed')
-    for _ in range(80):
-        mid = (lo + hi)/2
-        if function(math.exp(mid)) > 0:
-            hi = mid
-        else:
-            lo = mid
-    return math.exp((lo + hi)/2)
-
-
-def bandwidth_ratio(q, x):
+def bandwidth_ratio(q, x, *, diagnostics=None):
     """Numerical root, NOT a closed form. y=(omega_BW/omega_u)^2."""
+    if not all(math.isfinite(v) for v in (q, x)) or q <= 1 or x <= 0:
+        raise ValueError('INPUT_INVALID: finite q>1 and x>0 required')
     h = math.sqrt((1 + (x/q)**2)/(1 + x*x))
-    y = _bisect_positive(lambda y: (x/q)**2*y**3 + (1 - 2*h*x*x/q)*y*y - (2*h + h*h*x*x)*y - h*h)
+    coefficients = ((x/q)**2, 1 - 2*h*x*x/q, -(2*h + h*h*x*x), -h*h)
+    y = _bisect_positive(lambda y: (x/q)**2*y**3 + (1 - 2*h*x*x/q)*y*y - (2*h + h*h*x*x)*y - h*h,
+                         log_function=lambda z: polynomial_log_sign(coefficients, z), diagnostics=diagnostics)
     return math.sqrt(y)
 
 
-def raw_prediction(p):
+def raw_prediction(p, *, diagnostics=None):
     """Dimensionless magnitude roots, same physics as M1, no TB or M1 call."""
-    wz = 1/(p['Rz']*p['C2'])
-    q = 1 + p['C2']/p['C1']
-    g = p['Icp']*p['Kvco']/(p['N']*(p['C1'] + p['C2'])*wz*wz)
-    xu2 = _bisect_positive(lambda y: y**3/(q*q) + y*y - g*g*y - g*g)
-    xb2 = _bisect_positive(lambda y: y**3/(q*q) + (1 - 2*g/q)*y*y - (2*g + g*g)*y - g*g)
+    if any(type(p[k]) not in (int, float) or not math.isfinite(p[k]) or p[k] <= 0
+           for k in ('Icp', 'Kvco', 'Rz', 'C1', 'C2', 'N')):
+        raise ValueError('INPUT_INVALID: positive finite ideal parameters required')
+    try:
+        wz = 1/(p['Rz']*p['C2'])
+        q = 1 + p['C2']/p['C1']
+        g = p['Icp']*p['Kvco']/(p['N']*(p['C1'] + p['C2'])*wz*wz)
+    except ArithmeticError as error:
+        raise NumericalError('COEFFICIENT_RANGE', 'dimensionless quantities not representable') from error
+    if not all(math.isfinite(v) and v > 0 for v in (wz, q, g, g*g, q*q)):
+        raise NumericalError('COEFFICIENT_RANGE', 'underflow/overflow in dimensionless gain or coefficients')
+    info = diagnostics
+    if info is not None:
+        info.update(UGF={}, BW={})
+    xu2 = _bisect_positive(lambda y: y**3/(q*q) + y*y - g*g*y - g*g,
+                          log_function=lambda z: polynomial_log_sign((1/(q*q), 1., -g*g, -g*g), z), diagnostics=None if info is None else info['UGF'])
+    xb2 = _bisect_positive(lambda y: y**3/(q*q) + (1 - 2*g/q)*y*y - (2*g + g*g)*y - g*g,
+                          log_function=lambda z: polynomial_log_sign((1/(q*q), 1-2*g/q, -(2*g+g*g), -g*g), z), diagnostics=None if info is None else info['BW'])
     xu = math.sqrt(xu2)
     return {'output_frequency_Hz': p['N']*p['f_ref'],
             'Vctrl_required_V': (p['N']*p['f_ref'] - p['f0'])/p['Kvco'],
@@ -115,4 +120,17 @@ def inverse_at_shape(model, c1, c2, target_bw, x, meter):
     ftarget = model['variables']['N']['fixed']*model['variables']['f_ref']['fixed']
     flo, fhi = bounds(model, 'f0')
     f0 = min(fhi, max(flo, ftarget - kv*(vlo + vhi)/2))
-    return {'Icp': product/kv, 'Rz': rz, 'C1': c1, 'C2': c2, 'f0': f0, 'Kvco': kv}
+    result = {'Icp': product/kv, 'Rz': rz, 'C1': c1, 'C2': c2, 'f0': f0, 'Kvco': kv}
+    corrections = []
+    for name in ('Icp', 'Rz', 'f0', 'Kvco'):
+        value = result[name]
+        # Only inverse-generated results: public input validation stays strict.
+        # Caller still owns full parameter/tuning checks and a charged M1 call.
+        corrected, correction = snap_closed_bound(value, *bounds(model, name))
+        if correction:
+            result[name] = corrected
+            corrections.append({'parameter': name, **correction})
+    if corrections:
+        meter.events[-1]['boundary_corrections'] = corrections
+        meter.events[-1]['formal_M1_required'] = True
+    return result

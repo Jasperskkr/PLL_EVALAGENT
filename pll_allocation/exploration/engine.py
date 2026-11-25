@@ -19,6 +19,7 @@ from .regions import candidate_regions, sensitivity
 
 ROOT = Path(__file__).resolve().parents[2]
 AUDITED = ('block_space/contracts.py', 'physics_mapping/model.py', 'physics_mapping/registry.py',
+           'numerics.py',
            'physics_mapping/experiment.py', 'allocation/physics.py', 'allocation/allocate.py',
            'allocation/multispec_search.py', 'allocation/agent.py', 'pipeline.py')
 
@@ -32,8 +33,8 @@ def source_identity():
 def model_identity():
     sources = source_identity()
     return {'model_id': MODEL_ID, 'model_sha256': fingerprint({k: v for k, v in sources.items()
-            if k.endswith(('physics_mapping/model.py', 'physics_mapping/experiment.py', 'allocation/physics.py'))}),
-            'source_fingerprints': sources, 'scan': 'unchanged formal M1 default FrequencyScan(points=8000)',
+            if k.endswith(('physics_mapping/model.py', 'physics_mapping/experiment.py', 'allocation/physics.py', 'numerics.py'))}),
+            'source_fingerprints': sources, 'scan': 'formal M1 FrequencyScan(points=8000); bounded default-only window extension',
             'domain_status': 'USER_DECLARED_MATHEMATICAL_DOMAIN; M2_EQUIVALENCE_NOT_ESTABLISHED'}
 
 
@@ -51,7 +52,7 @@ def run_exploration(problem_path, out, *, seed=None, budget=None):
     metadata = {'problem_schema_version': problem['schema_version'], 'problem_sha256': problem['problem_sha256'],
                 'problem_id': problem['problem_id'], 'model_fingerprint': identity['model_sha256'],
                 'source_fingerprint': fingerprint(identity['source_fingerprints']),
-                'seed': problem['exploration']['seed'], 'scope': 'STAGE7_CONTINUOUS_M1_EXPLORATION_ONLY'}
+                'seed': problem['exploration']['seed'], 'scope': 'CONTINUOUS_M1_EXPLORATION_ONLY'}
     samples, cache, failure = [], {}, None
     trace_path, samples_path = root/'run_events.jsonl', root/'m1_samples.jsonl'
     trace_path.touch(exist_ok=False)
@@ -238,7 +239,7 @@ def run_exploration(problem_path, out, *, seed=None, budget=None):
     write_new(root/'physics_context.json', context)
     emit('RUN_COMPLETED', action='ExportPhysicsContext', observation=summary,
          decision='Stop at M1 exploration; no LLM or M2 execution', scientific_sha256=science_sha, evaluation_cost=costs)
-    result = {**common, **summary, 'strategy': 'stage7_physics_guided_m1_exploration', 'summary': summary,
+    result = {**common, **summary, 'strategy': 'physics_guided_m1_exploration', 'summary': summary,
               'physics_context': 'physics_context.json'}
     write_new(root/'result.json', result)
     lines = ['# M1 exploration PhysicsExplorationReport', '', f'Problem: `{problem["problem_id"]}` / `{problem["schema_version"]}`',
@@ -263,7 +264,6 @@ def run_exploration(problem_path, out, *, seed=None, budget=None):
         '', f'Failure: {failure}', ''])
     with (root/'exploration_report.md').open('x', encoding='utf-8') as stream:
         stream.write('\n'.join(lines))
-    (root/'stage7_report.md').write_bytes((root/'exploration_report.md').read_bytes())
     return result
 
 

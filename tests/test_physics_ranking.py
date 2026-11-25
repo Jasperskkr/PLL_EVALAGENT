@@ -29,7 +29,7 @@ def test_initial_and_subsequent_selection_use_same_strategy(tmp_path):
     assert invoked[1] == second['parameter_sha256']
     h = json.loads((tmp_path/'run/initial/verification_handoff.json').read_text())
     assert h['selection_evidence'] == first['physics_selection']
-    events = rows(tmp_path/'run/verification/stage9_run_events.jsonl')
+    events = rows(tmp_path/'run/verification/verification_run_events.jsonl')
     # Native execution is injected TEST only; the ranking and audit paths are real.
     assert result['cost']['M2_verifications'] == 2 and not result['FULL_SYSTEMSPEC_CERTIFIED']
 

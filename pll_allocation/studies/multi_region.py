@@ -113,7 +113,7 @@ def freeze(out):
         'minimum_tuning_margin_V','diversity_rms_threshold','slsqp','provider')}
     cfg.update(schema_version='pll-multi-region-study-1.0',domain_mode='USER_UNBOUNDED',user_parameter_bounds=None,
         seeds=list(SEEDS),run_order=order,phase1_M1_limit=128,phase2_M1_limit=128,connectivity_reserve=21,
-        max_feedback_decisions=2,structured_corrections_per_decision=1,initial_regions=[2,3],initial_Stage7_M1=0,
+        max_feedback_decisions=2,structured_corrections_per_decision=1,initial_regions=[2,3],initial_calibration_M1_calls=0,
         probe_schedule='Builder3 + Sobol3 + optional original sensitivity12 per region; each region cap from planner',
         expansion_schedule='feedback selected region: original subset SLSQP, coupled Builder, local Sobol; same P1/P2',
         budget_semantics='initial m1_budget caps diagnostic probe; feedback m1_budget authorizes additional region search; all share first128+extra128 hard caps',

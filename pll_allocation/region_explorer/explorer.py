@@ -110,14 +110,14 @@ class RegionExplorer:
         self.metadata = {'context_sha256': self.context['context_sha256'],
             'problem_schema_version': self.problem['schema_version'], 'problem_sha256': self.problem['problem_sha256'],
             'model_fingerprint': self.context['model']['model_sha256'], 'source_fingerprint': fingerprint(self.source_manifest),
-            'scope': 'STAGE8A_FIXED_ALGORITHM_M1_ONLY', 'LLM_calls': 0, 'M2_calls': 0}
+            'scope': 'REGION_EXPLORATION_M1_ONLY', 'LLM_calls': 0, 'M2_calls': 0}
         for name in ('run_events.jsonl', 'search_decisions.jsonl', 'm1_samples.jsonl', 'region_observations.jsonl'):
             (self.root/name).touch(exist_ok=False)
         write_new(self.root/'source_manifest.json', self.source_manifest)
         write_new(self.root/'region_assessment.json', {**self.metadata, **self.assessment})
         write_new(self.root/'problem_resolved.json', {**self.metadata, 'problem': self.problem})
         write_new(self.root/'run_manifest.json', {**self.metadata, 'session_m1_budget': self.limit,
-            'stage7_context_path': str(self.context_path), 'stage7_evidence_artifacts': self.context['evidence_artifacts'],
+            'calibration_context_path': str(self.context_path), 'calibration_evidence_artifacts': self.context['evidence_artifacts'],
             'environment': {'python': sys.version, 'platform': platform.platform(),
                 **{k: importlib.metadata.version(k) for k in ('numpy', 'scipy')}},
             'source_manifest': 'source_manifest.json', 'candidate_origin': 'EXPLICIT_FIXED_ALGORITHM_DECISIONS',
@@ -183,7 +183,7 @@ class RegionExplorer:
     def _sample(self, candidate, decision, origin, *, force=False, reserve=0):
         self.counts['requests'] += 1
         key = fingerprint(candidate)
-        row = {**self.metadata, 'evidence_id': f'A8S{len(self.rows)+1:07d}',
+        row = {**self.metadata, 'evidence_id': f'M1_SAMPLE:{len(self.rows)+1:07d}',
             'decision_id': decision['decision_id'], 'origin': origin, 'parameters': deepcopy(candidate),
             'parameter_sha256': key, 'formal_M1_result': None, 'formal_M1_called': False,
             'independent_final_recheck': force}
@@ -203,10 +203,10 @@ class RegionExplorer:
         elif key in self.cache and not force:
             original = self.cache[key]
             self.counts['cache_hits'] += 1
-            inherited = not original['evidence_id'].startswith('A8S')
+            inherited = original['evidence_id'] in self.context['evidence_ids']
             self.counts['inherited_cache_hits'] += int(inherited)
             row.update(M1_status=original['M1_status'], reason=original.get('reason'),
-                       duplicate_of=original['evidence_id'], cache_source='STAGE7' if inherited else 'SESSION',
+                       duplicate_of=original['evidence_id'], cache_source='CALIBRATION' if inherited else 'SESSION',
                        metrics=deepcopy(original['metrics']), judgment=deepcopy(original['judgment']))
         elif (self.counts['M1_calls'] >= self.limit-self.reserved_final_calls or
               self.counts['M1_calls']-self.action_start_calls >= decision['m1_budget']-reserve):
@@ -500,7 +500,7 @@ class RegionExplorer:
                   'M1_FEASIBLE_OBSERVED' if any(r['judgment']['m1_feasibility'] == 'FEASIBLE' for r in seeds+new)
                   else 'NO_M1_FEASIBLE_OBSERVED')
         observation = {**self.metadata, 'schema_version': 'pll-region-observation-1.0',
-            'observation_id': f'RA8O{len(self.observations)+1:05d}', 'decision_id': d['decision_id'],
+            'observation_id': f'REGION_OBSERVATION:{len(self.observations)+1:05d}', 'decision_id': d['decision_id'],
             'action': d['action'], 'region': d['region'], 'normalized_bounds': d['normalized_bounds'],
             'physical_bounds': {k: {'min': physical_coordinate(self.problem['parameters'][k], lo),
                 'max': physical_coordinate(self.problem['parameters'][k], hi), 'unit': self.problem['parameters'][k]['unit']}
@@ -550,7 +550,7 @@ class RegionExplorer:
         if action_errors and failure is None:
             failure = {'type': 'ActionErrors', 'reasons': action_errors}
         result = {**self.metadata, 'schema_version': 'pll-region-run-1.0', 'status': 'PIPELINE_ERROR' if failure else 'COMPLETED',
-            'strategy': 'stage8a_fixed_region_explorer', 'cost': cost, 'failure': failure,
+            'strategy': 'fixed_algorithm_region_explorer', 'cost': cost, 'failure': failure,
             'action_count': len(self.observations), 'scientific_sha256': fingerprint(scientific),
             'FULL_SYSTEMSPEC_CERTIFIED': False, 'M2_status': 'NOT_EVALUATED'}
         write_new(self.root/'region_observations.json', {**self.metadata, 'observations': self.observations})
@@ -590,7 +590,6 @@ class RegionExplorer:
                       '', f'Failure: {failure}', ''])
         with (self.root/'region_exploration_report.md').open('x', encoding='utf-8') as stream:
             stream.write('\n'.join(lines))
-        (self.root/'stage8a_report.md').write_bytes((self.root/'region_exploration_report.md').read_bytes())
         write_new(self.root/'output_manifest.json', {**self.metadata, 'artifacts': {
             p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(self.root.iterdir()) if p.is_file()}})
         self.closed = True

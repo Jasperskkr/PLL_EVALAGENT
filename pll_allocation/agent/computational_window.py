@@ -22,10 +22,10 @@ def observation_evidence(observation):
     """Register actual controller-produced verification records, not LLM citations."""
     if not observation:return []
     records=[]
-    for i,record in enumerate((observation.get('stage9_result') or {}).get('verified_history',[])):
+    for i,record in enumerate((observation.get('verification_result') or observation.get('stage9_result') or {}).get('verified_history',[])):
         evidence=record.get('evidence_id')
         if isinstance(evidence,str) and evidence:
-            records.append({'evidence_id':evidence,'source':f'actual_observation.stage9_result.verified_history[{i}]',
+            records.append({'evidence_id':evidence,'source':f'actual_observation.verification_result.verified_history[{i}]',
                 'candidate_sha256':record.get('candidate_sha256'),'status':record.get('M2_status')})
     return records
 

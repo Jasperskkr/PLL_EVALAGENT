@@ -3,17 +3,17 @@ from collections import Counter
 from copy import deepcopy
 import hashlib
 import json
-from pathlib import Path
 
 from ..allocation.physics import RELATIONS
 from ..exploration.contracts import screen_problem
 from ..physics_mapping.model import fingerprint
+from ..verification.resources import CONFIGS
 from .planner_state import compact_sample
 from .candidates import rank
 from .subregion_contracts import TOOLS
 from .subregion_context import was_formal_call
 
-REGISTRY=Path(__file__).resolve().parents[2]/'configs/model/equations.json'
+REGISTRY=CONFIGS/'model/equations.json'
 DEPENDENCIES={
  'frequency':(['N','f_ref','f0','Kvco'],['output_frequency_Hz','Vctrl_required_V']),
  'CP':(['Icp','Kvco'],['BW_Hz','UGF_Hz','PM_deg']),

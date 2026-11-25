@@ -37,7 +37,7 @@ def file_identity(path):
 
 
 def write_run_manifest(root, result, *, problem_source):
-    """Index canonical outputs only; legacy copies remain internal evidence."""
+    """Index current inputs, canonical outputs and distinct downstream gates."""
     root = Path(root)
     names = {
         'resolved_problem': 'problem_resolved.json',
@@ -51,10 +51,31 @@ def write_run_manifest(root, result, *, problem_source):
     artifacts = {role: {'path': name, 'sha256': file_identity(root / name)['sha256']}
                  for role, name in names.items()}
     manifest = {
-        'schema_version': 'pll-run-manifest-1.0',
+        'schema_version': 'pll-run-manifest-2.0',
         'execution_route': result['execution_route'],
         'problem_source': problem_source,
+        'inputs': {
+            'problem': {'schema_version': 'pll-research-problem-2.0',
+                        'source': problem_source, 'resolved': 'problem_resolved.json',
+                        'role': 'SystemSpec, six variable domains, fixed integer N and model inputs'},
+            'allocator': {'schema_version': result['configuration_schema'],
+                          'resolved': 'allocation_config.json',
+                          'role': 'Policy mode, candidate targets, M1/M2/LLM budgets and search options'},
+        },
         'artifacts': artifacts,
+        'handoffs': {
+            'm1_to_verification': {
+                'path': 'initial/verification_handoff.json',
+                'schema_version': 'pll-m1-verification-handoff-2.0',
+                'ready_field': 'ready_for_verification',
+                'consumer': 'pll_allocation.agent.feedback.load_handoff',
+                'role': 'Independently rechecked M1 candidate; M2 has not been certified'},
+            'verified_to_sizing': {
+                'path': 'sizing_handoff.json', 'schema_version': 'pll-sizing-targets-1.0',
+                'candidate_set': '#/candidates',
+                'consumer': 'pll_allocation.delivery.validate_sizing_handoff',
+                'role': 'Only native supported-M2 passing candidates; an empty list delivers no candidates'},
+        },
         'delivery': {'status': result['joint_status'],
                      'candidate_count': result['M2_supported_pass_count'],
                      'target_count': result['m2_target_count'],

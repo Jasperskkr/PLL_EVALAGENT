@@ -10,6 +10,21 @@ ROOT = Path(__file__).resolve().parents[1]
 NAMES = ('core', 'physics', 'allocate', 'agent', 'repair', 'feedback_agent')
 
 
+def test_public_contract_guard_rejects_new_phase_outputs_and_inputs(tmp_path):
+    from tools.audit_architecture import audit_public_contract_names
+    source = tmp_path/'pll_allocation/agent/producer.py'
+    source.parent.mkdir(parents=True)
+    source.write_text("output = 'stage9_handoff.json'\n")
+    config = tmp_path/'configs/problems/example.json'
+    config.parent.mkdir(parents=True)
+    config.write_text('{"problem_id":"stage7_example"}')
+    result = audit_public_contract_names(tmp_path)
+    assert len(result['violations']) == 2 and not result['passed']
+    source.write_text("output = 'verification_handoff.json'\n")
+    config.write_text('{"problem_id":"nominal_example"}')
+    assert audit_public_contract_names(tmp_path)['passed']
+
+
 @pytest.mark.parametrize('name', NAMES)
 def test_legacy_import_is_same_formal_module(name):
     assert importlib.import_module('pll_allocation.track_a.'+name) is importlib.import_module('pll_allocation.allocation.'+name)

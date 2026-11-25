@@ -171,4 +171,14 @@ def test_existing_proposal_m1_is_bit_identical():
     _, model, spec, _ = load_inputs()
     original = read(ROOT/'tests/fixtures/verification/analytical_proposal.json')
     actual = assess_m1(model, spec, original['joint_block_spec'], Meter())
-    assert actual == original['M1']
+    # Numeric metrics/contracts remain bit-identical; A-P0 adds diagnostics.
+    expected = deepcopy(original['M1'])
+    actual = deepcopy(actual)
+    new_diagnostics = actual['prediction'].pop('diagnostics')
+    old_diagnostics = expected['prediction'].pop('diagnostics')
+    assert actual == expected
+    for key, value in old_diagnostics.items():
+        if key == 'scan':
+            assert all(new_diagnostics['scan'][k] == v for k, v in value.items())
+        else:
+            assert new_diagnostics[key] == value

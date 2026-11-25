@@ -8,7 +8,7 @@ from ..allocation.physics import pm_ceiling
 from ..block_space.contracts import FREE_IDS
 from ..physics_mapping.experiment import parameters_from_experiment
 from ..physics_mapping.model import (
-    METRIC_PROTOCOLS, METRIC_UNITS, MODEL_ID, PARAMETERS, ModelError, fingerprint, parse_parameters,
+    METRIC_PROTOCOLS, METRIC_UNITS, MODEL_ID, PARAMETERS, ModelError, Status, fingerprint, parse_parameters,
 )
 
 SCHEMA = 'pll-research-problem-2.0'
@@ -84,7 +84,7 @@ def resolve_problem(raw, *, seed=None, budget=None):
         spec.setdefault('normalization_scale', width/2 if width > 0 else max([abs(x) for x in bounds] + [1e-30]))
         require(number(spec['normalization_scale'], name + '.normalization_scale') > 0, 'positive normalization required')
         spec['support_status'] = capability(name, spec['evaluation_source'])
-        spec['protocol'] = METRIC_PROTOCOLS[name] if spec['support_status'] == 'M1_SUPPORTED' else 'NOT_EVALUATED_IN_STAGE7'
+        spec['protocol'] = METRIC_PROTOCOLS[name] if spec['support_status'] == 'M1_SUPPORTED' else 'NOT_EVALUATED_BY_M1'
     e = p['exploration']
     required = {'seed', 'sobol_samples', 'physics_seed_count', 'max_m1_evaluations', 'max_analytic_calls',
                 'region_count', 'region_radius', 'sensitivity_step', 'sensitivity_representatives'}
@@ -153,6 +153,10 @@ def check_candidate(problem, candidate):
     """Necessary conditions only. Never returns formal M1 or behavioral PASS."""
     try:
         p = parse_parameters(candidate)
+        for name, axis in problem['parameters'].items():
+            if not axis['min'] <= p[name] <= axis['max']:
+                raise ModelError(Status.OUT_OF_DOMAIN,
+                                 name + ': outside declared range', 'PARAMETER_BOUNDS')
         expected = make_parameters(problem, p)
         require(candidate == expected, 'unit/completeness/domain/fixed-input mismatch')
         vreq = (p['N']*p['f_ref']-p['f0'])/p['Kvco']
@@ -172,7 +176,9 @@ def check_candidate(problem, candidate):
         return {'status': 'NECESSARY_CONDITIONS_SATISFIED', 'reason': 'formal M1 still required',
                 'derived': derived, 'formal_M1_evaluated': False}
     except (ModelError, ValueError, KeyError, TypeError, ArithmeticError) as error:
-        return {'status': 'INVALID_CANDIDATE', 'reason': str(error), 'derived': {}, 'formal_M1_evaluated': False}
+        return {'status': 'INVALID_CANDIDATE', 'reason': str(error),
+                'reason_code': getattr(error, 'reason_code', 'INPUT_OR_CONTRACT_INVALID'),
+                'derived': {}, 'formal_M1_evaluated': False, 'global_infeasibility_proven': False}
 
 
 def screen_problem(problem):

@@ -54,13 +54,14 @@ def validate_config(raw):
 
 
 def source_manifest():
+    from ..verification.resources import CONFIGS
     root = Path(__file__).resolve().parents[2]
     return {p.relative_to(root).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
             for p in [*sorted((root/'pll_allocation/agent').glob('*.py')),
                       *sorted((root/'pll_allocation/region_explorer').glob('*.py')),
                       root/'pll_allocation/llm_transport.py', root/'pll_allocation/pipeline.py',
-                      *sorted((root/'pll_allocation/exploration').glob('physics_region*.py')),
-                      root/'configs/model/equations.json']}
+                      *sorted((root/'pll_allocation/exploration').glob('physics_region*.py'))]} | {
+        'configs/model/equations.json': hashlib.sha256((CONFIGS/'model/equations.json').read_bytes()).hexdigest()}
 
 
 class AgentSearchLoop:
@@ -86,7 +87,7 @@ class AgentSearchLoop:
         self.history, self.proposals = [], set()
         self.calls = 0
         self.status, self.failure = 'NOT_STARTED', None
-        self.reused_best = self.archive.best('STAGE7_CALIBRATION')
+        self.reused_best = self.archive.best('M1_CALIBRATION')
         for item in knowledge(self.explorer.context)+sensitivity(self.explorer.context):
             self.explorer.evidence[item['evidence_id']] = item
         write_new(self.root/'run_manifest.json', {'schema_version': 'pll-llm-region-run-1.0',
@@ -285,17 +286,17 @@ class AgentSearchLoop:
         executor_result = self.explorer.close()
         best = self.archive.best()
         scope_failure = self.status in ('PROVEN_M1_INFEASIBLE', 'M1_CAPABILITY_INSUFFICIENT')
-        selected = self.archive.best('STAGE8B_SEARCH', feasible_only=True)
+        selected = self.archive.best('M1_SEARCH', feasible_only=True)
         def candidate(row):
             return ({k: deepcopy(row[k]) for k in ('evidence_id', 'origin', 'parameters', 'metrics', 'judgment', 'parameter_sha256')}
                     if row else None)
-        allocation = {'schema_version': 'pll-m1-initial-allocation-1.0', 'status': 'M1_PREDICTED_FEASIBLE_NEW_POINT' if selected else
+        allocation = {'schema_version': 'pll-m1-initial-allocation-2.0', 'status': 'M1_PREDICTED_FEASIBLE_NEW_POINT' if selected else
                       'CURRENT_M1_CAPABILITY_OR_PHYSICS_STOP' if scope_failure else 'NO_NEW_M1_FEASIBLE_ALLOCATION',
             'new_allocation': candidate(selected), 'best_observed_current_spec': candidate(best),
             'recommended_nominal': deepcopy(recommended),
             'recommendation_recheck': recheck,
-            'best_stage7_calibration': summary['best_calibration'],
-            'best_stage8b_new': summary['best_new'],
+            'best_calibration_candidate': summary['best_calibration'],
+            'best_search_candidate': summary['best_new'],
             'improvement_over_calibration': summary['improvement_over_calibration'],
             'candidate_archive_summary': summary,
             'selection_scope': (recommended['physics_selection']['reason'] if recommended and 'physics_selection' in recommended else
@@ -311,7 +312,7 @@ class AgentSearchLoop:
         write_new(self.root/'m1_allocation.json', allocation)
         result = {'schema_version': 'pll-llm-region-loop-result-1.0', 'status': self.status,
             **states,
-            'strategy': 'stage8b_real_llm_region_slsqp' if self.real_policy else 'stage8b_test_policy_not_llm',
+            'strategy': 'llm_guided_region_search' if self.real_policy else 'test_policy_region_search',
             'decision_rounds': len(self.history), 'feedback_decision_completed': len(self.history) >= 2,
             'feedback_reoptimization_completed': states['feedback_reoptimization_count'] > 0,
             'new_M1_feasible_allocation': selected is not None,
@@ -322,7 +323,6 @@ class AgentSearchLoop:
         write_new(self.root/'cost_summary.json', cost)
         from .handoff import build_handoff
         handoff = build_handoff(self.explorer, self.archive, recommended, recheck, states, cost, handoff_dir=self.root)
-        write_new(self.root/'stage9_handoff.json',handoff)
         write_new(self.root/'verification_handoff.json',handoff)
         self.emit('RUN_COMPLETED', result=result)
         write_new(self.root/'result.json', result)

@@ -136,6 +136,8 @@ python tools/run_allocation_examples.py --case llm --allow-paid-llm --out experi
 
 ## 输出结果
 
+输入入口、字段含义和下游读取方法见 [输入输出合同](docs/IO_CONTRACTS.md)。新运行只生成职责名产物；历史记录按原合同读取。M1 → M2 使用 `ready_for_verification`，已验证交付集合使用 `sizing_handoff.json.candidates`。
+
 多候选分配的输出目录包含以下主要文件：
 
 | 文件或目录 | 内容 |
@@ -165,7 +167,7 @@ python -m pll_allocation.vco_sizing export --handoff experiments/joint_example/s
 
 ## 项目结构
 
-程序对接从 `run_manifest.json` 定位文件。下游交付只消费 `sizing_handoff.json`，可用 `pll_allocation.delivery.validate_sizing_handoff` 校验摘要、候选及正式证据；`recommended` 可能只是 M1 诊断推荐，不能作为正式交付。`initial/verification_handoff.json` 则供 M2 接续执行；新运行支持连同整个运行目录迁移，旧阶段名副本仅用于兼容。具体清洗边界见 [结构审核](docs/STRUCTURE_AUDIT_20261124.md)。
+程序对接从 `run_manifest.json` 定位文件。下游交付只消费 `sizing_handoff.json`，可用 `pll_allocation.delivery.validate_sizing_handoff` 校验摘要、候选及正式证据；`recommended` 可能只是 M1 诊断推荐，不能作为正式交付。`initial/verification_handoff.json` 则供 M2 接续执行；支持连同整个运行目录迁移。新运行只写职责名文件，历史阶段名数据按原合同读取，迁移方法见 [输入输出合同](docs/IO_CONTRACTS.md)。
 
 ```text
 pll_allocation/
@@ -202,12 +204,13 @@ python -m pytest -q
 
 开发前请阅读 [AGENTS.md](AGENTS.md) 和[兼容性说明](docs/COMPATIBILITY.md)。欢迎通过 [Issues](https://github.com/Jasperskkr/PLL_EVALAGENT/issues) 反馈问题；复现信息建议包含运行环境、命令、配置与错误摘要。实验输出、API 原始日志、凭据和编译产物保存在本地。
 
-2026-11-24 提交版本的独立检出已重建四个后端，完整回归 **958通过、10项历史档案依赖跳过**；N=4/8/10/16等13组真实流程的230项产物检查通过。N4/N10严格案例仅部分交付；此前N10、lock下限60µs案例以实测72µs交付1/1。12组VCO导出与源交接校验通过，适用条件和完整结果见[提交版本审核](docs/PUBLISH_AUDIT_20261124.md)。
+本次数值边界修复和职责命名清洗保留原噪声、整数N与VCO能力，支持N=4/8/10/16等不同规格的完整分配与验证。旧合同读取、新产物迁移、回归和独立源码验收结果见 [最新发布审核](docs/PUBLISH_AUDIT_20261125.md)。
 
 ## 文档
 
-- [当前代码状态与推送交接](docs/CODE_STATE_20261124.md)：集成改动、验收证据、分支与远端状态。
-- [提交版本审核](docs/PUBLISH_AUDIT_20261124.md)：发布范围、独立检出构建与全链路验收。
+- [当前发布审核](docs/PUBLISH_AUDIT_20261125.md)：远端比较、数值与命名修复、独立源码验收和提交范围。
+- [输入输出合同](docs/IO_CONTRACTS.md)：用户入口、权威产物、M1→M2与已验证候选→下游交接。
+- [此前集成审核](docs/PUBLISH_AUDIT_20261124.md)：噪声、整数N、VCO与共享交付的发布记录。
 - [VCO 开发合同](docs/VCO_SIZING_CONTRACT.md)：guidance、实测反馈、约束与回填再验证。
 - [运行指南](docs/RUNNING.md)：安装、原生构建、示例与故障排查。
 - [多策略分配](docs/SPEC_ALLOCATION.md)：模式、配置字段、预算与结果语义。

@@ -225,7 +225,7 @@ def test_stable_native_anchor_is_bound_to_parameters_not_only_run_id(nominal, tm
     except (FileNotFoundError, RuntimeError) as error:
         pytest.skip('native build unavailable: '+str(error))
     _, _, r = nominal
-    row = next(c for c in r['candidates'] if c['evidence_id'] == 'A8S0000005')
+    row = next(c for c in r['candidates'] if c['evidence_id'] == 'M1_SAMPLE:0000005')
     assert row['parameter_sha256'] == '0f7d5eb93e1d7d38b92dafe7521d49445d7d9a4775e49cd58a74f919d654e0fa'
     assert row['metrics']['BW_Hz'] == pytest.approx(225e3, abs=.01)
     assert row['metrics']['PM_deg'] == pytest.approx(77.23570951350865, abs=1e-6)

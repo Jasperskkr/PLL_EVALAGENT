@@ -1,5 +1,6 @@
 """Export existing PhysicsContext contract from actual shared executor evidence."""
 from copy import deepcopy
+from ..contract_names import current_label
 import csv
 import hashlib
 import json
@@ -23,12 +24,13 @@ def was_formal_call(row):
     return bool(row.get('formal_M1_called', row.get('formal_M1_result')))
 
 
-def export_context(problem,samples,out,*,cost,sensitivities=(),scope='STAGE7_5_EXPLORATION',llm_executed=False):
+def export_context(problem,samples,out,*,cost,sensitivities=(),scope='SUBREGION_M1_EXPLORATION',llm_executed=False):
+    scope=current_label(scope)
     root=Path(out);root.mkdir(parents=True,exist_ok=False)
     samples=deepcopy(samples);sensitivities=deepcopy(sensitivities)
-    # Imported evidence must not collide with a new regional execution A8S namespace.
-    if scope in ('DETERMINISTIC_PHYSICS_STAGE7','LLM_GUIDED_STAGE7_5'):
-        ids={r['evidence_id']:'P75:'+r['evidence_id'] for r in samples}
+    # Imported evidence must not collide with new regional M1 sample IDs.
+    if scope in ('DETERMINISTIC_PHYSICS_EXPLORATION','LLM_GUIDED_SUBREGION_EXPLORATION'):
+        ids={r['evidence_id']:'EXPLORATION:'+r['evidence_id'] for r in samples}
         for r in samples:
             r['source_pilot_evidence_id']=r['evidence_id'];r['evidence_id']=ids[r['evidence_id']]
             if r.get('duplicate_of'):r['duplicate_of']=ids.get(r['duplicate_of'],r['duplicate_of'])
@@ -80,5 +82,4 @@ def export_context(problem,samples,out,*,cost,sensitivities=(),scope='STAGE7_5_E
     with (root/'exploration_report.md').open('x',encoding='utf-8') as f:
         f.write('# M1 exploration evidence\n\n'+json.dumps(summary,ensure_ascii=False,indent=2)+
             '\n\nSource: '+scope+'. Regions are sample-supported suggestions; M2 NOT_EVALUATED.\n')
-    (root/'stage7_report.md').write_bytes((root/'exploration_report.md').read_bytes())
     return root/'physics_context.json'

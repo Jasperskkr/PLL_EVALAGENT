@@ -79,7 +79,7 @@ def prepare_initial(problem_path,out,config):
     obs=ex.execute(d)
     ex.close()
     # Prefix inherited IDs so new RegionExplorer sessions cannot collide with
-    # their own A8S request IDs. Preserve the exact source evidence mapping.
+    # their own M1 sample IDs. Preserve the exact source evidence mapping.
     samples=deepcopy(ex.rows);ids={r['evidence_id']:'CAL:'+r['evidence_id'] for r in samples}
     for r in samples:
         r['source_evidence_id']=r['evidence_id'];r['evidence_id']=ids[r['evidence_id']]
@@ -120,7 +120,7 @@ def run_subregion(problem_path,out,*,config,provider_config=None,initial_context
             all(r['origin'].startswith('LOCAL_SOBOL:') for r in initial),'calibration exceeds small Sobol-only contract')
     ex=RegionExplorer(initial_context_path,root/'executor',m1_budget=cfg['total_m1_budget']-initial_calls)
     archive=CandidateArchive(ex,root/'candidate_archive.jsonl');ex.candidate_archive=archive
-    is_llm=cfg['strategy']=='LLM_GUIDED_STAGE7_5'
+    is_llm=cfg['strategy']=='LLM_GUIDED_SUBREGION_EXPLORATION'
     planner=policy if policy is not None else LLMRegionPolicy(provider_config or {},prompt=PROMPT) if is_llm else None
     real=isinstance(planner,LLMRegionPolicy)
     meter=Meter(cheap_limit=cfg['analytic_call_limit'],m1_limit=0)

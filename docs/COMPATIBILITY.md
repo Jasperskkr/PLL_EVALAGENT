@@ -1,5 +1,7 @@
 # 名称迁移、兼容与来源合同
 
+2026-11-24 A-P0：经用户明确授权，`allocation/physics.py` 的固定根包围与生成值闭边界处理做数值修订，当前实现不再宣称与冻结迁移源逐字节相同。原 `source_sha256` 保留，`destination_sha256`、`numeric_robustness.json` 和 Registry 的 `previous_binding` 明确衔接新实现；架构审核只对这项登记修订允许例外，其余来源继续原严格字节检查。新增 `numerics.py` 纳入模型身份，旧Context需按新身份重建。M1公共状态、指标定义和接口兼容，增加结构化诊断与可选求根diagnostics；未改公式、Sobol采样或M2。实验A历史文件不修改，其中唯一检查旧源码字节的测试通过A-P0插件对保存的旧源码快照执行，其他A计算测试仍执行当前生产实现。
+
 2026-11-24 标准连续域 M2 支持当前问题的正整数 N：请求 schema 保持 `pll-m2-verification-request-1.0`，适配身份升级为 `pll-continuous-m2-1.1`，派生协议身份为 `integer_n_metrics_1.0`，显式绑定 N、f_ref 和输出目标。旧 `verify.py`、`kernel.cpp`、`m2_protocol.json` 字节保留，冻结链和可选扩展保留其原范围。simulator/measure/experiments/run_suite/continuous 的旧新源码身份保存在 `configs/provenance/integer_n_m2.json`；Registry的simulator当前绑定据此更新，旧哈希和历史N=8证据保留。旧已执行请求的源码/协议身份不能冒充新版结果，复验须生成当前请求和新的实验目录。
 
 ## 2026-11-24 输入、输出与交接收口
@@ -8,7 +10,7 @@
 - 多候选运行新增 `pll-run-manifest-1.0` 的 `run_manifest.json`。它用相对路径和文件 SHA256 索引权威结果；旧结果字段、文件副本及 schema 保留。下游候选集合只有 `sizing_handoff.json.candidates`，不能读兼容 `recommended` 字段推断交付成功。
 - `pll-sizing-targets-1.0` 的校验移到共享 `delivery.py`，生产端及 VCO 消费端复用。候选数、目标达成标志、状态、推荐身份及原有正式证据必须一致。空交付、TEST 和预算内部分交付仍合法；不能伪装 TARGET_REACHED。
 - 交付协议校验按记录中的M2适配版本选择：1.0为原N=8协议，1.1为绑定候选N、f_ref、输出目标的 `integer_n_metrics_1.0`。旧交付可离线读取，不能将旧请求身份改成新版而沿用历史证据；两个版本都继续保留来源与完整SystemSpec未认证状态。
-- M1 Handoff 必须同时 `ready_for_stage9=true`、`gate_status=READY`、无阻断原因。新生成 Handoff 附绑定在原摘要中的相对 context 路径；复制完整运行目录后优先读取复制的 context，不回退原目录绕过缺失/损坏证据。旧 Handoff 没有相对路径时仍按原绝对路径读取，历史文件不改写。单独复制一个 M1 Handoff JSON 仍不足以继续执行。
+- 新 M1 Handoff 必须同时 `ready_for_verification=true`、`gate_status=READY`、无阻断原因。旧 schema 读取 `ready_for_stage9`，混用就绪字段会拒绝。新生成 Handoff 附绑定在原摘要中的相对 context 路径；复制完整运行目录后优先读取复制的 context，不回退原目录绕过缺失/损坏证据。旧 Handoff 没有相对路径时仍按原绝对路径读取，历史文件不改写。单独复制一个 M1 Handoff JSON 仍不足以继续执行。
 - 原数值公式、六份冻结分配源码、原生内核、测量协议和判决保持；新增校验不认证实验真实性，不升级 PM/jitter UNKNOWN。
 
 2026-11-20 LLM Physics Tool 补充：`PhysicsRegionRequest 1.0` 的字段、校验及构造含义保留；可选 `pll-physics-region-request-1.1` 仅增加有序 `physical_objectives` 和当前 `tool_options_sha256`。按 noise/startup 开关分别开放目标，全部关闭时隐藏新增 State 与 Prompt。其余动作 schema、三模式与 Auto 切换规则保持。`CPRED` 仅为带候选/问题/模型/profile/适用条件的预测证据，不取得 M1 seed 或 M2 PASS 权限。`PROBE_REGION` 修复为直接执行原 Sobol，避免误走 SLSQP 预播种而拒绝合法的小预算；未改共享求解器。详见 [Spec Allocation](SPEC_ALLOCATION.md#llm-主动选择条件物理目标)。
@@ -63,7 +65,7 @@ CLI 启动在 stderr 打印 `EXECUTION_ROUTE_SELECTED`，结果目录保存 `exe
 |--verification-problem|--stage9-problem|
 |--verification-config|--stage9-config|
 
-新结果名为 verification_handoff.json、verification_result.json、cost_summary.json、feedback_report.md；相应旧文件名仍输出，已有本地 GUI/脚本继续工作。序列化 schema、ready_for_stage9 等键、来源标签和模型版本不做全局文字替换；交接优先查看 gate_status。
+新结果只写 verification_handoff.json、verification_result.json、cost_summary.json、feedback_report.md 等职责名文件，停止生成阶段名副本。旧消费者须迁移文件读取位置。新合同的 schema、就绪字段及来源标签采用职责名，历史签名数据按记录版本校验，交接同时检查就绪、gate_status 和 gate_reasons。详见 [输入输出合同](IO_CONTRACTS.md)。
 
 configs 和 tools 已按职责整理，旧阶段目录及重复配置已移除，详见各目录 README。配置迁移保留数值载荷、冻结 ID 和来源字符串；`pipeline.json` 仅更新文件引用。哈希绑定文件可以迁移，但必须显式记录旧/新身份并重建依赖它的构建。本次收据为 `configs/provenance/config_paths.json`、`verification_profiles.json`，物理映射绑定也已更新。
 
@@ -73,7 +75,7 @@ configs 和 tools 已按职责整理，旧阶段目录及重复配置已移除�
 
 原生默认目录为 `build_phase_step/`、`build_return_ratio/`、`build_nonideal_noise/`。`PLL_NONIDEAL_NOISE_BUILD_DIR` 优先于旧 `PLL_STAGE6C_BUILD_DIR`；需要新建构建及其身份文件，不能改写旧身份绕过检查。
 
-本次保留schema、protocol/model ID、strategy/source标签及旧序列化键。旧报告/结果文件仍有兼容副本，优先使用职责名称。全部21项迁移及源码身份变化另记录在 `configs/provenance/naming_migration.json`，原配置迁移收据不被冒充为此次结果。
+历史 schema、protocol/model ID、strategy/source 标签及序列化键保留在旧证据中；新合同使用职责名，不再输出旧报告/结果副本。原21项文件迁移记录在 `configs/provenance/naming_migration.json`；本次合同升级见 `configs/provenance/io_naming_migration.json`，原迁移收据不改写。
 
 configs/provenance 保存原实现 SHA 和物理关系绑定。data/behavioral_space_v1/reference 仅保留参考数值代码与来源合同，供独立回归；这些不是新实验数据。
 

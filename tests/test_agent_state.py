@@ -89,7 +89,7 @@ def test_provider_failure_never_loses_best_and_rechecks(context,tmp_path,fail_at
     r=x.run(); a=read_allocation(x)
     assert r['termination_reason']=='LLM_PROVIDER_FAILED'
     assert r['m1_allocation_status']=='KNOWN_M1_FEASIBLE_RECHECKED'
-    assert a['recommended_nominal']['judgment']['minimum_normalized_margin'] >= a['best_stage7_calibration']['judgment']['minimum_normalized_margin']
+    assert a['recommended_nominal']['judgment']['minimum_normalized_margin'] >= a['best_calibration_candidate']['judgment']['minimum_normalized_margin']
     assert a['recommendation_recheck']['row']['formal_M1_called']
     assert a['recommendation_recheck']['row']['origin']=='RECOMMENDATION:FINAL_RECHECK'
     assert r['cost']['M1_calls']<=40 and r['cost']['LLM_calls']==0
@@ -305,7 +305,7 @@ def test_origin_accounting_separates_local_stencils(context,tmp_path):
     s=build_state(x.explorer,x.config,[],round_number=1,calls_remaining=3,calibration=x.calibration)
     counts=s['calibration']['origins_separately_counted']
     assert counts['SOBOL_GLOBAL']==8 and counts['SENSITIVITY_PROBE']>0 and counts['PHYSICS_SEED']>0
-    assert sum(counts.values())==s['calibration']['stage7_unique_points']
+    assert sum(counts.values())==s['calibration']['unique_calibration_points']
     assert s['best_known']['normalized'] and s['current_tightest_constraint']
     x.status='TEST_FINISHED';x.finish()
 

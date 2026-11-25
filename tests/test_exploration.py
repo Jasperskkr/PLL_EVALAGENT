@@ -165,8 +165,9 @@ def test_feasible_exploration_has_regions_stencils_and_context(tmp_path):
     assert result['unsupported_or_pending_enabled_specs'] == ['lock_time_s', 'jitter_s']
     assert all(evidence[e]['M1_status'] == 'OK' for c in columns.values() for e in c['evidence_ids'])
     for name in ('problem_resolved.json', 'physics_screening.json', 'm1_samples.csv', 'candidate_regions.json',
-                 'sensitivity.json', 'stage7_report.md', 'run_events.jsonl'):
+                 'sensitivity.json', 'exploration_report.md', 'run_events.jsonl'):
         assert (folder/name).is_file()
+    assert not (folder/'stage7_report.md').exists()
 
 
 def test_infeasible_proof_and_not_found_are_distinct(tmp_path):
@@ -224,7 +225,9 @@ def test_budget_exhaustion_retains_unevaluated_rows(tmp_path):
 
 def test_numerical_failure_keeps_reason_and_cannot_use_cheap_as_pass(tmp_path):
     p = small()
-    p['parameters']['Icp'].update(min=5e-301, max=2e-300, default=1e-300)
+    # The old 1e-300 case now recovers via adaptive scanning. Keep this a real
+    # coefficient-underflow control, not a requirement to reproduce scan failure.
+    p['parameters']['Icp'].update(min=5e-321, max=2e-320, default=1e-320)
     p['exploration'].update(sobol_samples=0, physics_seed_count=1, sensitivity_representatives=0)
     result, folder = run(tmp_path, p)
     row = records(folder)[0]

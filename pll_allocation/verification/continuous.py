@@ -17,7 +17,8 @@ from ..agent.handoff import validate_handoff
 from ..exploration.contracts import require
 from ..physics_mapping.model import fingerprint, parse_parameters
 from .build_identity import check_build, identities
-from .experiments import protocol, read, write, response_sweep
+from .experiments import read, write, response_sweep
+from .metric_protocols import integer_n_protocol
 from .run_suite import capture_pair, comparison_after_measurement
 from .simulator import MODEL_VERSION, validate_frequency_plan
 from .verify import interval_judgment
@@ -45,9 +46,9 @@ def measurement_suite(p,out,doc,*,before_posthoc_m1):
 def model_identity():
     check_build()
     root = Path(__file__).parent
-    return {'model_version': MODEL_VERSION, 'native': identities(), 'adapter_version': 'pll-continuous-m2-1.1',
+    return {'model_version': MODEL_VERSION, 'native': identities(), 'adapter_version': 'pll-continuous-m2-1.2',
         'source_sha256': {n: hashlib.sha256((root/n).read_bytes()).hexdigest() for n in
-            ('continuous.py', 'verify.py', 'simulator.py', 'measure.py', 'experiments.py', 'run_suite.py')}}
+            ('continuous.py', 'metric_protocols.py', 'verify.py', 'simulator.py', 'measure.py', 'experiments.py', 'run_suite.py')}}
 
 
 def verification_request(handoff, *, run_id, observation_id, timeout_s):
@@ -55,13 +56,7 @@ def verification_request(handoff, *, run_id, observation_id, timeout_s):
     p = validate_frequency_plan(parameters)
     require(type(timeout_s) in (int, float) and math.isfinite(timeout_s) and 0 < timeout_s <= 3600,
             'bounded M2 deadline required')
-    doc = protocol()
-    doc.update(schema_version='behavioral-metric-protocol-1.2', protocol_id='integer_n_metrics_1.0',
-        base_protocol_id=doc['protocol_id'],
-        frequency_plan={'f_ref_Hz':p['f_ref'],'N':p['N'],'output_frequency_Hz':p['N']*p['f_ref']})
-    doc['judgment']['BW']='compare converged M2 bandwidth interval to current request Spec bounds'
-    doc['judgment']['frequency']='candidate N*f_ref target; retain capture ppm and numerical convergence thresholds'
-    doc['supersedes']='track_b_metrics_1.1 adapter: bind candidate N and N*f_ref; measurement thresholds unchanged'
+    doc = integer_n_protocol(p)
     item = {'schema_version': 'pll-m2-verification-request-1.0', 'run_id': run_id,
         'observation_id': observation_id, 'candidate_id': handoff['recommended_nominal']['evidence_id'],
         'candidate_sha256': fingerprint(parameters), 'problem_id': handoff['problem']['problem_id'],

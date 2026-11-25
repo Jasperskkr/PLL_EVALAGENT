@@ -1,5 +1,6 @@
 """Small multi-strategy entry adapter to the formal allocation/feedback pipeline."""
 from copy import deepcopy
+from ..contract_names import FEEDBACK_SCHEMA, handoff_ready
 import json
 from pathlib import Path
 import time
@@ -110,12 +111,12 @@ def run_spec_allocation(problem_config, out, *, config, provider_config=None, fe
     h = json.loads(handoff_path.read_text(encoding='utf-8'))
     verification = None
     verification_started_s = None
-    if qualified and h['ready_for_stage9'] and c['m2_budget'] and cost['M1_calls'] < c['m1_budget']:
+    if qualified and handoff_ready(h) and c['m2_budget'] and cost['M1_calls'] < c['m1_budget']:
         child = search_config(c, max(3, c['m1_budget']-cost['M1_calls']))
         child['candidate_pool']['llm_call_limit'] = max(0, c['llm_budget']-cost['LLM_calls'])
         verification_started_s = time.perf_counter()-started
         verification = run_feedback(handoff_path, root/'verification', problem_config=problem_config,
-            feedback_config={'schema_version': 'pll-stage9-feedback-1.0',
+            feedback_config={'schema_version': FEEDBACK_SCHEMA,
                 'm1_budget': c['m1_budget']-cost['M1_calls'], 'm2_budget': c['m2_budget'],
                 'm2_target_count': c['m2_target_count'],
                 'llm_budget': max(0, c['llm_budget']-cost['LLM_calls']), 'max_reallocations': c['max_reallocations'],
@@ -124,7 +125,7 @@ def run_spec_allocation(problem_config, out, *, config, provider_config=None, fe
         for k in tuple(cost):
             cost[k] += verification['cost'].get(k, 0)
         for row in rows(root/'verification/candidate_archive.jsonl'):
-            row['source_run'] = row.get('stage9_source_run', str(root/'verification'))
+            row['source_run'] = row.get('candidate_source_run', str(root/'verification'))
             ledger.append(row)
     verified = rows(root/'verification/m2_verifications.jsonl')
     by_hash = {}

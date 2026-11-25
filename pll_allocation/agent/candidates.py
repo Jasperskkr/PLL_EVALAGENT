@@ -1,5 +1,6 @@
 """Append-only current-problem evidence archive; no model or solver authority."""
 from copy import deepcopy
+from ..contract_names import current_label
 import math
 
 from ..exploration.contracts import check_candidate, judge, require
@@ -29,8 +30,8 @@ class CandidateArchive:
     def sync(self):
         """All original evidence remains on disk even when revalidation excludes it."""
         import json
-        for source, rows in [('STAGE7_CALIBRATION', self.explorer.calibration_samples),
-                             ('STAGE8B_SEARCH', self.explorer.rows)]:
+        for source, rows in [('M1_CALIBRATION', self.explorer.calibration_samples),
+                             ('M1_SEARCH', self.explorer.rows)]:
             for row in rows:
                 sid = row['evidence_id']
                 if sid in self.seen:
@@ -70,13 +71,13 @@ class CandidateArchive:
                     stream.write(json.dumps(item, ensure_ascii=False, allow_nan=False)+'\n')
 
     def best(self, source=None, *, feasible_only=False):
-        rows = [r for r in self.entries if (source is None or r['source'] == source)
+        rows = [r for r in self.entries if (source is None or current_label(r['source']) == current_label(source))
                 and (not feasible_only or r['judgment']['m1_feasibility'] == 'FEASIBLE')]
         return min(rows, key=rank, default=None)
 
     def summary(self, *, absolute=1e-6, relative=1e-6):
         self.sync()
-        old, new, known = self.best('STAGE7_CALIBRATION'), self.best('STAGE8B_SEARCH'), self.best()
+        old, new, known = self.best('M1_CALIBRATION'), self.best('M1_SEARCH'), self.best()
         def compact(row):
             return deepcopy(row) if row else None
         improvement = material_change(old['judgment']['minimum_normalized_margin'] if old else None,

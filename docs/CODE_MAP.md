@@ -14,6 +14,8 @@
 
 正式主线、可选研究、旧数值参考与兼容入口分别列出。保留模块不代表各入口支持相同的Agent反馈能力；实际范围见 [项目章程](../PROJECT_CHARTER.md)。
 
+接口补充：`contract_names.py` 定义版本化命名兼容，`verification/metric_protocols.py` 定义新旧整数 N 测量协议的准确读取；`tests/test_naming_contracts.py` 覆盖摘要不变、混合合同拒绝和新输出无阶段名副本。用户入口及字段含义见 [IO 合同](IO_CONTRACTS.md)。
+
 ## 入口与旧基础框架
 
 |文件|基本职责|阅读入口|

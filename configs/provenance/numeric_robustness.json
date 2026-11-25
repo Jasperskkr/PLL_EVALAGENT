@@ -1,0 +1,37 @@
+{
+  "schema_version": "pll-numeric-robustness-1.0",
+  "authorization": "User Experiment A-P0 numerical-only repair",
+  "baseline_commit": "f2f0874a7b8b1b5fa8b56afd66e7ab58c9f5147c",
+  "scope": "Equations/topology/metric definitions/M2 unchanged; bounded solver and generated closed-bound roundoff handling",
+  "changes": {
+    "pll_allocation/allocation/physics.py": {
+      "before_sha256": "f10aa7d11044d484a18bd6aaa3b420f08f69f1215ce9c7d746132a4e72872860",
+      "after_sha256": "04b5e2071dd91626f2226f281ece97d0f39bb49818d69ae30a4d4e6fb614bb7c"
+    },
+    "pll_allocation/physics_mapping/model.py": {
+      "before_sha256": "412dbbbec9a499c56fe10781f2ff1debb525ead8fb411a2f72f056d36e8a2e34",
+      "after_sha256": "2db5c476188c38c9f3ca868ddf43ae779bbc543486cf8838e620b201401ce0bf"
+    },
+    "pll_allocation/exploration/contracts.py": {
+      "before_sha256": "ae239aefe7c214b261b37748362447d542dff68a00f32e4072e300733eaaafed",
+      "after_sha256": "140d4512bf72d546c57cbe4e054aa57ab58b7d7ba68191f9e9a8e96b3b563d26"
+    },
+    "pll_allocation/exploration/physics_region_builder.py": {
+      "before_sha256": "d3af68f07cbd8312014751a8be16e49d18adbd4dc3a260e9fd6d97da034615ce",
+      "after_sha256": "3ffb6a44e871c73f22f30a3bf4858997e57e4f3333201f6d95b8f81888809bdb"
+    },
+    "pll_allocation/numerics.py": {
+      "before_sha256": null,
+      "after_sha256": "d3be2b4dc4b3d9a554833c15e64e8ade2ae4d81ee181e86da24d6eff802fbc20"
+    },
+    "pll_allocation/exploration/engine.py": {
+      "before_sha256": "08a74c614c6e7f3f5aad5c33a775e4771863ed572be235118faed5423b235971",
+      "after_sha256": "92768ba4c6f0a0c156da05aa97f09d599b05d24ea6b1d695ee30a6acd7675f61"
+    },
+    "pll_allocation/physics_mapping/registry.py": {
+      "before_sha256": "a9b5f073bb021968fcba09c9c2aae929a6337e55780430116e9663de6ff4ad20",
+      "after_sha256": "894cef7756f58fb2609eea78e6df4be021740075070feff2fecc43c319b3e60a"
+    }
+  },
+  "historical_byte_policy": "Before hashes are retained; numerical revision is not byte-identical to frozen allocation source."
+}

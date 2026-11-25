@@ -130,7 +130,7 @@ def test_existing_runner_build_optimize_recheck_handoff(initial,tmp_path):
     x=run_initial_allocation(initial[0],tmp_path/'run',config=config(),initial_context=initial[1])
     assert x['status']!='PIPELINE_ERROR' and x['cost']['M1_calls']<=64
     assert x['cost']['LLM_calls']==0 and x['constructed_seed_count']>=1
-    root=tmp_path/'run';h=json.loads((root/'stage9_handoff.json').read_text(encoding='utf-8'));validate_handoff(h)
+    root=tmp_path/'run';h=json.loads((root/'verification_handoff.json').read_text(encoding='utf-8'));validate_handoff(h)
     assert h['M2_status']=='NOT_EVALUATED'
     rows=[json.loads(s) for s in (root/'executor/m1_samples.jsonl').read_text(encoding='utf-8').splitlines()]
     assert sum(r['formal_M1_called'] for r in rows)+4==x['cost']['M1_calls']
@@ -154,7 +154,7 @@ class FailAfterBuild(DeterministicToolPolicy):
 def test_provider_failure_does_not_lose_candidates(initial,tmp_path):
     x=run_initial_allocation(initial[0],tmp_path/'run',config=config(),initial_context=initial[1],policy=FailAfterBuild())
     assert x['status']=='LLM_PROVIDER_FAILED'
-    h=json.loads((tmp_path/'run/stage9_handoff.json').read_text(encoding='utf-8'));validate_handoff(h)
+    h=json.loads((tmp_path/'run/verification_handoff.json').read_text(encoding='utf-8'));validate_handoff(h)
     assert h['recommended_nominal'] and x['cost']['M1_calls']<=64
 
 def test_future_feedback_is_read_only_provenance(initial,tmp_path):

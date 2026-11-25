@@ -226,6 +226,9 @@ def build_physics_region(problem, request, *, model_fingerprint, random_seed, hi
                 continue
             try:
                 raw = inverse_at_shape(axes(problem), c1, c2, bw, shape, meter)
+                if meter.events and meter.events[-1].get('boundary_corrections'):
+                    entry['boundary_corrections'] = deepcopy(meter.events[-1]['boundary_corrections'])
+                    entry['formal_M1_required'] = True
                 if raw is None:
                     entry.update(status='NO_COMPATIBLE_GAIN_SPLIT', global_Icp_A=[a['Icp']['min'], a['Icp']['max']],
                                  global_Kvco_Hz_per_V=[a['Kvco']['min'], a['Kvco']['max']])
@@ -316,7 +319,9 @@ def build_physics_region(problem, request, *, model_fingerprint, random_seed, hi
                 if entry['status'] == 'STARTED':
                     entry['status'] = 'NO_NEW_LEGAL_SEED'
             except (ValueError, ArithmeticError, RuntimeError) as error:
-                entry.update(status='INVERSE_MODE_FAILED', reason=type(error).__name__+': '+str(error))
+                entry.update(status='INVERSE_MODE_FAILED', reason=type(error).__name__+': '+str(error),
+                             reason_code=getattr(error, 'reason_code', 'INVERSE_CONSTRUCTION_ERROR'),
+                             numerical_diagnostics=getattr(error, 'diagnostics', {}), global_infeasibility_proven=False)
         if extended_search and seeds:
             # Lexicographic conditional frontier: never trade a supported M1
             # bound for noise. Failed noise trials remain proposals/evidence.

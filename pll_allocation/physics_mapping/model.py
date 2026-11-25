@@ -59,9 +59,12 @@ def fingerprint(value):
 
 
 class ModelError(ValueError):
-    def __init__(self, status, reason):
+    def __init__(self, status, reason, reason_code=None, diagnostics=None):
         super().__init__(reason)
         self.status, self.reason = status, reason
+        self.reason_code = reason_code or ('INPUT_UNSUPPORTED' if status == Status.UNSUPPORTED else
+                                          'INPUT_OUT_OF_DOMAIN' if status == Status.OUT_OF_DOMAIN else 'NUMERICAL_FAILURE')
+        self.diagnostics = diagnostics or {}
 
 
 def finite(value, name):
@@ -172,27 +175,97 @@ def _response(p, frequency):
     l = (p['Icp']/(2*math.pi))*(2*math.pi*p['Kvco'])*z/(p['N']*s)
     t = l/(1+l)
     if not all(math.isfinite(x) for v in (z, l, t) for x in (v.real, v.imag)):
-        raise ModelError(Status.NUMERICAL_FAILURE, 'nonfinite transfer function')
+        raise ModelError(Status.NUMERICAL_FAILURE, 'nonfinite transfer function', 'RESPONSE_NONFINITE')
     return z, l, t
 
 
-def _crossing(frequencies, residual, label):
-    values = [residual(f) for f in frequencies]
+def _crossing(frequencies, residual, label, diagnostics=None):
+    info = diagnostics if diagnostics is not None else {}
+    info.update(function_evaluations=0, iterations=0)
+    def measured(f):
+        info['function_evaluations'] += 1
+        return residual(f)
+    values = [measured(f) for f in frequencies]
     if not all(math.isfinite(v) for v in values):
-        raise ModelError(Status.NUMERICAL_FAILURE, label + ': nonfinite scan')
+        raise ModelError(Status.NUMERICAL_FAILURE, label + ': nonfinite scan', 'SCAN_NONFINITE')
     brackets = [(a, b) for a, b, ya, yb in zip(frequencies, frequencies[1:], values, values[1:]) if ya > 0 >= yb]
+    info.update(endpoint_residuals=[values[0], values[-1]], bracket_count=len(brackets))
     if len(brackets) != 1:
-        raise ModelError(Status.NUMERICAL_FAILURE, f'{label}: expected one bracketed downward crossing; found {len(brackets)}')
+        side = 'LOW' if all(v <= 0 for v in values) else 'HIGH' if all(v > 0 for v in values) else None
+        info['missing_side'] = side
+        raise ModelError(Status.NUMERICAL_FAILURE, f'{label}: expected one bracketed downward crossing; found {len(brackets)}',
+                         'SCAN_BOUNDARY_MISSING' if len(brackets) == 0 and side else 'SCAN_CROSSING_UNRELIABLE', info)
     low, high = map(math.log10, brackets[0])
-    for _ in range(70):
+    for iteration in range(70):
         mid = (low+high)/2
-        if residual(10**mid) > 0:
+        midvalue = measured(10**mid)
+        if not math.isfinite(midvalue):
+            raise ModelError(Status.NUMERICAL_FAILURE, label + ': nonfinite root residual', 'SCAN_NONFINITE')
+        if midvalue > 0:
             low = mid
         else:
             high = mid
         if high-low < 1e-12:
-            return 10**((low+high)/2)
-    raise ModelError(Status.NUMERICAL_FAILURE, label + ': crossing did not converge')
+            root = 10**((low+high)/2)
+            info.update(iterations=iteration+1, residual=measured(root), frequency_Hz=root)
+            return root
+    raise ModelError(Status.NUMERICAL_FAILURE, label + ': crossing did not converge', 'ROOT_ITERATION_BUDGET')
+
+
+def _loop_crossings(p, scan, fz, fp, gain, diagnostics):
+    """Original scan first; physically guided bounded fallback on missing side.
+
+    Explicit boundaries are never moved. All residuals must be finite and have
+    one sign before fallback; ambiguous/multiple crossings remain failures.
+    """
+    low = max(min(fz, fp)*1e-4, 1) if scan.minimum_Hz is None else finite(scan.minimum_Hz, 'scan minimum')
+    high = max(fz, fp, p['f_ref'])*100 if scan.maximum_Hz is None else finite(scan.maximum_Hz, 'scan maximum')
+    if type(scan.points) is not int or not 32 <= scan.points <= 100000 or not 0 < low < high or not math.isfinite(high):
+        raise ModelError(Status.OUT_OF_DOMAIN, 'bounded positive ordered frequency scan with 32..100000 points required', 'SCAN_INPUT_INVALID')
+    info = diagnostics.setdefault('scan', {})
+    info.update(initial_window_Hz=[low, high], minimum_Hz=low, maximum_Hz=high, points=scan.points,
+                expansions=0, max_expansions=8, response_evaluations=0, max_response_evaluations=400000,
+                explicit_minimum=scan.minimum_Hz is not None, explicit_maximum=scan.maximum_Hz is not None,
+                attempts=[])
+    natural = math.sqrt(gain/(p['C1']+p['C2']))/(2*math.pi)
+    info['physical_scales_Hz'] = {'LF_zero': fz, 'LF_pole': fp, 'gain_natural': natural}
+    def response(f):
+        if info['response_evaluations'] >= info['max_response_evaluations']:
+            raise ModelError(Status.NUMERICAL_FAILURE, 'M1 response evaluation budget exhausted', 'SCAN_EVALUATION_BUDGET')
+        info['response_evaluations'] += 1
+        return _response(p, f)
+    for attempt in range(info['max_expansions']+1):
+        info.update(minimum_Hz=low, maximum_Hz=high)
+        frequencies = [10**(math.log10(low)+(math.log10(high)-math.log10(low))*i/(scan.points-1)) for i in range(scan.points)]
+        trial = {'window_Hz': [low, high], 'crossings': {}}
+        info['attempts'].append(trial)
+        try:
+            ugf = _crossing(frequencies, lambda f: abs(response(f)[1])-1, 'UGF', trial['crossings'].setdefault('UGF', {}))
+            bw = _crossing(frequencies, lambda f: abs(response(f)[2])-2**-.5, 'BW', trial['crossings'].setdefault('BW', {}))
+            info.update(reason_code='OK', crossings=trial['crossings'])
+            return ugf, bw
+        except ModelError as error:
+            trial['reason_code'] = info['reason_code'] = error.reason_code
+            side = error.diagnostics.get('missing_side')
+            if error.reason_code != 'SCAN_BOUNDARY_MISSING' or side is None:
+                raise
+            explicit = scan.minimum_Hz is not None if side == 'LOW' else scan.maximum_Hz is not None
+            if explicit:
+                raise ModelError(error.status, error.reason, 'SCAN_EXPLICIT_BOUNDARY', error.diagnostics) from error
+            if attempt == info['max_expansions']:
+                raise ModelError(error.status, error.reason+'; extension budget exhausted', 'SCAN_EXPANSION_BUDGET') from error
+            scales = [v for v in (fz, fp, natural) if math.isfinite(v) and v > 0]
+            if side == 'LOW':
+                new = min(low/100, min(scales)/100)
+                if not 0 < new < low:
+                    raise ModelError(error.status, 'lower scan window not representable', 'SCAN_RANGE_UNREPRESENTABLE') from error
+                low = new
+            else:
+                new = max(high*100, max(scales)*100)
+                if not math.isfinite(new) or not high < new:
+                    raise ModelError(error.status, 'upper scan window not representable', 'SCAN_RANGE_UNREPRESENTABLE') from error
+                high = new
+            info['expansions'] += 1
 
 
 class M1Evaluator:
@@ -233,7 +306,7 @@ class M1Evaluator:
             fz = 1/(2*math.pi*p['Rz']*p['C2'])
             fp = (p['C1']+p['C2'])/(2*math.pi*p['Rz']*p['C1']*p['C2'])
             if not all(math.isfinite(x) and x > 0 for x in (fz, fp, 2*math.pi*fp)):
-                raise ModelError(Status.NUMERICAL_FAILURE, 'unrepresentable LF zero or pole')
+                raise ModelError(Status.NUMERICAL_FAILURE, 'unrepresentable LF zero or pole', 'COEFFICIENT_RANGE')
             result.factors['F_LF_TF'] = {'zero_Hz': fz, 'poles_rad_per_s': [0, -2*math.pi*fp],
                                           'nonzero_pole_Hz': fp, 'source': 'model/pll_linear_kernel.m'}
             # a*s^3+b*s^2+c*s+d: Routh stability without approximate pole roots.
@@ -241,42 +314,56 @@ class M1Evaluator:
             a, b, c, d = p['Rz']*p['C1']*p['C2'], p['C1']+p['C2'], gain*p['Rz']*p['C2'], gain
             terms = [a, b, c, d, b*c, a*d, fz, fp, kpfd]
             if not all(math.isfinite(x) and x > 0 for x in terms):
-                raise ModelError(Status.NUMERICAL_FAILURE, 'underflow/overflow in characteristic coefficients')
+                raise ModelError(Status.NUMERICAL_FAILURE, 'underflow/overflow in characteristic coefficients', 'COEFFICIENT_RANGE')
             if b*c <= a*d:
-                raise ModelError(Status.OUT_OF_DOMAIN, 'closed loop does not meet strict Routh stability condition')
+                # Positive ideal components have bc-ad=K*Rz*C2^2>0. Loss of
+                # strict floating-point ordering is not an instability proof.
+                raise ModelError(Status.NUMERICAL_FAILURE, 'strict Routh ordering unresolved at floating precision', 'ROUTH_CONDITION_UNRESOLVED')
             scan = request.scan
-            low = max(min(fz, fp)*1e-4, 1) if scan.minimum_Hz is None else finite(scan.minimum_Hz, 'scan minimum')
-            high = max(fz, fp, p['f_ref'])*100 if scan.maximum_Hz is None else finite(scan.maximum_Hz, 'scan maximum')
-            if type(scan.points) is not int or not 32 <= scan.points <= 100000 or not 0 < low < high or not math.isfinite(high):
-                raise ModelError(Status.OUT_OF_DOMAIN, 'bounded positive ordered frequency scan with 32..100000 points required')
-            frequencies = [10**(math.log10(low)+(math.log10(high)-math.log10(low))*i/(scan.points-1)) for i in range(scan.points)]
-            ugf = _crossing(frequencies, lambda f: abs(_response(p, f)[1])-1, 'UGF')
-            bw = _crossing(frequencies, lambda f: abs(_response(p, f)[2])-2**-.5, 'BW')
+            ugf, bw = _loop_crossings(p, scan, fz, fp, gain, result.diagnostics)
             pm = 180+math.degrees(cmath.phase(_response(p, ugf)[1]))
+            response_conditions = []
+            def conditioning(f, loop):
+                denominator = abs(1+loop)
+                amplification = (1+abs(loop))/denominator if denominator else None
+                if amplification is not None and not math.isfinite(amplification):
+                    amplification = None
+                if amplification is None or amplification > 1e8:
+                    response_conditions.append({'reason_code': 'CLOSED_LOOP_CANCELLATION',
+                        'frequency_Hz': f, 'one_plus_L_magnitude': denominator,
+                        'roundoff_amplification_estimate': amplification,
+                        'meaning': 'response precision warning; not physical infeasibility'})
+            conditioning(ugf, _response(p, ugf)[1])
             result.factors['F_LOOP'] = {'UGF_Hz': ugf, 'BW_Hz': bw, 'PM_deg': pm,
                 'characteristic_descending': [a, b, c, d], 'routh_stable': True,
                 'T_definition': 'L/(1+L); normalized reference phase response; H_ref=N*T',
                 'source': 'model/pll_linear_kernel.m; characterization/characterize_loop.m'}
-            result.diagnostics = {'scan': {'minimum_Hz': low, 'maximum_Hz': high, 'points': scan.points},
-                                  'UGF_over_fref': ugf/p['f_ref'], 'BW_over_fref': bw/p['f_ref'],
+            result.diagnostics.update({'UGF_over_fref': ugf/p['f_ref'], 'BW_over_fref': bw/p['f_ref'],
                                   'sampling_equivalence': 'NOT_ESTABLISHED', 'transient_lock': 'NOT_EVALUATED',
-                                  'MATLAB_runtime_calls': 0, 'behavioral_TB_calls': 0}
+                                  'MATLAB_runtime_calls': 0, 'behavioral_TB_calls': 0})
             for f in request.response_frequencies_Hz:
                 z, l, t = _response(p, f)
+                conditioning(f, l)
                 result.response.append({'frequency_Hz': f, 'Zlf_Ohm': [z.real, z.imag],
                                         'L': [l.real, l.imag], 'T': [t.real, t.imag]})
             metrics = dict(output_frequency_Hz=target, Vctrl_required_V=vreq,
                            Kvco_local_Hz_per_V=p['Kvco'], UGF_Hz=ugf, BW_Hz=bw, PM_deg=pm)
             if not all(math.isfinite(x) for x in metrics.values()):
-                raise ModelError(Status.NUMERICAL_FAILURE, 'nonfinite derived metric')
+                raise ModelError(Status.NUMERICAL_FAILURE, 'nonfinite derived metric', 'METRIC_NONFINITE')
+            result.diagnostics.update(reason_code='OK', precision_warnings=response_conditions,
+                                      physical_infeasibility_proven=False)
             result.metrics = {k: metrics[k] for k in request.metrics}
             result.units = {k: METRIC_UNITS[k] for k in request.metrics}
             result.protocols = {k: METRIC_PROTOCOLS[k] for k in request.metrics}
         except ModelError as error:
             result.status, result.reason = error.status, error.reason
+            result.diagnostics.update(reason_code=error.reason_code, failure_details=error.diagnostics)
+            result.diagnostics['physical_infeasibility_proven'] = False
             result.metrics, result.units, result.protocols, result.response = {}, {}, {}, []
         except (ArithmeticError, ValueError) as error:
             result.status, result.reason = Status.NUMERICAL_FAILURE, str(error)
+            result.diagnostics.update(reason_code='ARITHMETIC_RANGE' if isinstance(error, ArithmeticError) else 'NUMERIC_VALUE_ERROR',
+                                      physical_infeasibility_proven=False, exception_type=type(error).__name__)
             result.metrics, result.units, result.protocols, result.response = {}, {}, {}, []
         return result
 

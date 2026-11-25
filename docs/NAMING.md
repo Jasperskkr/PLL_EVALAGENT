@@ -2,6 +2,8 @@
 
 本次审查覆盖维护源码、Python导入、原生生成器/构建脚本、配置、测试夹具、结果文件和文档。后续名称应回答“负责什么”，不再表达项目推进阶段。
 
+当前规则：**新输入、新输出、新文档使用职责名；旧数据继续可读，新运行停止默认生成阶段名副本。** `M1/M2`、`v1/v2` 和表示相位阶跃的 `phase_step` 保留。输入、输出与消费者详见 [IO 合同](IO_CONTRACTS.md)。
+
 ## 主要命名
 
 |旧位置|推荐位置|职责|
@@ -41,20 +43,22 @@ cmd /c pll_allocation\verification\build_nonideal.cmd
 
 内部样本集合使用 `calibration_samples`；数值验证入口使用 `run_validation()`；反馈CLI内部字段使用 `verification_*`。旧 `stage7_samples` 属性、`run_stage1()` 和 `run_stage9_feedback(..., stage9_config=...)` 是兼容入口。
 
-新增/推荐的结果文件为 `exploration_report.md`、`region_exploration_report.md`、`verification_problem_resolved.json`、`verification_config.json`、`verification_run_events.jsonl`。原有 `verification_handoff.json`、`verification_result.json` 等职责名继续使用；历史结果名仍输出兼容副本。
+新增/推荐的结果文件为 `exploration_report.md`、`region_exploration_report.md`、`verification_problem_resolved.json`、`verification_config.json`、`verification_run_events.jsonl`。原有 `verification_handoff.json`、`verification_result.json` 等职责名继续使用；新运行不再写历史阶段名副本；旧运行目录保留。
 
 ## 有意保留的旧名称
 
 本次不对所有字符串做全局替换。以下记录承担兼容或证据职责：
 
 - 旧Python模块只作转发，旧命令只作兼容入口，正式实现与活动调用使用新位置。
-- schema、protocol_id、model version、strategy/source标签和部分序列化键保留原值，例如 `pll-stage9-result-1.0`、`ready_for_stage9`、`STAGE7_CALIBRATION`。更改这些值需要独立的数据合同升级。
+- 历史已签名数据保留原 schema、protocol/model ID、标签、就绪字段和摘要。新 M1 交接为 `pll-m1-verification-handoff-2.0` / `ready_for_verification`，反馈为 `pll-verification-feedback-2.0`，验证结果为 `pll-verification-result-2.0`。新校准/搜索标签为 `M1_CALIBRATION` / `M1_SEARCH`。读旧标签不改写原证据。
 - 配置profile的ID、来源描述，以及历史实验路径保留实际出处；不能为消除阶段字样改写研究来源。
 - 旧JSON测试夹具的文件名已改为职责名，文件内容保持原字节，其候选ID和证据元数据保留。
 - 六份原分配实现保持原字节，其中旧标签属于受保护的数值来源合同。
 - `_legacy` 中的归档工具保留旧材料路径，明确不属于默认分配链。
 
 因此，搜索阶段字样仍会找到上述历史合同和兼容记录；它们不再作为活动实现的位置或项目阅读入口。
+
+新证据 ID 使用 `M1_SAMPLE:`、`REGION_ASSESSMENT:`、`REGION_OBSERVATION:` 和 `EXPLORATION:`。缓存来源根据证据所属 context 判断，不再从阶段编号前缀推断。旧 ID 在读取时保持原样。
 
 ## 检查和迁移证据
 

@@ -156,7 +156,7 @@ def test_external_context_on_another_drive_preserves_absolute_binding(allocation
     assert validate_handoff(handoff) == source['recommended_nominal']['parameters']
 
 
-@pytest.mark.parametrize('version', ['pll-continuous-m2-1.0', 'pll-continuous-m2-1.1'])
+@pytest.mark.parametrize('version', ['pll-continuous-m2-1.0', 'pll-continuous-m2-1.1', 'pll-continuous-m2-1.2'])
 def test_recorded_protocol_supports_both_versions_without_native_build(allocation, monkeypatch, version):
     from pll_allocation.verification import continuous
     from pll_allocation.verification.experiments import protocol
@@ -167,14 +167,18 @@ def test_recorded_protocol_supports_both_versions_without_native_build(allocatio
     request = deepcopy(current)
     if version == 'pll-continuous-m2-1.0':
         request['protocol'] = protocol()
-        request['protocol_id'] = request['protocol']['protocol_id']
-        request['protocol_sha256'] = fingerprint(request['protocol'])
+    elif version == 'pll-continuous-m2-1.1':
+        from pll_allocation.verification.metric_protocols import integer_n_protocol
+        from pll_allocation.physics_mapping.model import parse_parameters
+        request['protocol'] = integer_n_protocol(parse_parameters(request['parameters']), legacy=True)
+    request['protocol_id'] = request['protocol']['protocol_id']
+    request['protocol_sha256'] = fingerprint(request['protocol'])
     request['M2_model']['adapter_version'] = version
     def unavailable(*args):
         raise AssertionError('reading a recorded protocol must not require a native build')
     monkeypatch.setattr(continuous, 'check_build', unavailable)
     validate_recorded_protocol(request)
-    if version.endswith('1.1'):
+    if not version.endswith('1.0'):
         request['protocol']['frequency_plan']['N'] += 1
     else:
         request['parameters']['values']['N']['value'] = 10

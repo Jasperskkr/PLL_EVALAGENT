@@ -31,7 +31,8 @@ def load_registry(path, *, root=ROOT):
         'pll_allocation/block_space/contracts.py', 'pll_allocation/allocation/physics.py',
         'pll_allocation/allocation/allocate.py', 'pll_allocation/allocation/core.py',
         'pll_allocation/verification/verify.py', 'pll_allocation/verification/kernel.cpp',
-        'pll_allocation/verification/simulator.py', 'pll_allocation/_legacy/physics/cp.py'}
+        'pll_allocation/verification/simulator.py', 'pll_allocation/_legacy/physics/cp.py',
+        'pll_allocation/numerics.py'}
     bindings = item.get('source_bindings', [])
     if {row['path'] for row in bindings} != expected or len(bindings) != len(expected):
         raise ValueError('incomplete or unexpected frozen source bindings')

@@ -8,19 +8,24 @@ from ..exploration.contracts import check_candidate, judge, require
 from ..physics_mapping.model import MappingResult, Status, fingerprint
 from ..exploration.engine import model_identity
 
-SCHEMA = 'pll-stage9-nominal-handoff-1.0'
+from ..contract_names import HANDOFF_SCHEMA, LEGACY_HANDOFF_SCHEMA, handoff_ready
+
+SCHEMA = HANDOFF_SCHEMA
+SUPPORTED_SCHEMAS = (SCHEMA, LEGACY_HANDOFF_SCHEMA)
 
 
-def validate_handoff(handoff):
+def validate_handoff(handoff, *, require_current_model=True):
     """Strict gate for a saved nominal input; recomputes no physics or ranking.
 
+    require_current_model=False checks recorded evidence for archival reading only;
+    execution always requires the installed model. No evidence is rewritten.
     Uses the existing parameter screening and formal-result judge. Hash binding
     detects accidental edits, not maliciously forged or unauthenticated data.
     """
-    require(isinstance(handoff, dict) and handoff.get('schema_version') == SCHEMA, 'unsupported handoff schema')
+    require(isinstance(handoff, dict) and handoff.get('schema_version') in SUPPORTED_SCHEMAS, 'unsupported handoff schema')
     require(handoff.get('handoff_sha256') == fingerprint({k:v for k,v in handoff.items() if k!='handoff_sha256'}),
             'handoff fingerprint mismatch')
-    require(handoff.get('ready_for_stage9') is True, 'handoff gate blocked: no rechecked feasible nominal')
+    require(handoff_ready(handoff) is True, 'handoff gate blocked: no rechecked feasible nominal')
     require(handoff.get('gate_status') == 'READY' and handoff.get('gate_reasons') == [],
             'handoff gate status/reasons disagree with ready flag')
     require(handoff['M2_status'] == 'NOT_EVALUATED' and handoff['FULL_SYSTEMSPEC_CERTIFIED'] is False,
@@ -31,7 +36,8 @@ def validate_handoff(handoff):
     require(handoff['system_spec'] == problem['specs'], 'resolved SystemSpec mismatch')
     require(handoff['context_sha256'] == context['context_sha256'] and
             handoff['model_fingerprint'] == context['model_fingerprint'], 'context/model binding mismatch')
-    require(handoff['model_fingerprint'] == model_identity()['model_sha256'], 'handoff model differs from installed M1')
+    if require_current_model:
+        require(handoff['model_fingerprint'] == model_identity()['model_sha256'], 'handoff model differs from installed M1')
     row,check = handoff['recommended_nominal'],handoff['recommendation_recheck']
     require(row is not None and check.get('passed') is True and check.get('row') is not None,
             'handoff requires independent formal M1 recheck')
@@ -63,7 +69,7 @@ def validate_handoff(handoff):
 
 
 def build_handoff(explorer, archive, recommended, recheck, states, cost, *, handoff_dir=None):
-    item = {'schema_version':SCHEMA, 'ready_for_stage9':False, 'gate_status':'BLOCKED',
+    item = {'schema_version':SCHEMA, 'ready_for_verification':False, 'gate_status':'BLOCKED',
         'gate_reasons':[], 'problem_sha256':explorer.problem['problem_sha256'],
         'context_sha256':explorer.context['context_sha256'],
         'model_fingerprint':explorer.context['model']['model_sha256'],
@@ -79,7 +85,7 @@ def build_handoff(explorer, archive, recommended, recheck, states, cost, *, hand
             and (not recommended or r['parameter_sha256'] != recommended['parameter_sha256'])],
         'run_state':deepcopy(states), 'termination_reason':states['termination_reason'], 'cost':deepcopy(cost),
         'authoritative_nominal_field':'recommended_nominal',
-        'legacy_fields_not_for_stage9':['new_allocation','best_observed_current_spec','status'],
+        'legacy_fields_not_for_verification':['new_allocation','best_observed_current_spec','status'],
         'M2_status':'NOT_EVALUATED', 'FULL_SYSTEMSPEC_CERTIFIED':False,
         'scope':'M1-rechecked nominal input for existing M2; no verification feedback execution or whole-domain certification'}
     if not recommended:
@@ -87,7 +93,7 @@ def build_handoff(explorer, archive, recommended, recheck, states, cost, *, hand
     elif not recheck.get('passed'):
         item['gate_reasons']=['FINAL_FORMAL_M1_RECHECK_NOT_PASSED']
     else:
-        item.update(ready_for_stage9=True,gate_status='READY')
+        item.update(ready_for_verification=True,gate_status='READY')
     if handoff_dir is not None:
         try:
             relative = os.path.relpath(explorer.context_path, Path(handoff_dir).resolve())
@@ -100,9 +106,9 @@ def build_handoff(explorer, archive, recommended, recheck, states, cost, *, hand
     if recommended and 'physics_selection' in recommended:
         item['selection_evidence'] = deepcopy(recommended['physics_selection'])
     item['handoff_sha256']=fingerprint(item)
-    if item['ready_for_stage9']:
+    if item['ready_for_verification']:
         try:validate_handoff(item)
         except (ValueError,KeyError,TypeError) as error:
-            item.update(ready_for_stage9=False,gate_status='BLOCKED',gate_reasons=[str(error)])
+            item.update(ready_for_verification=False,gate_status='BLOCKED',gate_reasons=[str(error)])
             item['handoff_sha256']=fingerprint({k:v for k,v in item.items() if k!='handoff_sha256'})
     return item

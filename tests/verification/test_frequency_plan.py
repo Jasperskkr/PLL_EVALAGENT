@@ -104,8 +104,8 @@ def n10_handoff(tmp_path_factory):
 def test_n10_request_uses_spec_and_versioned_bound_protocol(n10_handoff):
     req = continuous.verification_request(n10_handoff, run_id='TEST', observation_id='TEST:N10', timeout_s=30)
     assert continuous.validate_request(req) == n10_handoff['recommended_nominal']['parameters']
-    assert req['protocol_id'] == 'integer_n_metrics_1.0'
-    assert req['protocol']['base_protocol_id'] == 'track_b_metrics_1.1'
+    assert req['protocol_id'] == 'integer_n_metrics_2.0'
+    assert len(req['protocol']['baseline_protocol_sha256']) == 64
     assert req['protocol']['frequency_plan'] == {'f_ref_Hz': 10e6, 'N': 10, 'output_frequency_Hz': 100e6}
     assert req['specs'] == n10_handoff['system_spec']
     req['protocol']['frequency_plan']['N'] = 8

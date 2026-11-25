@@ -32,7 +32,7 @@ def saved(tmp_path_factory):
     cfg.update(policy='DETERMINISTIC_PHYSICS_TOOL',total_m1_budget=48,initial_m1_budget=4,
         initial_sobol_samples=16,max_decisions=2,max_llm_calls=3,max_round_m1=30)
     run_initial_allocation(p,root/'initial',config=cfg,initial_context=context)
-    path=root/'initial/stage9_handoff.json'
+    path=root/'initial/verification_handoff.json'
     h=json.loads(path.read_text(encoding='utf-8')); validate_handoff(h)
     cfg['policy']='LLM_PHYSICS_TOOL'
     return path,p,h,cfg
@@ -74,7 +74,7 @@ def test_request_tamper_rejected(saved,field):
     req['request_sha256']=fingerprint({k:v for k,v in req.items() if k!='request_sha256'})
     with pytest.raises(ValueError):validate_request(req)
 
-@pytest.mark.parametrize('key',('block_spec_SI','handoff_sha256','ready_for_stage9'))
+@pytest.mark.parametrize('key',('block_spec_SI','handoff_sha256','ready_for_verification'))
 def test_handoff_tamper_rejected(saved,key):
     h=deepcopy(saved[2]);h[key]=False
     with pytest.raises((ValueError,TypeError)):verification_request(h,run_id='TEST',observation_id='TEST',timeout_s=1)
@@ -114,8 +114,8 @@ def test_test_backend_label_and_m2_partial_pass(saved,tmp_path):
     assert r['recommended_M2_supported'] and not r['real_fail_reverification_completed']
     root = tmp_path/'run'
     assert json.loads((root/'verification_result.json').read_text(encoding='utf-8')) == json.loads(json.dumps(r))
-    assert (root/'verification_result.json').read_bytes() == (root/'stage9_final_result.json').read_bytes()
-    assert (root/'cost_summary.json').read_bytes() == (root/'stage9_cost_summary.json').read_bytes()
+    assert not (root/'stage9_final_result.json').exists()
+    assert not (root/'stage9_cost_summary.json').exists()
 
 class Broken(DeterministicToolPolicy):
     def decide(self,state,directory):raise ProviderError('TEST unavailable')

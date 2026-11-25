@@ -21,20 +21,16 @@ def validate_recorded_protocol(request):
             'recorded M2 frequency/rail scope mismatch')
     if version == 'pll-continuous-m2-1.0':
         require(p['N'] == 8, 'legacy M2 protocol requires N=8')
-    elif version == 'pll-continuous-m2-1.1':
-        expected.update(schema_version='behavioral-metric-protocol-1.2', protocol_id='integer_n_metrics_1.0',
-            base_protocol_id=expected['protocol_id'],
-            frequency_plan={'f_ref_Hz': p['f_ref'], 'N': p['N'], 'output_frequency_Hz': p['N']*p['f_ref']})
-        expected['judgment']['BW'] = 'compare converged M2 bandwidth interval to current request Spec bounds'
-        expected['judgment']['frequency'] = 'candidate N*f_ref target; retain capture ppm and numerical convergence thresholds'
-        expected['supersedes'] = 'track_b_metrics_1.1 adapter: bind candidate N and N*f_ref; measurement thresholds unchanged'
+    elif version in ('pll-continuous-m2-1.1', 'pll-continuous-m2-1.2'):
+        from .verification.metric_protocols import integer_n_protocol
+        expected = integer_n_protocol(p, legacy=version == 'pll-continuous-m2-1.1')
     else:
         raise ValueError('unsupported recorded M2 adapter version')
     require(request['protocol'] == expected and request['protocol_id'] == expected['protocol_id'] and
             request['protocol_sha256'] == fingerprint(expected), 'recorded M2 protocol/frequency binding mismatch')
 
 
-def validate_sizing_handoff(handoff):
+def validate_sizing_handoff(handoff, *, require_current_model=True):
     """Validate summary and recorded evidence without rerunning physics or a DLL."""
     require(isinstance(handoff, dict) and handoff.get('schema_version') == SCHEMA,
             'unsupported source handoff')
@@ -61,8 +57,9 @@ def validate_sizing_handoff(handoff):
         key = fingerprint(row['parameters'])
         require(row['parameter_sha256'] == key and key not in seen, 'candidate hash/duplicate mismatch')
         seen.add(key)
-        require(row['model_fingerprint'] == model_identity()['model_sha256'] and
-                row['problem_sha256'] == problem['problem_sha256'], 'candidate model/problem mismatch')
+        if require_current_model:
+            require(row['model_fingerprint'] == model_identity()['model_sha256'], 'candidate model mismatch')
+        require(row['problem_sha256'] == problem['problem_sha256'], 'candidate problem mismatch')
         require(check_candidate(problem, row['parameters'])['status'] == 'NECESSARY_CONDITIONS_SATISFIED',
                 'source candidate outside original domain or necessary conditions')
         raw = row['formal_M1_result']; result = MappingResult(**(raw | {'status': Status(raw['status'])}))
@@ -72,9 +69,10 @@ def validate_sizing_handoff(handoff):
         require(row['M2_evidence_scope'] == 'NATIVE' and row['M2_supported_status'] == 'PASS' and
                 bool(row['M2_observations']), 'native M2 evidence required for multi-point delivery')
         record = row['M2_observations'][-1]; request, measured = record['request'], record['observation']
-        parameters = validate_handoff(request['handoff'])
+        parameters = validate_handoff(request['handoff'], require_current_model=require_current_model)
         validate_recorded_protocol(request)
         require(parameters == row['parameters'] == request['parameters'] and
+                row['model_fingerprint'] == request['handoff']['model_fingerprint'] and
                 request['handoff']['problem'] == problem and request['candidate_sha256'] == key and
                 request['problem_sha256'] == problem['problem_sha256'] and
                 request['specs'] == problem['specs'] and

@@ -1,5 +1,6 @@
 """Untrusted exploration geometry contracts; no parameter ranking or physics model."""
 from copy import deepcopy
+from ..contract_names import current_label
 import itertools
 import math
 
@@ -19,7 +20,8 @@ def validate_config(raw):
         'max_llm_calls','max_tool_proposals','analytic_call_limit','region_radius'}
     require(isinstance(raw,dict) and set(raw)==fields and raw['schema_version']==CONFIG_SCHEMA,'complete pilot config required')
     c=deepcopy(raw)
-    require(c['strategy'] in ('DETERMINISTIC_PHYSICS_STAGE7','LLM_GUIDED_STAGE7_5'),'unsupported exploration strategy')
+    c['strategy']=current_label(c['strategy'])
+    require(c['strategy'] in ('DETERMINISTIC_PHYSICS_EXPLORATION','LLM_GUIDED_SUBREGION_EXPLORATION'),'unsupported exploration strategy')
     for k in fields-{'schema_version','strategy','region_radius'}:
         require(type(c[k]) is int and c[k]>=0,k+': nonnegative integer required')
     require(1<=c['max_decisions']<=2 and c['max_decisions']<=c['max_llm_calls']<=6,'bounded rounds/provider calls required')

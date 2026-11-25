@@ -310,7 +310,8 @@ def test_cache_deduplicates_exact_points_without_quantization(contexts, tmp_path
 
 def test_true_model_numerical_failure_counted_not_pass(tmp_path):
     raw = json.loads((ROOT/'configs/problems/nominal.json').read_text())
-    raw['parameters']['Icp'].update(min=5e-301, max=2e-300, default=1e-300)
+    # Adaptive scans now recover 1e-300; use actual coefficient underflow.
+    raw['parameters']['Icp'].update(min=5e-321, max=2e-320, default=1e-320)
     raw['exploration'].update(sobol_samples=0, physics_seed_count=1, sensitivity_representatives=0)
     src = tmp_path/'underflow.json'
     src.write_text(json.dumps(raw))

@@ -1,15 +1,15 @@
 """Compact, point-based calibration for the real region policy."""
 from collections import Counter
 import json
-from pathlib import Path
 
 from ..block_space.contracts import FREE_IDS
 from ..exploration.contracts import check_candidate, screen_problem
 from ..physics_mapping.model import METRIC_UNITS, fingerprint
 from ..region_explorer.assessment import normalized_point
 from ..region_explorer.explorer import slsqp_cost_model
+from ..verification.resources import CONFIGS
 
-REGISTRY = Path(__file__).resolve().parents[2]/'configs/model/equations.json'
+REGISTRY = CONFIGS/'model/equations.json'
 
 
 def compact_sample(row, problem):
@@ -172,7 +172,7 @@ def build_state(explorer, policy_config, history, *, round_number, calls_remaini
         'necessary_condition_screen': screen_problem(problem),
         **progress,
         'sensitivity_conflicts': sensitivity_conflicts(derivatives),
-        'calibration': {**calibration, 'stage7_unique_points': len(unique_calibration_samples), 'origins_separately_counted': dict(origin_counts),
+        'calibration': {**calibration, 'unique_calibration_points': len(unique_calibration_samples), 'origins_separately_counted': dict(origin_counts),
             'coverage_boundary': 'Sensitivity perturbations are local evidence, not independent global coverage.', 'M1_outcomes': dict(Counter(
             r['judgment']['m1_feasibility'] for r in unique_calibration_samples)), 'displayed_samples': samples,
             'coverage': 'Only sampled points carry evidence. Unsampled design space remains unknown.'},

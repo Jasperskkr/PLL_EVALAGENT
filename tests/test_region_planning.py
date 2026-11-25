@@ -94,7 +94,7 @@ def test_full_test_loop_budget_persistence_export(initial,tmp_path):
     assert not ctx['capability_boundary']['LLM_executed']
     samples=[json.loads(s) for s in (Path(result['physics_context']).parent/'m1_samples.jsonl').read_text().splitlines()]
     assert len({s['evidence_id'] for s in samples})==len(samples)
-    assert all(s['evidence_id'].startswith('P75:') for s in samples)
+    assert all(s['evidence_id'].startswith('EXPLORATION:') for s in samples)
     downstream=RegionExplorer(result['physics_context'],tmp_path/'downstream',m1_budget=10)
     assert all(contains_parameters(downstream.problem,{k:[0.,1.] for k in downstream.problem['parameters']},s['parameters']) for s in samples)
 
@@ -181,7 +181,7 @@ def test_no_known_feasible_handoff_blocked(initial,tmp_path):
     ex=explorer(initial,tmp_path)
     archive=CandidateArchive(ex,tmp_path/'archive.jsonl')
     h=build_handoff(ex,archive,None,{'passed':False},{'termination_reason':'TEST_NO_CANDIDATE'},ex.cost())
-    assert h['gate_status']=='BLOCKED' and not h['ready_for_stage9']
+    assert h['gate_status']=='BLOCKED' and not h['ready_for_verification']
     with pytest.raises(ValueError):validate_handoff(h)
 
 
